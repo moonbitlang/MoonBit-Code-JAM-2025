@@ -1,0 +1,26 @@
+{
+  "name": "moonbit-code-jam-2025",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsx ./src/build.mts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moonbitlang/MoonBit-Code-JAM-2025.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moonbitlang/MoonBit-Code-JAM-2025/issues"
+  },
+  "homepage": "https://github.com/moonbitlang/MoonBit-Code-JAM-2025#readme",
+  "description": "",
+  "dependencies": {
+    "tsx": "^4.20.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15"
+  }
+}
