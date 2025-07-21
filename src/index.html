@@ -1,12 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MoonBit Code JAM 2025</title>
+    <title>MoonBit Code JAM 2025 - 游戏展示</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .title {
+        font-size: 3rem;
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 1rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .game-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .game-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+      }
+
+      .game-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+      }
+
+      .game-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #2d3748;
+      }
+
+      .game-team {
+        font-size: 0.9rem;
+        color: #718096;
+        margin-bottom: 1rem;
+      }
+
+      .game-description {
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .game-controls {
+        background: #f7fafc;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .controls-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #2d3748;
+        font-size: 0.9rem;
+      }
+
+      .controls-list {
+        font-size: 0.85rem;
+        color: #4a5568;
+        line-height: 1.5;
+      }
+
+      .play-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .play-button:hover {
+        background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        transform: translateY(-1px);
+      }
+
+      .play-icon {
+        font-size: 1rem;
+      }
+
+      .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 2rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+      }
+
+      .stat-item {
+        text-align: center;
+        color: white;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        display: block;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .title {
+          font-size: 2rem;
+        }
+
+        .games-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .stats {
+          flex-direction: column;
+          gap: 1rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>MoonBit Code JAM 2025</h1>
-    <a href="/0x0-MoonBit官方-方块游戏/artifact/index.html">方块游戏</a>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">🎮 MoonBit Code JAM 2025</h1>
+        <p class="subtitle">探索使用 MoonBit 语言创作的精彩游戏作品</p>
+      </div>
+
+      <div class="games-grid" id="games-grid">
+        <!-- 游戏卡片将通过JavaScript动态生成 -->
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-number" id="game-count">0</span>
+          <span class="stat-label">参赛游戏</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="team-count">0</span>
+          <span class="stat-label">参赛团队</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">2025</span>
+          <span class="stat-label">比赛年份</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 全局游戏元数据将在构建时注入
+      window.GAMES_METADATA = window.GAMES_METADATA || [];
+
+      function playGame(gameId) {
+        // 添加点击动画效果
+        const card = event.currentTarget;
+        card.style.transform = "scale(0.95)";
+
+        setTimeout(() => {
+          // 跳转到游戏页面
+          const game = window.GAMES_METADATA.find((g) => g.id === gameId);
+          if (game) {
+            // URL编码路径中的特殊字符
+            const encodedPath = encodeURI(game.artifactPath);
+            window.location.href = encodedPath;
+          }
+        }, 150);
+      }
+
+      // 创建游戏卡片HTML
+      function createGameCard(game) {
+        const controlsList =
+          game.controls.length > 0
+            ? game.controls.map((control) => `• ${control}`).join("<br>")
+            : "• 暂无操作说明";
+
+        return `
+          <div class="game-card" onclick="playGame('${game.id}')">
+            <div class="game-icon">${game.icon}</div>
+            <h3 class="game-title">${game.title}</h3>
+            <p class="game-team">🏆 ${game.teamName}</p>
+            <p class="game-description">${game.description}</p>
+
+            <div class="game-controls">
+              <div class="controls-title">🎮 游戏操作</div>
+              <div class="controls-list">
+                ${controlsList}
+              </div>
+            </div>
+
+            <button class="play-button">
+              <span class="play-icon">▶️</span>
+              立即游玩
+            </button>
+          </div>
+        `;
+      }
+
+      // 创建占位卡片
+      function createPlaceholderCard() {
+        return `
+          <div class="game-card" style="opacity: 0.6; cursor: default" onclick="return false;">
+            <div class="game-icon">🚀</div>
+            <h3 class="game-title">更多游戏即将到来</h3>
+            <p class="game-team">敬请期待</p>
+            <p class="game-description">
+              更多参赛团队的精彩作品正在路上，敬请期待！
+            </p>
+            <button class="play-button" style="opacity: 0.5; cursor: not-allowed">
+              <span class="play-icon">⏳</span>
+              开发中...
+            </button>
+          </div>
+        `;
+      }
+
+      // 渲染游戏卡片
+      function renderGameCards() {
+        const gamesGrid = document.getElementById("games-grid");
+        const games = window.GAMES_METADATA || [];
+
+        let cardsHTML = "";
+
+        // 添加实际游戏卡片
+        games.forEach((game) => {
+          cardsHTML += createGameCard(game);
+        });
+
+        // 如果游戏数量少于4个，添加占位卡片
+        if (games.length < 4) {
+          cardsHTML += createPlaceholderCard();
+        }
+
+        gamesGrid.innerHTML = cardsHTML;
+
+        // 更新统计信息
+        document.getElementById("game-count").textContent = games.length;
+        document.getElementById("team-count").textContent = games.length;
+      }
+
+      // 页面加载时渲染游戏卡片
+      document.addEventListener("DOMContentLoaded", function () {
+        // 渲染游戏卡片
+        renderGameCards();
+
+        // 添加页面加载动画
+        const cards = document.querySelectorAll(".game-card");
+        cards.forEach((card, index) => {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(20px)";
+
+          setTimeout(() => {
+            card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            card.style.opacity = card.style.opacity === "0.6" ? "0.6" : "1";
+            card.style.transform = "translateY(0)";
+          }, index * 200);
+        });
+      });
+
+      // 添加视差滚动效果
+      window.addEventListener("scroll", function () {
+        const scrolled = window.pageYOffset;
+        const header = document.querySelector(".header");
+        header.style.transform = `translateY(${scrolled * 0.5}px)`;
+      });
+    </script>
   </body>
 </html>
