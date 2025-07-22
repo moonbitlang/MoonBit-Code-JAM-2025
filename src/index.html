@@ -51,6 +51,12 @@
         margin-top: 2rem;
       }
 
+      .game-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
       .game-card {
         background: white;
         border-radius: 16px;
@@ -62,9 +68,13 @@
         overflow: hidden;
       }
 
-      .game-card:hover {
+      .game-card-link:hover .game-card {
         transform: translateY(-5px);
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .game-card-placeholder {
+        display: block;
       }
 
       .game-card::before {
@@ -232,21 +242,7 @@
       // 全局游戏元数据将在构建时注入
       window.GAMES_METADATA = window.GAMES_METADATA || [];
 
-      function playGame(gameId) {
-        // 添加点击动画效果
-        const card = event.currentTarget;
-        card.style.transform = "scale(0.95)";
-
-        setTimeout(() => {
-          // 跳转到游戏页面
-          const game = window.GAMES_METADATA.find((g) => g.id === gameId);
-          if (game) {
-            // URL编码路径中的特殊字符
-            const encodedPath = encodeURI(game.artifactPath);
-            window.location.href = encodedPath;
-          }
-        }, 150);
-      }
+      // 已移除playGame函数，现在使用anchor element直接跳转
 
       // 创建游戏卡片HTML
       function createGameCard(game) {
@@ -255,42 +251,59 @@
             ? game.controls.map((control) => `• ${control}`).join("<br>")
             : "• 暂无操作说明";
 
+        // 根据当前网页路径构建游戏URL
+        let gameUrl = encodeURI(game.artifactPath);
+
+        // 获取当前页面的路径作为基础路径
+        const currentPath = window.location.pathname;
+        const basePath = currentPath.substring(
+          0,
+          currentPath.lastIndexOf("/") + 1,
+        );
+
+        // 将基础路径与游戏路径组合
+        gameUrl = basePath + gameUrl;
+
         return `
-          <div class="game-card" onclick="playGame('${game.id}')">
-            <div class="game-icon">${game.icon}</div>
-            <h3 class="game-title">${game.title}</h3>
-            <p class="game-team">🏆 ${game.teamName}</p>
-            <p class="game-description">${game.description}</p>
+          <a href="${gameUrl}" class="game-card-link">
+            <div class="game-card">
+              <div class="game-icon">${game.icon}</div>
+              <h3 class="game-title">${game.title}</h3>
+              <p class="game-team">🏆 ${game.teamName}</p>
+              <p class="game-description">${game.description}</p>
 
-            <div class="game-controls">
-              <div class="controls-title">🎮 游戏操作</div>
-              <div class="controls-list">
-                ${controlsList}
+              <div class="game-controls">
+                <div class="controls-title">🎮 游戏操作</div>
+                <div class="controls-list">
+                  ${controlsList}
+                </div>
               </div>
-            </div>
 
-            <button class="play-button">
-              <span class="play-icon">▶️</span>
-              立即游玩
-            </button>
-          </div>
+              <button class="play-button">
+                <span class="play-icon">▶️</span>
+                立即游玩
+              </button>
+            </div>
+          </a>
         `;
       }
 
       // 创建占位卡片
       function createPlaceholderCard() {
         return `
-          <div class="game-card" style="opacity: 0.6; cursor: default" onclick="return false;">
-            <div class="game-icon">🚀</div>
-            <h3 class="game-title">更多游戏即将到来</h3>
-            <p class="game-team">敬请期待</p>
-            <p class="game-description">
-              更多参赛团队的精彩作品正在路上，敬请期待！
-            </p>
-            <button class="play-button" style="opacity: 0.5; cursor: not-allowed">
-              <span class="play-icon">⏳</span>
-              开发中...
-            </button>
+          <div class="game-card-placeholder">
+            <div class="game-card" style="opacity: 0.6; cursor: default">
+              <div class="game-icon">🚀</div>
+              <h3 class="game-title">更多游戏即将到来</h3>
+              <p class="game-team">敬请期待</p>
+              <p class="game-description">
+                更多参赛团队的精彩作品正在路上，敬请期待！
+              </p>
+              <button class="play-button" style="opacity: 0.5; cursor: not-allowed">
+                <span class="play-icon">⏳</span>
+                开发中...
+              </button>
+            </div>
           </div>
         `;
       }
