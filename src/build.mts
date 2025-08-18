@@ -1,179 +1,190 @@
-import {
-  cpSync,
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  rmSync,
-  readFileSync,
-  writeFileSync,
-} from "fs";
+#!/usr/bin/env tsx
+import { promises as fs } from "fs";
+import path from "path";
 
-if (existsSync("dist")) {
-  rmSync("dist", { recursive: true });
-}
-
-mkdirSync("dist");
-
-// 定义游戏元数据接口
-interface GameMetadata {
+interface GameMetaRaw {
   id: string;
   title: string;
   teamName: string;
-  description: string;
-  controls: string[];
-  icon: string;
-  artifactPath: string;
+  gameIntro: string;
+  operations: string[];
+  features: string[];
+  teamInfo: string[];
+  artifactPath: string; // relative (url-encoded) path to artifact/index.html
 }
 
-// 收集游戏元数据
-const gamesMetadata: GameMetadata[] = [];
-const teams = readdirSync("teams");
+const ROOT = process.cwd();
+const TEAMS_DIR = path.join(ROOT, "teams");
+const DIST_DIR = path.join(ROOT, "dist");
+const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
 
-for (const team of teams) {
-  const artifact = `teams/${team}/artifact`;
-  const readmePath = `teams/${team}/README.md`;
-
-  // 复制游戏文件
-  cpSync(artifact, `dist/${team}/artifact`, { recursive: true });
-
-  // 读取README文件获取游戏信息
-  if (existsSync(readmePath)) {
-    const readmeContent = readFileSync(readmePath, "utf-8");
-
-    // 解析游戏信息
-    const gameInfo = parseGameInfo(team, readmeContent);
-    gamesMetadata.push(gameInfo);
-  }
+async function rimraf(target: string) {
+  await fs.rm(target, { recursive: true, force: true });
 }
 
-// 读取HTML模板
-let htmlContent = readFileSync("src/index.html", "utf-8");
+async function ensureDir(dir: string) {
+  await fs.mkdir(dir, { recursive: true });
+}
 
-// 将游戏元数据注入HTML
-const metadataScript = `
-<script>
-window.GAMES_METADATA = ${JSON.stringify(gamesMetadata, null, 2)};
-</script>`;
-
-// 在</head>之前插入元数据
-htmlContent = htmlContent.replace("</head>", `${metadataScript}\n</head>`);
-
-// 写入生成的HTML文件
-writeFileSync("dist/index.html", htmlContent);
-
-// 解析游戏信息的函数
-function parseGameInfo(teamId: string, readmeContent: string): GameMetadata {
-  const lines = readmeContent.split("\n");
-  let title = "";
-  let description = "";
-  const controls: string[] = [];
-
-  // 提取标题（第一个#标题）
-  const titleMatch = readmeContent.match(/^#\s+(.+)$/m);
-  if (titleMatch) {
-    title = titleMatch[1].trim();
-  }
-
-  // 提取描述（标题后第一个非空行）
-  let foundTitle = false;
-  for (const line of lines) {
-    if (line.startsWith("#")) {
-      foundTitle = true;
+function splitSections(md: string): Record<string, string> {
+  // Normalize line endings
+  md = md.replace(/\r\n?/g, "\n");
+  const lines = md.split("\n");
+  let current: string | null = null;
+  const map: Record<string, string[]> = {};
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+    const heading = line.match(/^##\s+(.+?)\s*$/);
+    if (heading) {
+      current = heading[1].trim();
+      if (!map[current]) map[current] = [];
       continue;
     }
-    if (
-      foundTitle &&
-      line.trim() &&
-      !line.startsWith("-") &&
-      !line.includes("控制")
-    ) {
-      description = line.trim();
-      break;
-    }
+    if (current) map[current].push(line);
   }
-
-  // 提取控制说明
-  let inControlsSection = false;
-  for (const line of lines) {
-    if (line.includes("控制") || line.includes("操作")) {
-      inControlsSection = true;
-      continue;
-    }
-    if (inControlsSection && line.trim().startsWith("-")) {
-      const control = line.replace(/^\s*-\s*/, "").trim();
-      if (control) {
-        controls.push(control);
-      }
-    } else if (inControlsSection && line.trim() === "") {
-      // 空行结束控制部分
-      break;
-    }
+  const out: Record<string, string> = {};
+  for (const [k, arr] of Object.entries(map)) {
+    out[k] = arr.join("\n").trim();
   }
+  return out;
+}
 
-  // 如果没有找到控制信息，为方块游戏添加默认控制说明
-  if (controls.length === 0 && title.includes("方块")) {
-    controls.push("空格键：开始游戏 / 重新开始");
-    controls.push("←→↓：控制方块移动");
-    controls.push("↑：旋转方块");
+function extractList(section: string | undefined): string[] {
+  if (!section) return [];
+  const lines = section
+    .split(/\n+/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  const items: string[] = [];
+  for (const l of lines) {
+    const m = l.match(/^(?:[-*+]|•)\s*(.+)$/);
+    if (m) items.push(m[1].trim());
+    else if (l) items.push(l); // fallback
   }
+  return items;
+}
 
-  // 生成团队显示名称
-  const teamDisplayName = teamId.includes("官方")
-    ? "MoonBit官方团队"
-    : teamId.replace(/^\d+x\d+-/, "").replace(/-/g, " ");
+function extractTeamName(teamInfoLines: string[]): string {
+  for (const l of teamInfoLines) {
+    const m = l.match(/团队名称[:：]\s*(.+)$/);
+    if (m) return m[1].trim();
+  }
+  return "";
+}
 
-  // 选择合适的图标
-  const icon = getGameIcon(title, description);
-
+async function readGame(
+  readmePath: string,
+  dirName: string,
+): Promise<Omit<GameMetaRaw, "artifactPath">> {
+  const md = await fs.readFile(readmePath, "utf8");
+  const titleMatch = md.match(/^#\s+(.+?)\s*$/m);
+  const title = titleMatch
+    ? titleMatch[1].trim()
+    : dirName.split("-").slice(-1)[0] || dirName;
+  const sections = splitSections(md);
+  const gameIntro = sections["游戏简介"] || "";
+  const operations = extractList(sections["操作说明"]);
+  const features = extractList(sections["技术特色"]);
+  const teamInfoItems = extractList(sections["团队信息"]);
+  const teamName =
+    extractTeamName(teamInfoItems) || dirName.split("-")[1] || "未知团队";
   return {
-    id: teamId,
-    title: title || "未知游戏",
-    teamName: teamDisplayName,
-    description:
-      description ||
-      (title.includes("方块")
-        ? "经典的俄罗斯方块游戏重制版，使用 MoonBit 语言精心打造。体验流畅的方块下落和消除机制，挑战你的反应速度和空间思维能力！"
-        : `使用 MoonBit 语言开发的精彩游戏作品。`),
-    controls: controls,
-    icon: icon,
-    artifactPath: `/${teamId}/artifact/index.html`,
+    id: dirName,
+    title,
+    teamName,
+    gameIntro,
+    operations,
+    features,
+    teamInfo: teamInfoItems,
   };
 }
 
-// 根据游戏内容选择图标
-function getGameIcon(title: string, description: string): string {
-  const content = (title + " " + description).toLowerCase();
-
-  if (
-    content.includes("方块") ||
-    content.includes("tetris") ||
-    content.includes("俄罗斯")
-  ) {
-    return "🧩";
-  }
-  if (content.includes("射击") || content.includes("shoot")) {
-    return "🎯";
-  }
-  if (
-    content.includes("跑酷") ||
-    content.includes("跳跃") ||
-    content.includes("platform")
-  ) {
-    return "🏃";
-  }
-  if (content.includes("拼图") || content.includes("puzzle")) {
-    return "🧩";
-  }
-  if (content.includes("赛车") || content.includes("racing")) {
-    return "🏎️";
-  }
-  if (content.includes("冒险") || content.includes("adventure")) {
-    return "⚔️";
-  }
-  if (content.includes("策略") || content.includes("strategy")) {
-    return "🧠";
-  }
-
-  // 默认图标
-  return "🎮";
+function encodePathSegment(segment: string) {
+  return encodeURIComponent(segment);
 }
+
+function buildArtifactRelativePath(teamId: string): string {
+  return `${encodePathSegment(teamId)}/artifact/index.html`;
+}
+
+async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
+  const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
+  const metadataJson = JSON.stringify(games, null, 2);
+  const escapeHtml = (s: string) => s.replace(/</g, "&lt;");
+  const list = (arr: string[]) =>
+    arr.length
+      ? "<ul>" +
+        arr.map((i) => "<li>" + escapeHtml(i) + "</li>").join("") +
+        "</ul>"
+      : "<p>暂无</p>";
+  const cards = games
+    .map((g) => {
+      const intro = g.gameIntro
+        ? "<p>" + escapeHtml(g.gameIntro).replace(/\n+/g, "<br>") + "</p>"
+        : "<p>暂无</p>";
+      return `<a class="game-card-link" href="${g.artifactPath}">
+      <div class="game-card">
+        <h3 class="game-title">${escapeHtml(g.title)}</h3>
+        <div class="team-name">🏆 ${escapeHtml(g.teamName)}</div>
+        <div class="section"><h4>游戏简介</h4>${intro}</div>
+        <div class="section"><h4>操作说明</h4>${list(g.operations)}</div>
+        <div class="section"><h4>技术特色</h4>${list(g.features)}</div>
+        <div class="section"><h4>团队信息</h4>${list(g.teamInfo)}</div>
+        <div class="play-button">▶️ 立即游玩</div>
+      </div>
+    </a>`;
+    })
+    .join("");
+  return tpl
+    .replace("__GAMES_METADATA__", metadataJson)
+    .replace("__GAME_CARDS__", cards)
+    .replace("__GAME_COUNT__", String(games.length))
+    .replace("__TEAM_COUNT__", String(games.length));
+}
+
+async function copyArtifacts(teamDir: string, distTeamDir: string) {
+  const srcArtifact = path.join(teamDir, "artifact");
+  try {
+    const stat = await fs.stat(srcArtifact);
+    if (!stat.isDirectory()) return false;
+  } catch {
+    return false;
+  }
+  await ensureDir(distTeamDir);
+  const destArtifact = path.join(distTeamDir, "artifact");
+  await fs.cp(srcArtifact, destArtifact, { recursive: true });
+  return true;
+}
+
+async function build() {
+  await rimraf(DIST_DIR);
+  await ensureDir(DIST_DIR);
+  const teamEntries = await fs.readdir(TEAMS_DIR, { withFileTypes: true });
+  const games: GameMetaRaw[] = [];
+  for (const entry of teamEntries) {
+    if (!entry.isDirectory()) continue;
+    const dirName = entry.name;
+    const teamDir = path.join(TEAMS_DIR, dirName);
+    const readmePath = path.join(teamDir, "README.md");
+    try {
+      await fs.access(readmePath);
+    } catch {
+      // skip if no README
+      continue;
+    }
+    const baseData = await readGame(readmePath, dirName);
+    const distTeamDir = path.join(DIST_DIR, dirName);
+    const copied = await copyArtifacts(teamDir, distTeamDir);
+    if (!copied) continue; // must have artifact
+    const artifactPath = buildArtifactRelativePath(dirName);
+    games.push({ ...baseData, artifactPath });
+  }
+  const html = await renderIndexHtml(games);
+  await fs.writeFile(path.join(DIST_DIR, "index.html"), html, "utf8");
+  console.log(`Built ${games.length} games into dist/`);
+}
+
+build().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

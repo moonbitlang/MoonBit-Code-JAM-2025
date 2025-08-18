@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MoonBit Code JAM 2025 - 游戏展示</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #1a202c;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      h1.title {
+        font-size: 3rem;
+        color: #fff;
+        text-align: center;
+        margin: 0 0 1rem;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+      }
+      .subtitle {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .games-grid {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        margin-top: 2.5rem;
+        align-items: start; /* prevent stretch so cards keep natural height */
+      }
+      a.game-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block; /* wrapper makes whole card clickable */
+      }
+      .game-card {
+        background: #fff;
+        padding: 1.25rem 1.5rem 1.75rem;
+        border-radius: 18px;
+        position: relative;
+        box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
+      a.game-card-link:hover .game-card {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 42px -8px rgba(0, 0, 0, 0.32);
+      }
+      .game-card:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 18px;
+        padding: 2px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); /* standard property */
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      }
+      .game-title {
+        font-size: 1.4rem;
+        margin: 0;
+        color: #2d3748;
+      }
+      .team-name {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #5a67d8;
+        letter-spacing: 0.5px;
+      }
+      .section {
+        background: #f7fafc;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+      }
+      .section h4 {
+        margin: 0.1rem 0 0.5rem;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+      .section p,
+      .section ul {
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: #4a5568;
+      }
+      .section ul {
+        padding-left: 1rem;
+      }
+      .play-button {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.1rem;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        width: 100%;
+        transition: filter 0.3s ease, transform 0.3s ease;
+      }
+      a.game-card-link:hover .play-button {
+        filter: brightness(1.05);
+      }
+      .stats {
+        margin: 3rem auto 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+      }
+      .stat {
+        min-width: 140px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(12px);
+        padding: 1rem 1.25rem;
+        border-radius: 14px;
+        text-align: center;
+        color: #fff;
+      }
+      .stat strong {
+        display: block;
+        font-size: 1.6rem;
+      }
+      /* footer removed */
+      @media (max-width: 760px) {
+        h1.title {
+          font-size: 2.1rem;
+        }
+        .games-grid {
+          gap: 1.25rem;
+        }
+      }
+    </style>
+    <!-- GAMES METADATA PLACEHOLDER -->
+    <script>
+      window.GAMES_METADATA = __GAMES_METADATA__;
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">🎮 MoonBit Code JAM 2025</h1>
+      <p class="subtitle">探索使用 MoonBit 语言创作的精彩游戏作品</p>
+      <div class="games-grid" id="games-grid">__GAME_CARDS__</div>
+      <div class="stats">
+        <div class="stat">
+          <strong id="stat-games">__GAME_COUNT__</strong>参赛游戏
+        </div>
+        <div class="stat">
+          <strong id="stat-teams">__TEAM_COUNT__</strong>参赛团队
+        </div>
+        <div class="stat"><strong>2025</strong>年份</div>
+      </div>
+      <!-- footer removed -->
+    </div>
+    <!-- Cards are预渲染; JS only kept for future dynamic enhancements -->
+  </body>
+</html>
