@@ -4,9 +4,11 @@
  * @Author: Spaceack
  * @Date: 2025-08-17 16:49:09
  * @LastEditors: Spaceack
- * @LastEditTime: 2025-08-17 17:20:45
+ * @LastEditTime: 2025-08-18 12:28:51
  * @Description: 
 -->
+# Moonbit中国象棋战役版
+
 ## 游戏简介
 在中国传统象棋的棋盘与棋子规则基础上，我们引入了创新的战役玩法，为这款经典游戏增添了更多乐趣与刺激感。
 
