@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>双世界迷宫 · 相位切换 | WebAssembly 小游戏</title>
+  <style>
+    :root{ --bg:#0a0f1c; --panel:#101a35; --line:#1d2a55; --a:#6bc3ff; --b:#ffb86b; --g:#6bffb8; --p:#ff4d6d; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Microsoft YaHei',sans-serif;color:#eaf2ff;background:radial-gradient(1200px 600px at 10% -10%, #15224a 0%, #0a0f1c 40%) fixed}
+    header{padding:14px 12px;text-align:center;border-bottom:1px solid #122151;background:linear-gradient(#0d1634,#0a1228)}
+    h1{margin:0;font-size:22px;color:#cfe4ff}
+    .legend{color:#9fb3d9;font-size:13px;margin-top:4px}
+    .wrap{max-width:1040px;margin:16px auto;padding:0 12px;display:flex;gap:16px;align-items:flex-start}
+    .panel{background:#0f1833dd;border:1px solid #1a2a55;border-radius:12px;box-shadow:0 10px 24px #0007}
+    .left{padding:10px}
+    canvas{display:block;background:#0b132b;border-radius:8px;border:1px solid #1a2a55;box-shadow:inset 0 0 0 1px #0a1124;image-rendering:pixelated}
+    .sidebar{width:300px;padding:14px;position:sticky;top:60px}
+    .row{display:flex;gap:8px;align-items:center;margin:8px 0}
+    .stat{padding:8px 10px;border:1px solid #233a74;border-radius:8px;background:#0c1531}
+    .stat b{color:#9df}
+    .btn{cursor:pointer;border:1px solid #28448c;background:#0f1a3b;color:#cfe6ff;padding:8px 10px;border-radius:8px;font-weight:700;transition:.15s transform,.15s background}
+    .btn:hover{transform:translateY(-1px);background:#122056}
+    .btn:active{transform:translateY(0)}
+    footer{text-align:center;color:#9ab;padding:12px;opacity:.85}
+    .key{display:inline-block;min-width:20px;padding:2px 6px;border-radius:6px;border:1px solid #2c3f76;background:#0c1531;color:#bfe;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>双世界迷宫 · 相位切换（WASM）</h1>
+    <div class="legend">同步操控两个世界的角色，按 <span class="key">Q</span> 切换相位穿越相位墙（*），目标：让两边同时到达终点 G。</div>
+  </header>
+  <div class="wrap">
+    <div class="panel left"><canvas id="cv" width="990" height="500"></canvas></div>
+    <aside class="panel sidebar">
+      <div class="row"><span class="stat">关卡：<b id="lv">1/5</b></span><span class="stat">步数：<b id="mv">0</b></span></div>
+      <div class="row"><span class="stat">相位：<b id="ph">OFF</b></span><span class="stat">状态：<b id="st">准备</b></span></div>
+      <div class="row"><button id="restart" class="btn">重开 (R)</button><button id="toggle" class="btn">相位切换 (Q)</button></div>
+      <div class="row"><button id="next" class="btn">下一关 (N)</button></div>
+      <div class="legend">操作：方向键/WASD 移动；Q 相位；R 重开；N 下一关。</div>
+    </aside>
+  </div>
+  <footer>本目录（artifact）内仅包含 index.html 与 game.wasm</footer>
+  <script>
+    let exp, phase=0, W=11, H=11;
+    async function loadWasm(){
+      const imports = { spectest: {} };
+      if ('instantiateStreaming' in WebAssembly) {
+        try { return (await WebAssembly.instantiateStreaming(fetch('game.wasm'), imports)).instance; } catch {}
+      }
+      const buf = await fetch('game.wasm').then(r=>r.arrayBuffer());
+      return (await WebAssembly.instantiate(buf, imports)).instance;
+    }
+    async function boot(){
+      try{
+        const instance = await loadWasm();
+        exp = instance.exports; exp.init_game(0); W=exp.get_w(); H=exp.get_h();
+        setup(); draw(); setStatus('准备'); updateStats(); restart();
+      }catch(e){ console.error(e); setStatus('加载失败'); }
+    }
+
+    function setup(){
+      const cv=document.getElementById('cv'); const ctx=cv.getContext('2d'); const pad=20; const gap=20;
+      const cell=Math.floor((cv.height-pad*2)/H); const worldW=W*cell; const totalW=worldW*2+gap+pad*2; cv.width=totalW;
+      function drawWorld(world, ox){
+        ctx.fillStyle=world? '#1a1130':'#112031'; ctx.fillRect(ox-pad, pad-12, worldW+pad*2, H*cell+pad*2);
+        ctx.strokeStyle='#223a74'; ctx.strokeRect(ox-pad+0.5, pad-12+0.5, worldW+pad*2-1, H*cell+pad*2-1);
+        ctx.fillStyle='#0b132b'; ctx.fillRect(ox, pad, W*cell, H*cell);
+        ctx.strokeStyle='#1b284d'; ctx.lineWidth=1;
+        for(let x=0;x<=W;x++){ ctx.beginPath(); ctx.moveTo(ox+x*cell+0.5, pad+0.5); ctx.lineTo(ox+x*cell+0.5, pad+H*cell+0.5); ctx.stroke(); }
+        for(let y=0;y<=H;y++){ ctx.beginPath(); ctx.moveTo(ox+0.5, pad+y*cell+0.5); ctx.lineTo(ox+W*cell+0.5, pad+y*cell+0.5); ctx.stroke(); }
+        for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+          const t = exp.get_tile(world,x,y);
+          const rx = ox + x*cell, ry = pad + y*cell;
+          if (t===1){ ctx.fillStyle=world? '#35244f':'#1f2b4f'; ctx.fillRect(rx+1,ry+1,cell-2,cell-2); }
+          else if (t===2){ ctx.fillStyle='#0a2b28'; ctx.fillRect(rx+1,ry+1,cell-2,cell-2); ctx.fillStyle='#6bffb8'; ctx.fillRect(rx+cell*0.25, ry+cell*0.25, cell*0.5, cell*0.5); }
+          else if (t===3){ ctx.fillStyle=phase? '#402035':'#2e2433'; ctx.fillRect(rx+1,ry+1,cell-2,cell-2); ctx.strokeStyle=phase? '#ff4d6d':'#7a5a6a'; ctx.strokeRect(rx+2.5,ry+2.5,cell-5,cell-5); }
+        }
+        const px = exp.get_px(world), py = exp.get_py(world);
+        const cx = ox + px*cell + cell/2, cy = pad + py*cell + cell/2;
+        ctx.beginPath(); ctx.arc(cx,cy,cell*0.34,0,Math.PI*2); ctx.fillStyle = world? '#ffb86b':'#6bc3ff'; ctx.fill();
+        ctx.lineWidth=2; ctx.strokeStyle = world? '#ffcf9b':'#9dd9ff'; ctx.stroke();
+      }
+      window.draw = function(){
+        const leftOx = pad, rightOx = pad + worldW + gap;
+        ctx.clearRect(0,0,cv.width,cv.height);
+        drawWorld(0, leftOx);
+        drawWorld(1, rightOx);
+      }
+    }
+
+    function updateStats(){
+      document.getElementById('lv').textContent = (exp.get_level()+1) + '/' + exp.get_levels();
+      document.getElementById('mv').textContent = String(exp.get_moves());
+      phase = exp.get_phase(); document.getElementById('ph').textContent = phase? 'ON':'OFF';
+    }
+
+    function setStatus(t){ document.getElementById('st').textContent = t; }
+
+    function move(dir){
+      const r = exp.step(dir); draw(); updateStats();
+      if (r===2 || exp.is_win()) { setStatus('通关！'); setTimeout(()=>{ if (exp.next_level()) { setStatus('进行中'); updateStats(); draw(); } }, 700); }
+      else setStatus('进行中');
+    }
+    function togglePhase(){ exp.toggle_phase(); updateStats(); draw(); }
+    function restart(){ exp.restart(); setStatus('进行中'); updateStats(); draw(); }
+    function next(){ if (exp.next_level()) { setStatus('进行中'); updateStats(); draw(); } }
+
+    window.addEventListener('keydown', (e)=>{
+      const k=e.key.toLowerCase();
+      if(k==='arrowup'||k==='w') move(0);
+      else if(k==='arrowright' || k==='d') move(1);
+      else if(k==='arrowdown'||k==='s') move(2);
+      else if(k==='arrowleft'||k==='a') move(3);
+      else if(k==='q') togglePhase();
+      else if(k==='r') restart();
+      else if(k==='n') next();
+    });
+    document.getElementById('toggle').onclick = togglePhase;
+    document.getElementById('restart').onclick = restart;
+    document.getElementById('next').onclick = next;
+
+    boot();
+  </script>
+</body>
+</html>
