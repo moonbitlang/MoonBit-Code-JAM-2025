@@ -1,0 +1,33 @@
+{
+  "created_at": 1756131617312,
+  "description": "Interactive conversation",
+  "id": "779c323b-2871-4afc-b723-d943198792ac",
+  "messages": [
+    {
+      "content": "{\"content\":\"为什么我在配置这个文件的时候 会显示没有KrystalRay/pokemoon/battle\",\"role\":\"user\"}",
+      "id": "3fb399fe-00a3-4549-b71f-2ed1fe35cfac",
+      "role": "user",
+      "timestamp": 1756131644539
+    },
+    {
+      "content": "{\"content\":\"让我先了解一下你的项目结构，看看具体是什么问题。\",\"role\":\"assistant\",\"tool_calls\":[{\"index\":0,\"id\":\"list_files:0\",\"type\":\"function\",\"function\":{\"name\":\"list_files\",\"arguments\":\"{\\\"path\\\": \\\".\\\"}\"}}]}",
+      "id": "bab20f98-019b-4f1d-9bd8-87ca934f6c65",
+      "role": "assistant",
+      "timestamp": 1756131655508
+    },
+    {
+      "content": "{\"content\":\".moonagent/\\n.mooncakes/\\nKEYBOARD_TEST.md\\nLICENSE\\nREADME.md\\nREADME_BATTLE_MENU_CONFIG.md\\nREADME_BUTTONS.md\\nREADME_MENU_SYSTEM.md\\nThaleahFat.ttf\\nbattle_menu_config.json\\ndebug.html\\nindex.html\\nmoon.mod.json\\npixel_adventure/\\nscreenshot.png\\nsounds/\\nsprite_fusion/\\nsrc/\\ntarget/\\ntest.html\",\"name\":\"list_files\",\"role\":\"tool\",\"tool_call_id\":\"list_files:0\"}",
+      "id": "63ac46b5-e8f8-44ec-9575-6d6f00e5819d",
+      "role": "tool",
+      "timestamp": 1756131655512
+    },
+    {
+      "content": "{\"content\":\"为什么我在配置这个文件的时候 会显示没有KrystalRay/pokemoon/battle\",\"role\":\"user\"}",
+      "id": "189ad6d4-f294-4b39-874e-5436abd609b8",
+      "role": "user",
+      "timestamp": 1756131686416
+    }
+  ],
+  "name": "Session 8/25/2025, 10:20:17 PM",
+  "updated_at": 1756131686416
+}

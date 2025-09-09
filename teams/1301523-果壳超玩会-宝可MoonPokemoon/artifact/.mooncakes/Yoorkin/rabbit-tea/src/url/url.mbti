@@ -1,0 +1,41 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Yoorkin/rabbit-tea/url"
+
+// Values
+fn parse(String) -> Url raise
+
+// Types and methods
+pub(all) enum Protocol {
+  Http
+  Https
+  Other(String)
+}
+impl Compare for Protocol
+impl Eq for Protocol
+impl Show for Protocol
+
+pub(all) struct Url {
+  protocol : Protocol
+  host : String
+  port : Int?
+  path : String
+  query : String?
+  fragment : String?
+}
+fn Url::to_string(Self) -> String
+impl Compare for Url
+impl Eq for Url
+impl Show for Url
+
+pub(all) enum UrlRequest {
+  Internal(Url)
+  External(String)
+}
+impl Compare for UrlRequest
+impl Eq for UrlRequest
+impl Show for UrlRequest
+
+// Type aliases
+
+// Traits
+

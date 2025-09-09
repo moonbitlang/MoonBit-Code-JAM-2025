@@ -1,0 +1,12 @@
+{
+  "name": "rami3l/js-ffi",
+  "version": "0.3.1",
+  "readme": "README.md",
+  "repository": "",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "description": "",
+  "source": "src",
+  "warn-list": "-6",
+  "preferred-target": "js"
+}

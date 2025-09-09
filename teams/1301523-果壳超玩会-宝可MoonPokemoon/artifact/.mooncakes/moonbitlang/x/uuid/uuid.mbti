@@ -1,0 +1,53 @@
+package moonbitlang/x/uuid
+
+// Values
+fn from_bytes(Bytes) -> UUID!
+
+fn from_hex(String) -> UUID!
+
+// Types and methods
+type UUID
+impl UUID {
+  as_version(Self, Version) -> Self
+  compare(Self, Self) -> Int
+  hash(Self) -> Int
+  op_equal(Self, Self) -> Bool
+  to_bytes(Self) -> Bytes
+  to_string(Self) -> String
+  variant(Self) -> Variant
+  version(Self) -> Version?
+}
+
+pub enum Variant {
+  ReservedNCS
+  RFC4122(Version)
+  ReservedMicrosoft
+  ReservedFuture
+}
+impl Variant {
+  to_string(Self) -> String
+}
+
+pub enum Version {
+  V1
+  V2
+  V3
+  V4
+  V5
+  Unknown(Int)
+}
+impl Version {
+  to_string(Self) -> String
+}
+
+// Type aliases
+
+// Traits
+
+// Extension Methods
+impl Show for UUID
+
+impl Show for Variant
+
+impl Show for Version
+

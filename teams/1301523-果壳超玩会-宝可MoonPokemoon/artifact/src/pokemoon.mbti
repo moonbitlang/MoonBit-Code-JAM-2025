@@ -1,0 +1,49 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "nonpublish/pokemoon"
+
+// Values
+
+// Errors
+
+// Types and methods
+type BattleLayout
+
+type BattleMenuConfig
+
+type BattleState
+impl Show for BattleState
+
+type BattleSystem
+
+type Direction2
+
+type GameResult
+
+type GameState
+
+type LayoutConfig
+
+type MainBattleMenu
+
+type MainMenuConfig
+
+type MenuOption
+impl Eq for MenuOption
+impl Hash for MenuOption
+impl Show for MenuOption
+
+type PlayerState
+impl Show for PlayerState
+
+type ScreenConfig
+
+type Skill
+
+type SkillMenu
+
+type SkillMenuConfig
+
+// Type aliases
+
+// Traits
+

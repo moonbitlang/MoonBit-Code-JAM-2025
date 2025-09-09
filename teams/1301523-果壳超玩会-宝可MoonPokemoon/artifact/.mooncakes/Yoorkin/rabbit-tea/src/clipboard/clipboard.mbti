@@ -1,0 +1,21 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Yoorkin/rabbit-tea/clipboard"
+
+import(
+  "Yoorkin/rabbit-tea/cmd"
+)
+
+// Values
+fn[M] copy(Item, copied? : M, failed? : (String) -> M) -> @cmd.Cmd[M]
+
+fn[M] paste(pasted~ : (Item) -> M, failed? : (String) -> M) -> @cmd.Cmd[M]
+
+// Types and methods
+pub(all) enum Item {
+  Text(String)
+}
+
+// Type aliases
+
+// Traits
+

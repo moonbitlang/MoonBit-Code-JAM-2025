@@ -1,0 +1,59 @@
+package moonbitlang/x/crypto
+
+// Values
+fn bytes_to_hex_string(Bytes) -> String
+
+fn chacha12(FixedArray[UInt], UInt, Bytes, ~nonce : UInt = ..) -> Bytes!
+
+fn chacha20(FixedArray[UInt], UInt, Bytes, ~nonce : UInt = ..) -> Bytes!
+
+fn chacha8(FixedArray[UInt], UInt, Bytes, ~nonce : UInt = ..) -> Bytes!
+
+fn md5(Bytes) -> Bytes
+
+fn sha1(Bytes) -> Bytes
+
+fn sha224(Bytes) -> Bytes
+
+fn sha224_from_iter(Iter[Byte]) -> Bytes
+
+fn sha256(Bytes) -> Bytes
+
+fn sha256_from_iter(Iter[Byte]) -> Bytes
+
+fn sm3(Bytes) -> Bytes
+
+fn sm3_from_iter(Iter[Byte]) -> Bytes
+
+fn uints_to_hex_string(Iter[UInt]) -> String
+
+// Types and methods
+type MD5Context
+impl MD5Context {
+  finalize(Self) -> Bytes
+  new() -> Self
+  update(Self, Bytes) -> Unit
+}
+
+type SM3Context
+impl SM3Context {
+  finalize(Self) -> Bytes
+  new() -> Self
+  update(Self, Bytes) -> Unit
+  update_from_iter(Self, Iter[Byte]) -> Unit
+}
+
+type Sha256Context
+impl Sha256Context {
+  finalize(Self) -> Bytes
+  new(~reg : FixedArray[UInt] = ..) -> Self
+  update(Self, Bytes) -> Unit
+  update_from_iter(Self, Iter[Byte]) -> Unit
+}
+
+// Type aliases
+
+// Traits
+
+// Extension Methods
+

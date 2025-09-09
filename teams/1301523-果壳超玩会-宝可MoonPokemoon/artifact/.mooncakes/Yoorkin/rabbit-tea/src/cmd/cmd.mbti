@@ -1,0 +1,34 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Yoorkin/rabbit-tea/cmd"
+
+import(
+  "Yoorkin/rabbit-tea/url"
+)
+
+// Values
+fn[A, E : Error, M] attempt((Result[A, E]) -> M, async () -> A raise E) -> Cmd[M]
+
+fn[M] batch(Array[Cmd[M]]) -> Cmd[M]
+
+fn[M] none() -> Cmd[M]
+
+fn[A, M] perform((A) -> M, async () -> A) -> Cmd[M]
+
+fn[M] task(M) -> Cmd[M]
+
+// Types and methods
+pub(all) type Cmd[M] (Events[M]) -> Unit
+fn[M] Cmd::inner(Self[M]) -> (Events[M]) -> Unit
+fn[A, B] Cmd::map(Self[A], (A) -> B) -> Self[B]
+
+type Events[M]
+fn[M] Events::new((@url.Url) -> Unit, (@url.UrlRequest) -> Unit, (M) -> Unit) -> Self[M]
+fn[M] Events::trigger_update(Self[M], M) -> Unit
+fn[M] Events::trigger_url_changed(Self[M], @url.Url) -> Unit
+fn[M] Events::trigger_url_request(Self[M], @url.UrlRequest) -> Unit
+
+// Type aliases
+pub typealias Cmd as Command
+
+// Traits
+

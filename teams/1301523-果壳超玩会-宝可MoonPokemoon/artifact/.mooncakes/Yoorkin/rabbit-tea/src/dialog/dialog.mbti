@@ -1,0 +1,20 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Yoorkin/rabbit-tea/dialog"
+
+import(
+  "Yoorkin/rabbit-tea/cmd"
+)
+
+// Values
+fn[M] close(String, return_value? : String) -> @cmd.Cmd[M]
+
+fn[M] request_close(String, return_value? : String) -> @cmd.Cmd[M]
+
+fn[M] show(String, modal~ : Bool = ..) -> @cmd.Cmd[M]
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

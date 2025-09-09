@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pokemoon - Pokemon Battle Game</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+        body { 
+            margin: 0; 
+            background: #0f172a; 
+            color: #e2e8f0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .game-container {
+            text-align: center;
+            margin: 20px;
+        }
+        
+        canvas {
+            display: block; 
+            margin: 0 auto; 
+            border: 2px solid #4ECDC4;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-family: ThaleahFat, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4ECDC4;
+        }
+        
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        
+        .button-container {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .game-button {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .game-button:hover {
+            background: linear-gradient(135deg, #44A08D, #4ECDC4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .game-button:active {
+            transform: translateY(0);
+        }
+        
+        .reset-button {
+            background: linear-gradient(135deg, #FF6B6B, #EE5A52);
+        }
+        
+        .reset-button:hover {
+            background: linear-gradient(135deg, #EE5A52, #FF6B6B);
+        }
+        
+        .opponent-select {
+            margin: 10px 0;
+        }
+        
+        .opponent-select select {
+            background: #1a1a1a;
+            color: #e2e8f0;
+            border: 2px solid #4ECDC4;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+        
+        .opponent-select select:focus {
+            outline: none;
+            border-color: #44A08D;
+        }
+    </style>
+    <script src="target/js/release/build/pokemoon.js" defer></script>
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="title">Pokemon Moon 调试版</div>
+        <canvas id="canvas" height="600" width="800"></canvas>
+        
+        <div class="controls">
+            <strong>控制说明：</strong><br>
+            F1–F5 调试 · WASD/↑↓←→ 移动 · 空格跳跃<br>
+            战斗模式：方向键选择 · Enter确认 · Escape取消
+        </div>
+        
+        <div class="button-container">
+            <button class="game-button" onclick="restartWithEnemy()">重新开始战斗</button>
+            <button class="game-button reset-button" onclick="resetBattle()">重置战斗状态</button>
+        </div>
+        
+        <div class="opponent-select">
+            <label for="opponentSelect">选择对手：</label>
+            <select id="opponentSelect">
+                <option value="Java咖啡杯">Java咖啡杯</option>
+                <option value="Python蟒蛇">Python蟒蛇</option>
+                <option value="C++齿轮兽">C++齿轮兽</option>
+                <option value="JavaScript电精灵">JavaScript电精灵</option>
+                <option value="C#音符骑士">C#音符骑士</option>
+                <option value="Go地鼠">Go地鼠</option>
+                <option value="Rust螃蟹">Rust螃蟹</option>
+                <option value="Ruby红宝石龙">Ruby红宝石龙</option>
+                <option value="PHP大象">PHP企鹅</option>
+                <option value="Moonbit月兔">Moonbit月兔</option>
+            </select>
+            <button class="game-button" onclick="restartWithSelectedEnemy()">开始对战</button>
+        </div>
+        
+        <div class="status" id="status">
+            游戏状态：正在加载...
+        </div>
+    </div>
+    
+    <script>
+        // 添加状态更新
+        window.addEventListener('load', function() {
+            const status = document.getElementById('status');
+            status.textContent = '游戏状态：已加载完成';
+            
+            // 监听控制台输出
+            const originalLog = console.log;
+            console.log = function(...args) {
+                originalLog.apply(console, args);
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('状态')) {
+                    status.textContent = '游戏状态：' + args[0];
+                }
+            };
+        });
+        
+        // 重新开始战斗（使用默认对手）
+        function restartWithEnemy() {
+            try {
+                if (typeof KrystalRay$pokemoon$$restart_game_with_enemy === 'function') {
+                    KrystalRay$pokemoon$$restart_game_with_enemy("Java咖啡杯");
+                    updateStatus("重新开始战斗 - Java咖啡杯");
+                } else {
+                    console.error("restart_game_with_enemy 函数未找到");
+                    updateStatus("错误：函数未找到");
+                }
+            } catch (error) {
+                console.error("重新开始战斗时出错:", error);
+                updateStatus("错误：" + error.message);
+            }
+        }
+        
+        // 使用选中的对手重新开始战斗
+        function restartWithSelectedEnemy() {
+            try {
+                const selectedOpponent = document.getElementById('opponentSelect').value;
+                if (typeof KrystalRay$pokemoon$$restart_game_with_enemy === 'function') {
+                    KrystalRay$pokemoon$$restart_game_with_enemy(selectedOpponent);
+                    updateStatus("重新开始战斗 - " + selectedOpponent);
+                } else {
+                    console.error("restart_game_with_enemy 函数未找到");
+                    updateStatus("错误：函数未找到");
+                }
+            } catch (error) {
+                console.error("重新开始战斗时出错:", error);
+                updateStatus("错误：" + error.message);
+            }
+        }
+        
+        // 重置战斗状态
+        function resetBattle() {
+            try {
+                if (typeof KrystalRay$pokemoon$$reset_battle_render_state === 'function') {
+                    KrystalRay$pokemoon$$reset_battle_render_state();
+                    updateStatus("战斗状态已重置");
+                } else {
+                    console.error("reset_battle_render_state 函数未找到");
+                    updateStatus("错误：函数未找到");
+                }
+            } catch (error) {
+                console.error("重置战斗状态时出错:", error);
+                updateStatus("错误：" + error.message);
+            }
+        }
+        
+        // 更新状态显示
+        function updateStatus(message) {
+            const status = document.getElementById('status');
+            status.textContent = '游戏状态：' + message;
+        }
+        
+        // 检查函数是否可用
+        function checkFunctions() {
+            const functions = [
+                'KrystalRay$pokemoon$$restart_game_with_enemy',
+                'KrystalRay$pokemoon$$reset_battle_render_state'
+            ];
+            
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    console.log("✅ " + funcName + " 可用");
+                } else {
+                    console.warn("❌ " + funcName + " 不可用");
+                }
+            });
+        }
+        
+        // 页面加载完成后检查函数
+        window.addEventListener('load', function() {
+            setTimeout(checkFunctions, 1000); // 延迟1秒检查，确保JS文件完全加载
+        });
+    </script>
+</body>
+
+</html>

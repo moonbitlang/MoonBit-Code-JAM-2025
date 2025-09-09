@@ -1,0 +1,94 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/selene/collision"
+
+import(
+  "Milky2018/selene/math"
+  "Milky2018/selene/system"
+  "Milky2018/selene/velocity"
+  "moonbitlang/core/set"
+)
+
+// Values
+fn area_collide_system(&@system.Backend) -> Unit
+
+let areas : Map[@system.Entity, Area]
+
+let colliders : Map[@system.Entity, Collider]
+
+let collision_layers : Map[@system.Entity, CollisionLayer]
+
+fn debug_collide_system(&@system.Backend) -> Unit
+
+fn get_collision_infos(@system.Entity) -> Array[CollisionInfo]
+
+fn get_contains(@system.Entity) -> @set.Set[@system.Entity]
+
+fn is_on_floor(@system.Entity) -> Bool
+
+fn move_system(&@system.Backend) -> Unit
+
+fn pickable_click_system(&@system.Backend) -> Unit
+
+let pickables : Map[@system.Entity, Pickable]
+
+fn quadtree_clear_system(&@system.Backend) -> Unit
+
+fn quadtree_render_system(&@system.Backend) -> Unit
+
+let quadtree_root : Ref[QuadTree]
+
+let real_velocities : Map[@system.Entity, @velocity.Velocity]
+
+let shapes : Map[@system.Entity, CollisionShape]
+
+// Errors
+
+// Types and methods
+type Area
+fn Area::new(CollisionMask) -> Self
+fn Area::on_enter(Self, (@system.Entity) -> Unit) -> Unit
+fn Area::on_exit(Self, (@system.Entity) -> Unit) -> Unit
+
+pub(all) struct Collider {
+  mut active : Bool
+  mask : CollisionMask
+}
+fn Collider::new(CollisionMask) -> Self
+
+pub struct CollisionInfo {
+  entity : @system.Entity
+  direction : @math.Vec2D
+}
+
+pub struct CollisionLayer(UInt)
+fn CollisionLayer::inner(Self) -> UInt
+fn CollisionLayer::new() -> Self
+impl Eq for CollisionLayer
+
+pub struct CollisionMask(Array[CollisionLayer])
+fn CollisionMask::empty() -> Self
+fn CollisionMask::inner(Self) -> Array[CollisionLayer]
+fn CollisionMask::new(Array[CollisionLayer]) -> Self
+
+pub(all) enum CollisionShape {
+  Rect(size~ : @math.Vec2D, offset~ : @math.Vec2D)
+}
+
+type Pickable
+fn Pickable::new() -> Self
+fn Pickable::on_just_pressed(Self, (@system.MouseButton) -> Unit) -> Unit
+fn Pickable::on_just_released(Self, (@system.MouseButton) -> Unit) -> Unit
+fn Pickable::on_pressed(Self, (@system.MouseButton) -> Unit) -> Unit
+fn Pickable::on_released(Self, (@system.MouseButton) -> Unit) -> Unit
+
+pub struct QuadTree {
+  position : @math.Vec2D
+  size : @math.Vec2D
+  children : Array[QuadTree]
+  // private fields
+}
+
+// Type aliases
+
+// Traits
+
