@@ -17,33 +17,24 @@
             color: #e2e8f0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overflow-x: auto;
         }
         
-        .game-container {
-            text-align: center;
+        .main-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            max-width: 1200px;
             margin: 20px;
         }
         
-        canvas {
-            display: block; 
-            margin: 0 auto; 
-            border: 2px solid #4ECDC4;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        
-        .controls {
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            font-family: ThaleahFat, Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
+        .game-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .title {
@@ -51,6 +42,25 @@
             font-weight: bold;
             margin-bottom: 10px;
             color: #4ECDC4;
+            text-align: center;
+        }
+        
+        canvas {
+            display: block; 
+            border: 2px solid #4ECDC4;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-family: ThaleahFat, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: center;
         }
         
         .status {
@@ -59,27 +69,45 @@
             background: rgba(255,255,255,0.05);
             border-radius: 5px;
             font-size: 12px;
+            text-align: center;
         }
         
-        .button-container {
-            margin: 15px 0;
+        .control-panel {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 300px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
             gap: 10px;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
         .game-button {
             background: linear-gradient(135deg, #4ECDC4, #44A08D);
             border: none;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 16px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            flex: 1;
+            min-width: 120px;
         }
         
         .game-button:hover {
@@ -101,7 +129,14 @@
         }
         
         .opponent-select {
-            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .opponent-select label {
+            font-weight: bold;
+            color: #4ECDC4;
         }
         
         .opponent-select select {
@@ -111,56 +146,90 @@
             border-radius: 4px;
             padding: 8px 12px;
             font-size: 14px;
-            margin: 0 5px;
         }
         
         .opponent-select select:focus {
             outline: none;
             border-color: #44A08D;
         }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4ECDC4;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        @media (max-width: 1000px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-panel {
+                min-width: auto;
+                width: 100%;
+                max-width: 800px;
+            }
+        }
     </style>
-    <script src="target/js/release/build/pokemoon.js" defer></script>
+    <script src="pokemoon.js" defer></script>
 </head>
 
 <body>
-    <div class="game-container">
-        <div class="title">Pokemon Moon 调试版</div>
-        <canvas id="canvas" height="600" width="800"></canvas>
-        
-        <div class="controls">
-            <strong>控制说明：</strong><br>
-            F1–F5 调试 · WASD/↑↓←→ 移动 · 空格跳跃<br>
-            战斗模式：方向键选择 · Enter确认 · Escape取消
+    <div class="main-container">
+        <div class="game-section">
+            <div class="title">Pokemon Moon 调试版</div>
+            <canvas id="canvas" height="600" width="800" tabindex="0"></canvas>
+            
+            <div class="controls">
+                <strong>控制说明：</strong><br>
+                F1–F5 调试 · WASD/↑↓←→ 移动 · 空格跳跃<br>
+                战斗模式：方向键选择 · Enter确认 · Escape取消
+            </div>
+            
+            <div class="status" id="status">
+                游戏状态：正在加载...
+            </div>
         </div>
         
-        <div class="button-container">
-            <button class="game-button" onclick="restartWithEnemy()">重新开始战斗</button>
-            <button class="game-button reset-button" onclick="resetBattle()">重置战斗状态</button>
-        </div>
-        
-        <div class="opponent-select">
-            <label for="opponentSelect">选择对手：</label>
-            <select id="opponentSelect">
-                <option value="Java咖啡杯">Java咖啡杯</option>
-                <option value="Python蟒蛇">Python蟒蛇</option>
-                <option value="C++齿轮兽">C++齿轮兽</option>
-                <option value="JavaScript电精灵">JavaScript电精灵</option>
-                <option value="C#音符骑士">C#音符骑士</option>
-                <option value="Go地鼠">Go地鼠</option>
-                <option value="Rust螃蟹">Rust螃蟹</option>
-                <option value="Ruby红宝石龙">Ruby红宝石龙</option>
-                <option value="PHP大象">PHP企鹅</option>
-                <option value="Moonbit月兔">Moonbit月兔</option>
-            </select>
-            <button class="game-button" onclick="restartWithSelectedEnemy()">开始对战</button>
-        </div>
-        
-        <div class="status" id="status">
-            游戏状态：正在加载...
+        <div class="control-panel">
+            <div class="section-title">游戏控制</div>
+            
+            <div class="button-group">
+                <div class="button-row">
+                    <button class="game-button" id="restartBtn" onclick="restartWithEnemy()">重新开始战斗</button>
+                    <button class="game-button" id="startBtn" onclick="restartWithSelectedEnemy()">开始对战</button>
+                </div>
+                <div class="button-row">
+                    <button class="game-button reset-button" id="resetBtn" onclick="resetBattle()">重置战斗状态</button>
+                </div>
+            </div>
+            
+            <div class="opponent-select">
+                <label for="opponentSelect">选择对手：</label>
+                <select id="opponentSelect">
+                    <option value="Java咖啡杯">Java咖啡杯</option>
+                    <option value="Python蟒蛇">Python蟒蛇</option>
+                    <option value="C++齿轮兽">C++齿轮兽</option>
+                    <option value="JavaScript电精灵">JavaScript电精灵</option>
+                    <option value="C#音符骑士">C#音符骑士</option>
+                    <option value="Go地鼠">Go地鼠</option>
+                    <option value="Rust螃蟹">Rust螃蟹</option>
+                    <option value="Ruby红宝石龙">Ruby红宝石龙</option>
+                    <option value="PHP大象">PHP大象</option>
+                    <option value="Moonbit月兔">Moonbit月兔</option>
+                </select>
+            </div>
         </div>
     </div>
     
     <script>
+        // 全局变量跟踪游戏状态
+        let gameStarted = false;
+        let isSelectingOpponent = false;
+        
         // 添加状态更新
         window.addEventListener('load', function() {
             const status = document.getElementById('status');
@@ -174,7 +243,93 @@
                     status.textContent = '游戏状态：' + args[0];
                 }
             };
+            
+            // 初始化焦点管理
+            initializeFocusManagement();
         });
+        
+        // 初始化焦点管理
+        function initializeFocusManagement() {
+            const canvas = document.getElementById('canvas');
+            const buttons = document.querySelectorAll('.game-button');
+            const select = document.getElementById('opponentSelect');
+            
+            // 为画布添加焦点
+            canvas.focus();
+            
+            // 为所有按钮添加事件监听器
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // 点击按钮后立即将焦点转回画布
+                    setTimeout(() => {
+                        canvas.focus();
+                    }, 100);
+                });
+                
+                // 防止按钮获得焦点
+                button.addEventListener('focus', function(e) {
+                    e.preventDefault();
+                    canvas.focus();
+                });
+            });
+            
+            // 为选择框添加特殊处理
+            select.addEventListener('focus', function(e) {
+                isSelectingOpponent = true;
+                console.log('选择框获得焦点');
+            });
+            
+            select.addEventListener('blur', function(e) {
+                isSelectingOpponent = false;
+                console.log('选择框失去焦点');
+                // 选择框失去焦点后，将焦点转回画布
+                setTimeout(() => {
+                    canvas.focus();
+                }, 100);
+            });
+            
+            select.addEventListener('change', function(e) {
+                console.log('选择框值改变:', e.target.value);
+                // 选择框值改变后，延迟将焦点转回画布
+                setTimeout(() => {
+                    canvas.focus();
+                }, 200);
+            });
+            
+            // 监听键盘事件
+            document.addEventListener('keydown', function(e) {
+                // 如果正在选择对手，不干扰选择框
+                if (isSelectingOpponent) {
+                    return;
+                }
+                
+                // 如果按的是Enter键且焦点不在画布上
+                if (e.key === 'Enter' && document.activeElement !== canvas) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // 将焦点转回画布
+                    canvas.focus();
+                    return false;
+                }
+            });
+            
+            // 监听全局点击事件，确保点击后焦点回到画布（除了选择框）
+            document.addEventListener('click', function(e) {
+                // 如果点击的是选择框或其子元素，不干扰
+                if (e.target === select || select.contains(e.target)) {
+                    return;
+                }
+                
+                // 如果点击的不是画布，延迟将焦点转回画布
+                if (e.target !== canvas) {
+                    setTimeout(() => {
+                        canvas.focus();
+                    }, 50);
+                }
+            });
+        }
         
         // 重新开始战斗（使用默认对手）
         function restartWithEnemy() {
@@ -182,6 +337,11 @@
                 if (typeof KrystalRay$pokemoon$$restart_game_with_enemy === 'function') {
                     KrystalRay$pokemoon$$restart_game_with_enemy("Java咖啡杯");
                     updateStatus("重新开始战斗 - Java咖啡杯");
+                    gameStarted = true;
+                    // 确保焦点回到画布
+                    setTimeout(() => {
+                        document.getElementById('canvas').focus();
+                    }, 100);
                 } else {
                     console.error("restart_game_with_enemy 函数未找到");
                     updateStatus("错误：函数未找到");
@@ -199,6 +359,11 @@
                 if (typeof KrystalRay$pokemoon$$restart_game_with_enemy === 'function') {
                     KrystalRay$pokemoon$$restart_game_with_enemy(selectedOpponent);
                     updateStatus("重新开始战斗 - " + selectedOpponent);
+                    gameStarted = true;
+                    // 确保焦点回到画布
+                    setTimeout(() => {
+                        document.getElementById('canvas').focus();
+                    }, 100);
                 } else {
                     console.error("restart_game_with_enemy 函数未找到");
                     updateStatus("错误：函数未找到");
@@ -215,6 +380,11 @@
                 if (typeof KrystalRay$pokemoon$$reset_battle_render_state === 'function') {
                     KrystalRay$pokemoon$$reset_battle_render_state();
                     updateStatus("战斗状态已重置");
+                    gameStarted = false;
+                    // 确保焦点回到画布
+                    setTimeout(() => {
+                        document.getElementById('canvas').focus();
+                    }, 100);
                 } else {
                     console.error("reset_battle_render_state 函数未找到");
                     updateStatus("错误：函数未找到");

@@ -17,20 +17,15 @@ Pokemoon 是一款基于 MoonBit 语言开发的类宝可梦战斗游戏。我�
 ## 🎯 操作说明
 
 ### 开始游戏
-1. 确保已安装 MoonBit 开发环境
-2. 克隆项目到本地
-3. 在项目目录下运行：
-   ```bash
-   cd pokemoon
-   moon build
-   moon run
-   ```
+可以在右侧选择其他pokemoon进行对战
+选择pokemoon后 点击开始对战
+
+可以通过重新开始战斗等选项来restart
 
 ### 控制方式
 - **方向键**：在战斗菜单中导航
   - ↑↓←→：移动选择光标
-- **Enter键**：确认选择
-- **Z键**：在技能菜单中选择技能
+- **Enter键**：确认选择 选中技能
 - **X键**：取消选择，返回上级菜单
 
 ### 游戏流程
@@ -124,14 +119,15 @@ let final_damage = (damage_before_modifier.to_double() * modifier).to_int()
 - **项目负责人**：KrystalRay
 - **核心开发**：KrystalRay
 - **游戏设计**：KrystalRay
-- **美术资源**：KrystalRay 由nano banana生成，由KrystalRay
+- **美术资源**：KrystalRay 由nano banana生成，由KrystalRay根据语言特色设计
 
 ### 联系方式
 - **邮箱**：keeleiray@gmail.com
 ## 🚀 未来规划
-
-完善系统
-增加队伍功能
+目前pokemoon还处在开发阶段，后续将完善基础功能，添加额外特性
+完善特性
+完善队伍功能
+完善技能效果
 
 
 ## 🎨 宝可梦图鉴
@@ -152,10 +148,6 @@ let final_damage = (damage_before_modifier.to_double() * modifier).to_int()
 ---
 **构造方式**
 在artifact目录下执行
-
-moon build
-
-随后
 
 python -m http.server 8080
 

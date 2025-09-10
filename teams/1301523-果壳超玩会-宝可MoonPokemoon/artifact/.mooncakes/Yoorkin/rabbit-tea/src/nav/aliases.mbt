@@ -1,2 +1,0 @@
-///|
-typealias @cmd.Cmd
