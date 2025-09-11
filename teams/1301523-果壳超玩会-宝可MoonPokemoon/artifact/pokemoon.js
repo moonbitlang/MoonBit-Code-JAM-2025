@@ -235,11 +235,11 @@ const Milky2018$selene$system$$entity_generator = { val: 0 };
 const Milky2018$selene$45$canvas$$new$46$42$bind$124$172 = $0L;
 const KrystalRay$pokemoon$$health_bar_ui_state = { is_active: false, player_health_bar: undefined, enemy_health_bar: undefined, health_bar_entities: [], animation_timer: 0, update_interval: 0.016 };
 const KrystalRay$pokemoon$$turn_display_state = { is_active: false, turn_display: undefined, current_turn: 1, current_turn_type: "玩家" };
-const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$636 = "玩家回合";
-const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$637 = "1";
-const KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1232 = ", ";
+const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$643 = "玩家回合";
+const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$644 = "1";
+const KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1242 = ", ";
 const KrystalRay$pokemoon$$skill_menu_state = { entities: undefined };
-const KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12 = "pic/mega_moonbit_back.png";
+const KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14 = "pic/mega_moonbit_back.png";
 const Milky2018$selene$system$$pressed_keys = moonbitlang$core$set$$Set$new$46$inner$0$(8);
 const Milky2018$selene$45$canvas$$window = Yoorkin$rabbit$45$tea$dom$$window();
 const Milky2018$selene$45$canvas$$element_cache = moonbitlang$core$builtin$$Map$new$46$inner$1$(8);
@@ -271,7 +271,7 @@ const Milky2018$selene$system$$deferred_events = moonbitlang$core$array$$Array$n
 const Milky2018$selene$collision$$areas = moonbitlang$core$builtin$$Map$new$46$inner$14$(8);
 const Milky2018$selene$sprite$$sprites = moonbitlang$core$builtin$$Map$new$46$inner$15$(8);
 const Milky2018$selene$system$$timers = moonbitlang$core$array$$Array$new$46$inner$16$(0);
-const KrystalRay$pokemoon$$battle_render_state = { player_pokemon_entity: Milky2018$selene$system$$Entity$new(), enemy_pokemon_entity: Milky2018$selene$system$$Entity$new(), background_entity: Milky2018$selene$system$$Entity$new(), ui_panel_entity: Milky2018$selene$system$$Entity$new(), text_box_entity: Milky2018$selene$system$$Entity$new(), text_entity: Milky2018$selene$system$$Entity$new(), menu_entity: Milky2018$selene$system$$Entity$new(), selected_option: 0, is_active: false, current_selection_entity: Milky2018$selene$system$$Entity$new(), skill_menu_visible: false, skill_menu_selected: 0, current_player_pokemon: undefined, current_enemy_pokemon: undefined, battle_state: undefined, player_pokemon_info: undefined, enemy_pokemon_info: undefined, current_frame_count: 0, last_skill_input_frame: 0 };
+const KrystalRay$pokemoon$$battle_render_state = { player_pokemon_entity: Milky2018$selene$system$$Entity$new(), enemy_pokemon_entity: Milky2018$selene$system$$Entity$new(), background_entity: Milky2018$selene$system$$Entity$new(), ui_panel_entity: Milky2018$selene$system$$Entity$new(), text_box_entity: Milky2018$selene$system$$Entity$new(), text_entity: Milky2018$selene$system$$Entity$new(), menu_entity: Milky2018$selene$system$$Entity$new(), selected_option: 0, is_active: false, current_selection_entity: Milky2018$selene$system$$Entity$new(), skill_menu_visible: false, skill_menu_selected: 0, current_player_pokemon: undefined, current_enemy_pokemon: undefined, battle_state: undefined, player_pokemon_info: undefined, enemy_pokemon_info: undefined, current_frame_count: 0, last_skill_input_frame: 0, enemy_skill_display_frame: 0, enemy_skill_message: "", enemy_turn_executed: false };
 const KrystalRay$pokemoon$$global_indicator_entity = Milky2018$selene$system$$Entity$new();
 const KrystalRay$pokemoon$$pokemon_sprite_cache = moonbitlang$core$builtin$$Map$new$46$inner$17$(8);
 const KrystalRay$pokemoon$$skill_selector_entity = Milky2018$selene$system$$Entity$new();
@@ -7144,220 +7144,220 @@ function Milky2018$selene$system$$Backend$play_audio$78$(_self, audio_path, volu
 function Milky2018$selene$system$$Backend$preload_audio$78$(_self, audio_path) {
   Milky2018$selene$45$canvas$$get_audio(audio_path);
 }
-function moonbitlang$core$builtin$$Eq$op_equal$79$(_x_967, _x_968) {
-  if (_x_967 === 0) {
-    if (_x_968 === 0) {
+function moonbitlang$core$builtin$$Eq$op_equal$79$(_x_974, _x_975) {
+  if (_x_974 === 0) {
+    if (_x_975 === 0) {
       return true;
     } else {
       return false;
     }
   } else {
-    if (_x_968 === 1) {
+    if (_x_975 === 1) {
       return true;
     } else {
       return false;
     }
   }
 }
-function moonbitlang$core$builtin$$Show$output$41$(_x_927, _x_928) {
-  switch (_x_927) {
+function moonbitlang$core$builtin$$Show$output$41$(_x_934, _x_935) {
+  switch (_x_934) {
     case 0: {
-      _x_928.method_0(_x_928.self, "Normal");
+      _x_935.method_0(_x_935.self, "Normal");
       return;
     }
     case 1: {
-      _x_928.method_0(_x_928.self, "Fire");
+      _x_935.method_0(_x_935.self, "Fire");
       return;
     }
     case 2: {
-      _x_928.method_0(_x_928.self, "Water");
+      _x_935.method_0(_x_935.self, "Water");
       return;
     }
     case 3: {
-      _x_928.method_0(_x_928.self, "Electric");
+      _x_935.method_0(_x_935.self, "Electric");
       return;
     }
     case 4: {
-      _x_928.method_0(_x_928.self, "Grass");
+      _x_935.method_0(_x_935.self, "Grass");
       return;
     }
     case 5: {
-      _x_928.method_0(_x_928.self, "Ice");
+      _x_935.method_0(_x_935.self, "Ice");
       return;
     }
     case 6: {
-      _x_928.method_0(_x_928.self, "Fighting");
+      _x_935.method_0(_x_935.self, "Fighting");
       return;
     }
     case 7: {
-      _x_928.method_0(_x_928.self, "Poison");
+      _x_935.method_0(_x_935.self, "Poison");
       return;
     }
     case 8: {
-      _x_928.method_0(_x_928.self, "Ground");
+      _x_935.method_0(_x_935.self, "Ground");
       return;
     }
     case 9: {
-      _x_928.method_0(_x_928.self, "Flying");
+      _x_935.method_0(_x_935.self, "Flying");
       return;
     }
     case 10: {
-      _x_928.method_0(_x_928.self, "Psychic");
+      _x_935.method_0(_x_935.self, "Psychic");
       return;
     }
     case 11: {
-      _x_928.method_0(_x_928.self, "Bug");
+      _x_935.method_0(_x_935.self, "Bug");
       return;
     }
     case 12: {
-      _x_928.method_0(_x_928.self, "Rock");
+      _x_935.method_0(_x_935.self, "Rock");
       return;
     }
     case 13: {
-      _x_928.method_0(_x_928.self, "Ghost");
+      _x_935.method_0(_x_935.self, "Ghost");
       return;
     }
     case 14: {
-      _x_928.method_0(_x_928.self, "Dragon");
+      _x_935.method_0(_x_935.self, "Dragon");
       return;
     }
     case 15: {
-      _x_928.method_0(_x_928.self, "Dark");
+      _x_935.method_0(_x_935.self, "Dark");
       return;
     }
     case 16: {
-      _x_928.method_0(_x_928.self, "Steel");
+      _x_935.method_0(_x_935.self, "Steel");
       return;
     }
     default: {
-      _x_928.method_0(_x_928.self, "Fairy");
+      _x_935.method_0(_x_935.self, "Fairy");
       return;
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$op_equal$41$(_x_923, _x_924) {
-  switch (_x_923) {
+function moonbitlang$core$builtin$$Eq$op_equal$41$(_x_930, _x_931) {
+  switch (_x_930) {
     case 0: {
-      if (_x_924 === 0) {
+      if (_x_931 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_924 === 1) {
+      if (_x_931 === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_924 === 2) {
+      if (_x_931 === 2) {
         return true;
       } else {
         return false;
       }
     }
     case 3: {
-      if (_x_924 === 3) {
+      if (_x_931 === 3) {
         return true;
       } else {
         return false;
       }
     }
     case 4: {
-      if (_x_924 === 4) {
+      if (_x_931 === 4) {
         return true;
       } else {
         return false;
       }
     }
     case 5: {
-      if (_x_924 === 5) {
+      if (_x_931 === 5) {
         return true;
       } else {
         return false;
       }
     }
     case 6: {
-      if (_x_924 === 6) {
+      if (_x_931 === 6) {
         return true;
       } else {
         return false;
       }
     }
     case 7: {
-      if (_x_924 === 7) {
+      if (_x_931 === 7) {
         return true;
       } else {
         return false;
       }
     }
     case 8: {
-      if (_x_924 === 8) {
+      if (_x_931 === 8) {
         return true;
       } else {
         return false;
       }
     }
     case 9: {
-      if (_x_924 === 9) {
+      if (_x_931 === 9) {
         return true;
       } else {
         return false;
       }
     }
     case 10: {
-      if (_x_924 === 10) {
+      if (_x_931 === 10) {
         return true;
       } else {
         return false;
       }
     }
     case 11: {
-      if (_x_924 === 11) {
+      if (_x_931 === 11) {
         return true;
       } else {
         return false;
       }
     }
     case 12: {
-      if (_x_924 === 12) {
+      if (_x_931 === 12) {
         return true;
       } else {
         return false;
       }
     }
     case 13: {
-      if (_x_924 === 13) {
+      if (_x_931 === 13) {
         return true;
       } else {
         return false;
       }
     }
     case 14: {
-      if (_x_924 === 14) {
+      if (_x_931 === 14) {
         return true;
       } else {
         return false;
       }
     }
     case 15: {
-      if (_x_924 === 15) {
+      if (_x_931 === 15) {
         return true;
       } else {
         return false;
       }
     }
     case 16: {
-      if (_x_924 === 16) {
+      if (_x_931 === 16) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_924 === 17) {
+      if (_x_931 === 17) {
         return true;
       } else {
         return false;
@@ -7365,37 +7365,37 @@ function moonbitlang$core$builtin$$Eq$op_equal$41$(_x_923, _x_924) {
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$op_equal$80$(_x_903, _x_904) {
-  if (_x_903 === 0) {
-    if (_x_904 === 0) {
+function moonbitlang$core$builtin$$Eq$op_equal$80$(_x_910, _x_911) {
+  if (_x_910 === 0) {
+    if (_x_911 === 0) {
       return true;
     } else {
       return false;
     }
   } else {
-    if (_x_904 === 1) {
+    if (_x_911 === 1) {
       return true;
     } else {
       return false;
     }
   }
 }
-function moonbitlang$core$builtin$$Show$output$47$(_x_895, _x_896) {
-  switch (_x_895) {
+function moonbitlang$core$builtin$$Show$output$47$(_x_902, _x_903) {
+  switch (_x_902) {
     case 0: {
-      _x_896.method_0(_x_896.self, "Fight");
+      _x_903.method_0(_x_903.self, "Fight");
       return;
     }
     case 1: {
-      _x_896.method_0(_x_896.self, "Bag");
+      _x_903.method_0(_x_903.self, "Bag");
       return;
     }
     case 2: {
-      _x_896.method_0(_x_896.self, "Pokemon");
+      _x_903.method_0(_x_903.self, "Pokemon");
       return;
     }
     default: {
-      _x_896.method_0(_x_896.self, "Run");
+      _x_903.method_0(_x_903.self, "Run");
       return;
     }
   }
@@ -7466,16 +7466,16 @@ function KrystalRay$pokemoon$$create_turn_display() {
   const background_entity = Milky2018$selene$system$$Entity$new();
   const turn_text_entity = Milky2018$selene$system$$Entity$new();
   const turn_number_entity = Milky2018$selene$system$$Entity$new();
-  const text_width = ((KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$636.length + KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$637.length | 0) + 0) * 12 + 20;
+  const text_width = ((KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$643.length + KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$644.length | 0) + 0) * 12 + 20;
   const background_width = text_width > 100 ? text_width : 100;
   const background_sprite = Milky2018$selene$sprite$$Sprite$from_color_rect(Milky2018$selene$sprite$$ColorRect$new({ _0: background_width, _1: 50 }, "#000000"), 25, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, background_entity, background_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, background_entity, { _0: 50, _1: 50 });
-  const number_offset_x = 5 + (KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$636.length + 0) * 12;
-  const text_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$636, "#FFFFFF", "20px Arial"), 26, undefined);
+  const number_offset_x = 5 + (KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$643.length + 0) * 12;
+  const text_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$643, "#FFFFFF", "20px Arial"), 26, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, turn_text_entity, text_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, turn_text_entity, { _0: 55, _1: 70 });
-  const number_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$637, "#FFFFFF", "20px Arial"), 27, undefined);
+  const number_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$644, "#FFFFFF", "20px Arial"), 27, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, turn_number_entity, number_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, turn_number_entity, { _0: 50 + number_offset_x, _1: 70 });
   moonbitlang$core$builtin$$println$27$(`📊 回合显示创建完成，背景宽度: ${String(background_width)}`);
@@ -7498,9 +7498,22 @@ function KrystalRay$pokemoon$$update_turn_display(current_turn, current_turn_typ
       const _pos = _Some$2;
       bg_vec = _pos;
     }
-    const turn_type_text = `${current_turn_type}回合`;
+    let turn_type_text;
+    switch (current_turn_type) {
+      case "PlayerTurn": {
+        turn_type_text = "玩家回合";
+        break;
+      }
+      case "EnemyTurn": {
+        turn_type_text = "敌人回合";
+        break;
+      }
+      default: {
+        turn_type_text = `${current_turn_type}回合`;
+      }
+    }
     const turn_number = moonbitlang$core$int$$Int$to_string$46$inner(current_turn, 10);
-    const text_width = ((turn_type_text.length + turn_number.length | 0) + 0) * 12 + 20;
+    const text_width = (turn_type_text.length + 0) * 20 + (turn_number.length + 0) * 12 + 20;
     const background_width = text_width > 100 ? text_width : 100;
     const background_sprite = Milky2018$selene$sprite$$Sprite$from_color_rect(Milky2018$selene$sprite$$ColorRect$new({ _0: background_width, _1: 50 }, "#000000"), 25, undefined);
     moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, _turn_display.background_entity, background_sprite);
@@ -7514,7 +7527,7 @@ function KrystalRay$pokemoon$$update_turn_display(current_turn, current_turn_typ
       _tmp$2 = _p$2;
     }
     moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, _tmp, _tmp$2);
-    const number_offset_x = 5 + (turn_type_text.length + 0) * 12;
+    const number_offset_x = 5 + (turn_type_text.length + 0) * 20;
     const text_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(turn_type_text, "#FFFFFF", "20px Arial"), 26, undefined);
     moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, _turn_display.turn_text_entity, text_sprite);
     moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, _turn_display.turn_text_entity, { _0: bg_vec._0 + 5, _1: bg_vec._1 + 20 });
@@ -7654,7 +7667,7 @@ function KrystalRay$pokemoon$$get_pokemon_moves(pokemon) {
   return moves;
 }
 function KrystalRay$pokemoon$$get_pokemon_data() {
-  return [{ id: 1, name: "Python蟒蛇", level: 8, hp: 65, max_hp: 65, attack: 55, defense: 60, speed: 70, types: [4, 14], moves: ["藤蔓缠绕", "数据流", "优雅编程", "简洁代码"] }, { id: 2, name: "Java咖啡杯", level: 7, hp: 80, max_hp: 80, attack: 50, defense: 75, speed: 45, types: [1, 16], moves: ["热咖啡", "企业级攻击", "持久战", "跨平台"] }, { id: 3, name: "C++齿轮兽", level: 9, hp: 70, max_hp: 70, attack: 85, defense: 65, speed: 55, types: [16, 15], moves: ["指针攻击", "内存泄漏", "模板编程", "齿轮切割"] }, { id: 4, name: "JavaScript电精灵", level: 6, hp: 40, max_hp: 40, attack: 60, defense: 35, speed: 95, types: [3, 17], moves: ["异步闪电", "原型链", "回调攻击", "动态类型"] }, { id: 5, name: "C#音符骑士", level: 8, hp: 75, max_hp: 75, attack: 70, defense: 70, speed: 60, types: [16, 3], moves: ["音符冲击", "LINQ查询", "属性攻击", "委托技能"] }, { id: 6, name: "Go地鼠", level: 5, hp: 55, max_hp: 55, attack: 45, defense: 50, speed: 80, types: [0, 8], moves: ["并发挖掘", "协程", "快速编译", "垃圾回收"] }, { id: 7, name: "Rust螃蟹", level: 8, hp: 85, max_hp: 85, attack: 75, defense: 90, speed: 50, types: [2, 16], moves: ["所有权攻击", "借用检查", "内存安全", "零成本抽象"] }, { id: 8, name: "Ruby红宝石龙", level: 7, hp: 60, max_hp: 60, attack: 65, defense: 55, speed: 75, types: [1, 17], moves: ["宝石闪耀", "元编程", "优雅语法", "动态方法"] }, { id: 9, name: "PHP企鹅", level: 4, hp: 50, max_hp: 50, attack: 40, defense: 60, speed: 35, types: [2, 5], moves: ["服务器守护", "Web开发", "数据库连接", "顽强生存"] }, { id: 10, name: "Moonbit月兔", level: 10, hp: 90, max_hp: 90, attack: 70, defense: 80, speed: 85, types: [10, 17], moves: ["月光编译", "代码幻象", "星辰跃击", "迅捷跃步"] }];
+  return [{ id: 1, name: "Python蟒蛇", level: 8, hp: 65, max_hp: 65, attack: 55, defense: 60, speed: 70, types: [4, 14], moves: ["藤蔓缠绕", "数据流", "优雅编程", "简洁代码"] }, { id: 2, name: "Java咖啡杯", level: 7, hp: 80, max_hp: 80, attack: 50, defense: 75, speed: 45, types: [1, 16], moves: ["热咖啡", "企业级攻击", "持久战", "跨平台"] }, { id: 3, name: "C++齿轮兽", level: 9, hp: 70, max_hp: 70, attack: 85, defense: 65, speed: 55, types: [16, 15], moves: ["指针攻击", "内存泄漏", "模板编程", "齿轮切割"] }, { id: 4, name: "JavaScript电精灵", level: 6, hp: 40, max_hp: 40, attack: 60, defense: 35, speed: 95, types: [3, 17], moves: ["异步闪电", "原型链", "回调攻击", "动态类型"] }, { id: 5, name: "C#音符骑士", level: 8, hp: 75, max_hp: 75, attack: 70, defense: 70, speed: 60, types: [16, 3], moves: ["音符冲击", "LINQ查询", "属性攻击", "委托技能"] }, { id: 6, name: "Go地鼠", level: 5, hp: 55, max_hp: 55, attack: 45, defense: 50, speed: 80, types: [0, 8], moves: ["并发挖掘", "协程", "快速编译", "垃圾回收"] }, { id: 7, name: "Rust螃蟹", level: 8, hp: 85, max_hp: 85, attack: 75, defense: 90, speed: 50, types: [2, 16], moves: ["所有权攻击", "借用检查", "内存安全", "零成本抽象"] }, { id: 8, name: "Ruby红宝石龙", level: 7, hp: 60, max_hp: 60, attack: 65, defense: 55, speed: 75, types: [1, 17], moves: ["宝石闪耀", "元编程", "优雅语法", "动态方法"] }, { id: 9, name: "PHP大象", level: 4, hp: 50, max_hp: 50, attack: 40, defense: 60, speed: 35, types: [2, 5], moves: ["服务器守护", "Web开发", "数据库连接", "顽强生存"] }, { id: 10, name: "Moonbit月兔", level: 10, hp: 90, max_hp: 90, attack: 70, defense: 80, speed: 85, types: [10, 17], moves: ["月光编译", "代码幻象", "星辰跃击", "迅捷跃步"] }];
 }
 function KrystalRay$pokemoon$$create_pokemon_database() {
   return { pokemons: KrystalRay$pokemoon$$get_pokemon_data(), last_updated: "2024-01-01" };
@@ -7741,7 +7754,7 @@ function KrystalRay$pokemoon$$display_pokemon_info(pokemon) {
   } else {
     moonbitlang$core$builtin$$println$27$("属性2: 无");
   }
-  moonbitlang$core$builtin$$println$27$(`技能: ${moonbitlang$core$array$$Array$join$27$(pokemon.moves, { str: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1232, start: 0, end: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1232.length })}`);
+  moonbitlang$core$builtin$$println$27$(`技能: ${moonbitlang$core$array$$Array$join$27$(pokemon.moves, { str: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1242, start: 0, end: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1242.length })}`);
   moonbitlang$core$builtin$$println$27$("---");
 }
 function KrystalRay$pokemoon$$display_all_pokemons(db) {
@@ -8512,6 +8525,7 @@ function KrystalRay$pokemoon$$start_new_turn() {
     const new_turn_type = moonbitlang$core$builtin$$Eq$op_equal$80$(_state.current_turn_type, 0) ? 1 : 0;
     const updated_state = { is_active: _state.is_active, turn: new_turn, current_turn_type: new_turn_type, player_pokemon: _state.player_pokemon, enemy_pokemon: _state.enemy_pokemon, battle_log: _state.battle_log, actions_this_turn: 0, max_actions_per_turn: _state.max_actions_per_turn };
     KrystalRay$pokemoon$$battle_render_state.battle_state = updated_state;
+    KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed = false;
     let turn_name;
     if (new_turn_type === 0) {
       turn_name = `想要${KrystalRay$pokemoon$$get_current_player_pokemon_name()}做什么?`;
@@ -8705,7 +8719,15 @@ function KrystalRay$pokemoon$$execute_battle_skill(skill, is_player_attacking) {
         KrystalRay$pokemoon$$end_current_turn();
         return;
       } else {
-        return;
+        const _bind$10 = KrystalRay$pokemoon$$battle_render_state.battle_state;
+        if (_bind$10 === undefined) {
+          return;
+        } else {
+          const _Some$3 = _bind$10;
+          const _state = _Some$3;
+          KrystalRay$pokemoon$$update_turn_display(_state.turn, "EnemyTurn");
+          return;
+        }
       }
     }
   }
@@ -8742,9 +8764,13 @@ function KrystalRay$pokemoon$$end_current_turn() {
   }
 }
 function KrystalRay$pokemoon$$execute_enemy_turn() {
+  if (KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed) {
+    return undefined;
+  }
   const _bind$8 = KrystalRay$pokemoon$$battle_render_state.current_enemy_pokemon;
   if (_bind$8 === undefined) {
     moonbitlang$core$builtin$$println$27$("❌ 没有找到敌人宝可梦");
+    KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed = true;
     KrystalRay$pokemoon$$end_current_turn();
     return;
   } else {
@@ -8757,28 +8783,36 @@ function KrystalRay$pokemoon$$execute_enemy_turn() {
       const _bind$9 = moonbitlang$core$array$$Array$get$43$(moves, random_index);
       if (_bind$9 === undefined) {
         moonbitlang$core$builtin$$println$27$("❌ 敌人没有可用技能");
+        KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed = true;
         KrystalRay$pokemoon$$end_current_turn();
         return;
       } else {
         const _Some$2 = _bind$9;
         const _skill = _Some$2;
         moonbitlang$core$builtin$$println$27$(` 敌人选择了技能: ${_skill.name}`);
+        KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed = true;
         KrystalRay$pokemoon$$execute_battle_skill(_skill, false);
-        KrystalRay$pokemoon$$end_current_turn();
+        KrystalRay$pokemoon$$battle_render_state.enemy_skill_display_frame = KrystalRay$pokemoon$$battle_render_state.current_frame_count;
         return;
       }
     } else {
       moonbitlang$core$builtin$$println$27$("❌ 敌人没有技能");
+      KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed = true;
       KrystalRay$pokemoon$$end_current_turn();
       return;
     }
   }
 }
 function KrystalRay$pokemoon$$select_current_skill() {
+  const current_frame = KrystalRay$pokemoon$$battle_render_state.current_frame_count;
+  if ((current_frame - KrystalRay$pokemoon$$battle_render_state.last_skill_input_frame | 0) < 36) {
+    return undefined;
+  }
   const current_moves = KrystalRay$pokemoon$$get_current_player_moves();
   if (KrystalRay$pokemoon$$battle_render_state.skill_menu_selected >= 0 && KrystalRay$pokemoon$$battle_render_state.skill_menu_selected < current_moves.length) {
     const selected_skill = moonbitlang$core$array$$Array$op_get$43$(current_moves, KrystalRay$pokemoon$$battle_render_state.skill_menu_selected);
     moonbitlang$core$builtin$$println$27$(`✅ 选择了技能: ${selected_skill.name}`);
+    KrystalRay$pokemoon$$battle_render_state.last_skill_input_frame = current_frame;
     KrystalRay$pokemoon$$battle_render_state.skill_menu_visible = false;
     KrystalRay$pokemoon$$hide_skill_menu_ui();
     KrystalRay$pokemoon$$execute_battle_skill(selected_skill, true);
@@ -8790,7 +8824,7 @@ function KrystalRay$pokemoon$$select_current_skill() {
 }
 function KrystalRay$pokemoon$$handle_skill_menu_input() {
   const current_frame = KrystalRay$pokemoon$$battle_render_state.current_frame_count;
-  if ((current_frame - KrystalRay$pokemoon$$battle_render_state.last_skill_input_frame | 0) < 18) {
+  if ((current_frame - KrystalRay$pokemoon$$battle_render_state.last_skill_input_frame | 0) < 36) {
     return undefined;
   }
   if (Milky2018$selene$system$$is_pressed(26)) {
@@ -8803,7 +8837,6 @@ function KrystalRay$pokemoon$$handle_skill_menu_input() {
   }
   if (Milky2018$selene$system$$is_pressed(25) || Milky2018$selene$system$$is_pressed(31)) {
     KrystalRay$pokemoon$$select_current_skill();
-    KrystalRay$pokemoon$$battle_render_state.last_skill_input_frame = current_frame;
   }
   if (Milky2018$selene$system$$is_pressed(23)) {
     KrystalRay$pokemoon$$cancel_skill_selection();
@@ -8979,6 +9012,7 @@ function KrystalRay$pokemoon$$show_skill_menu_ui() {
   }
 }
 function KrystalRay$pokemoon$$select_current_option() {
+  const current_frame = KrystalRay$pokemoon$$battle_render_state.current_frame_count;
   const _bind$8 = KrystalRay$pokemoon$$battle_render_state.selected_option;
   let action;
   switch (_bind$8) {
@@ -8986,6 +9020,7 @@ function KrystalRay$pokemoon$$select_current_option() {
       if (!KrystalRay$pokemoon$$battle_render_state.skill_menu_visible) {
         KrystalRay$pokemoon$$battle_render_state.skill_menu_visible = true;
         KrystalRay$pokemoon$$battle_render_state.skill_menu_selected = 0;
+        KrystalRay$pokemoon$$battle_render_state.last_skill_input_frame = current_frame;
         KrystalRay$pokemoon$$show_skill_menu_ui();
         action = "选择技能";
       } else {
@@ -9057,7 +9092,14 @@ function KrystalRay$pokemoon$$update_frame_counter() {
 }
 function KrystalRay$pokemoon$$battle_system_fn(_backend) {
   KrystalRay$pokemoon$$update_frame_counter();
-  if (KrystalRay$pokemoon$$is_enemy_turn()) {
+  const current_frame = KrystalRay$pokemoon$$battle_render_state.current_frame_count;
+  if (KrystalRay$pokemoon$$battle_render_state.enemy_skill_display_frame > 0 && (current_frame - KrystalRay$pokemoon$$battle_render_state.enemy_skill_display_frame | 0) >= 60) {
+    KrystalRay$pokemoon$$battle_render_state.enemy_skill_display_frame = 0;
+    KrystalRay$pokemoon$$battle_render_state.enemy_skill_message = "";
+    KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed = false;
+    KrystalRay$pokemoon$$end_current_turn();
+  }
+  if (KrystalRay$pokemoon$$is_enemy_turn() && !KrystalRay$pokemoon$$battle_render_state.enemy_turn_executed) {
     KrystalRay$pokemoon$$execute_enemy_turn();
     return;
   } else {
@@ -9277,15 +9319,15 @@ function KrystalRay$pokemoon$$reset_battle_render_state() {
 }
 function KrystalRay$pokemoon$$init_pokemon_sprite_configs() {
   moonbitlang$core$builtin$$println$27$("🖼️ 初始化宝可梦精灵配置...");
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 1, { front_sprite: "pic/python_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 2, { front_sprite: "pic/java_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 3, { front_sprite: "pic/cpp_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 4, { front_sprite: "pic/javascript_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 5, { front_sprite: "pic/csharp_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 6, { front_sprite: "pic/go_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 7, { front_sprite: "pic/rust_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 8, { front_sprite: "pic/ruby_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
-  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 9, { front_sprite: "pic/php_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$12, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 1, { front_sprite: "pic/python_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 2, { front_sprite: "pic/java_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 3, { front_sprite: "pic/cpp_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 4, { front_sprite: "pic/javascript_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 5, { front_sprite: "pic/csharp_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 6, { front_sprite: "pic/go_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 7, { front_sprite: "pic/rust_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 8, { front_sprite: "pic/ruby_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
+  moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 9, { front_sprite: "pic/php_front.png", back_sprite: KrystalRay$pokemoon$$init_pokemon_sprite_configs$46$default_back$124$14, size: { _0: 128, _1: 128 } });
   moonbitlang$core$builtin$$Map$set$17$(KrystalRay$pokemoon$$pokemon_sprite_cache, 10, { front_sprite: "pic/moonbit_front.png", back_sprite: "pic/moonbit_back.png", size: { _0: 128, _1: 128 } });
   moonbitlang$core$builtin$$println$27$("✅ 宝可梦精灵配置初始化完成");
 }
