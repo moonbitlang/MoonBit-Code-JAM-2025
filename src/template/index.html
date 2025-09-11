@@ -33,16 +33,33 @@
         color: rgba(255, 255, 255, 0.9);
       }
       .games-grid {
-        display: grid;
-        gap: 2rem;
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        position: relative;
         margin-top: 2.5rem;
-        align-items: start; /* prevent stretch so cards keep natural height */
+        /* JavaScript will control the positioning */
       }
       a.game-card-link {
         text-decoration: none;
         color: inherit;
-        display: block; /* wrapper makes whole card clickable */
+        display: block;
+        position: absolute; /* JavaScript will set top/left positions */
+        width: calc((100% - 4rem) / 3); /* 3 columns with 2rem gaps */
+        transition: all 0.3s ease;
+      }
+      @media (max-width: 1024px) {
+        a.game-card-link {
+          width: calc((100% - 2rem) / 2); /* 2 columns */
+        }
+      }
+      @media (max-width: 760px) {
+        a.game-card-link {
+          width: 100%; /* 1 column */
+          position: static; /* fallback to normal flow on mobile */
+        }
+        .games-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+        }
       }
       .game-card {
         background: #fff;
@@ -54,6 +71,7 @@
         flex-direction: column;
         gap: 0.9rem;
         transition: transform 0.35s ease, box-shadow 0.35s ease;
+        height: fit-content; /* ensure card takes only needed space */
       }
       a.game-card-link:hover .game-card {
         transform: translateY(-6px);
@@ -150,14 +168,72 @@
         h1.title {
           font-size: 2.1rem;
         }
-        .games-grid {
-          gap: 1.25rem;
-        }
       }
     </style>
     <!-- GAMES METADATA PLACEHOLDER -->
     <script>
       window.GAMES_METADATA = __GAMES_METADATA__;
+
+      function createMasonryLayout() {
+        const container = document.getElementById("games-grid");
+        const items = container.querySelectorAll("a.game-card-link");
+
+        // Don't apply masonry on mobile
+        if (window.innerWidth <= 760) {
+          items.forEach((item) => {
+            item.style.position = "static";
+            item.style.top = "auto";
+            item.style.left = "auto";
+          });
+          container.style.height = "auto";
+          return;
+        }
+
+        const gap = 32; // 2rem = 32px
+        const columns = window.innerWidth > 1024 ? 3 : 2;
+        const containerWidth = container.offsetWidth;
+        const itemWidth = (containerWidth - gap * (columns - 1)) / columns;
+
+        // Set item widths
+        items.forEach((item) => {
+          item.style.width = `${itemWidth}px`;
+        });
+
+        // Track column heights
+        const columnHeights = new Array(columns).fill(0);
+
+        items.forEach((item, index) => {
+          // Find shortest column
+          const shortestColumnIndex = columnHeights.indexOf(
+            Math.min(...columnHeights),
+          );
+
+          // Position item
+          const left = shortestColumnIndex * (itemWidth + gap);
+          const top = columnHeights[shortestColumnIndex];
+
+          item.style.left = `${left}px`;
+          item.style.top = `${top}px`;
+
+          // Update column height
+          columnHeights[shortestColumnIndex] += item.offsetHeight + gap;
+        });
+
+        // Set container height
+        container.style.height = `${Math.max(...columnHeights)}px`;
+      }
+
+      // Initialize layout when DOM is ready
+      document.addEventListener("DOMContentLoaded", () => {
+        // Wait a bit for CSS to apply
+        setTimeout(createMasonryLayout, 100);
+      });
+
+      // Re-layout on window resize
+      window.addEventListener("resize", () => {
+        clearTimeout(window.resizeTimeout);
+        window.resizeTimeout = setTimeout(createMasonryLayout, 150);
+      });
     </script>
   </head>
   <body>
