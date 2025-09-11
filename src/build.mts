@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 import { promises as fs } from "fs";
 import path from "path";
+import { marked, Token } from "marked";
 
 interface GameMetaRaw {
   id: string;
@@ -26,48 +27,139 @@ async function ensureDir(dir: string) {
   await fs.mkdir(dir, { recursive: true });
 }
 
-function splitSections(md: string): Record<string, string> {
-  // Normalize line endings
-  md = md.replace(/\r\n?/g, "\n");
-  const lines = md.split("\n");
-  let current: string | null = null;
-  const map: Record<string, string[]> = {};
-  for (const rawLine of lines) {
-    const line = rawLine.trimEnd();
-    const heading = line.match(/^##\s+(.+?)\s*$/);
-    if (heading) {
-      current = heading[1].trim();
-      if (!map[current]) map[current] = [];
-      continue;
+function parseMarkdownSections(md: string): Record<string, Token[]> {
+  // Parse markdown into AST
+  const tokens = marked.lexer(md);
+  const sections: Record<string, Token[]> = {};
+  let currentSection: string | null = null;
+  let currentTokens: Token[] = [];
+
+  for (const token of tokens) {
+    if (token.type === "heading" && token.depth === 2) {
+      // Save previous section if exists
+      if (currentSection) {
+        sections[currentSection] = [...currentTokens];
+      }
+      // Start new section
+      currentSection = token.text.trim();
+      currentTokens = [];
+    } else if (currentSection) {
+      // Add token to current section
+      currentTokens.push(token);
     }
-    if (current) map[current].push(line);
   }
-  const out: Record<string, string> = {};
-  for (const [k, arr] of Object.entries(map)) {
-    out[k] = arr.join("\n").trim();
+
+  // Save last section
+  if (currentSection) {
+    sections[currentSection] = [...currentTokens];
   }
-  return out;
+
+  return sections;
 }
 
-function extractList(section: string | undefined): string[] {
-  if (!section) return [];
-  const lines = section
-    .split(/\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+function extractListFromTokens(tokens: Token[]): string[] {
   const items: string[] = [];
-  for (const l of lines) {
-    const m = l.match(/^(?:[-*+]|•)\s*(.+)$/);
-    if (m) items.push(m[1].trim());
-    else if (l) items.push(l); // fallback
+
+  for (const token of tokens) {
+    if (token.type === "list") {
+      for (const item of token.items) {
+        // Extract text from list item tokens
+        const itemText = extractTextFromTokens(item.tokens);
+        if (itemText.trim()) {
+          items.push(itemText.trim());
+        }
+      }
+    } else if (token.type === "paragraph") {
+      // Handle paragraphs that might contain list-like content
+      const text = extractTextFromTokens([token]);
+      // Check if it looks like a list item (starts with bullet point)
+      const lines = text.split("\n").filter((line) => line.trim());
+      for (const line of lines) {
+        const match = line.match(/^(?:[-*+]|•)\s*(.+)$/);
+        if (match) {
+          items.push(match[1].trim());
+        } else if (line.trim() && !items.length) {
+          // If no list markers found, treat as regular text
+          items.push(line.trim());
+        }
+      }
+    }
   }
+
   return items;
 }
 
-function extractTeamName(teamInfoLines: string[]): string {
-  for (const l of teamInfoLines) {
-    const m = l.match(/团队名称[:：]\s*(.+)$/);
-    if (m) return m[1].trim();
+function extractTextFromTokens(tokens: Token[]): string {
+  let text = "";
+
+  for (const token of tokens) {
+    switch (token.type) {
+      case "text":
+        text += token.text;
+        break;
+      case "paragraph":
+        text += extractTextFromTokens(token.tokens || []);
+        break;
+      case "strong":
+      case "em":
+        text += extractTextFromTokens(token.tokens || []);
+        break;
+      case "link":
+        text += token.text || token.href;
+        break;
+      case "code":
+        text += token.text;
+        break;
+      case "codespan":
+        text += token.text;
+        break;
+      case "space":
+        text += " ";
+        break;
+      case "br":
+        text += "\n";
+        break;
+      default:
+        // For other token types, try to extract text if available
+        if ("text" in token) {
+          text += (token as any).text;
+        } else if ("tokens" in token && Array.isArray((token as any).tokens)) {
+          text += extractTextFromTokens((token as any).tokens);
+        }
+    }
+  }
+
+  return text;
+}
+
+function extractTeamNameFromTokens(tokens: Token[]): string {
+  const items = extractListFromTokens(tokens);
+
+  for (const item of items) {
+    const match = item.match(/团队名称[:：]\s*(.+)$/);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+
+  // Fallback: check if any token contains team name
+  const allText = extractTextFromTokens(tokens);
+  const lines = allText.split("\n");
+  for (const line of lines) {
+    const match = line.match(/团队名称[:：]\s*(.+)$/);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+
+  return "";
+}
+
+function extractTitleFromTokens(tokens: Token[]): string {
+  for (const token of tokens) {
+    if (token.type === "heading" && token.depth === 1) {
+      return token.text.trim();
+    }
   }
   return "";
 }
@@ -77,17 +169,40 @@ async function readGame(
   dirName: string,
 ): Promise<Omit<GameMetaRaw, "artifactPath">> {
   const md = await fs.readFile(readmePath, "utf8");
-  const titleMatch = md.match(/^#\s+(.+?)\s*$/m);
-  const title = titleMatch
-    ? titleMatch[1].trim()
-    : dirName.split("-").slice(-1)[0] || dirName;
-  const sections = splitSections(md);
-  const gameIntro = sections["游戏简介"] || "";
-  const operations = extractList(sections["操作说明"]);
-  const features = extractList(sections["技术特色"]);
-  const teamInfoItems = extractList(sections["团队信息"]);
+
+  // Parse markdown into AST
+  const tokens = marked.lexer(md);
+
+  // Extract title from H1 heading
+  const title =
+    extractTitleFromTokens(tokens) ||
+    dirName.split("-").slice(-1)[0] ||
+    dirName;
+
+  // Parse sections by H2 headings
+  const sections = parseMarkdownSections(md);
+
+  // Extract content from each section
+  const gameIntro = sections["游戏简介"]
+    ? extractTextFromTokens(sections["游戏简介"]).trim()
+    : "";
+
+  const operations = sections["操作说明"]
+    ? extractListFromTokens(sections["操作说明"])
+    : [];
+
+  const features = sections["技术特色"]
+    ? extractListFromTokens(sections["技术特色"])
+    : [];
+
+  const teamInfoTokens = sections["团队信息"] || [];
+  const teamInfoItems = extractListFromTokens(teamInfoTokens);
+
   const teamName =
-    extractTeamName(teamInfoItems) || dirName.split("-")[1] || "未知团队";
+    extractTeamNameFromTokens(teamInfoTokens) ||
+    dirName.split("-")[1] ||
+    "未知团队";
+
   return {
     id: dirName,
     title,
