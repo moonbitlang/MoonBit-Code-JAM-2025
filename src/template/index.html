@@ -114,14 +114,70 @@
         color: #4a5568;
       }
       .section p,
-      .section ul {
+      .section ul,
+      .section ol {
         margin: 0;
         font-size: 0.8rem;
         line-height: 1.5;
         color: #4a5568;
       }
-      .section ul {
+      .section ul,
+      .section ol {
         padding-left: 1rem;
+      }
+
+      /* Code block styles to handle overflow */
+      .section pre {
+        margin: 0.5rem 0;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        font-size: 0.75rem;
+        line-height: 1.5;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        max-width: 100%;
+        /* Allow scrolling even inside links */
+        pointer-events: auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .section pre code {
+        display: block;
+        padding: 1.25rem 1.5rem;
+        color: #2d3748;
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        white-space: pre;
+        word-wrap: normal;
+        min-width: max-content;
+      }
+
+      /* Inline code styles */
+      .section code {
+        background: #f1f3f4;
+        color: #1a73e8;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        border: 1px solid #e8eaed;
+      }
+
+      /* Override inline code style when inside pre */
+      .section pre code {
+        background: transparent;
+        color: #2d3748;
+        padding: 1.25rem 1.5rem;
+        border: none;
+        border-radius: 0;
+        min-width: max-content;
+      }
+
+      /* Ensure section content doesn't overflow */
+      .section {
+        overflow: visible;
       }
       .play-button {
         margin-top: auto;
@@ -227,6 +283,28 @@
       document.addEventListener("DOMContentLoaded", () => {
         // Wait a bit for CSS to apply
         setTimeout(createMasonryLayout, 100);
+
+        // Handle code block scrolling inside links
+        const codeBlocks = document.querySelectorAll(".section pre");
+        codeBlocks.forEach((pre) => {
+          // Prevent link navigation when scrolling on code blocks
+          pre.addEventListener("click", (e) => {
+            e.stopPropagation();
+          });
+
+          // Allow wheel scrolling on code blocks
+          pre.addEventListener("wheel", (e) => {
+            // If horizontal scrolling is possible, prevent the default link behavior
+            if (pre.scrollWidth > pre.clientWidth) {
+              e.stopPropagation();
+            }
+          });
+
+          // Prevent drag selection from triggering link
+          pre.addEventListener("mousedown", (e) => {
+            e.stopPropagation();
+          });
+        });
       });
 
       // Re-layout on window resize

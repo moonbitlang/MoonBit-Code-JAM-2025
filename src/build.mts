@@ -2,15 +2,16 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { marked, Token } from "marked";
+import MarkdownIt from "markdown-it";
 
 interface GameMetaRaw {
   id: string;
   title: string;
   teamName: string;
-  gameIntro: string;
-  operations: string[];
-  features: string[];
-  teamInfo: string[];
+  gameIntro: string; // raw markdown content
+  operations: string; // raw markdown content
+  features: string; // raw markdown content
+  teamInfo: string; // raw markdown content
   artifactPath: string; // relative (url-encoded) path to artifact/index.html
 }
 
@@ -18,6 +19,16 @@ const ROOT = process.cwd();
 const TEAMS_DIR = path.join(ROOT, "teams");
 const DIST_DIR = path.join(ROOT, "dist");
 const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
+
+// Initialize markdown-it renderer
+const md = new MarkdownIt({
+  html: true, // Enable HTML tags in source
+  xhtmlOut: false, // Use '/' to close single tags (<br />)
+  breaks: false, // Convert '\n' in paragraphs into <br>
+  langPrefix: "language-", // CSS language prefix for fenced blocks
+  linkify: true, // Autoconvert URL-like text to links
+  typographer: true, // Enable some language-neutral replacement + quotes beautification
+});
 
 async function rimraf(target: string) {
   await fs.rm(target, { recursive: true, force: true });
@@ -63,15 +74,15 @@ function extractListFromTokens(tokens: Token[]): string[] {
   for (const token of tokens) {
     if (token.type === "list") {
       for (const item of token.items) {
-        // Extract text from list item tokens
-        const itemText = extractTextFromTokens(item.tokens);
+        // Use the item's text property directly or extract from tokens
+        const itemText = item.text || extractTextFromTokens(item.tokens);
         if (itemText.trim()) {
           items.push(itemText.trim());
         }
       }
     } else if (token.type === "paragraph") {
-      // Handle paragraphs that might contain list-like content
-      const text = extractTextFromTokens([token]);
+      // Use token's text property or extract from tokens
+      const text = token.text || extractTextFromTokens([token]);
       // Check if it looks like a list item (starts with bullet point)
       const lines = text.split("\n").filter((line) => line.trim());
       for (const line of lines) {
@@ -90,46 +101,25 @@ function extractListFromTokens(tokens: Token[]): string[] {
 }
 
 function extractTextFromTokens(tokens: Token[]): string {
-  let text = "";
-
-  for (const token of tokens) {
-    switch (token.type) {
-      case "text":
-        text += token.text;
-        break;
-      case "paragraph":
-        text += extractTextFromTokens(token.tokens || []);
-        break;
-      case "strong":
-      case "em":
-        text += extractTextFromTokens(token.tokens || []);
-        break;
-      case "link":
-        text += token.text || token.href;
-        break;
-      case "code":
-        text += token.text;
-        break;
-      case "codespan":
-        text += token.text;
-        break;
-      case "space":
-        text += " ";
-        break;
-      case "br":
-        text += "\n";
-        break;
-      default:
-        // For other token types, try to extract text if available
-        if ("text" in token) {
-          text += (token as any).text;
-        } else if ("tokens" in token && Array.isArray((token as any).tokens)) {
-          text += extractTextFromTokens((token as any).tokens);
-        }
-    }
-  }
-
-  return text;
+  // Use tokens' text property or raw property when available
+  return tokens
+    .map((token) => {
+      // Prefer 'text' property for clean text, fallback to 'raw' for original content
+      if ("text" in token && token.text) {
+        return token.text;
+      }
+      if ("raw" in token && token.raw) {
+        return token.raw;
+      }
+      // Recursively handle nested tokens
+      if ("tokens" in token && Array.isArray(token.tokens)) {
+        return extractTextFromTokens(token.tokens);
+      }
+      return "";
+    })
+    .join("")
+    .replace(/\s+/g, " ") // Normalize whitespace
+    .trim();
 }
 
 function extractTeamNameFromTokens(tokens: Token[]): string {
@@ -142,8 +132,8 @@ function extractTeamNameFromTokens(tokens: Token[]): string {
     }
   }
 
-  // Fallback: check if any token contains team name
-  const allText = extractTextFromTokens(tokens);
+  // Fallback: check all tokens' raw content
+  const allText = tokens.map((token) => token.raw || "").join("");
   const lines = allText.split("\n");
   for (const line of lines) {
     const match = line.match(/团队名称[:：]\s*(.+)$/);
@@ -162,6 +152,15 @@ function extractTitleFromTokens(tokens: Token[]): string {
     }
   }
   return "";
+}
+
+function extractRawMarkdownFromTokens(tokens: Token[]): string {
+  // Use the 'raw' property from tokens to reconstruct original markdown
+  // This is much more reliable than manually reconstructing markdown
+  return tokens
+    .map((token) => token.raw || "")
+    .join("")
+    .trim();
 }
 
 async function readGame(
@@ -184,19 +183,19 @@ async function readGame(
 
   // Extract content from each section
   const gameIntro = sections["游戏简介"]
-    ? extractTextFromTokens(sections["游戏简介"]).trim()
+    ? extractRawMarkdownFromTokens(sections["游戏简介"])
     : "";
 
   const operations = sections["操作说明"]
-    ? extractListFromTokens(sections["操作说明"])
-    : [];
+    ? extractRawMarkdownFromTokens(sections["操作说明"])
+    : "";
 
   const features = sections["技术特色"]
-    ? extractListFromTokens(sections["技术特色"])
-    : [];
+    ? extractRawMarkdownFromTokens(sections["技术特色"])
+    : "";
 
   const teamInfoTokens = sections["团队信息"] || [];
-  const teamInfoItems = extractListFromTokens(teamInfoTokens);
+  const teamInfo = extractRawMarkdownFromTokens(teamInfoTokens);
 
   const teamName =
     extractTeamNameFromTokens(teamInfoTokens) ||
@@ -210,7 +209,7 @@ async function readGame(
     gameIntro,
     operations,
     features,
-    teamInfo: teamInfoItems,
+    teamInfo,
   };
 }
 
@@ -225,26 +224,28 @@ function buildArtifactRelativePath(teamId: string): string {
 async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
   const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
   const metadataJson = JSON.stringify(games, null, 2);
-  const escapeHtml = (s: string) => s.replace(/</g, "&lt;");
-  const list = (arr: string[]) =>
-    arr.length
-      ? "<ul>" +
-        arr.map((i) => "<li>" + escapeHtml(i) + "</li>").join("") +
-        "</ul>"
-      : "<p>暂无</p>";
+
+  // Function to render markdown content to HTML using markdown-it
+  const renderMarkdown = (markdown: string) => {
+    if (!markdown.trim()) return "<p>暂无</p>";
+    return md.render(markdown);
+  };
+
   const cards = games
     .map((g) => {
-      const intro = g.gameIntro
-        ? "<p>" + escapeHtml(g.gameIntro).replace(/\n+/g, "<br>") + "</p>"
-        : "<p>暂无</p>";
+      const intro = renderMarkdown(g.gameIntro);
+      const operations = renderMarkdown(g.operations);
+      const features = renderMarkdown(g.features);
+      const teamInfo = renderMarkdown(g.teamInfo);
+
       return `<a class="game-card-link" href="${g.artifactPath}">
       <div class="game-card">
-        <h3 class="game-title">${escapeHtml(g.title)}</h3>
-        <div class="team-name">🏆 ${escapeHtml(g.teamName)}</div>
+        <h3 class="game-title">${md.renderInline(g.title)}</h3>
+        <div class="team-name">🏆 ${md.renderInline(g.teamName)}</div>
         <div class="section"><h4>游戏简介</h4>${intro}</div>
-        <div class="section"><h4>操作说明</h4>${list(g.operations)}</div>
-        <div class="section"><h4>技术特色</h4>${list(g.features)}</div>
-        <div class="section"><h4>团队信息</h4>${list(g.teamInfo)}</div>
+        <div class="section"><h4>操作说明</h4>${operations}</div>
+        <div class="section"><h4>技术特色</h4>${features}</div>
+        <div class="section"><h4>团队信息</h4>${teamInfo}</div>
         <div class="play-button">▶️ 立即游玩</div>
       </div>
     </a>`;
