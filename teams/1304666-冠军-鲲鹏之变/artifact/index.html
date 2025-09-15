@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>鲲鹏之变 | 基于庄子逍遥游的大鱼吃小鱼游戏</title>
+    <meta name="description" content="体验庄子《逍遥游》中鲲化为鹏的神奇变化，从北冥小鱼成长为翱翔九天的大鹏鸟">
+    <meta name="keywords" content="鲲鹏,庄子,逍遥游,大鱼吃小鱼,传统文化,MoonBit">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', '微软雅黑', 'STKaiti', serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f1419, #1a2332, #2c3e50);
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 3px solid #ffd700;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #87ceeb;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .quote {
+            font-size: 0.9rem;
+            color: #b0c4de;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        .game-area {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .game-canvas-container {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #ffd700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        #gameCanvas {
+            border: 3px solid #ffd700;
+            border-radius: 15px;
+            background: linear-gradient(180deg, 
+                #87ceeb 0%,      /* 天蓝色 - 天空 */
+                #4682b4 50%,     /* 钢蓝色 - 海洋 */
+                #191970 100%     /* 午夜蓝 - 深海 */
+            );
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            cursor: none;
+        }
+
+        .game-info {
+            width: 300px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ffd700;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .info-title {
+            font-size: 1.4rem;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .evolution-stage {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .stage-name {
+            font-size: 1.2rem;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stage-description {
+            font-size: 0.9rem;
+            color: #b0c4de;
+            line-height: 1.4;
+        }
+
+        .progress-container {
+            margin-bottom: 15px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            background: linear-gradient(90deg, #87ceeb, #ffd700, #ff4500);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #b0c4de;
+            margin-top: 2px;
+        }
+
+        .controls {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .control-key {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-family: monospace;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .game-status {
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .status-playing {
+            color: #87ceeb;
+            background: rgba(135, 206, 235, 0.1);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+        }
+
+        .status-win {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .status-lose {
+            color: #ff4500;
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .transformation-message, .game-over-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(25, 25, 112, 0.95));
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 3px solid #ffd700;
+            z-index: 1000;
+            max-width: 500px;
+        }
+
+        .transformation-title {
+            font-size: 2.2rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+
+        .transformation-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #b0c4de;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .restart-btn:hover {
+            background: linear-gradient(45deg, #ffed4e, #ffd700);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #87ceeb;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* 动画效果 */
+        .info-section {
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .game-canvas-container {
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 鱼类形态样式 */
+        .fish-stage-xiami { color: #ffb6c1; }
+        .fish-stage-kunmiao { color: #87ceeb; }
+        .fish-stage-qingyu { color: #2e8b57; }
+        .fish-stage-caoyu { color: #4682b4; }
+        .fish-stage-liyu { color: #ffd700; }
+        .fish-stage-jiaolong { color: #8b008b; }
+        .fish-stage-kun { color: #191970; }
+        .fish-stage-dapeng { color: #ff4500; }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .game-info {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="container">
+        <header>
+            <h1>鲲鹏之变</h1>
+            <div class="subtitle">基于庄子《逍遥游》的大鱼吃小鱼游戏</div>
+            <div class="quote">"北冥有鱼，其名为鲲。鲲之大，不知其几千里也。化而为鸟，其名为鹏。"</div>
+        </header>
+
+        <div class="game-area">
+            <div class="game-canvas-container">
+                <canvas id="gameCanvas" width="800" height="600"></canvas>
+            </div>
+
+            <div class="game-info">
+                <div class="info-section">
+                    <div class="info-title">游戏状态</div>
+                    <div class="game-status status-playing" id="gameStatus">准备开始北冥之旅</div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-title">进化阶段</div>
+                    <div class="evolution-stage" id="evolutionStage">
+                        <div class="stage-name" id="stageName">鲲苗</div>
+                        <div class="stage-description" id="stageDesc">北冥小鱼，初生生灵</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>进化进度</span>
+                            <span id="evolutionProgress">0/5</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="evolutionBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-title">游戏统计</div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="scoreValue">0</div>
+                            <div class="stat-label">分数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="levelValue">1</div>
+                            <div class="stat-label">等级</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="sizeValue">1</div>
+                            <div class="stat-label">大小</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="fishCount">15</div>
+                            <div class="stat-label">鱼群</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-title">当前生态</div>
+                    <div id="currentEcosystem" style="font-size: 0.9rem; line-height: 1.6; color: #b0c4de;">
+                        <div style="margin-bottom: 8px;">
+                            <span style="color: #ffb6c1; font-weight: bold;">● 虾米</span> - 你的食物
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <span style="color: #87ceeb; font-weight: bold;">● 鲲苗</span> - 同等级
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <span style="color: #2e8b57; font-weight: bold;">● 青鱼</span> - 需要避开
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-title">操作指南</div>
+                    <div class="controls">
+                        <div class="control-item">
+                            <span>🐟 移动</span>
+                            <span><span class="control-key">鼠标指向</span></span>
+                        </div>
+                        <div class="control-item">
+                            <span>🔄 重新开始</span>
+                            <span><span class="control-key">R键</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-title">游戏提示</div>
+                    <p style="font-size: 0.9rem; line-height: 1.5; color: #b0c4de;">
+                        🔍 寻找浅粉色的虾米作为食物
+                        <br>
+                        ⚠️ 避开比自己大的鱼类
+                        <br>
+                        🎯 吞噬5条鱼完成进化
+                        <br>
+                        🏆 最终化为大鹏鸟完成逍遥游
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>鲲鹏之变 | MoonBit 2025 全球编程挑战赛 | 传承中华文化，演绎庄子哲学</p>
+        </footer>
+    </div>
+
+    <!-- 进化消息 -->
+    <div class="transformation-message" id="transformationMessage">
+        <div class="transformation-title" id="transformationTitle">进化成功！</div>
+        <div class="transformation-text" id="transformationText">你的形态发生了变化</div>
+        <button class="restart-btn" onclick="hideTransformation()">继续游戏</button>
+    </div>
+
+    <!-- 游戏结束消息 -->
+    <div class="game-over-message" id="gameOverMessage">
+        <div class="transformation-title" id="gameOverTitle">游戏结束</div>
+        <div class="transformation-text" id="gameOverText">被更大的鱼类吞噬了</div>
+        <button class="restart-btn" onclick="restartGame()">重新开始</button>
+    </div>
+
+    <script>
+        let wasmInstance;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gameRunning = false;
+        let animationId;
+        
+        // 输入状态
+        let keys = {};
+        
+        // 鼠标控制
+        let mouseX = 400;
+        let mouseY = 300;
+        let mouseControl = false;
+        
+        // 进化阶段配置 - 更新为8个阶段（包括虾米）
+        const evolutionStages = {
+            0: { name: '虾米', desc: '微小生物，鲲苗的食物', class: 'fish-stage-xiami' },
+            1: { name: '鲲苗', desc: '北冥小鱼，初生生灵', class: 'fish-stage-kunmiao' },
+            2: { name: '青鱼', desc: '普通鱼类，逐渐成长', class: 'fish-stage-qingyu' },
+            3: { name: '草鱼', desc: '中型鱼类，力量增强', class: 'fish-stage-caoyu' },
+            4: { name: '鲤鱼', desc: '大型鱼类，游速减缓', class: 'fish-stage-liyu' },
+            5: { name: '蛟龙', desc: '稀有鱼类，蕴含龙气', class: 'fish-stage-jiaolong' },
+            6: { name: '鲲', desc: '半鲲状态，巨大无朋', class: 'fish-stage-kun' },
+            7: { name: '大鹏', desc: '化而为鸟，翱翔九天', class: 'fish-stage-dapeng' }
+        };
+
+        // WASM加载
+        async function loadWasm() {
+            try {
+                const response = await fetch('game.wasm?v=4');
+                const wasmBuffer = await response.arrayBuffer();
+                
+                const wasmModule = await WebAssembly.instantiate(wasmBuffer, {
+                    env: {}
+                });
+                
+                wasmInstance = wasmModule.instance;
+                console.log('鲲鹏游戏WASM模块加载成功');
+                
+                // 初始化游戏
+                wasmInstance.exports.init_game();
+                startGameLoop();
+                updateGameStatus('北冥游动中...');
+                
+            } catch (error) {
+                console.error('WASM加载失败:', error);
+                updateGameStatus('加载失败: ' + error.message + '（比赛模式：仅支持 WASM）');
+                // 不再启用任何 JS 模拟模式，遵守赛事仅 WASM 要求
+            }
+        }
+
+        // 游戏循环
+        function gameLoop() {
+            if (!wasmInstance || !gameRunning) return;
+            
+            handleInput();
+            
+            // 更新游戏状态
+            const gameState = wasmInstance.exports.update_game_wasm();
+            
+            if (gameState === 2) {
+                // 胜利 - 完成鲲鹏变化
+                gameRunning = false;
+                showTransformation('鲲鹏变化完成！', '恭喜你！从北冥小鱼成功化为翱翔九天的大鹏鸟，完成了逍遥游的终极境界！');
+                updateGameStatus('逍遥游完成！');
+            } else if (gameState === 0) {
+                // 失败
+                gameRunning = false;
+                showGameOver('游戏结束', '被更大的鱼类吞噬了，重新开始你的北冥之旅吧！');
+                updateGameStatus('北冥之旅结束');
+            }
+            
+            // 渲染游戏
+            render();
+            
+            // 更新UI
+            updateUI();
+            
+            if (gameRunning) {
+                animationId = requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function startGameLoop() {
+            gameRunning = true;
+            gameLoop();
+        }
+
+        function handleInput() {
+            if (!wasmInstance) return;
+            
+            // 简化的鼠标控制 - 避免复杂计算导致的卡顿
+            if (mouseControl) {
+                const pos = wasmInstance.exports.get_player_pos_wasm();
+                const playerX = (pos >> 16) & 0xFFFF;
+                const playerY = pos & 0xFFFF;
+                
+                const dx = mouseX - playerX;
+                const dy = mouseY - playerY;
+                
+                // 简化的方向判断，避免sqrt计算
+                let direction = 4;
+                if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        direction = dx > 0 ? 1 : 3; // 右或左
+                    } else {
+                        direction = dy > 0 ? 2 : 0; // 下或上
+                    }
+                    wasmInstance.exports.move_player_wasm(direction);
+                }
+                return;
+            }
+            
+            // 键盘控制
+            let direction = 4; // 默认停止
+            
+            if (keys['ArrowUp'] || keys['w'] || keys['W']) {
+                direction = 0; // 上
+            } else if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+                direction = 1; // 右
+            } else if (keys['ArrowDown'] || keys['s'] || keys['S']) {
+                direction = 2; // 下
+            } else if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+                direction = 3; // 左
+            }
+            
+            wasmInstance.exports.move_player_wasm(direction);
+            
+            // 处理重新开始
+            if (keys['r'] || keys['R']) {
+                restartGame();
+                keys['r'] = keys['R'] = false;
+            }
+        }
+
+        function render() {
+            if (!wasmInstance) return;
+            
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制海洋背景
+            drawOceanBackground();
+            
+            // 获取并绘制游戏元素
+            drawPlayer();
+            drawAIFishes();
+            
+            // 绘制特效
+            drawEffects();
+        }
+
+        function drawOceanBackground() {
+            // 海洋渐变背景
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#87ceeb');    // 天蓝色 - 海面
+            gradient.addColorStop(0.5, '#4682b4');  // 钢蓝色 - 中层
+            gradient.addColorStop(1, '#191970');    // 午夜蓝 - 深海
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制海底装饰
+            drawSeaweed();
+            drawBubbles();
+        }
+
+        function drawSeaweed() {
+            ctx.strokeStyle = 'rgba(34, 139, 34, 0.6)';
+            ctx.lineWidth = 4;
+            
+            const time = Date.now() * 0.001;
+            
+            for (let i = 0; i < 12; i++) {
+                const x = (i * 70) + 30;
+                const baseHeight = 40 + i * 8;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height);
+                
+                for (let j = 0; j < 8; j++) {
+                    const y = canvas.height - j * 15;
+                    const offsetX = Math.sin(time + i * 0.5 + j * 0.3) * 12;
+                    ctx.lineTo(x + offsetX, y);
+                }
+                
+                ctx.stroke();
+            }
+        }
+
+        function drawBubbles() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            const time = Date.now() * 0.003;
+            
+            for (let i = 0; i < 20; i++) {
+                const x = (Math.sin(time + i * 0.7) * 60 + i * 40) % canvas.width;
+                const y = (canvas.height - (time * 20 + i * 30) % canvas.height);
+                const size = 2 + Math.sin(time + i) * 2;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawPlayer() {
+            const pos = wasmInstance.exports.get_player_pos_wasm();
+            if (pos < 0) return;
+            
+            const x = (pos >> 16) & 0xFFFF;
+            const y = pos & 0xFFFF;
+            const info = wasmInstance.exports.get_player_info_wasm();
+            const size = (info >> 24) & 0xFF;
+            const fishType = (info >> 16) & 0xFF;
+            const gameStatus = wasmInstance.exports.get_game_status_wasm();
+            const invincible = ((gameStatus >> 7) & 0xFF) === 1;
+            
+            // 绘制无敌光环效果
+            if (invincible) {
+                const time = Date.now() * 0.01;
+                const pulseSize = Math.sin(time) * 5 + 15;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, size * 8 + 8 + pulseSize, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 215, 0, ${0.3 + Math.sin(time * 2) * 0.2})`;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // 内层光环
+                ctx.beginPath();
+                ctx.arc(x, y, size * 8 + 8 + pulseSize * 0.7, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.4 + Math.sin(time * 3) * 0.3})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            drawFish(x, y, size, fishType, true);
+        }
+
+        function drawAIFishes() {
+            const pInfo = wasmInstance.exports.get_player_info_wasm();
+            const playerSize = (pInfo >> 24) & 0xFF;
+            for (let i = 0; i < 18; i++) {  // 18条鱼，3种类型
+                const pos = wasmInstance.exports.get_ai_fish_info_wasm(i);
+                if (pos < 0) continue;
+                
+                const details = wasmInstance.exports.get_ai_fish_details_wasm(i);
+                if (details < 0) continue;
+                
+                const x = (pos >> 16) & 0xFFFF;
+                const y = pos & 0xFFFF;
+                const size = (details >> 24) & 0xFF;
+                const fishType = (details >> 16) & 0xFF;
+                const color = details & 0xFFFF;
+                const relation = size < playerSize ? 'food' : (size === playerSize ? 'peer' : 'danger');
+                drawFish(x, y, size, fishType, false, relation);
+            }
+        }
+
+        function drawFish(x, y, size, fishType, isPlayer, relation) {
+            const radius = size * 8 + 8;
+            
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // 鱼身
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            
+            // 根据鱼的类型设置颜色 - 更新为8种颜色
+            const colors = ['#ffb6c1', '#87ceeb', '#2e8b57', '#4682b4', '#ffd700', '#8b008b', '#191970', '#ff4500'];
+            ctx.fillStyle = colors[fishType] || '#87ceeb';
+            ctx.fill();
+            
+            // 鱼身轮廓 - 根据等级不同设置不同的边框样式
+            if (isPlayer) {
+                ctx.strokeStyle = '#ffd700';
+                ctx.lineWidth = 3;
+            } else {
+                if (relation === 'food') { ctx.strokeStyle = '#90EE90'; ctx.lineWidth = 2; }
+                else if (relation === 'peer') { ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 2; }
+                else { ctx.strokeStyle = '#FF6B6B'; ctx.lineWidth = 2; }
+            }
+            ctx.stroke();
+            
+            // 鱼尾
+            const tailSize = radius * 0.8;
+            ctx.beginPath();
+            ctx.moveTo(-radius, 0);
+            ctx.lineTo(-radius - tailSize, -tailSize/2);
+            ctx.lineTo(-radius - tailSize, tailSize/2);
+            ctx.closePath();
+            ctx.fillStyle = colors[fishType] || '#87ceeb';
+            ctx.fill();
+            ctx.stroke();
+            
+            // 鱼眼
+            ctx.beginPath();
+            ctx.arc(radius/3, -radius/3, radius/5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(radius/3, -radius/3, radius/8, 0, Math.PI * 2);
+            ctx.fillStyle = '#000000';
+            ctx.fill();
+            
+            // 根据等级添加不同的装饰
+            if (size >= 3) {
+                // 大型鱼类添加鳞片效果
+                ctx.beginPath();
+                ctx.arc(-radius/3, radius/4, radius/6, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.fill();
+            }
+            
+            if (size >= 4) {
+                // 更大的鱼类添加背鳍
+                ctx.beginPath();
+                ctx.moveTo(0, -radius);
+                ctx.lineTo(-radius/4, -radius - radius/4);
+                ctx.lineTo(radius/4, -radius - radius/4);
+                ctx.closePath();
+                ctx.fillStyle = colors[fishType] || '#87ceeb';
+                ctx.fill();
+                ctx.stroke();
+            }
+            
+            // 如果是玩家，添加光环效果
+            if (isPlayer) {
+                ctx.beginPath();
+                ctx.arc(0, 0, radius + 5, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            ctx.restore();
+        }
+
+        function drawEffects() {
+            // 添加更丰富的粒子效果
+            const time = Date.now() * 0.01;
+            
+            // 金色粒子效果
+            for (let i = 0; i < 8; i++) {
+                const x = (Math.sin(time + i) * 120 + canvas.width/2) % canvas.width;
+                const y = (Math.cos(time + i * 1.3) * 120 + canvas.height/2) % canvas.height;
+                const size = Math.max(0.6, 1.2 + Math.sin(time * 2 + i) * 0.8);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 215, 0, ${0.4 + Math.sin(time + i) * 0.3})`;
+                ctx.fill();
+            }
+            
+            // 鼠标位置指示器
+            if (mouseControl) {
+                ctx.beginPath();
+                ctx.arc(mouseX, mouseY, 8, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.arc(mouseX, mouseY, 4, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+                ctx.fill();
+            }
+        }
+
+        function updateUI() {
+            if (!wasmInstance) return;
+            
+            const playerInfo = wasmInstance.exports.get_player_info_wasm();
+            const gameStatus = wasmInstance.exports.get_game_status_wasm();
+            const invincibleTime = wasmInstance.exports.get_invincible_time_wasm();
+            
+            const size = (playerInfo >> 24) & 0xFF;
+            const fishType = (playerInfo >> 16) & 0xFF;
+            const score = playerInfo & 0xFFFF;
+            
+            const level = (gameStatus >> 16) & 0xFF;
+            const transformation = ((gameStatus >> 8) & 0x1) === 1;
+            const invincible = ((gameStatus >> 7) & 0x1) === 1;
+            const evolutionProgress = gameStatus & 0xFF;
+            
+            // 更新进化阶段
+            const stage = evolutionStages[fishType] || evolutionStages[0];
+            document.getElementById('stageName').textContent = stage.name;
+            document.getElementById('stageName').className = `stage-name ${stage.class}`;
+            document.getElementById('stageDesc').textContent = stage.desc;
+            
+            // 更新进化进度
+            document.getElementById('evolutionProgress').textContent = `${evolutionProgress}/5`;
+            document.getElementById('evolutionBar').style.width = `${(evolutionProgress / 5) * 100}%`;
+            
+            // 更新统计信息
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('levelValue').textContent = level;
+            document.getElementById('sizeValue').textContent = size;
+            
+            // 计算存活的鱼数 - 更新为18条
+            let aliveCount = 0;
+            for (let i = 0; i < 18; i++) {
+                if (wasmInstance.exports.get_ai_fish_info_wasm(i) >= 0) {
+                    aliveCount++;
+                }
+            }
+            document.getElementById('fishCount').textContent = aliveCount;
+            
+            // 显示无敌状态
+            if (invincible) {
+                const invincibleSeconds = Math.ceil(invincibleTime / 60);
+                updateGameStatus(`无敌时间: ${invincibleSeconds}秒`);
+            }
+        }
+
+        function updateGameStatus(status) {
+            const statusElement = document.getElementById('gameStatus');
+            statusElement.textContent = status;
+            
+            statusElement.className = 'game-status ';
+            if (status.includes('完成') || status.includes('成功')) {
+                statusElement.className += 'status-win';
+            } else if (status.includes('结束') || status.includes('失败')) {
+                statusElement.className += 'status-lose';
+            } else {
+                statusElement.className += 'status-playing';
+            }
+        }
+
+        function showTransformation(title, text) {
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'block';
+            
+            document.getElementById('transformationTitle').textContent = title;
+            document.getElementById('transformationText').textContent = text;
+            document.getElementById('transformationMessage').style.display = 'block';
+        }
+
+        function showGameOver(title, text) {
+            const overlay = document.getElementById('overlay');
+            overlay.style.display = 'block';
+            
+            document.getElementById('gameOverTitle').textContent = title;
+            document.getElementById('gameOverText').textContent = text;
+            document.getElementById('gameOverMessage').style.display = 'block';
+        }
+
+        function hideTransformation() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('transformationMessage').style.display = 'none';
+        }
+
+        function hideGameOver() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('gameOverMessage').style.display = 'none';
+        }
+
+        function restartGame() {
+            hideGameOver();
+            hideTransformation();
+            
+            if (wasmInstance) {
+                wasmInstance.exports.init_game();
+                updateGameStatus('北冥游动中...');
+                startGameLoop();
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+            e.preventDefault();
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        // 鼠标控制事件 - 简化版本
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+
+        // 默认启用鼠标控制，无需切换
+        mouseControl = true;
+        canvas.style.cursor = 'crosshair';
+
+        // 初始化
+        window.onload = function() {
+            updateGameStatus('正在加载北冥世界...');
+            loadWasm();
+        };
+    </script>
+</body>
+
+</html>
