@@ -26,7 +26,7 @@ const md = new MarkdownIt({
   xhtmlOut: false, // Use '/' to close single tags (<br />)
   breaks: false, // Convert '\n' in paragraphs into <br>
   langPrefix: "language-", // CSS language prefix for fenced blocks
-  linkify: true, // Autoconvert URL-like text to links
+  linkify: false, // Disable autoconvert URL-like text to links to prevent nested <a> tags
   typographer: true, // Enable some language-neutral replacement + quotes beautification
 });
 
@@ -250,7 +250,7 @@ async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
       </div>
     </a>`;
     })
-    .join("");
+    .join("\n");
   return tpl
     .replace("__GAMES_METADATA__", metadataJson)
     .replace("__GAME_CARDS__", cards)

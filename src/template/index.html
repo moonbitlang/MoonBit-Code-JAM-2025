@@ -126,6 +126,42 @@
         padding-left: 1rem;
       }
 
+      /* Ensure all block elements in sections are properly spaced */
+      .section h1,
+      .section h2,
+      .section h3,
+      .section h4,
+      .section h5,
+      .section h6 {
+        margin: 0.5rem 0 0.5rem;
+        color: #4a5568;
+      }
+
+      .section h1 {
+        font-size: 1rem;
+      }
+      .section h2 {
+        font-size: 0.9rem;
+      }
+      .section h3 {
+        font-size: 0.85rem;
+      }
+      .section h5 {
+        font-size: 0.75rem;
+      }
+      .section h6 {
+        font-size: 0.7rem;
+      }
+
+      /* Ensure proper spacing for all markdown elements */
+      .section blockquote {
+        margin: 0.5rem 0;
+        padding-left: 1rem;
+        border-left: 3px solid #e2e8f0;
+        color: #718096;
+        font-style: italic;
+      }
+
       /* Code block styles to handle overflow */
       .section pre {
         margin: 0.5rem 0;
@@ -178,6 +214,16 @@
       /* Ensure section content doesn't overflow */
       .section {
         overflow: visible;
+      }
+
+      /* Fix horizontal rule styling from markdown */
+      .section hr {
+        margin: 1rem 0;
+        border: none;
+        border-top: 2px solid #e2e8f0;
+        background: none;
+        height: 0;
+        clear: both;
       }
       .play-button {
         margin-top: auto;
@@ -250,15 +296,31 @@
         const containerWidth = container.offsetWidth;
         const itemWidth = (containerWidth - gap * (columns - 1)) / columns;
 
-        // Set item widths
-        items.forEach((item) => {
+        // First pass: Set widths and reset positioning for accurate height measurement
+        items.forEach((item, index) => {
+          item.style.position = "static";
           item.style.width = `${itemWidth}px`;
+          item.style.left = "auto";
+          item.style.top = "auto";
+        });
+
+        // Force reflow to ensure dimensions are calculated
+        container.offsetHeight;
+
+        // Measure heights while items are in static position
+        const itemHeights = Array.from(items).map((item) => item.offsetHeight);
+
+        // Second pass: Set absolute positioning and calculate layout
+        items.forEach((item) => {
+          item.style.position = "absolute";
         });
 
         // Track column heights
         const columnHeights = new Array(columns).fill(0);
 
         items.forEach((item, index) => {
+          const itemHeight = itemHeights[index];
+
           // Find shortest column
           const shortestColumnIndex = columnHeights.indexOf(
             Math.min(...columnHeights),
@@ -270,19 +332,58 @@
 
           item.style.left = `${left}px`;
           item.style.top = `${top}px`;
+          item.style.width = `${itemWidth}px`;
 
           // Update column height
-          columnHeights[shortestColumnIndex] += item.offsetHeight + gap;
+          columnHeights[shortestColumnIndex] += itemHeight + gap;
         });
 
-        // Set container height
-        container.style.height = `${Math.max(...columnHeights)}px`;
+        // Set container height (subtract the final gap)
+        const maxHeight = Math.max(...columnHeights) - gap;
+        container.style.height = `${Math.max(maxHeight, 0)}px`;
       }
 
       // Initialize layout when DOM is ready
       document.addEventListener("DOMContentLoaded", () => {
-        // Wait a bit for CSS to apply
-        setTimeout(createMasonryLayout, 100);
+        // Wait for images and content to load
+        function initializeLayout() {
+          const container = document.getElementById("games-grid");
+          const items = container.querySelectorAll("a.game-card-link");
+
+          // Check if all content is loaded
+          const images = container.querySelectorAll("img");
+          let loadedImages = 0;
+
+          function onImageLoad() {
+            loadedImages++;
+            if (loadedImages === images.length) {
+              // All images loaded, create layout with small delay
+              setTimeout(createMasonryLayout, 100);
+            }
+          }
+
+          if (images.length === 0) {
+            // No images, create layout with a single delayed call
+            setTimeout(createMasonryLayout, 200);
+          } else {
+            // Wait for images to load
+            images.forEach((img) => {
+              if (img.complete) {
+                onImageLoad();
+              } else {
+                img.addEventListener("load", onImageLoad);
+                img.addEventListener("error", onImageLoad); // Handle broken images
+              }
+            });
+
+            // Fallback: create layout after a reasonable timeout even if images haven't loaded
+            setTimeout(() => {
+              createMasonryLayout();
+            }, 1000);
+          }
+        }
+
+        initializeLayout();
 
         // Handle code block scrolling inside links
         const codeBlocks = document.querySelectorAll(".section pre");
@@ -305,12 +406,14 @@
             e.stopPropagation();
           });
         });
-      });
-
-      // Re-layout on window resize
+      }); // Re-layout on window resize
       window.addEventListener("resize", () => {
         clearTimeout(window.resizeTimeout);
-        window.resizeTimeout = setTimeout(createMasonryLayout, 150);
+        window.resizeTimeout = setTimeout(() => {
+          createMasonryLayout();
+          // Double-check layout after a brief delay in case content shifted
+          setTimeout(createMasonryLayout, 100);
+        }, 150);
       });
     </script>
   </head>
