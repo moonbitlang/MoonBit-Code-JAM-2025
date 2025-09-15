@@ -12,7 +12,6 @@
 ## 技术特色
 - 使用 MoonBit 编写核心逻辑，编译为 WebAssembly
 - 前端仅 `index.html`，与 `game.wasm` 通过 `WebAssembly.instantiate` 交互
-- JS 回退模式：若 WASM 加载失败，自动启用等价规则的模拟逻辑
 - 美术/动效：海洋分层渐变、海草/气泡装饰、进化光环等
 
 ## 团队信息

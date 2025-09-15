@@ -6,6 +6,17 @@
     <title>鲲鹏之变 | 基于庄子逍遥游的大鱼吃小鱼游戏</title>
     <meta name="description" content="体验庄子《逍遥游》中鲲化为鹏的神奇变化，从北冥小鱼成长为翱翔九天的大鹏鸟">
     <meta name="keywords" content="鲲鹏,庄子,逍遥游,大鱼吃小鱼,传统文化,MoonBit">
+    <meta name="theme-color" content="#0a1630" />
+    <!-- Favicon: 金色鲲鱼图标（SVG） -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,
+%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E
+%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd700'/%3E%3Cstop offset='1' stop-color='%23ff8c00'/%3E%3C/linearGradient%3E%3C/defs%3E
+%3Crect width='64' height='64' rx='12' fill='%230a1630'/%3E
+%3Ccircle cx='34' cy='32' r='16' fill='url(%23g)' stroke='%23ffd700' stroke-width='2'/%3E
+%3Cpolygon points='18,32 6,24 6,40' fill='url(%23g)' stroke='%23ffd700' stroke-width='2'/%3E
+%3Ccircle cx='40' cy='28' r='3' fill='%23000'/%3E%3Ccircle cx='39' cy='27' r='1.2' fill='%23fff'/%3E
+%3Cpath d='M45 32 l10 -6 v12 z' fill='url(%23g)' stroke='%23ffd700' stroke-width='2'/%3E
+%3C/svg%3E" />
     <style>
         * {
             margin: 0;
@@ -69,6 +80,7 @@
             gap: 20px;
             flex: 1;
             padding: 20px;
+            align-items: flex-start; /* 顶端对齐，避免右栏下沉 */
         }
 
         .game-canvas-container {
@@ -94,15 +106,23 @@
             );
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             cursor: none;
+            max-width: 100%;
+            height: auto;
         }
 
         .game-info {
-            width: 300px;
+            width: 320px;
+            min-width: 300px;
+            flex: 0 0 320px;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             border: 2px solid #ffd700;
+            position: sticky;
+            top: 16px;
+            max-height: calc(100vh - 120px);
+            overflow: auto;
         }
 
         .info-section {
@@ -350,6 +370,9 @@
             to { opacity: 1; }
         }
 
+        /* 通用隐藏工具类 */
+        .hidden { display: none !important; }
+
         /* 鱼类形态样式 */
         .fish-stage-xiami { color: #ffb6c1; }
         .fish-stage-kunmiao { color: #87ceeb; }
@@ -368,6 +391,10 @@
             
             .game-info {
                 width: 100%;
+                min-width: 0;
+                position: static;
+                max-height: none;
+                overflow: visible;
             }
             
             h1 {
@@ -393,12 +420,27 @@
             </div>
 
             <div class="game-info">
+                <!-- 仅展示游戏规则，其余信息隐藏避免干扰评审 -->
                 <div class="info-section">
+                    <div class="info-title">游戏规则</div>
+                    <div style="font-size: 0.95rem; line-height: 1.6; color: #b0c4de;">
+                        <div style="margin-bottom: 8px;">🛡️ 开局无敌：游戏开始后 <b>5 秒</b>内处于无敌状态，可安全熟悉环境。</div>
+                        <div style="margin-bottom: 8px;">🎨 颜色判定：
+                            <div style="margin-top: 6px;">
+                                <span style="color:#90EE90; font-weight:bold;">绿色边框</span>：可以吃；
+                                <span style="color:white; font-weight:bold;">白色边框</span>：同级，不能吃；
+                                <span style="color:#FF6B6B; font-weight:bold;">红色边框</span>：危险，会被吃导致失败。
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 8px;">⬆️ 进化与胜利：吞噬足量猎物即可进化，最终化为<b>鲲鹏</b>获得胜利。</div>
+                    </div>
+                </div>
+                <div class="info-section hidden">
                     <div class="info-title">游戏状态</div>
                     <div class="game-status status-playing" id="gameStatus">准备开始北冥之旅</div>
                 </div>
 
-                <div class="info-section">
+                <div class="info-section hidden">
                     <div class="info-title">进化阶段</div>
                     <div class="evolution-stage" id="evolutionStage">
                         <div class="stage-name" id="stageName">鲲苗</div>
@@ -415,7 +457,7 @@
                     </div>
                 </div>
 
-                <div class="info-section">
+                <div class="info-section hidden">
                     <div class="info-title">游戏统计</div>
                     <div class="stats-grid">
                         <div class="stat-item">
@@ -437,22 +479,12 @@
                     </div>
                 </div>
 
-                <div class="info-section">
+                <div class="info-section hidden">
                     <div class="info-title">当前生态</div>
-                    <div id="currentEcosystem" style="font-size: 0.9rem; line-height: 1.6; color: #b0c4de;">
-                        <div style="margin-bottom: 8px;">
-                            <span style="color: #ffb6c1; font-weight: bold;">● 虾米</span> - 你的食物
-                        </div>
-                        <div style="margin-bottom: 8px;">
-                            <span style="color: #87ceeb; font-weight: bold;">● 鲲苗</span> - 同等级
-                        </div>
-                        <div style="margin-bottom: 8px;">
-                            <span style="color: #2e8b57; font-weight: bold;">● 青鱼</span> - 需要避开
-                        </div>
-                    </div>
+                    <div id="currentEcosystem" style="font-size: 0.9rem; line-height: 1.6; color: #b0c4de;"></div>
                 </div>
 
-                <div class="info-section">
+                <div class="info-section hidden">
                     <div class="info-title">操作指南</div>
                     <div class="controls">
                         <div class="control-item">
@@ -466,7 +498,7 @@
                     </div>
                 </div>
 
-                <div class="info-section">
+                <div class="info-section hidden">
                     <div class="info-title">游戏提示</div>
                     <p style="font-size: 0.9rem; line-height: 1.5; color: #b0c4de;">
                         🔍 寻找浅粉色的虾米作为食物
@@ -490,7 +522,7 @@
     <div class="transformation-message" id="transformationMessage">
         <div class="transformation-title" id="transformationTitle">进化成功！</div>
         <div class="transformation-text" id="transformationText">你的形态发生了变化</div>
-        <button class="restart-btn" onclick="hideTransformation()">继续游戏</button>
+        <button class="restart-btn" onclick="restartGame()">再来一盘</button>
     </div>
 
     <!-- 游戏结束消息 -->
@@ -716,7 +748,7 @@
             const size = (info >> 24) & 0xFF;
             const fishType = (info >> 16) & 0xFF;
             const gameStatus = wasmInstance.exports.get_game_status_wasm();
-            const invincible = ((gameStatus >> 7) & 0xFF) === 1;
+            const invincible = ((gameStatus >> 7) & 0x1) === 1;
             
             // 绘制无敌光环效果
             if (invincible) {
@@ -894,9 +926,14 @@
             document.getElementById('stageName').className = `stage-name ${stage.class}`;
             document.getElementById('stageDesc').textContent = stage.desc;
             
-            // 更新进化进度
-            document.getElementById('evolutionProgress').textContent = `${evolutionProgress}/5`;
-            document.getElementById('evolutionBar').style.width = `${(evolutionProgress / 5) * 100}%`;
+            // 更新进化进度：到达最终阶段时显示“完成”
+            if (fishType >= 7) {
+                document.getElementById('evolutionProgress').textContent = `完成`;
+                document.getElementById('evolutionBar').style.width = `100%`;
+            } else {
+                document.getElementById('evolutionProgress').textContent = `${evolutionProgress}/5`;
+                document.getElementById('evolutionBar').style.width = `${(evolutionProgress / 5) * 100}%`;
+            }
             
             // 更新统计信息
             document.getElementById('scoreValue').textContent = score;
@@ -917,6 +954,61 @@
                 const invincibleSeconds = Math.ceil(invincibleTime / 60);
                 updateGameStatus(`无敌时间: ${invincibleSeconds}秒`);
             }
+
+            // 动态更新当前生态（每阶段仅三类）
+            updateEcosystem(fishType);
+        }
+
+        // 根据阶段更新“当前生态”说明
+        function updateEcosystem(fishType) {
+            const el = document.getElementById('currentEcosystem');
+            if (!el) return;
+            const dot = (name, color, tip) => `<div style="margin-bottom:8px;"><span style="color:${color};font-weight:bold;">● ${name}</span> - ${tip}</div>`;
+            const colors = ['#ffb6c1', '#87ceeb', '#2e8b57', '#4682b4', '#ffd700', '#8b008b', '#191970', '#ff4500'];
+            let html = '';
+            switch (fishType) {
+                case 0: // 虾米
+                case 1: // 鲲苗
+                    html = dot('虾米', colors[0], '你的食物') +
+                           dot('鲲苗', colors[1], '同等级') +
+                           dot('青鱼', colors[2], '需要避开');
+                    break;
+                case 2: // 青鱼
+                    html = dot('鲲苗', colors[1], '你的食物') +
+                           dot('青鱼', colors[2], '同等级') +
+                           dot('草鱼', colors[3], '需要避开');
+                    break;
+                case 3: // 草鱼
+                    html = dot('青鱼', colors[2], '你的食物') +
+                           dot('草鱼', colors[3], '同等级') +
+                           dot('鲤鱼', colors[4], '需要避开');
+                    break;
+                case 4: // 鲤鱼
+                    html = dot('草鱼', colors[3], '你的食物') +
+                           dot('鲤鱼', colors[4], '同等级') +
+                           dot('蛟龙', colors[5], '需要避开');
+                    break;
+                case 5: // 蛟龙
+                    html = dot('鲤鱼', colors[4], '你的食物') +
+                           dot('蛟龙', colors[5], '同等级') +
+                           dot('鲲', colors[6], '需要避开');
+                    break;
+                case 6: // 鲲
+                    html = dot('蛟龙', colors[5], '你的食物') +
+                           dot('鲲', colors[6], '同等级') +
+                           dot('大鹏', colors[7], '需要避开');
+                    break;
+                case 7: // 大鹏
+                    html = dot('鲲', colors[6], '同等级') +
+                           dot('大鹏', colors[7], '你的形态') +
+                           dot('虾米', colors[0], '装饰生态');
+                    break;
+                default:
+                    html = dot('虾米', colors[0], '你的食物') +
+                           dot('鲲苗', colors[1], '同等级') +
+                           dot('青鱼', colors[2], '需要避开');
+            }
+            el.innerHTML = html;
         }
 
         function updateGameStatus(status) {
