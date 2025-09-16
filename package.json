@@ -18,6 +18,10 @@
   "homepage": "https://github.com/moonbitlang/MoonBit-Code-JAM-2025#readme",
   "description": "",
   "dependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/marked": "^5.0.2",
+    "markdown-it": "^14.1.0",
+    "marked": "^16.2.1",
     "tsx": "^4.20.3"
   },
   "devDependencies": {

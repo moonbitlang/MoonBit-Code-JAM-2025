@@ -10,8 +10,6 @@
    - `README` 文件，其中包含游戏描述以及游戏玩法介绍，包含：游戏简介、操作说明、技术特色、团队信息
    - `artifact` 文件夹，其中包含游戏本体
    - `artifact/index.html` 文件，作为游戏入口
-     - `game.wasm`: 编译后的游戏本体
-     - `README.md`: 游戏描述及说明
 1. 提交 Pull request
 
 ## 如果你有任何问题，请在 issue 中提问

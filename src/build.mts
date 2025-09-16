@@ -1,22 +1,63 @@
 #!/usr/bin/env tsx
 import { promises as fs } from "fs";
 import path from "path";
+import { marked, Token } from "marked";
+import MarkdownIt from "markdown-it";
 
 interface GameMetaRaw {
   id: string;
   title: string;
   teamName: string;
-  gameIntro: string;
-  operations: string[];
-  features: string[];
-  teamInfo: string[];
+  gameIntro: string; // raw markdown content
+  operations: string; // raw markdown content
+  features: string; // raw markdown content
+  teamInfo: string; // raw markdown content
   artifactPath: string; // relative (url-encoded) path to artifact/index.html
+  award?: {
+    name: string;
+    icon: string;
+    color: string;
+  };
+}
+
+interface Award {
+  name: string;
+  icon: string;
+  color: string;
+  gameId: string;
 }
 
 const ROOT = process.cwd();
 const TEAMS_DIR = path.join(ROOT, "teams");
 const DIST_DIR = path.join(ROOT, "dist");
 const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
+const AWARDS_PATH = path.join(ROOT, "awards.json");
+
+// Read awards data
+async function readAwards(): Promise<Record<string, Award>> {
+  try {
+    const awardsData = await fs.readFile(AWARDS_PATH, "utf8");
+    const awards = JSON.parse(awardsData).awards as Award[];
+    const awardsMap: Record<string, Award> = {};
+    awards.forEach((award) => {
+      awardsMap[award.gameId] = award;
+    });
+    return awardsMap;
+  } catch (error) {
+    console.warn("Awards file not found or invalid, proceeding without awards");
+    return {};
+  }
+}
+
+// Initialize markdown-it renderer
+const md = new MarkdownIt({
+  html: true, // Enable HTML tags in source
+  xhtmlOut: false, // Use '/' to close single tags (<br />)
+  breaks: false, // Convert '\n' in paragraphs into <br>
+  langPrefix: "language-", // CSS language prefix for fenced blocks
+  linkify: false, // Disable autoconvert URL-like text to links to prevent nested <a> tags
+  typographer: true, // Enable some language-neutral replacement + quotes beautification
+});
 
 async function rimraf(target: string) {
   await fs.rm(target, { recursive: true, force: true });
@@ -26,50 +67,129 @@ async function ensureDir(dir: string) {
   await fs.mkdir(dir, { recursive: true });
 }
 
-function splitSections(md: string): Record<string, string> {
-  // Normalize line endings
-  md = md.replace(/\r\n?/g, "\n");
-  const lines = md.split("\n");
-  let current: string | null = null;
-  const map: Record<string, string[]> = {};
-  for (const rawLine of lines) {
-    const line = rawLine.trimEnd();
-    const heading = line.match(/^##\s+(.+?)\s*$/);
-    if (heading) {
-      current = heading[1].trim();
-      if (!map[current]) map[current] = [];
-      continue;
+function parseMarkdownSections(md: string): Record<string, Token[]> {
+  // Parse markdown into AST
+  const tokens = marked.lexer(md);
+  const sections: Record<string, Token[]> = {};
+  let currentSection: string | null = null;
+  let currentTokens: Token[] = [];
+
+  for (const token of tokens) {
+    if (token.type === "heading" && token.depth === 2) {
+      // Save previous section if exists
+      if (currentSection) {
+        sections[currentSection] = [...currentTokens];
+      }
+      // Start new section
+      currentSection = token.text.trim();
+      currentTokens = [];
+    } else if (currentSection) {
+      // Add token to current section
+      currentTokens.push(token);
     }
-    if (current) map[current].push(line);
   }
-  const out: Record<string, string> = {};
-  for (const [k, arr] of Object.entries(map)) {
-    out[k] = arr.join("\n").trim();
+
+  // Save last section
+  if (currentSection) {
+    sections[currentSection] = [...currentTokens];
   }
-  return out;
+
+  return sections;
 }
 
-function extractList(section: string | undefined): string[] {
-  if (!section) return [];
-  const lines = section
-    .split(/\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+function extractListFromTokens(tokens: Token[]): string[] {
   const items: string[] = [];
-  for (const l of lines) {
-    const m = l.match(/^(?:[-*+]|•)\s*(.+)$/);
-    if (m) items.push(m[1].trim());
-    else if (l) items.push(l); // fallback
+
+  for (const token of tokens) {
+    if (token.type === "list") {
+      for (const item of token.items) {
+        // Use the item's text property directly or extract from tokens
+        const itemText = item.text || extractTextFromTokens(item.tokens);
+        if (itemText.trim()) {
+          items.push(itemText.trim());
+        }
+      }
+    } else if (token.type === "paragraph") {
+      // Use token's text property or extract from tokens
+      const text = token.text || extractTextFromTokens([token]);
+      // Check if it looks like a list item (starts with bullet point)
+      const lines = text.split("\n").filter((line) => line.trim());
+      for (const line of lines) {
+        const match = line.match(/^(?:[-*+]|•)\s*(.+)$/);
+        if (match) {
+          items.push(match[1].trim());
+        } else if (line.trim() && !items.length) {
+          // If no list markers found, treat as regular text
+          items.push(line.trim());
+        }
+      }
+    }
   }
+
   return items;
 }
 
-function extractTeamName(teamInfoLines: string[]): string {
-  for (const l of teamInfoLines) {
-    const m = l.match(/团队名称[:：]\s*(.+)$/);
-    if (m) return m[1].trim();
+function extractTextFromTokens(tokens: Token[]): string {
+  // Use tokens' text property or raw property when available
+  return tokens
+    .map((token) => {
+      // Prefer 'text' property for clean text, fallback to 'raw' for original content
+      if ("text" in token && token.text) {
+        return token.text;
+      }
+      if ("raw" in token && token.raw) {
+        return token.raw;
+      }
+      // Recursively handle nested tokens
+      if ("tokens" in token && Array.isArray(token.tokens)) {
+        return extractTextFromTokens(token.tokens);
+      }
+      return "";
+    })
+    .join("")
+    .replace(/\s+/g, " ") // Normalize whitespace
+    .trim();
+}
+
+function extractTeamNameFromTokens(tokens: Token[]): string {
+  const items = extractListFromTokens(tokens);
+
+  for (const item of items) {
+    const match = item.match(/团队名称[:：]\s*(.+)$/);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+
+  // Fallback: check all tokens' raw content
+  const allText = tokens.map((token) => token.raw || "").join("");
+  const lines = allText.split("\n");
+  for (const line of lines) {
+    const match = line.match(/团队名称[:：]\s*(.+)$/);
+    if (match) {
+      return match[1].trim();
+    }
+  }
+
+  return "";
+}
+
+function extractTitleFromTokens(tokens: Token[]): string {
+  for (const token of tokens) {
+    if (token.type === "heading" && token.depth === 1) {
+      return token.text.trim();
+    }
   }
   return "";
+}
+
+function extractRawMarkdownFromTokens(tokens: Token[]): string {
+  // Use the 'raw' property from tokens to reconstruct original markdown
+  // This is much more reliable than manually reconstructing markdown
+  return tokens
+    .map((token) => token.raw || "")
+    .join("")
+    .trim();
 }
 
 async function readGame(
@@ -77,17 +197,40 @@ async function readGame(
   dirName: string,
 ): Promise<Omit<GameMetaRaw, "artifactPath">> {
   const md = await fs.readFile(readmePath, "utf8");
-  const titleMatch = md.match(/^#\s+(.+?)\s*$/m);
-  const title = titleMatch
-    ? titleMatch[1].trim()
-    : dirName.split("-").slice(-1)[0] || dirName;
-  const sections = splitSections(md);
-  const gameIntro = sections["游戏简介"] || "";
-  const operations = extractList(sections["操作说明"]);
-  const features = extractList(sections["技术特色"]);
-  const teamInfoItems = extractList(sections["团队信息"]);
+
+  // Parse markdown into AST
+  const tokens = marked.lexer(md);
+
+  // Extract title from H1 heading
+  const title =
+    extractTitleFromTokens(tokens) ||
+    dirName.split("-").slice(-1)[0] ||
+    dirName;
+
+  // Parse sections by H2 headings
+  const sections = parseMarkdownSections(md);
+
+  // Extract content from each section
+  const gameIntro = sections["游戏简介"]
+    ? extractRawMarkdownFromTokens(sections["游戏简介"])
+    : "";
+
+  const operations = sections["操作说明"]
+    ? extractRawMarkdownFromTokens(sections["操作说明"])
+    : "";
+
+  const features = sections["技术特色"]
+    ? extractRawMarkdownFromTokens(sections["技术特色"])
+    : "";
+
+  const teamInfoTokens = sections["团队信息"] || [];
+  const teamInfo = extractRawMarkdownFromTokens(teamInfoTokens);
+
   const teamName =
-    extractTeamName(teamInfoItems) || dirName.split("-")[1] || "未知团队";
+    extractTeamNameFromTokens(teamInfoTokens) ||
+    dirName.split("-")[1] ||
+    "未知团队";
+
   return {
     id: dirName,
     title,
@@ -95,7 +238,7 @@ async function readGame(
     gameIntro,
     operations,
     features,
-    teamInfo: teamInfoItems,
+    teamInfo,
   };
 }
 
@@ -109,32 +252,54 @@ function buildArtifactRelativePath(teamId: string): string {
 
 async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
   const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
-  const metadataJson = JSON.stringify(games, null, 2);
-  const escapeHtml = (s: string) => s.replace(/</g, "&lt;");
-  const list = (arr: string[]) =>
-    arr.length
-      ? "<ul>" +
-        arr.map((i) => "<li>" + escapeHtml(i) + "</li>").join("") +
-        "</ul>"
-      : "<p>暂无</p>";
-  const cards = games
+
+  // Sort games: award winners first, then others
+  const sortedGames = [...games].sort((a, b) => {
+    const aHasAward = !!a.award;
+    const bHasAward = !!b.award;
+
+    if (aHasAward && !bHasAward) return -1;
+    if (!aHasAward && bHasAward) return 1;
+    return 0; // Keep original order for same type
+  });
+
+  const metadataJson = JSON.stringify(sortedGames, null, 2);
+
+  // Function to render markdown content to HTML using markdown-it
+  const renderMarkdown = (markdown: string) => {
+    if (!markdown.trim()) return "<p>暂无</p>";
+    return md.render(markdown);
+  };
+
+  const cards = sortedGames
     .map((g) => {
-      const intro = g.gameIntro
-        ? "<p>" + escapeHtml(g.gameIntro).replace(/\n+/g, "<br>") + "</p>"
-        : "<p>暂无</p>";
+      const intro = renderMarkdown(g.gameIntro);
+      const operations = renderMarkdown(g.operations);
+      const features = renderMarkdown(g.features);
+      const teamInfo = renderMarkdown(g.teamInfo);
+
+      // Generate award badge if game has an award
+      const awardBadge = g.award
+        ? `<div class="award-badge" style="background-color: ${g.award.color}">
+             <span class="award-icon">${g.award.icon}</span>
+             <span class="award-text">${g.award.name}</span>
+           </div>`
+        : "";
+
       return `<a class="game-card-link" href="${g.artifactPath}">
-      <div class="game-card">
-        <h3 class="game-title">${escapeHtml(g.title)}</h3>
-        <div class="team-name">🏆 ${escapeHtml(g.teamName)}</div>
+      <div class="game-card ${g.award ? "award-winner" : ""}">
+        ${awardBadge}
+        <h3 class="game-title">${md.renderInline(g.title)}</h3>
+        <div class="team-name">🏆 ${md.renderInline(g.teamName)}</div>
         <div class="section"><h4>游戏简介</h4>${intro}</div>
-        <div class="section"><h4>操作说明</h4>${list(g.operations)}</div>
-        <div class="section"><h4>技术特色</h4>${list(g.features)}</div>
-        <div class="section"><h4>团队信息</h4>${list(g.teamInfo)}</div>
+        <div class="section"><h4>操作说明</h4>${operations}</div>
+        <div class="section"><h4>技术特色</h4>${features}</div>
+        <div class="section"><h4>团队信息</h4>${teamInfo}</div>
         <div class="play-button">▶️ 立即游玩</div>
       </div>
     </a>`;
     })
-    .join("");
+    .join("\n");
   return tpl
     .replace("__GAMES_METADATA__", metadataJson)
     .replace("__GAME_CARDS__", cards)
@@ -159,6 +324,10 @@ async function copyArtifacts(teamDir: string, distTeamDir: string) {
 async function build() {
   await rimraf(DIST_DIR);
   await ensureDir(DIST_DIR);
+
+  // Read awards data
+  const awardsMap = await readAwards();
+
   const teamEntries = await fs.readdir(TEAMS_DIR, { withFileTypes: true });
   const games: GameMetaRaw[] = [];
   for (const entry of teamEntries) {
@@ -177,7 +346,18 @@ async function build() {
     const copied = await copyArtifacts(teamDir, distTeamDir);
     if (!copied) continue; // must have artifact
     const artifactPath = buildArtifactRelativePath(dirName);
-    games.push({ ...baseData, artifactPath });
+
+    // Check if this game has an award
+    const award = awardsMap[dirName];
+    const gameData: GameMetaRaw = {
+      ...baseData,
+      artifactPath,
+      ...(award && {
+        award: { name: award.name, icon: award.icon, color: award.color },
+      }),
+    };
+
+    games.push(gameData);
   }
   const html = await renderIndexHtml(games);
   await fs.writeFile(path.join(DIST_DIR, "index.html"), html, "utf8");
