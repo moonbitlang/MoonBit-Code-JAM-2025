@@ -1,0 +1,22 @@
+{
+  "awards": [
+    {
+      "name": "月度最佳视觉奖",
+      "icon": "🎨",
+      "color": "#FF6B6B",
+      "gameId": "1294950-hpKiller-森林塔防"
+    },
+    {
+      "name": "月度最佳创意奖",
+      "icon": "💡",
+      "color": "#4ECDC4",
+      "gameId": "1301530-llm_game-双相迷宫"
+    },
+    {
+      "name": "月度最佳 AI 玩法奖",
+      "icon": "🤖",
+      "color": "#45B7D1",
+      "gameId": "spaceack-CS赏金猎手-Moonbit中国象棋战役版"
+    }
+  ]
+}
