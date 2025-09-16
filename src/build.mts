@@ -13,12 +13,41 @@ interface GameMetaRaw {
   features: string; // raw markdown content
   teamInfo: string; // raw markdown content
   artifactPath: string; // relative (url-encoded) path to artifact/index.html
+  award?: {
+    name: string;
+    icon: string;
+    color: string;
+  };
+}
+
+interface Award {
+  name: string;
+  icon: string;
+  color: string;
+  gameId: string;
 }
 
 const ROOT = process.cwd();
 const TEAMS_DIR = path.join(ROOT, "teams");
 const DIST_DIR = path.join(ROOT, "dist");
 const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
+const AWARDS_PATH = path.join(ROOT, "awards.json");
+
+// Read awards data
+async function readAwards(): Promise<Record<string, Award>> {
+  try {
+    const awardsData = await fs.readFile(AWARDS_PATH, "utf8");
+    const awards = JSON.parse(awardsData).awards as Award[];
+    const awardsMap: Record<string, Award> = {};
+    awards.forEach((award) => {
+      awardsMap[award.gameId] = award;
+    });
+    return awardsMap;
+  } catch (error) {
+    console.warn("Awards file not found or invalid, proceeding without awards");
+    return {};
+  }
+}
 
 // Initialize markdown-it renderer
 const md = new MarkdownIt({
@@ -223,7 +252,18 @@ function buildArtifactRelativePath(teamId: string): string {
 
 async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
   const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
-  const metadataJson = JSON.stringify(games, null, 2);
+
+  // Sort games: award winners first, then others
+  const sortedGames = [...games].sort((a, b) => {
+    const aHasAward = !!a.award;
+    const bHasAward = !!b.award;
+
+    if (aHasAward && !bHasAward) return -1;
+    if (!aHasAward && bHasAward) return 1;
+    return 0; // Keep original order for same type
+  });
+
+  const metadataJson = JSON.stringify(sortedGames, null, 2);
 
   // Function to render markdown content to HTML using markdown-it
   const renderMarkdown = (markdown: string) => {
@@ -231,15 +271,24 @@ async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
     return md.render(markdown);
   };
 
-  const cards = games
+  const cards = sortedGames
     .map((g) => {
       const intro = renderMarkdown(g.gameIntro);
       const operations = renderMarkdown(g.operations);
       const features = renderMarkdown(g.features);
       const teamInfo = renderMarkdown(g.teamInfo);
 
+      // Generate award badge if game has an award
+      const awardBadge = g.award
+        ? `<div class="award-badge" style="background-color: ${g.award.color}">
+             <span class="award-icon">${g.award.icon}</span>
+             <span class="award-text">${g.award.name}</span>
+           </div>`
+        : "";
+
       return `<a class="game-card-link" href="${g.artifactPath}">
-      <div class="game-card">
+      <div class="game-card ${g.award ? "award-winner" : ""}">
+        ${awardBadge}
         <h3 class="game-title">${md.renderInline(g.title)}</h3>
         <div class="team-name">🏆 ${md.renderInline(g.teamName)}</div>
         <div class="section"><h4>游戏简介</h4>${intro}</div>
@@ -275,6 +324,10 @@ async function copyArtifacts(teamDir: string, distTeamDir: string) {
 async function build() {
   await rimraf(DIST_DIR);
   await ensureDir(DIST_DIR);
+
+  // Read awards data
+  const awardsMap = await readAwards();
+
   const teamEntries = await fs.readdir(TEAMS_DIR, { withFileTypes: true });
   const games: GameMetaRaw[] = [];
   for (const entry of teamEntries) {
@@ -293,7 +346,18 @@ async function build() {
     const copied = await copyArtifacts(teamDir, distTeamDir);
     if (!copied) continue; // must have artifact
     const artifactPath = buildArtifactRelativePath(dirName);
-    games.push({ ...baseData, artifactPath });
+
+    // Check if this game has an award
+    const award = awardsMap[dirName];
+    const gameData: GameMetaRaw = {
+      ...baseData,
+      artifactPath,
+      ...(award && {
+        award: { name: award.name, icon: award.icon, color: award.color },
+      }),
+    };
+
+    games.push(gameData);
   }
   const html = await renderIndexHtml(games);
   await fs.writeFile(path.join(DIST_DIR, "index.html"), html, "utf8");
