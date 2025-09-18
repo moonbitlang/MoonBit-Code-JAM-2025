@@ -280,7 +280,7 @@ async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
 
       // Generate award badge if game has an award
       const awardBadge = g.award
-        ? `<div class="award-badge" style="background-color: ${g.award.color}">
+        ? `<div class="award-badge" style="background: linear-gradient(135deg, ${g.award.color}, ${g.award.color}dd);">
              <span class="award-icon">${g.award.icon}</span>
              <span class="award-text">${g.award.name}</span>
            </div>`
