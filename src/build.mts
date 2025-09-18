@@ -55,7 +55,7 @@ const md = new MarkdownIt({
   xhtmlOut: false, // Use '/' to close single tags (<br />)
   breaks: false, // Convert '\n' in paragraphs into <br>
   langPrefix: "language-", // CSS language prefix for fenced blocks
-  linkify: false, // Disable autoconvert URL-like text to links to prevent nested <a> tags
+  linkify: true, // Disable autoconvert URL-like text to links to prevent nested <a> tags
   typographer: true, // Enable some language-neutral replacement + quotes beautification
 });
 
@@ -113,7 +113,7 @@ function extractListFromTokens(tokens: Token[]): string[] {
       // Use token's text property or extract from tokens
       const text = token.text || extractTextFromTokens([token]);
       // Check if it looks like a list item (starts with bullet point)
-      const lines = text.split("\n").filter((line) => line.trim());
+      const lines = text.split("\n").filter((line: string) => line.trim());
       for (const line of lines) {
         const match = line.match(/^(?:[-*+]|•)\s*(.+)$/);
         if (match) {
@@ -286,18 +286,32 @@ async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
            </div>`
         : "";
 
-      return `<a class="game-card-link" href="${g.artifactPath}">
+      // Escape quotes for data attributes
+      const escapeQuotes = (str: string) =>
+        str.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
+      return `<div class="game-card-container"
+        data-game-id="${g.id}"
+        data-title="${escapeQuotes(g.title)}"
+        data-team-name="${escapeQuotes(g.teamName)}"
+        data-game-intro="${escapeQuotes(intro)}"
+        data-operations="${escapeQuotes(operations)}"
+        data-features="${escapeQuotes(features)}"
+        data-team-info="${escapeQuotes(teamInfo)}"
+        data-artifact-path="${g.artifactPath}">
       <div class="game-card ${g.award ? "award-winner" : ""}">
         ${awardBadge}
         <h3 class="game-title">${md.renderInline(g.title)}</h3>
         <div class="team-name">🏆 ${md.renderInline(g.teamName)}</div>
         <div class="section"><h4>游戏简介</h4>${intro}</div>
-        <div class="section"><h4>操作说明</h4>${operations}</div>
-        <div class="section"><h4>技术特色</h4>${features}</div>
-        <div class="section"><h4>团队信息</h4>${teamInfo}</div>
-        <div class="play-button">▶️ 立即游玩</div>
+        <div class="card-actions">
+          <button class="details-button">📖 查看详情</button>
+          <a href="${
+            g.artifactPath
+          }" class="play-button" target="_blank">▶️ 立即游玩</a>
+        </div>
       </div>
-    </a>`;
+    </div>`;
     })
     .join("\n");
   return tpl
