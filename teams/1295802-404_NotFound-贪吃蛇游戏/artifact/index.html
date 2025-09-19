@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贪吃蛇游戏 - MoonBit</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c0c0c, #1a1a2e, #16213e, #0f3460);
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+                       radial-gradient(circle at 80% 20%, rgba(255, 82, 82, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .game-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(255, 255, 255, 0.05),
+                        0 0 30px rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            animation: containerSlideIn 0.8s ease-out;
+        }
+        
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            animation: shimmer 3s infinite linear;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A, #CDDC39);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #4CAF50, transparent);
+            border-radius: 2px;
+        }
+        
+        #game-canvas {
+            border: 4px solid #4CAF50;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            margin: 30px 0;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7),
+                        inset 0 0 20px rgba(76, 175, 80, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        #game-canvas:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8),
+                        inset 0 0 25px rgba(76, 175, 80, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .score {
+            font-size: 32px;
+            margin: 25px 0;
+            font-weight: 600;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #score {
+            color: #4CAF50;
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+            animation: scorePulse 0.5s ease-out;
+        }
+        
+        .controls {
+            margin: 30px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.6),
+                        0 0 0 1px rgba(255, 255, 255, 0.15);
+            background: linear-gradient(145deg, #45a049, #4CAF50);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:active {
+            transform: translateY(0) scale(1);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .game-over {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            animation: fadeInOverlay 0.5s ease-out;
+        }
+        
+        .game-over-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(20, 20, 20, 0.98));
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7),
+                        0 0 0 1px rgba(255, 82, 82, 0.2),
+                        0 0 40px rgba(255, 82, 82, 0.3);
+            animation: gameOverSlideIn 0.6s ease-out 0.2s both;
+        }
+        
+        .game-over h2 {
+            color: #FF5252;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+            animation: gameOverText 1s ease-in-out infinite alternate;
+        }
+        
+        .game-over p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            font-size: 16px;
+            color: #aaa;
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .mobile-controls {
+            display: none;
+            margin-top: 35px;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .direction-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .direction-btn {
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .direction-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.3s ease;
+        }
+        
+        .direction-btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 3px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .direction-btn:active::before {
+            left: 100%;
+        }
+
+        .music-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        @keyframes containerSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 0 rgba(76, 175, 80, 0.5); }
+            100% { text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 20px rgba(76, 175, 80, 0.8); }
+        }
+        
+        @keyframes scorePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes gameOverSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes gameOverText {
+            0% { transform: scale(1); text-shadow: 0 0 15px rgba(255, 82, 82, 0.5); }
+            100% { transform: scale(1.05); text-shadow: 0 0 25px rgba(255, 82, 82, 0.8); }
+        }
+        
+        @keyframes snakeSegment {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes foodPulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 25px;
+                margin: 15px;
+                border-radius: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .score {
+                font-size: 26px;
+                padding: 12px 25px;
+            }
+            
+            #score {
+                font-size: 30px;
+            }
+            
+            #game-canvas {
+                width: 320px;
+                height: 320px;
+            }
+            
+            button {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+            
+            .mobile-controls {
+                display: flex;
+            }
+            
+            .instructions {
+                display: none;
+            }
+            
+            .direction-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 24px;
+            }
+            
+            .game-over-content {
+                padding: 30px;
+                margin: 20px;
+            }
+            
+            .game-over h2 {
+                font-size: 2.2rem;
+            }
+            
+            .game-over p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            #game-canvas {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .score {
+                font-size: 22px;
+            }
+            
+            #score {
+                font-size: 26px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .direction-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+<h1>贪吃蛇游戏</h1>
+<div class="score">分数: <span id="score">0</span></div>
+        <canvas id="game-canvas" width="400" height="400"></canvas>
+        <div class="controls">
+<button id="start-btn">开始游戏</button>
+<button id="pause-btn">暂停</button>
+        </div>
+<div class="instructions">
+    使用方向键控制蛇。点击游戏区域改变方向。
+</div>
+        
+        <div class="mobile-controls">
+            <div class="direction-row">
+                <button class="direction-btn" id="up-btn">↑</button>
+            </div>
+            <div class="direction-row">
+                <button class="direction-btn" id="left-btn">←</button>
+                <button class="direction-btn" id="right-btn">→</button>
+            </div>
+            <div class="direction-row">
+                <button class="direction-btn" id="down-btn">↓</button>
+            </div>
+        </div>
+        
+        <!-- 音乐控制 -->
+        <div class="music-controls">
+            <button id="music-toggle">🔇 音乐关</button>
+        </div>
+    </div>
+    
+    <div id="game-over" class="game-over">
+        <div class="game-over-content">
+<h2>游戏结束!</h2>
+<p>你的分数: <span id="final-score">0</span></p>
+<button id="restart-btn">再玩一次</button>
+        </div>
+    </div>
+    
+    <!-- 背景音乐 -->
+    <audio id="bg-music" loop>
+        <source src="music/retro-arcade-game-music-396890.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+
+    <!-- MoonBit 编译后的游戏逻辑 -->
+    <script src="snake-game.js"></script>
+
+    <script>
+        // 游戏配置
+        const GRID_SIZE = 20;
+        const GAME_SPEED = 150;
+        
+        // 游戏状态
+        let gameState;
+        let gameRunning = false;
+        let gameLoop;
+        let canvas, ctx;
+        let musicEnabled = false;
+        let bgMusic;
+        
+        // 初始化游戏
+        function initGame() {
+            canvas = document.getElementById('game-canvas');
+            ctx = canvas.getContext('2d');
+            bgMusic = document.getElementById('bg-music');
+            
+            // 设置事件监听器
+            document.getElementById('start-btn').addEventListener('click', startGame);
+            document.getElementById('pause-btn').addEventListener('click', togglePause);
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
+            document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+            
+            // 键盘控制
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // 鼠标控制
+            canvas.addEventListener('click', handleMouseClick);
+            
+            // 移动设备控制
+            document.getElementById('up-btn').addEventListener('touchstart', () => handleDirectionBtn(0)); // Up
+            document.getElementById('down-btn').addEventListener('touchstart', () => handleDirectionBtn(1)); // Down
+            document.getElementById('left-btn').addEventListener('touchstart', () => handleDirectionBtn(2)); // Left
+            document.getElementById('right-btn').addEventListener('touchstart', () => handleDirectionBtn(3)); // Right
+            
+            // 同时为桌面测试添加点击事件
+            document.getElementById('up-btn').addEventListener('click', () => handleDirectionBtn(0));
+            document.getElementById('down-btn').addEventListener('click', () => handleDirectionBtn(1));
+            document.getElementById('left-btn').addEventListener('click', () => handleDirectionBtn(2));
+            document.getElementById('right-btn').addEventListener('click', () => handleDirectionBtn(3));
+            
+            // 初始化游戏状态
+            resetGame();
+        }
+        
+        function resetGame() {
+            // 使用 MoonBit 初始化游戏状态
+            gameState = username$snake_main$$js_init_game();
+            updateScore();
+        }
+        
+        function startGame() {
+            if (!gameRunning) {
+                gameRunning = true;
+                resetGame();
+                gameLoop = setInterval(updateGame, GAME_SPEED);
+            }
+        }
+        
+        function togglePause() {
+            if (gameRunning) {
+                clearInterval(gameLoop);
+                gameRunning = false;
+                
+                // 游戏暂停时暂停音乐
+                if (musicEnabled && !bgMusic.paused) {
+                    bgMusic.pause();
+                }
+            } else {
+                gameLoop = setInterval(updateGame, GAME_SPEED);
+                gameRunning = true;
+                
+                // 游戏恢复时恢复音乐
+                if (musicEnabled && bgMusic.paused) {
+                    bgMusic.play().catch(error => {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        function restartGame() {
+            document.getElementById('game-over').style.display = 'none';
+            startGame();
+        }
+        
+        function updateGame() {
+            // 使用 MoonBit 移动蛇并更新游戏状态
+            gameState = username$snake_main$$js_move_snake(gameState);
+            
+            // 检查游戏是否结束
+            if (gameState.game_over) {
+                gameOver();
+                return;
+            }
+            
+            // 更新分数
+            updateScore();
+            
+            // 绘制游戏
+            drawGame();
+        }
+        
+        function drawGame() {
+            // 使用渐变背景清除画布
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#0a0a0a');
+            gradient.addColorStop(1, '#1a1a1a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制网格图案
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x <= canvas.width; x += GRID_SIZE) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y <= canvas.height; y += GRID_SIZE) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // 从游戏状态获取蛇和食物数据
+            const snake = gameState.snake;
+            const food = gameState.food;
+            
+            // 绘制带有渐变和发光效果的蛇
+            snake.forEach((segment, index) => {
+                const x = segment.x * GRID_SIZE;
+                const y = segment.y * GRID_SIZE;
+                const size = GRID_SIZE - 1;
+                
+                // 头部有不同的样式
+                if (index === 0) {
+                    // 头部渐变
+                    const headGradient = ctx.createRadialGradient(
+                        x + size/2, y + size/2, 0,
+                        x + size/2, y + size/2, size
+                    );
+                    headGradient.addColorStop(0, '#4CAF50');
+                    headGradient.addColorStop(1, '#2E7D32');
+                    
+                    ctx.fillStyle = headGradient;
+                    ctx.shadowColor = 'rgba(76, 175, 80, 0.8)';
+                    ctx.shadowBlur = 10;
+                } else {
+                    // 身体渐变
+                    const bodyGradient = ctx.createRadialGradient(
+                        x + size/2, y + size/2, 0,
+                        x + size/2, y + size/2, size/2
+                    );
+                    bodyGradient.addColorStop(0, '#8BC34A');
+                    bodyGradient.addColorStop(1, '#689F38');
+                    
+                    ctx.fillStyle = bodyGradient;
+                    ctx.shadowColor = 'rgba(139, 195, 74, 0.6)';
+                    ctx.shadowBlur = 5;
+                }
+                
+                // 为蛇身段绘制圆角矩形
+                ctx.beginPath();
+                const radius = 4;
+                ctx.roundRect(x, y, size, size, radius);
+                ctx.fill();
+                
+                // 重置阴影
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                
+                // 为头部添加眼睛
+                if (index === 0) {
+                    ctx.fillStyle = '#000';
+                    // 根据方向绘制眼睛
+                    const eyeSize = 3;
+                    const eyeOffset = 4;
+                    const direction = gameState.direction;
+                    
+                    switch (direction) {
+                        case 3: // Right
+                            ctx.beginPath();
+                            ctx.arc(x + size - eyeOffset, y + eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(x + size - eyeOffset, y + size - eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+                            break;
+                        case 2: // Left
+                            ctx.beginPath();
+                            ctx.arc(x + eyeOffset, y + eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(x + eyeOffset, y + size - eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+                            break;
+                        case 0: // Up
+                            ctx.beginPath();
+                            ctx.arc(x + eyeOffset, y + eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(x + size - eyeOffset, y + eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+                            break;
+                        case 1: // Down
+                            ctx.beginPath();
+                            ctx.arc(x + eyeOffset, y + size - eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.arc(x + size - eyeOffset, y + size - eyeOffset, eyeSize, 0, Math.PI * 2);
+                            ctx.fill();
+                            break;
+                    }
+                }
+            });
+            
+            // 绘制带有脉冲动画的食物
+            const foodX = food.x * GRID_SIZE;
+            const foodY = food.y * GRID_SIZE;
+            const foodSize = GRID_SIZE - 1;
+            
+            // 创建食物渐变
+            const foodGradient = ctx.createRadialGradient(
+                foodX + foodSize/2, foodY + foodSize/2, 0,
+                foodX + foodSize/2, foodY + foodSize/2, foodSize
+            );
+            foodGradient.addColorStop(0, '#FF5252');
+            foodGradient.addColorStop(1, '#D32F2F');
+            
+            // 添加脉冲效果
+            const pulse = (Date.now() % 1000) / 1000;
+            const pulseSize = foodSize * (1 + pulse * 0.1);
+            
+            ctx.fillStyle = foodGradient;
+            ctx.shadowColor = 'rgba(255, 82, 82, 0.8)';
+            ctx.shadowBlur = 15;
+            
+            // 将食物绘制为苹果形状
+            ctx.beginPath();
+            ctx.arc(foodX + foodSize/2, foodY + foodSize/2, pulseSize/2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 添加苹果茎
+            ctx.fillStyle = '#795548';
+            ctx.fillRect(foodX + foodSize/2 - 1, foodY - 2, 2, 4);
+            
+            // 添加高光
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.arc(foodX + foodSize/2 - 2, foodY + foodSize/2 - 2, 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 重置阴影
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+        }
+        
+        function handleKeyPress(e) {
+            if (!gameRunning) return;
+            
+            let newDir;
+            switch (e.key) {
+                case 'ArrowUp':
+                    newDir = "up";
+                    break;
+                case 'ArrowDown':
+                    newDir = "down";
+                    break;
+                case 'ArrowLeft':
+                    newDir = "left";
+                    break;
+                case 'ArrowRight':
+                    newDir = "right";
+                    break;
+                default:
+                    return; // Ignore other keys
+            }
+            
+            // Use MoonBit function to change direction with 180-degree turn prevention
+            gameState = username$snake_main$$js_change_direction(gameState, newDir);
+        }
+        
+        function handleMouseClick(e) {
+            if (!gameRunning) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            
+            // 获取蛇头位置
+            const head = gameState.snake[0];
+            
+            // 根据点击位置计算方向
+            const headCenterX = head.x * GRID_SIZE + GRID_SIZE / 2;
+            const headCenterY = head.y * GRID_SIZE + GRID_SIZE / 2;
+            
+            const deltaX = clickX - headCenterX;
+            const deltaY = clickY - headCenterY;
+            
+            // 根据较大的 delta 改变方向
+            let newDir;
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > 0) {
+                    newDir = "right";
+                } else if (deltaX < 0) {
+                    newDir = "left";
+                }
+            } else {
+                if (deltaY > 0) {
+                    newDir = "down";
+                } else if (deltaY < 0) {
+                    newDir = "up";
+                }
+            }
+            
+            if (newDir) {
+                // Use MoonBit function to change direction with 180-degree turn prevention
+                gameState = username$snake_main$$js_change_direction(gameState, newDir);
+            }
+        }
+        
+        function handleDirectionBtn(dir) {
+            if (!gameRunning) return;
+            
+            let newDir;
+            switch (dir) {
+                case 0:
+                    newDir = "up";
+                    break;
+                case 1:
+                    newDir = "down";
+                    break;
+                case 2:
+                    newDir = "left";
+                    break;
+                case 3:
+                    newDir = "right";
+                    break;
+                default:
+                    return;
+            }
+            
+            // Use MoonBit function to change direction with 180-degree turn prevention
+            gameState = username$snake_main$$js_change_direction(gameState, newDir);
+        }
+        
+        function updateScore() {
+            const score = gameState.score;
+            document.getElementById('score').textContent = score;
+        }
+        
+        function gameOver() {
+            clearInterval(gameLoop);
+            gameRunning = false;
+            const score = gameState.score;
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('game-over').style.display = 'block';
+            
+            // 游戏结束时暂停音乐
+            if (musicEnabled && !bgMusic.paused) {
+                bgMusic.pause();
+            }
+        }
+        
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const musicBtn = document.getElementById('music-toggle');
+            
+            if (musicEnabled) {
+                // 启用音乐
+                musicBtn.innerHTML = '🔊 音乐开';
+                musicBtn.style.background = 'linear-gradient(145deg, #2196F3, #1976D2)';
+                musicBtn.style.boxShadow = '0 6px 20px rgba(33, 150, 243, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)';
+                
+                // 如果游戏正在运行，播放音乐
+                if (gameRunning && bgMusic.paused) {
+                    bgMusic.play().catch(error => {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            } else {
+                // 禁用音乐
+                musicBtn.innerHTML = '🔇 音乐关';
+                musicBtn.style.background = 'linear-gradient(145deg, #4CAF50, #45a049)';
+                musicBtn.style.boxShadow = '0 6px 20px rgba(76, 175, 80, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)';
+                
+                // 暂停音乐
+                if (!bgMusic.paused) {
+                    bgMusic.pause();
+                }
+            }
+        }
+        
+        function startGame() {
+            if (!gameRunning) {
+                gameRunning = true;
+                resetGame();
+                gameLoop = setInterval(updateGame, GAME_SPEED);
+                
+                // 游戏开始时，如果音乐已启用，播放音乐
+                if (musicEnabled && bgMusic.paused) {
+                    bgMusic.play().catch(error => {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        // 页面加载时初始化游戏
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>
