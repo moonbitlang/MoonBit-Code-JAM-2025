@@ -14,7 +14,7 @@ W、A、S、D 控制移动；鼠标环顾四周。
 
 使用 Raycast 算法和 Canvas2D API 制作伪 3D 效果的画面。
 
-# 团队信息
+## 团队信息
 
 团队名称：MoonBit 官方
 
