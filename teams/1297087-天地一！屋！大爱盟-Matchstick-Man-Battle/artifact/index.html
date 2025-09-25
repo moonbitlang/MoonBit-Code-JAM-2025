@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+    <!-- 首先加载 Box2D 物理引擎库 -->
+    <script type="text/javascript" src="./jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+    jQuery.noConflict();
+    Object.extend = jQuery.extend;
+    </script>
+    <script src="./box2d.js"></script>
+    <!-- 然后再加载我们的游戏代码 -->
+    <script src="Game.js" defer></script>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+
+</html>
