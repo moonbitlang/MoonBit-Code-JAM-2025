@@ -20,3 +20,7 @@
 ## 团队信息
 
 团队由香港科技大学广州与中山大学的大二本科生共同组成，大多数成员是 [`MGPIC 2024`]([飞机大战](https://moonbitlang.github.io/MoonBit-Code-JAM-2024/天地一！屋！大爱盟/index.html)) 的决赛成员
+
+## 视频链接
+
+[《Matchstick-Man-Battle》震撼级超级内测发布](https://www.bilibili.com/video/BV14aJ9zfEgb/?vd_source=7c5af907927ab5070c4787c2f1712d49)
