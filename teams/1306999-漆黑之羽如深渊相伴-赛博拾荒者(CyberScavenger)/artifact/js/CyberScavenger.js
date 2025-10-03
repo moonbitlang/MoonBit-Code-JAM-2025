@@ -307,6 +307,7 @@ function ButtonAction$SetShapeFilter(param0) {
 }
 ButtonAction$SetShapeFilter.prototype.$tag = 4;
 const ButtonAction$UnlockAudio = { $tag: 5 };
+const ButtonAction$NextGuidePage = { $tag: 6 };
 function ButtonAppearance$FromPicture(param0, param1) {
   this._0 = param0;
   this._1 = param1;
@@ -451,6 +452,8 @@ const SuYiTao$45$SYT$CyberScavenger$$explosion_animation = Milky2018$selene$spri
 const SuYiTao$45$SYT$CyberScavenger$$vfx_library = moonbitlang$core$builtin$$Map$new$46$inner$13$(8);
 const SuYiTao$45$SYT$CyberScavenger$$is_paused = moonbitlang$core$ref$$Ref$new$8$(false);
 const SuYiTao$45$SYT$CyberScavenger$$spawn_timer = moonbitlang$core$ref$$Ref$new$14$(10);
+const SuYiTao$45$SYT$CyberScavenger$$current_guide_image_index = moonbitlang$core$ref$$Ref$new$4$(0);
+const SuYiTao$45$SYT$CyberScavenger$$guide_entities = moonbitlang$core$ref$$Ref$new$11$([]);
 const SuYiTao$45$SYT$CyberScavenger$$synergy_panel_entities = moonbitlang$core$ref$$Ref$new$11$([]);
 const SuYiTao$45$SYT$CyberScavenger$$detail_panel_entities = moonbitlang$core$ref$$Ref$new$11$([]);
 const SuYiTao$45$SYT$CyberScavenger$$squad_builder_unit_buttons = moonbitlang$core$ref$$Ref$new$11$([]);
@@ -461,6 +464,7 @@ const SuYiTao$45$SYT$CyberScavenger$$current_synergy_filter = moonbitlang$core$r
 const SuYiTao$45$SYT$CyberScavenger$$squad_display_slots = moonbitlang$core$ref$$Ref$new$19$([]);
 const SuYiTao$45$SYT$CyberScavenger$$sticky_unit_for_detail_view = moonbitlang$core$ref$$Ref$new$16$(undefined);
 const SuYiTao$45$SYT$CyberScavenger$$hovered_unit_for_detail_view = moonbitlang$core$ref$$Ref$new$16$(undefined);
+const SuYiTao$45$SYT$CyberScavenger$$squad_guide_shown = moonbitlang$core$ref$$Ref$new$8$(false);
 const SuYiTao$45$SYT$CyberScavenger$$bgm_handle = moonbitlang$core$ref$$Ref$new$20$(undefined);
 const SuYiTao$45$SYT$CyberScavenger$$current_ui_state = moonbitlang$core$ref$$Ref$new$21$(0);
 const SuYiTao$45$SYT$CyberScavenger$$selected_squad = moonbitlang$core$ref$$Ref$new$22$([]);
@@ -14533,22 +14537,61 @@ function Kaida$45$Amethyst$math$$atan2(y, x) {
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$equal$73$(_x_1013, _x_1014) {
-  if (_x_1013 === 0) {
-    if (_x_1014 === 0) {
+function moonbitlang$core$builtin$$Eq$equal$73$(_x_1023, _x_1024) {
+  if (_x_1023 === 0) {
+    if (_x_1024 === 0) {
       return true;
     } else {
       return false;
     }
   } else {
-    if (_x_1014 === 1) {
+    if (_x_1024 === 1) {
       return true;
     } else {
       return false;
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$equal$21$(_x_1005, _x_1006) {
+function moonbitlang$core$builtin$$Eq$equal$21$(_x_1015, _x_1016) {
+  switch (_x_1015) {
+    case 0: {
+      if (_x_1016 === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 1: {
+      if (_x_1016 === 1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 2: {
+      if (_x_1016 === 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 3: {
+      if (_x_1016 === 3) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    default: {
+      if (_x_1016 === 4) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+}
+function moonbitlang$core$builtin$$Eq$equal$70$(_x_1005, _x_1006) {
   switch (_x_1005) {
     case 0: {
       if (_x_1006 === 0) {
@@ -14571,15 +14614,73 @@ function moonbitlang$core$builtin$$Eq$equal$21$(_x_1005, _x_1006) {
         return false;
       }
     }
-    case 3: {
+    default: {
       if (_x_1006 === 3) {
         return true;
       } else {
         return false;
       }
     }
+  }
+}
+function moonbitlang$core$builtin$$Show$output$70$(_x_1001, _x_1002) {
+  switch (_x_1001) {
+    case 0: {
+      _x_1002.method_0(_x_1002.self, "Orange");
+      return;
+    }
+    case 1: {
+      _x_1002.method_0(_x_1002.self, "Purple");
+      return;
+    }
+    case 2: {
+      _x_1002.method_0(_x_1002.self, "Green");
+      return;
+    }
     default: {
-      if (_x_1006 === 4) {
+      _x_1002.method_0(_x_1002.self, "Blue");
+      return;
+    }
+  }
+}
+function moonbitlang$core$builtin$$Hash$hash_combine$70$(_x_997, _x_998) {
+  switch (_x_997) {
+    case 0: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_998, 0);
+      return;
+    }
+    case 1: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_998, 1);
+      return;
+    }
+    case 2: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_998, 2);
+      return;
+    }
+    default: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_998, 3);
+      return;
+    }
+  }
+}
+function moonbitlang$core$builtin$$Eq$equal$71$(_x_993, _x_994) {
+  switch (_x_993) {
+    case 0: {
+      if (_x_994 === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 1: {
+      if (_x_994 === 1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    default: {
+      if (_x_994 === 2) {
         return true;
       } else {
         return false;
@@ -14587,200 +14688,103 @@ function moonbitlang$core$builtin$$Eq$equal$21$(_x_1005, _x_1006) {
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$equal$70$(_x_995, _x_996) {
-  switch (_x_995) {
+function moonbitlang$core$builtin$$Show$output$71$(_x_989, _x_990) {
+  switch (_x_989) {
     case 0: {
-      if (_x_996 === 0) {
+      _x_990.method_0(_x_990.self, "Square");
+      return;
+    }
+    case 1: {
+      _x_990.method_0(_x_990.self, "Triangle");
+      return;
+    }
+    default: {
+      _x_990.method_0(_x_990.self, "Circle");
+      return;
+    }
+  }
+}
+function moonbitlang$core$builtin$$Eq$equal$50$(_x_981, _x_982) {
+  switch (_x_981) {
+    case 0: {
+      if (_x_982 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_996 === 1) {
+      if (_x_982 === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_996 === 2) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    default: {
-      if (_x_996 === 3) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-function moonbitlang$core$builtin$$Show$output$70$(_x_991, _x_992) {
-  switch (_x_991) {
-    case 0: {
-      _x_992.method_0(_x_992.self, "Orange");
-      return;
-    }
-    case 1: {
-      _x_992.method_0(_x_992.self, "Purple");
-      return;
-    }
-    case 2: {
-      _x_992.method_0(_x_992.self, "Green");
-      return;
-    }
-    default: {
-      _x_992.method_0(_x_992.self, "Blue");
-      return;
-    }
-  }
-}
-function moonbitlang$core$builtin$$Hash$hash_combine$70$(_x_987, _x_988) {
-  switch (_x_987) {
-    case 0: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_988, 0);
-      return;
-    }
-    case 1: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_988, 1);
-      return;
-    }
-    case 2: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_988, 2);
-      return;
-    }
-    default: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_988, 3);
-      return;
-    }
-  }
-}
-function moonbitlang$core$builtin$$Eq$equal$71$(_x_983, _x_984) {
-  switch (_x_983) {
-    case 0: {
-      if (_x_984 === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 1: {
-      if (_x_984 === 1) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    default: {
-      if (_x_984 === 2) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-function moonbitlang$core$builtin$$Show$output$71$(_x_979, _x_980) {
-  switch (_x_979) {
-    case 0: {
-      _x_980.method_0(_x_980.self, "Square");
-      return;
-    }
-    case 1: {
-      _x_980.method_0(_x_980.self, "Triangle");
-      return;
-    }
-    default: {
-      _x_980.method_0(_x_980.self, "Circle");
-      return;
-    }
-  }
-}
-function moonbitlang$core$builtin$$Eq$equal$50$(_x_971, _x_972) {
-  switch (_x_971) {
-    case 0: {
-      if (_x_972 === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 1: {
-      if (_x_972 === 1) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 2: {
-      if (_x_972 === 2) {
+      if (_x_982 === 2) {
         return true;
       } else {
         return false;
       }
     }
     case 3: {
-      if (_x_972 === 3) {
+      if (_x_982 === 3) {
         return true;
       } else {
         return false;
       }
     }
     case 4: {
-      if (_x_972 === 4) {
+      if (_x_982 === 4) {
         return true;
       } else {
         return false;
       }
     }
     case 5: {
-      if (_x_972 === 5) {
+      if (_x_982 === 5) {
         return true;
       } else {
         return false;
       }
     }
     case 6: {
-      if (_x_972 === 6) {
+      if (_x_982 === 6) {
         return true;
       } else {
         return false;
       }
     }
     case 7: {
-      if (_x_972 === 7) {
+      if (_x_982 === 7) {
         return true;
       } else {
         return false;
       }
     }
     case 8: {
-      if (_x_972 === 8) {
+      if (_x_982 === 8) {
         return true;
       } else {
         return false;
       }
     }
     case 9: {
-      if (_x_972 === 9) {
+      if (_x_982 === 9) {
         return true;
       } else {
         return false;
       }
     }
     case 10: {
-      if (_x_972 === 10) {
+      if (_x_982 === 10) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_972 === 11) {
+      if (_x_982 === 11) {
         return true;
       } else {
         return false;
@@ -14788,241 +14792,156 @@ function moonbitlang$core$builtin$$Eq$equal$50$(_x_971, _x_972) {
     }
   }
 }
-function moonbitlang$core$builtin$$Show$output$50$(_x_967, _x_968) {
-  switch (_x_967) {
+function moonbitlang$core$builtin$$Show$output$50$(_x_977, _x_978) {
+  switch (_x_977) {
     case 0: {
-      _x_968.method_0(_x_968.self, "OrangeSquare");
+      _x_978.method_0(_x_978.self, "OrangeSquare");
       return;
     }
     case 1: {
-      _x_968.method_0(_x_968.self, "OrangeTriangle");
+      _x_978.method_0(_x_978.self, "OrangeTriangle");
       return;
     }
     case 2: {
-      _x_968.method_0(_x_968.self, "OrangeCircle");
+      _x_978.method_0(_x_978.self, "OrangeCircle");
       return;
     }
     case 3: {
-      _x_968.method_0(_x_968.self, "PurpleSquare");
+      _x_978.method_0(_x_978.self, "PurpleSquare");
       return;
     }
     case 4: {
-      _x_968.method_0(_x_968.self, "PurpleTriangle");
+      _x_978.method_0(_x_978.self, "PurpleTriangle");
       return;
     }
     case 5: {
-      _x_968.method_0(_x_968.self, "PurpleCircle");
+      _x_978.method_0(_x_978.self, "PurpleCircle");
       return;
     }
     case 6: {
-      _x_968.method_0(_x_968.self, "GreenSquare");
+      _x_978.method_0(_x_978.self, "GreenSquare");
       return;
     }
     case 7: {
-      _x_968.method_0(_x_968.self, "GreenTriangle");
+      _x_978.method_0(_x_978.self, "GreenTriangle");
       return;
     }
     case 8: {
-      _x_968.method_0(_x_968.self, "GreenCircle");
+      _x_978.method_0(_x_978.self, "GreenCircle");
       return;
     }
     case 9: {
-      _x_968.method_0(_x_968.self, "BlueSquare");
+      _x_978.method_0(_x_978.self, "BlueSquare");
       return;
     }
     case 10: {
-      _x_968.method_0(_x_968.self, "BlueTriangle");
+      _x_978.method_0(_x_978.self, "BlueTriangle");
       return;
     }
     default: {
-      _x_968.method_0(_x_968.self, "BlueCircle");
+      _x_978.method_0(_x_978.self, "BlueCircle");
       return;
     }
   }
 }
-function moonbitlang$core$builtin$$Hash$hash_combine$50$(_x_963, _x_964) {
-  switch (_x_963) {
+function moonbitlang$core$builtin$$Hash$hash_combine$50$(_x_973, _x_974) {
+  switch (_x_973) {
     case 0: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 0);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 0);
       return;
     }
     case 1: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 1);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 1);
       return;
     }
     case 2: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 2);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 2);
       return;
     }
     case 3: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 3);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 3);
       return;
     }
     case 4: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 4);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 4);
       return;
     }
     case 5: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 5);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 5);
       return;
     }
     case 6: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 6);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 6);
       return;
     }
     case 7: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 7);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 7);
       return;
     }
     case 8: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 8);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 8);
       return;
     }
     case 9: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 9);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 9);
       return;
     }
     case 10: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 10);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 10);
       return;
     }
     default: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_964, 11);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_974, 11);
       return;
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$equal$82$(_x_959, _x_960) {
-  switch (_x_959) {
+function moonbitlang$core$builtin$$Eq$equal$82$(_x_969, _x_970) {
+  switch (_x_969) {
     case 0: {
-      if (_x_960 === 0) {
+      if (_x_970 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_960 === 1) {
+      if (_x_970 === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_960 === 2) {
+      if (_x_970 === 2) {
         return true;
       } else {
         return false;
       }
     }
     case 3: {
-      if (_x_960 === 3) {
+      if (_x_970 === 3) {
         return true;
       } else {
         return false;
       }
     }
     case 4: {
-      if (_x_960 === 4) {
+      if (_x_970 === 4) {
         return true;
       } else {
         return false;
       }
     }
     case 5: {
-      if (_x_960 === 5) {
+      if (_x_970 === 5) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_960 === 6) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-}
-function moonbitlang$core$builtin$$Hash$hash_combine$82$(_x_951, _x_952) {
-  switch (_x_951) {
-    case 0: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 0);
-      return;
-    }
-    case 1: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 1);
-      return;
-    }
-    case 2: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 2);
-      return;
-    }
-    case 3: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 3);
-      return;
-    }
-    case 4: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 4);
-      return;
-    }
-    case 5: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 5);
-      return;
-    }
-    default: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_952, 6);
-      return;
-    }
-  }
-}
-function moonbitlang$core$builtin$$Eq$equal$81$(_x_947, _x_948) {
-  switch (_x_947) {
-    case 0: {
-      if (_x_948 === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 1: {
-      if (_x_948 === 1) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 2: {
-      if (_x_948 === 2) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 3: {
-      if (_x_948 === 3) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 4: {
-      if (_x_948 === 4) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    case 5: {
-      if (_x_948 === 5) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    default: {
-      if (_x_948 === 6) {
+      if (_x_970 === 6) {
         return true;
       } else {
         return false;
@@ -15030,34 +14949,119 @@ function moonbitlang$core$builtin$$Eq$equal$81$(_x_947, _x_948) {
     }
   }
 }
-function moonbitlang$core$builtin$$Hash$hash_combine$81$(_x_939, _x_940) {
-  switch (_x_939) {
+function moonbitlang$core$builtin$$Hash$hash_combine$82$(_x_961, _x_962) {
+  switch (_x_961) {
     case 0: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 0);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 0);
       return;
     }
     case 1: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 1);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 1);
       return;
     }
     case 2: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 2);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 2);
       return;
     }
     case 3: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 3);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 3);
       return;
     }
     case 4: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 4);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 4);
       return;
     }
     case 5: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 5);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 5);
       return;
     }
     default: {
-      moonbitlang$core$builtin$$Hasher$combine_int(_x_940, 6);
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_962, 6);
+      return;
+    }
+  }
+}
+function moonbitlang$core$builtin$$Eq$equal$81$(_x_957, _x_958) {
+  switch (_x_957) {
+    case 0: {
+      if (_x_958 === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 1: {
+      if (_x_958 === 1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 2: {
+      if (_x_958 === 2) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 3: {
+      if (_x_958 === 3) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 4: {
+      if (_x_958 === 4) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    case 5: {
+      if (_x_958 === 5) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    default: {
+      if (_x_958 === 6) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+}
+function moonbitlang$core$builtin$$Hash$hash_combine$81$(_x_949, _x_950) {
+  switch (_x_949) {
+    case 0: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 0);
+      return;
+    }
+    case 1: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 1);
+      return;
+    }
+    case 2: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 2);
+      return;
+    }
+    case 3: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 3);
+      return;
+    }
+    case 4: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 4);
+      return;
+    }
+    case 5: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 5);
+      return;
+    }
+    default: {
+      moonbitlang$core$builtin$$Hasher$combine_int(_x_950, 6);
       return;
     }
   }
@@ -15947,7 +15951,25 @@ function SuYiTao$45$SYT$CyberScavenger$$setup_squad_display_slots() {
     }
   }
 }
+function SuYiTao$45$SYT$CyberScavenger$$setup_squad_guide_ui() {
+  const squad_guide_image_paths = ["assets/gui/guide/squad_guide_01.png", "assets/gui/guide/squad_guide_02.png", "assets/gui/guide/squad_guide_03.png", "assets/gui/guide/squad_guide_04.png", "assets/gui/guide/squad_guide_05.png"];
+  const guide_image_entity = Milky2018$selene$system$$Entity$new();
+  moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$position$$positions, guide_image_entity, { _0: 0, _1: 0 });
+  const current_path = moonbitlang$core$array$$Array$at$75$(squad_guide_image_paths, SuYiTao$45$SYT$CyberScavenger$$current_guide_image_index.val);
+  const sprite = Milky2018$selene$sprite$$Sprite$from_picture$46$inner(Milky2018$selene$sprite$$Picture$new({ _0: 1280, _1: 720 }, current_path, undefined, undefined), 999, { _0: 0, _1: 0 }, 1);
+  moonbitlang$core$builtin$$Map$set$7$(Milky2018$selene$sprite$$sprites, guide_image_entity, sprite);
+  moonbitlang$core$builtin$$Map$set$10$(Milky2018$selene$ui$$uis, guide_image_entity, Milky2018$selene$ui$$Ui$new());
+  moonbitlang$core$array$$Array$push$6$(SuYiTao$45$SYT$CyberScavenger$$guide_entities.val, guide_image_entity);
+  const guide_button_entity = Milky2018$selene$system$$Entity$new();
+  const button_comp = { area: { position: { _0: 640, _1: 360 }, size: { _0: 1280, _1: 720 } }, action: ButtonAction$NextGuidePage, normal_appearance: new ButtonAppearance$FromPicture("", { _0: 0, _1: 0 }), hover_appearance: new ButtonAppearance$FromPicture("", { _0: 0, _1: 0 }), is_hovered: false };
+  moonbitlang$core$builtin$$Map$set$9$(SuYiTao$45$SYT$CyberScavenger$$buttons, guide_button_entity, button_comp);
+  moonbitlang$core$array$$Array$push$6$(SuYiTao$45$SYT$CyberScavenger$$guide_entities.val, guide_button_entity);
+}
 function SuYiTao$45$SYT$CyberScavenger$$setup_squad_builder_ui() {
+  if (!SuYiTao$45$SYT$CyberScavenger$$squad_guide_shown.val) {
+    moonbitlang$core$builtin$$println$75$("【UI】: 首次进入组队界面，显示新手引导...");
+    SuYiTao$45$SYT$CyberScavenger$$setup_squad_guide_ui();
+  }
   const squad_background = Milky2018$selene$system$$Entity$new();
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$position$$positions, squad_background, { _0: 0, _1: 0 });
   const squad_background_pic = Milky2018$selene$sprite$$Picture$new({ _0: 1280, _1: 720 }, "assets/gui/squad/squad_background.png", undefined, undefined);
@@ -15975,6 +15997,34 @@ function SuYiTao$45$SYT$CyberScavenger$$setup_squad_builder_ui() {
   SuYiTao$45$SYT$CyberScavenger$$setup_filter_tabs();
   SuYiTao$45$SYT$CyberScavenger$$setup_squad_builder_grid_buttons();
   SuYiTao$45$SYT$CyberScavenger$$setup_squad_display_slots();
+}
+function SuYiTao$45$SYT$CyberScavenger$$cleanup_guide_ui() {
+  moonbitlang$core$builtin$$println$75$("【UI清理】: 正在清理引导页面...");
+  const _arr = SuYiTao$45$SYT$CyberScavenger$$guide_entities.val;
+  const _len = _arr.length;
+  let _tmp = 0;
+  while (true) {
+    const _i = _tmp;
+    if (_i < _len) {
+      const entity = _arr[_i];
+      const _bind$8 = moonbitlang$core$builtin$$Map$get$9$(SuYiTao$45$SYT$CyberScavenger$$buttons, entity);
+      if (_bind$8 === undefined) {
+      } else {
+        moonbitlang$core$builtin$$Map$remove$9$(SuYiTao$45$SYT$CyberScavenger$$buttons, entity);
+      }
+      const _bind$9 = moonbitlang$core$builtin$$Map$get$7$(Milky2018$selene$sprite$$sprites, entity);
+      if (_bind$9 === undefined) {
+      } else {
+        moonbitlang$core$builtin$$Map$remove$7$(Milky2018$selene$sprite$$sprites, entity);
+      }
+      Milky2018$selene$system$$Entity$destroy(entity);
+      _tmp = _i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  SuYiTao$45$SYT$CyberScavenger$$guide_entities.val = [];
 }
 function SuYiTao$45$SYT$CyberScavenger$$setup_game_over_ui() {
   const game_over_title = Milky2018$selene$system$$Entity$new();
@@ -17017,17 +17067,32 @@ function SuYiTao$45$SYT$CyberScavenger$$button_system(backend) {
           _foreach_result.val = new $64$moonbitlang$47$core$47$builtin$46$ForeachResult$Return$9$(undefined);
           return 0;
         }
-        default: {
+        case 5: {
           if (!SuYiTao$45$SYT$CyberScavenger$$audio_unlocked.val) {
             moonbitlang$core$builtin$$println$75$("【音频】: 首次交互，解锁并播放BGM...");
             SuYiTao$45$SYT$CyberScavenger$$audio_unlocked.val = true;
-            const _p$2 = "../assets/sfx/inst.mp3";
+            const _p$2 = "assets/sfx/inst.mp3";
             const _p$3 = 0.1;
             const _p$4 = true;
             const handle = backend.method_11(backend.self, _p$2, _p$3, _p$4);
             SuYiTao$45$SYT$CyberScavenger$$bgm_handle.val = handle;
             SuYiTao$45$SYT$CyberScavenger$$cleanup_ui();
             SuYiTao$45$SYT$CyberScavenger$$setup_main_menu_ui();
+          }
+          _foreach_result.val = new $64$moonbitlang$47$core$47$builtin$46$ForeachResult$Return$9$(undefined);
+          return 0;
+        }
+        default: {
+          if (moonbitlang$core$builtin$$Eq$equal$21$(SuYiTao$45$SYT$CyberScavenger$$current_ui_state.val, 2) && !SuYiTao$45$SYT$CyberScavenger$$squad_guide_shown.val) {
+            SuYiTao$45$SYT$CyberScavenger$$current_guide_image_index.val = SuYiTao$45$SYT$CyberScavenger$$current_guide_image_index.val + 1 | 0;
+            SuYiTao$45$SYT$CyberScavenger$$cleanup_guide_ui();
+            if (SuYiTao$45$SYT$CyberScavenger$$current_guide_image_index.val < 5) {
+              moonbitlang$core$builtin$$println$75$(`【UI】: 切换到引导页 ${moonbitlang$core$builtin$$Show$to_string$4$(SuYiTao$45$SYT$CyberScavenger$$current_guide_image_index.val + 1 | 0)}`);
+              SuYiTao$45$SYT$CyberScavenger$$setup_squad_guide_ui();
+            } else {
+              moonbitlang$core$builtin$$println$75$("【UI】: 组队引导已完成，进入正常组队界面。");
+              SuYiTao$45$SYT$CyberScavenger$$squad_guide_shown.val = true;
+            }
           }
           _foreach_result.val = new $64$moonbitlang$47$core$47$builtin$46$ForeachResult$Return$9$(undefined);
           return 0;
@@ -17256,11 +17321,11 @@ function SuYiTao$45$SYT$CyberScavenger$$endless_spawner_system(_backend) {
   }
 }
 function SuYiTao$45$SYT$CyberScavenger$$setup_sfx_library() {
-  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 0, { path: "../assets/sfx/Shoot.wav", default_volume: 1 });
-  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 1, { path: "../assets/sfx/Shoot.wav", default_volume: 1 });
-  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 2, { path: "../assets/sfx/Hit.wav", default_volume: 0.8 });
-  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 6, { path: "../assets/sfx/Blip.wav", default_volume: 0.8 });
-  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 5, { path: "../assets/sfx/Dead.wav", default_volume: 0.8 });
+  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 0, { path: "assets/sfx/Shoot.wav", default_volume: 1 });
+  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 1, { path: "assets/sfx/Shoot.wav", default_volume: 1 });
+  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 2, { path: "assets/sfx/Hit.wav", default_volume: 0.8 });
+  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 6, { path: "assets/sfx/Blip.wav", default_volume: 0.8 });
+  moonbitlang$core$builtin$$Map$set$12$(SuYiTao$45$SYT$CyberScavenger$$sfx_library, 5, { path: "assets/sfx/Dead.wav", default_volume: 0.8 });
 }
 function SuYiTao$45$SYT$CyberScavenger$$audio_spawner_system(backend) {
   const _arr = SuYiTao$45$SYT$CyberScavenger$$sfx_requests.val;
