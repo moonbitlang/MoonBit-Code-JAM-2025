@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>记忆大师--Color忆 master</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background: -webkit-linear-gradient(90deg, #8521e8, #41376c);
+            background: linear-gradient(90deg, #8521e8, #41376c);
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-text {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 20px;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .wrap {
+            margin: 50px auto;
+            display: flex;
+            border-radius: 14px;
+        }
+
+        .leaderboard-container {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            width: 500px;
+            height: 400px;
+            margin-right: 20px;
+        }
+
+        .leaderboard {
+            padding: 10px;
+            width: 60%;
+        }
+
+        .leaderboard h2 {
+            margin-top: 0;
+        }
+
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            margin-bottom: 10px;
+        }
+
+        .separator {
+            background-color: #41376c;
+            width: 1px;
+        }
+
+        .other-content {
+            padding: 10px;
+            width: 40%;
+        }
+
+        .mark {
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            width: 500px;
+            height: auto;
+            margin-left: 20px;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .game-instructions {
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            width: 50%;
+            height: auto;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .button {
+            background-color: #4dd0e1;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 8px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .button:hover {
+            background-color: #2bbbad;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .separator {
+            background-color: #41376c;
+            width: 1px;
+            height: 400px;
+            margin: 0 20px;
+        }
+
+        .select-container {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-container label {
+            margin-right: 10px;
+        }
+
+        .select-container select {
+            background-color: #4dd0e1;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .select-container select:hover {
+            background-color: #2bbbad;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .select-container select:focus {
+            outline: none;
+        }
+
+        #canvas {
+            border-radius: 14px;
+        }
+
+        .game-credits {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+            width: 95%;
+            height: 140px;
+            margin: 0 auto;
+        }
+
+        .game-credits p {
+            text-align: left;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    <script src="main.js" defer></script>
+    <script>
+        let currentDifficulty = 'easy';
+
+        function resetGame() {
+            try {
+                if (typeof nopublish$pixeladventure$$generate_map === 'function' && currentDifficulty == 'easy') {
+                    nopublish$pixeladventure$$new_game_state.gameStarted = false;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        function randomBackground() {
+            try {
+                if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                    toggleCanvas();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        function startGame() {
+            try {
+                if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                    const modeDescription = document.getElementById('current-mode');
+                    const modeDescriptionLevel = document.getElementById('highest-level');
+                    switch (currentDifficulty) {
+                        case 'easy':
+                            nopublish$pixeladventure$$new_game_state.gameStarted = true;
+                            toggleCanvas();
+                            modeDescriptionLevel.textContent = nopublish$pixeladventure$$new_game_state.level;
+                            modeDescription.textContent = '简单模式';
+                            console.log("简单模式");
+                            break;
+                        case 'medium':
+                            modeDescription.textContent = '中等模式';
+                            console.log("中等模式");
+                            break;
+                        case 'hard':
+                            modeDescription.textContent = '地狱模式';
+                            console.log("地狱模式");
+                            break;
+                        default:
+                            modeDescription.textContent = '简单模式';
+                            console.log("未知难度模式");
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        function updateDifficulty() {
+            currentDifficulty = document.getElementById('difficulty').value;
+        }
+        function changeBeads() {
+            try {
+                const colors = [
+                    "#f0f8ff8", // 浅绿色
+                    "#f8d7da", // 浅紫色
+                    "#c0ffee", // 浅蓝色
+                    "#fbd786", // 浅橙色
+                    "#edc9af", // 浅粉色
+                    "#c7f1ff", // 浅青色
+                    "#9b59b6", // 浅紫色
+                    "#4b0082", // 深蓝色
+                    "#0000ff",  // 亮蓝色
+                    "#ff00ff00", // 亮绿色
+                    "#ffff00ff00", // 亮黄色
+                    "#ff8000", // 亮红色
+                    "#00ffff00", // 亮黄色
+                    "#800080080", // 深紫色
+                    "#008080808", // 青绿色
+                ];
+                const colorIndex = Math.floor(Math.random() * colors.length);
+                requestAnimationFrame(() => {
+                    document.body.style.background = `-webkit-linear-gradient(90deg, ${colors[colorIndex]}, ${colors[(colorIndex + 1) % colors.length]})`;
+                    document.body.style.background = `linear-gradient(90deg, ${colors[colorIndex]}, ${colors[(colorIndex + 1) % colors.length]})`;
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        function toggleCanvas() {
+            const canvas = document.getElementById('canvas');
+            const loadingGif = document.getElementById('loading-gif');
+
+            if (nopublish$pixeladventure$$new_game_state.gameStarted) {
+                // 如果canvas应该显示，则隐藏动图并显示canvas
+                canvas.style.display = 'block';
+                loadingGif.style.display = 'none';
+                nopublish$pixeladventure$$new_game_state.gameReStarted = true;
+            } else {
+                // 如果canvas应该隐藏，则显示动图并隐藏canvas
+                canvas.style.display = 'none';
+                loadingGif.style.display = 'block';
+            }
+        }
+    </script>
+</head>
+
+<body onload="toggleCanvas()">
+    <div class="top-text">记忆大师 v1.0.0版本（demo测试版）</div>
+    <div class="wrap">
+        <div class="leaderboard-container">
+            <div class="leaderboard">
+                <h2>Color忆 Master</h2>
+                <ul>
+                    <li>当前模式：<span id="current-mode">简单模式</span></li>
+                    <li>最高关卡：<span id="highest-level">1</span></li>
+                </ul>
+                <br>
+                <a target="_blank">游戏教程说明链接：未发布</a>
+                <br>
+                <br>
+                <a href="https://www.moonbitlang.cn/2025-mgpic-game" target="_blank">Moonbit编程大赛游戏赛道官方直达:
+                    https://www.moonbitlang.cn/2025-mgpic-game</a>
+                <br>
+                <p>您获得的荣誉勋章：(开发中)</p>
+            </div>
+            <div class="separator"></div>
+            <div class="other-content">
+                <p>记忆荣誉勋章</p>
+                <p>开发中</p>
+            </div>
+        </div>
+        <canvas id="canvas" style="display: block; margin: 0 auto;"></canvas>
+        <img id="loading-gif" src="assets/Background/lovegif2.gif"
+            style="display: none; margin: 0 auto; width: 360px;height: 360px;padding: 20px;border-radius: 14px;border: 4px solid #41376c;">
+        <div class="mark">
+            <div class="controls">
+                <button class="button" onclick="startGame()">开始游戏</button>
+                <button class="button" onclick="randomBackground()">故事模式(开发中)</button>
+                <button class="button" onclick="resetGame()">傻瓜按钮</button>
+                <button class="button" onclick="changeBeads()">更换主题</button>
+                <div class="select-container">
+                    <label for="difficulty">选择难度:</label>
+                    <select id="difficulty" onchange="updateDifficulty()">
+                        <option value="easy">简单模式</option>
+                        <option value="medium">中等模式(开发中)</option>
+                        <option value="hard">地狱模式(未开发)</option>
+                    </select>
+                </div>
+                <div class="select-container">
+                    <label for="ai">是否启动AI:</label>
+                    <select id="ai" onchange="toggleAI()">
+                        <option value="no">否</option>
+                        <option value="yes">是(开发中)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="game-instructions">
+                <h2>游戏说明</h2>
+                <p>点击开始按钮启动游戏，游戏里展示的change对应的0，1，2分别代表下方三个的选择，通过⬅左箭头和➡右箭头可以控制change的选择，确定选择后按下enter键确认答案，如果匹配则进入下一局，否则游戏结束。
+                </p>
+                <p>这里你可以进行主题随机切换，点击傻瓜按钮停止游戏，点击开始游戏继续，限制简单模式使用，供玩家练习，请挑战自己！<br>当前每一轮你有3秒钟的观察时间 ---后续会加上音效及时间限制----</p>
+            </div>
+        </div>
+    </div>
+    <div class="game-credits">
+        <h3>欢迎体验记忆大师！</h3>
+        <p>记忆大师 是由 零号送货员 开发的一款考验记忆力和颜色识别能力的游戏，旨在挑战您的记忆力和颜色辨识能力的游戏。玩家需要在限定时间内记住九个方块的颜色，并在时间结束后从三个选项中选出正确答案。游戏使用了
+            Moonbit 和 JavaScript
+            编程语言结合进行开发，融合AI图像生成，不同的游戏模式给您带来更多的体验，有不足之处请及时反馈！</p>
+    </div>
+</body>
+
+</html>
