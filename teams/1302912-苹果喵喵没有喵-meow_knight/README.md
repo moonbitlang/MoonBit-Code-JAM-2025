@@ -22,4 +22,4 @@
 - 作品名称：喵咪骑士 (Meow Knight)
 - 队名来源：本人就是苹果喵喵，热爱技术和分享
 - 联系方式: 3226742838@qq.com
-- b站视频链接：暂时无
+- b站视频链接：【[Moonbit]meow_knight】 https://www.bilibili.com/video/BV1aQxCzoES2/?share_source=copy_web&vd_source=14ac11d8b9af5883f39d7f85ae5d56df
