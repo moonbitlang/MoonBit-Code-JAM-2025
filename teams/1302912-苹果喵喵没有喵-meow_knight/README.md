@@ -9,10 +9,12 @@
 - 跳跃 方向上键 / W
 - 攻击/二段攻击 J / J * 2
 - 魔法攻击 K
+- 对话 F
+- 拾取 E
 
 ## 技术特色
 - 使用 MoonBit 编写核心逻辑，编译为Js
-- 前端仅 `index.html`，与 `meow_knight.js`
+- 前端仅 `index.html`，与 `meow_knight_test.js`
 - 美术/动效：斩击动作，敌人防御等
 
 ## 团队信息
