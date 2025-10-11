@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird - WASM版本</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #000000, #1a2a6c, #000000);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        #mainContainer {
+            display: flex;
+            gap: 60px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #infoPanel {
+            width: 320px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #87CEEB;
+            height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(135, 206, 235, 0.3) transparent;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            margin-top: 40px;
+        }
+        
+        #infoPanel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #infoPanel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        #infoPanel::-webkit-scrollbar-thumb {
+            background: rgba(135, 206, 235, 0.3);
+            border-radius: 3px;
+        }
+        
+        .info-section {
+            margin-bottom: 20px;
+        }
+        
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-section:first-child {
+            margin-bottom: 15px;
+        }
+        
+        .info-section h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #20B2AA;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .info-section p {
+            margin: 0 0 15px 0;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .game-modes h4 {
+            margin: 10px 0 8px 0;
+            font-size: 16px;
+            color: #20B2AA;
+        }
+        
+        .game-modes ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .game-modes li {
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .item-card {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .item-card:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-icon {
+            font-size: 20px;
+            margin-right: 8px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .item-info strong {
+            font-size: 12px;
+            color: #20B2AA;
+            margin-bottom: 2px;
+        }
+        
+        .item-info span {
+            font-size: 10px;
+            color: #87CEEB;
+        }
+        
+        .evolution-stages {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .stage {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .stage:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+        
+        .stage-icon {
+            font-size: 18px;
+            margin-right: 10px;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .stage span:last-child {
+            font-size: 13px;
+            color: #87CEEB;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+        
+        kbd {
+            background: rgba(135, 206, 235, 0.2);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #87CEEB;
+        }
+        
+        .control-item span {
+            font-size: 13px;
+            color: #87CEEB;
+        }
+        
+        /* 游戏区域样式 */
+        #gameArea {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            height: 80vh;
+            flex: 1;
+        }
+        
+        /* 游戏HUD样式 */
+        #gameHUD {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 640px;
+            background: linear-gradient(135deg, rgba(26, 42, 108, 0.9), rgba(0, 0, 0, 0.8));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px 25px;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 32px rgba(26, 42, 108, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(135, 206, 235, 0.3);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .hud-section {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(135, 206, 235, 0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            min-width: 80px;
+        }
+        
+        .hud-item:hover {
+            background: rgba(135, 206, 235, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(135, 206, 235, 0.4);
+        }
+        
+        .hud-icon {
+            font-size: 18px;
+        }
+        
+        .hud-label {
+            font-size: 12px;
+            color: #87CEEB;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .hud-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+        }
+        
+        /* 涅槃提示样式 */
+        .nirvana-notification {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ff9ff3);
+            border-radius: 15px;
+            padding: 12px 20px;
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: nirvanaGlow 2s ease-in-out;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .nirvana-text {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            animation: nirvanaPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes nirvanaGlow {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.8) translateY(-20px);
+                box-shadow: 0 0 0 rgba(255, 107, 107, 0);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.1) translateY(0);
+                box-shadow: 0 8px 32px rgba(255, 107, 107, 0.6);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1) translateY(0);
+                box-shadow: 0 8px 32px rgba(255, 107, 107, 0.4);
+            }
+        }
+        
+        @keyframes nirvanaPulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            50% { 
+                transform: scale(1.05);
+                text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+            }
+        }
+        
+        .lives-container {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .life-heart {
+            font-size: 16px;
+            color: #DC2626;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        .life-heart.empty {
+            color: #9CA3AF;
+            opacity: 0.4;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* 分数变化动画 */
+        .score-flash {
+            animation: scoreFlash 0.6s ease-out;
+        }
+        
+        @keyframes scoreFlash {
+            0% { transform: scale(1); color: #1E3A8A; }
+            50% { transform: scale(1.2); color: #3B82F6; }
+            100% { transform: scale(1); color: #1E3A8A; }
+        }
+        
+        /* 连击效果 */
+        .combo-active {
+            animation: comboGlow 0.5s ease-out;
+        }
+        
+        @keyframes comboGlow {
+            0% { text-shadow: 0 0 5px #3B82F6; }
+            50% { text-shadow: 0 0 15px #3B82F6, 0 0 25px #60A5FA; }
+            100% { text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9); }
+        }
+        
+        #gameContainer {
+            position: relative;
+            border: 3px solid #87CEEB;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            background: #87CEEB;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #canvas {
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s ease;
+        }
+        
+        #canvas:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 右侧音效控制面板 */
+        #audioPanel {
+            width: 320px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #87CEEB;
+            height: 80vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(135, 206, 235, 0.3) transparent;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            margin-top: 40px;
+        }
+        
+        #audioPanel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #audioPanel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        #audioPanel::-webkit-scrollbar-thumb {
+            background: rgba(135, 206, 235, 0.3);
+            border-radius: 3px;
+        }
+        
+        .audio-section {
+            margin-bottom: 20px;
+        }
+        
+        .audio-section h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #20B2AA;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .audio-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .audio-control-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        
+        .audio-control-item button {
+            background: rgba(135, 206, 235, 0.2);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #87CEEB;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-control-item button:hover {
+            background: rgba(135, 206, 235, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            background: rgba(135, 206, 235, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .volume-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #20B2AA;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .volume-control span {
+            font-size: 12px;
+            color: #87CEEB;
+            min-width: 30px;
+        }
+        
+        .combined-audio-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        
+        .combined-audio-control button {
+            background: rgba(135, 206, 235, 0.2);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #87CEEB;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .combined-audio-control button:hover {
+            background: rgba(135, 206, 235, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .combined-audio-control .volume-control {
+            flex: 1;
+            margin: 0;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .game-over button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            margin: 8px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .game-over button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+        }
+        
+        .game-over button:active {
+            transform: translateY(0);
+        }
+        
+        .start-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .start-screen button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            margin: 8px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .start-screen button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        
+        .start-screen button:active {
+            transform: translateY(0);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            body {
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #mainContainer {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+            }
+            
+            #infoPanel, #audioPanel {
+                width: 100%;
+                max-width: 640px;
+                height: auto;
+                max-height: 50vh;
+                margin-bottom: 20px;
+            }
+            
+            #gameArea {
+                height: auto;
+                justify-content: center;
+            }
+            
+            /* HUD响应式调整 */
+            #gameHUD {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .hud-section {
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #mainContainer {
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #infoPanel, #audioPanel {
+                padding: 20px;
+                max-height: 40vh;
+            }
+            
+            #gameArea {
+                justify-content: center;
+            }
+            
+            /* 移动端HUD优化 */
+            #gameHUD {
+                padding: 8px 12px;
+                margin-bottom: 5px;
+            }
+            
+            .hud-item {
+                padding: 6px 10px;
+                gap: 6px;
+            }
+            
+            .hud-icon {
+                font-size: 16px;
+            }
+            
+            .hud-label {
+                font-size: 11px;
+            }
+            
+            .hud-value {
+                font-size: 14px;
+            }
+            
+            .life-heart {
+                font-size: 14px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-section h3, .audio-section h3 {
+                font-size: 16px;
+            }
+            
+            .item-card {
+                padding: 6px;
+            }
+            
+            .item-icon {
+                font-size: 18px;
+                width: 20px;
+            }
+            
+            .item-info strong {
+                font-size: 11px;
+            }
+            
+            .item-info span {
+                font-size: 9px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #mainContainer {
+                align-items: center;
+                justify-content: center;
+            }
+            
+            #gameArea {
+                justify-content: center;
+            }
+            
+            /* 小屏幕HUD优化 */
+            #gameHUD {
+                padding: 6px 10px;
+                margin-bottom: 5px;
+            }
+            
+            .hud-section {
+                gap: 10px;
+            }
+            
+            .hud-item {
+                padding: 4px 8px;
+                gap: 4px;
+            }
+            
+            .hud-icon {
+                font-size: 14px;
+            }
+            
+            .hud-label {
+                font-size: 10px;
+            }
+            
+            .hud-value {
+                font-size: 12px;
+            }
+            
+            .life-heart {
+                font-size: 12px;
+            }
+            
+            #infoPanel, #audioPanel {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .info-section, .audio-section {
+                margin-bottom: 20px;
+            }
+            
+            .info-section h3, .audio-section h3 {
+                font-size: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .info-section p {
+                font-size: 13px;
+            }
+            
+            .game-modes h4 {
+                font-size: 14px;
+            }
+            
+            .game-modes li {
+                font-size: 13px;
+            }
+        }
+        
+        h1 {
+            color: #20B2AA;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="mainContainer">
+        <!-- 左侧信息面板 -->
+        <div id="infoPanel">
+            <div class="info-section">
+                <h1>Flappy Bird - WebAssembly版本</h1>
+                <h3>🎮 游戏介绍</h3>
+                <p>控制小鸟穿越管道，收集道具，体验形态进化！</p>
+                <div class="game-modes">
+                    <h4>游戏模式</h4>
+                    <ul>
+                        <li><strong>经典模式</strong> - 传统道具玩法</li>
+                        <li><strong>限时模式</strong> - 30秒挑战</li>
+                        <li><strong>生存模式</strong> - 3条生命</li>
+                        <li><strong>困难模式</strong> - 高难度挑战</li>
+                        <li><strong>挑战模式(完善中)</strong> - 道具收集+Boss战斗</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h3>🛡️ 道具系统</h3>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">🛡️</div>
+                        <div class="item-info">
+                            <strong>护盾</strong>
+                            <span>3秒无敌</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">⚡</div>
+                        <div class="item-info">
+                            <strong>加速</strong>
+                            <span>2倍速度</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🔍</div>
+                        <div class="item-info">
+                            <strong>缩小</strong>
+                            <span>体型减半</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🧲</div>
+                        <div class="item-info">
+                            <strong>磁铁</strong>
+                            <span>按键反转</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🔄</div>
+                        <div class="item-info">
+                            <strong>重力反转</strong>
+                            <span>重力倒置</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🌀</div>
+                        <div class="item-info">
+                            <strong>传送门</strong>
+                            <span>瞬间传送</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">✖</div>
+                        <div class="item-info">
+                            <strong>分数翻倍</strong>
+                            <span>双倍得分</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">❤️</div>
+                        <div class="item-info">
+                            <strong>生命值</strong>
+                            <span>增加生命</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">💰</div>
+                        <div class="item-info">
+                            <strong>金币</strong>
+                            <span>收集财富</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🔥</div>
+                        <div class="item-info">
+                            <strong>进化加速</strong>
+                            <span>形态升级</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">👻</div>
+                        <div class="item-info">
+                            <strong>隐形道具</strong>
+                            <span>完全隐形0.5秒</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🔍</div>
+                        <div class="item-info">
+                            <strong>放大道具</strong>
+                            <span>体型回到第一阶段</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h3>🔥 生存模式道具</h3>
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-icon">⚡</div>
+                        <div class="item-info">
+                            <strong>速度提升</strong>
+                            <span>增加移动速度</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">🛡️</div>
+                        <div class="item-info">
+                            <strong>护盾</strong>
+                            <span>3秒无敌</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">⚔️</div>
+                        <div class="item-info">
+                            <strong>攻击力</strong>
+                            <span>提升攻击伤害</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">❤️</div>
+                        <div class="item-info">
+                            <strong>生命提升</strong>
+                            <span>增加最大生命</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">⏰</div>
+                        <div class="item-info">
+                            <strong>时间延长</strong>
+                            <span>增加收集时间</span>
+                        </div>
+                    </div>
+                    <div class="item-card">
+                        <div class="item-icon">💎</div>
+                        <div class="item-info">
+                            <strong>分数翻倍</strong>
+                            <span>最终分数翻倍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h3>🐦 形态进化</h3>
+                <div class="evolution-stages">
+                    <div class="stage">
+                        <span class="stage-icon">🐣</span>
+                        <span>雏鸟 (0分)</span>
+                    </div>
+                    <div class="stage">
+                        <span class="stage-icon">🐤</span>
+                        <span>成鸟 (5分)</span>
+                    </div>
+                    <div class="stage">
+                        <span class="stage-icon">🦅</span>
+                        <span>雄鹰 (10分)</span>
+                    </div>
+                    <div class="stage">
+                        <span class="stage-icon">🔥</span>
+                        <span>凤凰 (15分)</span>
+                    </div>
+                    <div class="stage">
+                        <span class="stage-icon">🐉</span>
+                        <span>神龙 (50分)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h3>🎯 操作说明</h3>
+                <div class="controls">
+                    <div class="control-item">
+                        <kbd>空格键</kbd>
+                        <span>跳跃/开始游戏/攻击(Boss战)</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>↑↓</kbd>
+                        <span>上下移动</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>←→</kbd>
+                        <span>控制速度</span>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; padding: 10px; background: rgba(255, 107, 107, 0.2); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
+
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏区域 -->
+        <div id="gameArea">
+            <!-- 涅槃提示 -->
+            <div id="nirvanaNotification" class="nirvana-notification" style="display: none;">
+                <div class="nirvana-text">🔥 凤凰涅槃重生！</div>
+            </div>
+            
+            <!-- 游戏HUD信息条 -->
+            <div id="gameHUD">
+                <div class="hud-section">
+                    <div class="hud-item score">
+                        <span class="hud-icon">🏆</span>
+                        <span class="hud-label">分数</span>
+                        <span id="score" class="hud-value">0</span>
+                    </div>
+                    <div class="hud-item lives">
+                        <span class="hud-icon">❤️</span>
+                        <span class="hud-label">生命</span>
+                        <span id="lives" class="hud-value">1</span>
+                    </div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-item evolution">
+                        <span class="hud-icon">🐦</span>
+                        <span class="hud-label">形态</span>
+                        <span id="evolution" class="hud-value">雏鸟</span>
+                    </div>
+                    <div class="hud-item combo">
+                        <span class="hud-icon">⚡</span>
+                        <span class="hud-label">连击</span>
+                        <span id="combo" class="hud-value">0</span>
+                    </div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-item mode">
+                        <span class="hud-icon">🎮</span>
+                        <span class="hud-label">模式</span>
+                        <span id="currentMode" class="hud-value">经典</span>
+                    </div>
+                    <div class="hud-item gold">
+                        <span class="hud-icon">💰</span>
+                        <span class="hud-label">金币</span>
+                        <span id="gold" class="hud-value">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 游戏画布 -->
+            <div id="gameContainer">
+                <canvas id="canvas" width="160" height="160"></canvas>
+                <div id="startScreen" class="start-screen" style="display: none;">
+                    <div>FLAPPY BIRD 增强版</div>
+                    <div style="margin-top: 10px; font-size: 14px;">选择游戏模式：</div>
+                    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
+                        <button onclick="selectGameMode(0)" style="padding: 5px 10px; margin: 2px;">经典模式</button>
+                        <button onclick="selectGameMode(1)" style="padding: 5px 10px; margin: 2px;">限时模式 (30秒)</button>
+                        <button onclick="selectGameMode(2)" style="padding: 5px 10px; margin: 2px;">生存模式 (3条命)</button>
+                        <button onclick="selectGameMode(4)" style="padding: 5px 10px; margin: 2px;">挑战模式 (收集道具击败Boss)</button>
+                        <button onclick="selectGameMode(5)" style="padding: 5px 10px; margin: 2px;">困难模式</button>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 12px;">按空格键快速开始经典模式</div>
+                </div>
+                <div id="gameOverScreen" class="game-over" style="display: none;">
+                    <div>游戏结束!</div>
+                    <div id="finalScore" style="margin-top: 10px; font-size: 18px;"></div>
+                    <div style="margin-top: 10px; font-size: 14px;">选择操作：</div>
+                    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
+                        <button onclick="restartCurrentMode()" style="padding: 5px 10px; margin: 2px;">重新开始当前模式</button>
+                        <button onclick="showModeSelection()" style="padding: 5px 10px; margin: 2px;">选择其他模式</button>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 12px;">按空格键重新开始当前模式</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧音效控制面板 -->
+        <div id="audioPanel">
+            <div class="audio-section">
+                <h3>🔊 音效控制</h3>
+                <div class="audio-controls">
+                    <!-- 合并的音效控制行 -->
+                    <div class="combined-audio-control">
+                        <button id="muteButton" onclick="toggleMute()">🔊 音效开关</button>
+                        <div class="volume-control">
+                            <span>音量:</span>
+                            <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                            <span id="volumeValue">50%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="audio-section">
+                <h3>🏆 游戏统计</h3>
+                <div class="audio-controls">
+                    <div class="audio-control-item">
+                        <span>最高分:</span>
+                        <span id="highScore">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="audio-section">
+                <h3>⚙️ 游戏设置</h3>
+                <div class="audio-controls">
+                    <div class="audio-control-item">
+                        <button onclick="resetHighScore()">🔄 重置最高分</button>
+                        <span>清空记录</span>
+                    </div>
+                    <div class="audio-control-item">
+                        <button onclick="toggleFullscreen()">🖥️ 全屏模式</button>
+                        <span id="fullscreenStatus">关闭</span>
+                    </div>
+                    <div class="audio-control-item">
+                        <button onclick="showHelp()">❓ 游戏帮助</button>
+                        <span>查看说明</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 清除任何可能存在的测试函数引用
+        if (typeof window.testSounds !== 'undefined') {
+            delete window.testSounds;
+        }
+        if (typeof window.testJump !== 'undefined') {
+            delete window.testJump;
+        }
+        if (typeof window.testItem !== 'undefined') {
+            delete window.testItem;
+        }
+        if (typeof window.forceTestSound !== 'undefined') {
+            delete window.forceTestSound;
+        }
+        if (typeof window.testSimpleSound !== 'undefined') {
+            delete window.testSimpleSound;
+        }
+        
+        // 音效控制相关函数
+        function toggleMute() {
+            const muteButton = document.getElementById('muteButton');
+            
+            if (muteButton.textContent.includes('🔊')) {
+                muteButton.textContent = '🔇 音效开关';
+            } else {
+                muteButton.textContent = '🔊 音效开关';
+            }
+        }
+        
+        function setVolume(value) {
+            console.log('设置音量:', value);
+            const volumeValue = document.getElementById('volumeValue');
+            if (volumeValue) {
+                volumeValue.textContent = value + '%';
+                console.log('音量显示已更新为:', volumeValue.textContent);
+            } else {
+                console.error('找不到volumeValue元素');
+            }
+        }
+        
+        // 测试音量功能
+        function testVolume() {
+            console.log('测试音量功能...');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeValue = document.getElementById('volumeValue');
+            console.log('音量滑块:', volumeSlider);
+            console.log('音量显示:', volumeValue);
+            if (volumeSlider && volumeValue) {
+                console.log('当前滑块值:', volumeSlider.value);
+                console.log('当前显示值:', volumeValue.textContent);
+            }
+        }
+        
+        // 全局测试函数
+        window.testVolume = testVolume;
+        
+        // 最高分管理
+        let highScore = parseInt(localStorage.getItem('flappyBirdHighScore') || '0');
+        
+        function updateHighScore() {
+            const currentScore = document.getElementById('score') ? parseInt(document.getElementById('score').textContent) : 0;
+            if (currentScore > highScore) {
+                highScore = currentScore;
+                localStorage.setItem('flappyBirdHighScore', highScore.toString());
+                updateHighScoreDisplay();
+            }
+        }
+        
+        function updateHighScoreDisplay() {
+            const highScoreEl = document.getElementById('highScore');
+            if (highScoreEl) {
+                highScoreEl.textContent = highScore;
+            }
+        }
+        
+        function resetHighScore() {
+            highScore = 0;
+            localStorage.setItem('flappyBirdHighScore', '0');
+            updateHighScoreDisplay();
+            alert('最高分已重置！');
+        }
+        
+        function toggleFullscreen() {
+            const fullscreenStatus = document.getElementById('fullscreenStatus');
+            if (!document.fullscreenElement) {
+                // 进入全屏
+                document.documentElement.requestFullscreen().then(() => {
+                    fullscreenStatus.textContent = '开启';
+                }).catch(err => {
+                    console.log('无法进入全屏模式:', err);
+                    alert('无法进入全屏模式，请检查浏览器设置');
+                });
+            } else {
+                // 退出全屏
+                document.exitFullscreen().then(() => {
+                    fullscreenStatus.textContent = '关闭';
+                }).catch(err => {
+                    console.log('无法退出全屏模式:', err);
+                });
+            }
+        }
+        
+        function showHelp() {
+            alert('游戏帮助：\n1. 按空格键跳跃\n2. 左右键控制速度\n3. 收集道具获得特殊能力\n4. 避免撞到管道');
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化最高分显示
+            updateHighScoreDisplay();
+            
+            // 初始化音量显示和事件监听
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeValue = document.getElementById('volumeValue');
+            if (volumeSlider && volumeValue) {
+                // 初始化显示
+                volumeValue.textContent = volumeSlider.value + '%';
+                console.log('音量初始化完成:', volumeSlider.value);
+                
+                // 添加事件监听器
+                volumeSlider.addEventListener('input', function() {
+                    console.log('音量滑块值变化:', this.value);
+                    volumeValue.textContent = this.value + '%';
+                });
+                
+                volumeSlider.addEventListener('change', function() {
+                    console.log('音量滑块最终值:', this.value);
+                    volumeValue.textContent = this.value + '%';
+                });
+                
+                console.log('音量事件监听器已添加');
+            } else {
+                console.error('找不到音量相关元素:', {volumeSlider: !!volumeSlider, volumeValue: !!volumeValue});
+            }
+            
+            // 监听分数变化
+            const scoreElement = document.getElementById('score');
+            if (scoreElement) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                            updateHighScore();
+                        }
+                    });
+                });
+                observer.observe(scoreElement, { childList: true, characterData: true, subtree: true });
+            }
+        });
+    </script>
+    <script src="game.js"></script>
+</body>
+</html>
