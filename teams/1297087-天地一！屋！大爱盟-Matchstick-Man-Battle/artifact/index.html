@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script type="text/javascript" src="./jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+    jQuery.noConflict();
+    Object.extend = jQuery.extend;
+    </script>
+    <script src="lib/jquery.svg.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    <script src="./box2d.js"></script>
+    <script src="./p5.js"></script>
+    <script src="./Game.js"></script>
+</head>
+
+<body>
+    <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
+</body>
+
+</html>

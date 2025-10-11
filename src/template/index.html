@@ -37,21 +37,20 @@
         margin-top: 2.5rem;
         /* JavaScript will control the positioning */
       }
-      a.game-card-link {
-        text-decoration: none;
-        color: inherit;
+      .game-card-container {
         display: block;
         position: absolute; /* JavaScript will set top/left positions */
         width: calc((100% - 4rem) / 3); /* 3 columns with 2rem gaps */
         transition: all 0.3s ease;
+        cursor: pointer;
       }
       @media (max-width: 1024px) {
-        a.game-card-link {
+        .game-card-container {
           width: calc((100% - 2rem) / 2); /* 2 columns */
         }
       }
       @media (max-width: 760px) {
-        a.game-card-link {
+        .game-card-container {
           width: 100%; /* 1 column */
           position: static; /* fallback to normal flow on mobile */
         }
@@ -73,9 +72,51 @@
         transition: transform 0.35s ease, box-shadow 0.35s ease;
         height: fit-content; /* ensure card takes only needed space */
       }
-      a.game-card-link:hover .game-card {
+
+      /* Award winner card styling */
+      .game-card.award-winner {
+        border: 3px solid #ffd700;
+        box-shadow: 0 10px 28px -6px rgba(255, 215, 0, 0.4),
+          0 0 20px rgba(255, 215, 0, 0.2);
+      }
+
+      /* Award badge styling */
+      .award-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        /* background: will be set inline per award */
+        color: white;
+        border-radius: 20px;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+        z-index: 10;
+        transform: rotate(10deg);
+        border: 2px solid white;
+      }
+
+      .award-icon {
+        font-size: 0.9rem;
+      }
+
+      .award-text {
+        white-space: nowrap;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      }
+      .game-card-container:hover .game-card {
         transform: translateY(-6px);
         box-shadow: 0 18px 42px -8px rgba(0, 0, 0, 0.32);
+      }
+
+      .game-card-container:hover .game-card.award-winner {
+        transform: translateY(-8px);
+        box-shadow: 0 18px 42px -8px rgba(255, 215, 0, 0.5),
+          0 0 30px rgba(255, 215, 0, 0.3);
       }
       .game-card:before {
         content: "";
@@ -124,6 +165,42 @@
       .section ul,
       .section ol {
         padding-left: 1rem;
+      }
+
+      /* Ensure all block elements in sections are properly spaced */
+      .section h1,
+      .section h2,
+      .section h3,
+      .section h4,
+      .section h5,
+      .section h6 {
+        margin: 0.5rem 0 0.5rem;
+        color: #4a5568;
+      }
+
+      .section h1 {
+        font-size: 1rem;
+      }
+      .section h2 {
+        font-size: 0.9rem;
+      }
+      .section h3 {
+        font-size: 0.85rem;
+      }
+      .section h5 {
+        font-size: 0.75rem;
+      }
+      .section h6 {
+        font-size: 0.7rem;
+      }
+
+      /* Ensure proper spacing for all markdown elements */
+      .section blockquote {
+        margin: 0.5rem 0;
+        padding-left: 1rem;
+        border-left: 3px solid #e2e8f0;
+        color: #718096;
+        font-style: italic;
       }
 
       /* Code block styles to handle overflow */
@@ -179,8 +256,23 @@
       .section {
         overflow: visible;
       }
-      .play-button {
+
+      /* Fix horizontal rule styling from markdown */
+      .section hr {
+        margin: 1rem 0;
+        border: none;
+        border-top: 2px solid #e2e8f0;
+        background: none;
+        height: 0;
+        clear: both;
+      }
+      .card-actions {
         margin-top: auto;
+        display: flex;
+        gap: 0.5rem;
+      }
+      .details-button {
+        flex: 1;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -193,10 +285,27 @@
         font-weight: 600;
         font-size: 0.9rem;
         cursor: pointer;
-        width: 100%;
         transition: filter 0.3s ease, transform 0.3s ease;
       }
-      a.game-card-link:hover .play-button {
+      .play-button {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.1rem;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #48bb78, #38a169);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: filter 0.3s ease, transform 0.3s ease;
+      }
+      .game-card-container:hover .details-button,
+      .game-card-container:hover .play-button {
         filter: brightness(1.05);
       }
       .stats {
@@ -225,6 +334,172 @@
           font-size: 2.1rem;
         }
       }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-overlay.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+      }
+
+      .modal-container {
+        background: #fff;
+        border-radius: 20px;
+        max-width: 90vw;
+        max-height: 90vh;
+        width: 800px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+
+      .modal-overlay.show .modal-container {
+        transform: scale(1);
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .modal-title {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #2d3748;
+        flex: 1;
+      }
+
+      .modal-close-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #718096;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+      }
+
+      .modal-close-btn:hover {
+        background: #f7fafc;
+        color: #2d3748;
+      }
+
+      .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem 2rem;
+      }
+
+      .modal-team-name {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #5a67d8;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem 1rem;
+        background: #f0f7ff;
+        border-radius: 8px;
+        border-left: 4px solid #5a67d8;
+      }
+
+      .modal-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-section h4 {
+        margin: 0 0 0.75rem 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2d3748;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+      }
+
+      .modal-section-content {
+        color: #4a5568;
+        line-height: 1.6;
+      }
+
+      .modal-section-content p,
+      .modal-section-content ul,
+      .modal-section-content ol {
+        margin: 0.5rem 0;
+      }
+
+      .modal-section-content ul,
+      .modal-section-content ol {
+        padding-left: 1.5rem;
+      }
+
+      .modal-footer {
+        padding: 1.5rem 2rem;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .modal-play-button {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        text-decoration: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .modal-play-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        filter: brightness(1.05);
+      }
+
+      @media (max-width: 760px) {
+        .modal-container {
+          max-width: 95vw;
+          max-height: 95vh;
+          margin: 1rem;
+        }
+
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+          padding: 1rem 1.5rem;
+        }
+
+        .modal-title {
+          font-size: 1.3rem;
+        }
+      }
     </style>
     <!-- GAMES METADATA PLACEHOLDER -->
     <script>
@@ -232,7 +507,7 @@
 
       function createMasonryLayout() {
         const container = document.getElementById("games-grid");
-        const items = container.querySelectorAll("a.game-card-link");
+        const items = container.querySelectorAll(".game-card-container");
 
         // Don't apply masonry on mobile
         if (window.innerWidth <= 760) {
@@ -250,15 +525,31 @@
         const containerWidth = container.offsetWidth;
         const itemWidth = (containerWidth - gap * (columns - 1)) / columns;
 
-        // Set item widths
-        items.forEach((item) => {
+        // First pass: Set widths and reset positioning for accurate height measurement
+        items.forEach((item, index) => {
+          item.style.position = "static";
           item.style.width = `${itemWidth}px`;
+          item.style.left = "auto";
+          item.style.top = "auto";
+        });
+
+        // Force reflow to ensure dimensions are calculated
+        container.offsetHeight;
+
+        // Measure heights while items are in static position
+        const itemHeights = Array.from(items).map((item) => item.offsetHeight);
+
+        // Second pass: Set absolute positioning and calculate layout
+        items.forEach((item) => {
+          item.style.position = "absolute";
         });
 
         // Track column heights
         const columnHeights = new Array(columns).fill(0);
 
         items.forEach((item, index) => {
+          const itemHeight = itemHeights[index];
+
           // Find shortest column
           const shortestColumnIndex = columnHeights.indexOf(
             Math.min(...columnHeights),
@@ -270,19 +561,58 @@
 
           item.style.left = `${left}px`;
           item.style.top = `${top}px`;
+          item.style.width = `${itemWidth}px`;
 
           // Update column height
-          columnHeights[shortestColumnIndex] += item.offsetHeight + gap;
+          columnHeights[shortestColumnIndex] += itemHeight + gap;
         });
 
-        // Set container height
-        container.style.height = `${Math.max(...columnHeights)}px`;
+        // Set container height (subtract the final gap)
+        const maxHeight = Math.max(...columnHeights) - gap;
+        container.style.height = `${Math.max(maxHeight, 0)}px`;
       }
 
       // Initialize layout when DOM is ready
       document.addEventListener("DOMContentLoaded", () => {
-        // Wait a bit for CSS to apply
-        setTimeout(createMasonryLayout, 100);
+        // Wait for images and content to load
+        function initializeLayout() {
+          const container = document.getElementById("games-grid");
+          const items = container.querySelectorAll(".game-card-container");
+
+          // Check if all content is loaded
+          const images = container.querySelectorAll("img");
+          let loadedImages = 0;
+
+          function onImageLoad() {
+            loadedImages++;
+            if (loadedImages === images.length) {
+              // All images loaded, create layout with small delay
+              setTimeout(createMasonryLayout, 100);
+            }
+          }
+
+          if (images.length === 0) {
+            // No images, create layout with a single delayed call
+            setTimeout(createMasonryLayout, 200);
+          } else {
+            // Wait for images to load
+            images.forEach((img) => {
+              if (img.complete) {
+                onImageLoad();
+              } else {
+                img.addEventListener("load", onImageLoad);
+                img.addEventListener("error", onImageLoad); // Handle broken images
+              }
+            });
+
+            // Fallback: create layout after a reasonable timeout even if images haven't loaded
+            setTimeout(() => {
+              createMasonryLayout();
+            }, 1000);
+          }
+        }
+
+        initializeLayout();
 
         // Handle code block scrolling inside links
         const codeBlocks = document.querySelectorAll(".section pre");
@@ -305,13 +635,117 @@
             e.stopPropagation();
           });
         });
-      });
 
-      // Re-layout on window resize
+        // Modal functionality
+        initializeModal();
+      }); // Re-layout on window resize
       window.addEventListener("resize", () => {
         clearTimeout(window.resizeTimeout);
-        window.resizeTimeout = setTimeout(createMasonryLayout, 150);
+        window.resizeTimeout = setTimeout(() => {
+          createMasonryLayout();
+          // Double-check layout after a brief delay in case content shifted
+          setTimeout(createMasonryLayout, 100);
+        }, 150);
       });
+
+      // Modal functionality
+      function initializeModal() {
+        const modal = document.getElementById("gameModal");
+        const modalClose = document.getElementById("modalClose");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalTeamName = document.getElementById("modalTeamName");
+        const modalPlayButton = document.getElementById("modalPlayButton");
+
+        // Modal sections
+        const modalGameIntro = document
+          .getElementById("modalGameIntro")
+          .querySelector(".modal-section-content");
+        const modalOperations = document
+          .getElementById("modalOperations")
+          .querySelector(".modal-section-content");
+        const modalFeatures = document
+          .getElementById("modalFeatures")
+          .querySelector(".modal-section-content");
+        const modalTeamInfo = document
+          .getElementById("modalTeamInfo")
+          .querySelector(".modal-section-content");
+
+        // Function to open modal
+        function openModal(gameData) {
+          modalTitle.textContent = gameData.title;
+          modalTeamName.innerHTML = "🏆 " + gameData.teamName;
+          modalGameIntro.innerHTML = gameData.gameIntro;
+          modalOperations.innerHTML = gameData.operations;
+          modalFeatures.innerHTML = gameData.features;
+          modalTeamInfo.innerHTML = gameData.teamInfo;
+          modalPlayButton.href = gameData.artifactPath;
+
+          modal.classList.add("show");
+          document.body.style.overflow = "hidden"; // Prevent background scrolling
+        }
+
+        // Function to close modal
+        function closeModal() {
+          modal.classList.remove("show");
+          document.body.style.overflow = ""; // Restore scrolling
+        }
+
+        // Add click handlers to game cards
+        document.addEventListener("click", (e) => {
+          // Check if click is on play button or details button, if so, don't open modal
+          if (e.target.closest(".play-button")) {
+            return; // Let the play button handle its own navigation
+          }
+
+          // If click is specifically on details button, open modal
+          if (e.target.closest(".details-button")) {
+            const gameCard = e.target.closest(".game-card-container");
+            if (gameCard) {
+              const gameData = {
+                title: gameCard.dataset.title,
+                teamName: gameCard.dataset.teamName,
+                gameIntro: gameCard.dataset.gameIntro,
+                operations: gameCard.dataset.operations,
+                features: gameCard.dataset.features,
+                teamInfo: gameCard.dataset.teamInfo,
+                artifactPath: gameCard.dataset.artifactPath,
+              };
+              openModal(gameData);
+            }
+            return;
+          }
+
+          // For any other click on the card, open modal
+          const gameCard = e.target.closest(".game-card-container");
+          if (gameCard) {
+            const gameData = {
+              title: gameCard.dataset.title,
+              teamName: gameCard.dataset.teamName,
+              gameIntro: gameCard.dataset.gameIntro,
+              operations: gameCard.dataset.operations,
+              features: gameCard.dataset.features,
+              teamInfo: gameCard.dataset.teamInfo,
+              artifactPath: gameCard.dataset.artifactPath,
+            };
+            openModal(gameData);
+          }
+        });
+
+        // Close modal handlers
+        modalClose.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal();
+          }
+        });
+
+        // ESC key to close modal
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.classList.contains("show")) {
+            closeModal();
+          }
+        });
+      }
     </script>
   </head>
   <body>
@@ -330,6 +764,50 @@
       </div>
       <!-- footer removed -->
     </div>
+
+    <!-- Modal Overlay -->
+    <div id="gameModal" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2 id="modalTitle" class="modal-title"></h2>
+          <button id="modalClose" class="modal-close-btn" aria-label="关闭">
+            ×
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-team-name" id="modalTeamName"></div>
+          <div class="modal-content">
+            <div class="modal-section" id="modalGameIntro">
+              <h4>游戏简介</h4>
+              <div class="modal-section-content"></div>
+            </div>
+            <div class="modal-section" id="modalOperations">
+              <h4>操作说明</h4>
+              <div class="modal-section-content"></div>
+            </div>
+            <div class="modal-section" id="modalFeatures">
+              <h4>技术特色</h4>
+              <div class="modal-section-content"></div>
+            </div>
+            <div class="modal-section" id="modalTeamInfo">
+              <h4>团队信息</h4>
+              <div class="modal-section-content"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a
+            id="modalPlayButton"
+            class="modal-play-button"
+            href="#"
+            target="_blank"
+          >
+            ▶️ 立即游玩
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- Cards are预渲染; JS only kept for future dynamic enhancements -->
   </body>
 </html>

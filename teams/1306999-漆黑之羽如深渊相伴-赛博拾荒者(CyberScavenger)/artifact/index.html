@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>CyberScavenger with Shaders</title>
+    <style>
+        @font-face {
+            font-family: 'mplus_hzk'; 
+            src: url('assets/fonts/mplus_hzk.ttf'); 
+        }
+        body { 
+            margin: 0; 
+            background-color: #1a1a1a; 
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            color: white;
+            font-family: sans-serif;
+        }
+        #loading-screen { text-align: center; }
+        #progress-container {
+            width: 400px; height: 30px; border: 2px solid #555;
+            background-color: #333; border-radius: 15px;
+            margin-top: 20px; position: relative; overflow: hidden;
+        }
+        #progress-bar {
+            width: 0%; height: 100%; background-color: #4a90e2;
+            transition: width 0.1s ease-in-out; border-radius: 15px;
+        }
+        #progress-text {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 16px;
+            font-weight: bold; text-shadow: 1px 1px 2px #000;
+        }
+        #canvas-container { 
+            position: relative; 
+            display: none; /* 游戏界面默认隐藏 */
+        }
+        canvas { 
+            position: absolute; top: 0; left: 0; 
+        }
+        #game-canvas { visibility: hidden; }
+        #fx-canvas { z-index: 1; }
+        #ui-canvas { z-index: 2; }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <h2>Loading...</h2>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+            <div id="progress-text">0%</div>
+        </div>
+    </div>
+
+    <div id="canvas-container" style="width: 1280px; height: 720px;">
+        <canvas id="game-canvas" width="1280" height="720"></canvas>
+        <canvas id="fx-canvas" width="1280" height="720"></canvas>
+        <canvas id="ui-canvas" width="1280" height="720"></canvas>
+    </div>
+    
+    <script src="js/preloader.js"></script> 
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 aVertexPosition;
+        attribute vec2 aTextureCoord;
+        varying highp vec2 vTextureCoord;
+        void main(void) {
+            gl_Position = aVertexPosition;
+            vTextureCoord = aTextureCoord;
+        }
+    </script>
+    
+    <script id="fragment-shader-pixelate" type="x-shader/x-fragment">
+        varying highp vec2 vTextureCoord;
+        uniform sampler2D uSampler;
+        uniform highp float u_pixel_size;
+        uniform highp vec2 u_resolution;
+        void main(void) {
+            highp vec2 pixel_grid_size = u_pixel_size / u_resolution;
+            highp vec2 snapped_coord = (floor(vTextureCoord / pixel_grid_size) + 0.5) * pixel_grid_size;
+            highp vec4 color = texture2D(uSampler, snapped_coord);
+            gl_FragColor = color;
+        }
+    </script>
+
+    <script>
+        let gl; let shaderProgram; let positionBuffer; let textureCoordBuffer;
+        let gameTexture; let pixelSizeUniformLocation; let pixelSize = 5.0;
+        function initWebGL(gameCanvas) {
+            const fxCanvas = document.getElementById('fx-canvas');
+            gl = fxCanvas.getContext('webgl', { premultipliedAlpha: false });
+            const vsSource = document.getElementById('vertex-shader').textContent;
+            const fsSource = document.getElementById('fragment-shader-pixelate').textContent;
+            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+            shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+            gl.useProgram(shaderProgram);
+            pixelSizeUniformLocation = gl.getUniformLocation(shaderProgram, "u_pixel_size");
+            const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, "u_resolution");
+            gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+            positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,1,1,-1,-1,1,-1]), gl.STATIC_DRAW);
+            textureCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,1,1,1,0,0,1,0]), gl.STATIC_DRAW);
+            gameTexture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, gameTexture);
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, gameCanvas);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        }
+        function renderWebGL(gameCanvas) {
+            if (!gl) return;
+            gl.uniform1f(pixelSizeUniformLocation, pixelSize);
+            gl.bindTexture(gl.TEXTURE_2D, gameTexture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, gameCanvas);
+            gl.clearColor(0.0, 0.0, 0.0, 1.0); gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            const posAttrib = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
+            gl.vertexAttribPointer(posAttrib, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(posAttrib);
+            gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+            const texAttrib = gl.getAttribLocation(shaderProgram, 'aTextureCoord');
+            gl.vertexAttribPointer(texAttrib, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(texAttrib);
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, gameTexture);
+            gl.uniform1i(gl.getUniformLocation(shaderProgram, 'uSampler'), 0);
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
+        function loadShader(gl, type, source) {
+            const shader = gl.createShader(type); gl.shaderSource(shader, source); gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader error: ' + gl.getShaderInfoLog(shader)); gl.deleteShader(shader); return null;
+            } return shader;
+        }
+
+        function startPostProcessingLoop() {
+            const gameCanvas = document.getElementById('game-canvas');
+
+            if (!gameCanvas) { 
+                setTimeout(startPostProcessingLoop, 100); 
+                return; 
+            }
+            
+            initWebGL(gameCanvas);
+            
+            function loop() {
+                renderWebGL(gameCanvas);
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+        }
+
+        document.getElementById('ui-canvas').addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+</body>
+</html>
