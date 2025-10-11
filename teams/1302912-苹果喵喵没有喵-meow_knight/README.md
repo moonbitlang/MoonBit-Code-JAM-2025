@@ -9,10 +9,12 @@
 - 跳跃 方向上键 / W
 - 攻击/二段攻击 J / J * 2
 - 魔法攻击 K
+- 对话 F
+- 拾取 E
 
 ## 技术特色
 - 使用 MoonBit 编写核心逻辑，编译为Js
-- 前端仅 `index.html`，与 `meow_knight.js`
+- 前端仅 `index.html`，与 `meow_knight_test.js`
 - 美术/动效：斩击动作，敌人防御等
 
 ## 团队信息
@@ -20,4 +22,4 @@
 - 作品名称：喵咪骑士 (Meow Knight)
 - 队名来源：本人就是苹果喵喵，热爱技术和分享
 - 联系方式: 3226742838@qq.com
-- b站视频链接：暂时无
+- b站视频链接：【[Moonbit]meow_knight】 https://www.bilibili.com/video/BV1aQxCzoES2/?share_source=copy_web&vd_source=14ac11d8b9af5883f39d7f85ae5d56df
