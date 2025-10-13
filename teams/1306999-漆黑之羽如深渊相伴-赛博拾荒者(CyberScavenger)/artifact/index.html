@@ -5,12 +5,9 @@
     <title>CyberScavenger with Shaders</title>
     <style>
         @font-face {
-        font-family: 'mplus_hzk'; 
-        src: url('assets/fonts/mplus_hzk.ttf'); 
+            font-family: 'mplus_hzk'; 
+            src: url('assets/fonts/mplus_hzk.ttf'); 
         }
-    </style>
-    <script src="./js/CyberScavenger.js" defer></script>
-    <style>
         body { 
             margin: 0; 
             background-color: #1a1a1a; 
@@ -18,34 +15,52 @@
             justify-content: center; 
             align-items: center; 
             height: 100vh; 
+            color: white;
+            font-family: sans-serif;
+        }
+        #loading-screen { text-align: center; }
+        #progress-container {
+            width: 400px; height: 30px; border: 2px solid #555;
+            background-color: #333; border-radius: 15px;
+            margin-top: 20px; position: relative; overflow: hidden;
+        }
+        #progress-bar {
+            width: 0%; height: 100%; background-color: #4a90e2;
+            transition: width 0.1s ease-in-out; border-radius: 15px;
+        }
+        #progress-text {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 16px;
+            font-weight: bold; text-shadow: 1px 1px 2px #000;
         }
         #canvas-container { 
             position: relative; 
+            display: none; /* 游戏界面默认隐藏 */
         }
-        /* 统一为所有 canvas 设置绝对定位 */
         canvas { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
+            position: absolute; top: 0; left: 0; 
         }
-        /* 分别控制每个 canvas 的可见性和层级 */
-        #game-canvas {
-            visibility: hidden; /* 世界画布必须隐藏 */
-        }
-        #fx-canvas {
-            z-index: 1; /* 特效层在中间 */
-        }
-        #ui-canvas {
-            z-index: 2; /* UI层在最顶上 */
-        }
+        #game-canvas { visibility: hidden; }
+        #fx-canvas { z-index: 1; }
+        #ui-canvas { z-index: 2; }
     </style>
 </head>
 <body>
+    <div id="loading-screen">
+        <h2>Loading...</h2>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+            <div id="progress-text">0%</div>
+        </div>
+    </div>
+
     <div id="canvas-container" style="width: 1280px; height: 720px;">
         <canvas id="game-canvas" width="1280" height="720"></canvas>
         <canvas id="fx-canvas" width="1280" height="720"></canvas>
         <canvas id="ui-canvas" width="1280" height="720"></canvas>
     </div>
+    
+    <script src="js/preloader.js"></script> 
 
     <script id="vertex-shader" type="x-shader/x-vertex">
         attribute vec4 aVertexPosition;
@@ -147,9 +162,6 @@
             }
             requestAnimationFrame(loop);
         }
-
-        // 页面加载完毕后，启动我们的并行渲染循环
-        window.addEventListener('load', startPostProcessingLoop);
 
         document.getElementById('ui-canvas').addEventListener('contextmenu', e => e.preventDefault());
     </script>
