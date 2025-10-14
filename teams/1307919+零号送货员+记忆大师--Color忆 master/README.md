@@ -25,7 +25,8 @@
 ## 团队信息
 
 - 团队名称：零号送货员
-- 作品名称：记忆大师--Color忆 master
 - 联系方式：3585881508@qq.com
-- B站视频链接：暂无
+- 作品名称：记忆大师--Color忆 master
+- B站视频链接：https://www.bilibili.com/video/BV1WK4UzoEsN/?share_source=copy_web&vd_source=60bf5577572b6b3a96870f2108aaea97
+
 
