@@ -45,7 +45,6 @@ const moonbitlang$core$builtin$$MyInt64$compare_u = (a, b) => {
   }
   return 0;
 };
-const moonbitlang$core$double$$Double$mod_ffi = (a, b) => (a % b);
 const $9223372036854775807L = { hi: 2147483647, lo: -1 };
 const $9218868437227405312L = { hi: 2146435072, lo: 0 };
 const Demonmasterlqx$box2d_ffi$box2d$$B2World_$createBody_ = (self, def) => self.CreateBody(def);
@@ -111,6 +110,7 @@ const Demonmasterlqx$box2d_ffi$box2d$$B2Contact$getShape2 = self => self.GetShap
 const Demonmasterlqx$box2d_ffi$box2d$$b2BodyDef = () => new b2BodyDef();
 const Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setPosition = (self, position) => { self.position = position };
 const Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setRotation = (self, rotation) => { self.rotation = rotation };
+const Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setAllowSleep = (self, allow) => { self.allowSleep = allow };
 const Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$addShape = (self, shape) => { self.AddShape(shape) };
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition = self => self.GetCenterPosition();
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation = self => self.GetRotation();
@@ -119,6 +119,7 @@ const Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity = self => self.G
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$setAngularVelocity = (self, velocity) => { self.SetAngularVelocity(velocity); };
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyForce = (self, force, point) => { self.ApplyForce(force, point); };
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyTorque = (self, torque) => { self.ApplyTorque(torque); };
+const Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyImpulse = (self, impulse, point) => { self.ApplyImpulse(impulse, point); };
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$getWorldPoint = (self, localPoint) => self.GetWorldPoint(localPoint);
 const Demonmasterlqx$box2d_ffi$box2d$$B2Body$getShapeList = self => {
    let shapes = [];
@@ -300,9 +301,6 @@ const Great$45$Love$45$League$Stick_Man_Battle$server$$particle_index = moonbitl
 const Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list = moonbitlang$core$ref$$Ref$new$3$(moonbitlang$core$array$$Array$new$46$inner$4$(0));
 const Great$45$Love$45$League$Stick_Man_Battle$server$$world = moonbitlang$core$ref$$Ref$new$5$(Great$45$Love$45$League$Stick_Man_Battle$server$$create_world(undefined));
 const moonbitlang$core$double$$not_a_number = moonbitlang$core$int64$$Int64$reinterpret_as_double($9221120237041090561L);
-function moonbitlang$core$abort$$abort$2$(msg) {
-  return $panic();
-}
 function moonbitlang$core$builtin$$StringBuilder$new$46$inner(size_hint) {
   return { val: "" };
 }
@@ -312,6 +310,15 @@ function moonbitlang$core$builtin$$Logger$write_char$6$(self, ch) {
 }
 function moonbitlang$core$builtin$$op_gt$7$(self_, other) {
   return moonbitlang$core$builtin$$Compare$compare$7$(self_, other) > 0;
+}
+function moonbitlang$core$array$$Array$at$4$(self, index) {
+  const len = self.length;
+  if (index >= 0 && index < len) {
+    $bound_check(self, index);
+    return self[index];
+  } else {
+    return $panic();
+  }
 }
 function moonbitlang$core$array$$Array$at$1$(self, index) {
   const len = self.length;
@@ -353,41 +360,16 @@ function moonbitlang$core$builtin$$Logger$write_string$6$(self, str) {
   const _bind = self;
   _bind.val = `${_bind.val}${str}`;
 }
+function moonbitlang$core$builtin$$Show$to_string$10$(self) {
+  const logger = moonbitlang$core$builtin$$StringBuilder$new$46$inner(0);
+  moonbitlang$core$builtin$$Show$output$8$(self, { self: logger, method_0: moonbitlang$core$builtin$$Logger$write_string$6$, method_1: moonbitlang$core$builtin$$Logger$write_substring$6$, method_2: moonbitlang$core$builtin$$Logger$write_char$6$ });
+  return logger.val;
+}
 function moonbitlang$core$builtin$$MyInt64$from_int(value) {
   return { hi: value >> 31 & -1, lo: value | 0 };
 }
 function moonbitlang$core$int$$Int$to_int64(self) {
   return moonbitlang$core$builtin$$MyInt64$from_int(self);
-}
-function moonbitlang$core$builtin$$output$46$inner$46$write_digits$124$1906(_env, num) {
-  const logger = _env._1;
-  const radix = _env._0;
-  const num2 = num / radix | 0;
-  if (num2 !== 0) {
-    moonbitlang$core$builtin$$output$46$inner$46$write_digits$124$1906(_env, num2);
-  }
-  const _p = num % radix | 0;
-  const _tmp = _p < 0 ? 0 - _p | 0 : _p;
-  $bound_check("0123456789abcdefghijklmnopqrstuvwxyz", _tmp);
-  logger.method_2(logger.self, "0123456789abcdefghijklmnopqrstuvwxyz".charCodeAt(_tmp));
-}
-function moonbitlang$core$int$$Int$output$46$inner(self, logger, radix) {
-  if (self < 0) {
-    logger.method_2(logger.self, 45);
-  }
-  const _env = { _0: radix, _1: logger };
-  moonbitlang$core$builtin$$output$46$inner$46$write_digits$124$1906(_env, self < 0 ? 0 - self | 0 : self);
-}
-function moonbitlang$core$int$$Int$output_size_hint$46$inner(radix) {
-  return radix >= 2 && radix < 7 ? 36 : radix >= 8 && radix < 15 ? 18 : radix >= 16 && radix <= 36 ? 10 : moonbitlang$core$abort$$abort$2$("radix must be between 2 and 36");
-}
-function moonbitlang$core$int$$Int$to_string$46$inner(self, radix) {
-  const buf = moonbitlang$core$builtin$$StringBuilder$new$46$inner(moonbitlang$core$int$$Int$output_size_hint$46$inner(radix));
-  moonbitlang$core$int$$Int$output$46$inner(self, { self: buf, method_0: moonbitlang$core$builtin$$Logger$write_string$6$, method_1: moonbitlang$core$builtin$$Logger$write_substring$6$, method_2: moonbitlang$core$builtin$$Logger$write_char$6$ }, radix);
-  return buf.val;
-}
-function moonbitlang$core$builtin$$Show$to_string$2$(self) {
-  return moonbitlang$core$int$$Int$to_string$46$inner(self, 10);
 }
 function moonbitlang$core$int$$Int$to_uint64(self) {
   return moonbitlang$core$int$$Int$to_int64(self);
@@ -428,7 +410,7 @@ function moonbitlang$core$array$$Array$push$1$(self, value) {
 function moonbitlang$core$array$$Array$push$4$(self, value) {
   moonbitlang$core$builtin$$JSArray$push(self, value);
 }
-function moonbitlang$core$array$$Array$push$10$(self, value) {
+function moonbitlang$core$array$$Array$push$11$(self, value) {
   moonbitlang$core$builtin$$JSArray$push(self, value);
 }
 function moonbitlang$core$array$$Array$push$9$(self, value) {
@@ -492,11 +474,11 @@ function moonbitlang$core$builtin$$Shr$shr$7$(self, shift) {
 function moonbitlang$core$double$$Double$to_int(self) {
   return self !== self ? 0 : self >= 2147483647 ? 2147483647 : self <= -2147483648 ? -2147483648 : self | 0;
 }
-function moonbitlang$core$builtin$$println$11$(input) {
-  console.log(input);
+function moonbitlang$core$builtin$$println$8$(input) {
+  console.log(moonbitlang$core$builtin$$Show$to_string$10$(input));
 }
-function moonbitlang$core$builtin$$println$2$(input) {
-  console.log(moonbitlang$core$builtin$$Show$to_string$2$(input));
+function moonbitlang$core$builtin$$println$12$(input) {
+  console.log(input);
 }
 function moonbitlang$core$array$$Array$new$46$inner$4$(capacity) {
   return [];
@@ -504,7 +486,7 @@ function moonbitlang$core$array$$Array$new$46$inner$4$(capacity) {
 function moonbitlang$core$array$$Array$new$46$inner$1$(capacity) {
   return [];
 }
-function moonbitlang$core$array$$Array$new$46$inner$10$(capacity) {
+function moonbitlang$core$array$$Array$new$46$inner$11$(capacity) {
   return [];
 }
 function moonbitlang$core$array$$Array$new$46$inner$9$(capacity) {
@@ -565,8 +547,8 @@ function moonbitlang$core$array$$Array$set$2$(self, index, value) {
 function moonbitlang$core$double$$Double$floor(_tmp) {
   return Math.floor(_tmp);
 }
-function moonbitlang$core$builtin$$Mod$mod$8$(self, other) {
-  return moonbitlang$core$double$$Double$mod_ffi(self, other);
+function moonbitlang$core$builtin$$Show$output$8$(self, logger) {
+  logger.method_0(logger.self, String(self));
 }
 function moonbitlang$core$ref$$Ref$new$5$(x) {
   return { val: x };
@@ -1272,99 +1254,99 @@ function Kaida$45$Amethyst$math$$cos(x) {
     }
   }
 }
-function Demonmasterlqx$box2d_ffi$box2d$$World$createBody$12$(self, def) {
+function Demonmasterlqx$box2d_ffi$box2d$$World$createBody$13$(self, def) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2World_$createBody_(self.world, def);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$World$createJoint$12$(self, def) {
+function Demonmasterlqx$box2d_ffi$box2d$$World$createJoint$13$(self, def) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2World_$createJoint_(self.world, def);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$World$step$12$(self, dt, iterations) {
+function Demonmasterlqx$box2d_ffi$box2d$$World$step$13$(self, dt, iterations) {
   Demonmasterlqx$box2d_ffi$box2d$$B2World_$step_(self.world, dt, iterations);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$World$getBodyList$12$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$World$getBodyList$13$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2World_$getBodyList_(self.world);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$World$getContactList$12$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$World$getContactList$13$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2World_$getContactList_(self.world);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$13$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$14$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2BoxDef$getBase_(self);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setFriction$14$(self, friction) {
-  Demonmasterlqx$box2d_ffi$box2d$$B2ShapeDef$setFriction_(Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$13$(self), friction);
+function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setFriction$15$(self, friction) {
+  Demonmasterlqx$box2d_ffi$box2d$$B2ShapeDef$setFriction_(Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$14$(self), friction);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setDensity$14$(self, density) {
-  Demonmasterlqx$box2d_ffi$box2d$$B2ShapeDef$setDensity_(Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$13$(self), density);
+function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setDensity$15$(self, density) {
+  Demonmasterlqx$box2d_ffi$box2d$$B2ShapeDef$setDensity_(Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$14$(self), density);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setGroupIndex$14$(self, groupIndex) {
-  Demonmasterlqx$box2d_ffi$box2d$$B2ShapeDef$setGroupIndex_(Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$13$(self), groupIndex);
-}
-function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBase$15$(self) {
-  return Demonmasterlqx$box2d_ffi$box2d$$B2CircleShape$getBase_(self);
+function Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setGroupIndex$15$(self, groupIndex) {
+  Demonmasterlqx$box2d_ffi$box2d$$B2ShapeDef$setGroupIndex_(Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$14$(self), groupIndex);
 }
 function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBase$16$(self) {
+  return Demonmasterlqx$box2d_ffi$box2d$$B2CircleShape$getBase_(self);
+}
+function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBase$17$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2PolygonShape$getBase_(self);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$Shape$getType$17$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$Shape$getType$18$(self) {
   const typenum = Demonmasterlqx$box2d_ffi$box2d$$B2Shape$getType_(self);
   return typenum === -1 ? 0 : typenum === 0 ? 1 : typenum === 1 ? 2 : typenum === 2 ? 3 : 0;
 }
-function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$17$(self) {
-  return Demonmasterlqx$box2d_ffi$box2d$$B2Shape$getBody_(self);
+function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$19$(self) {
+  return Demonmasterlqx$box2d_ffi$box2d$$B2Shape$getBody_(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBase$17$(self));
 }
-function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$18$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$20$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2Shape$getBody_(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBase$16$(self));
 }
-function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$19$(self) {
-  return Demonmasterlqx$box2d_ffi$box2d$$B2Shape$getBody_(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBase$15$(self));
+function Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$18$(self) {
+  return Demonmasterlqx$box2d_ffi$box2d$$B2Shape$getBody_(self);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody1$20$(self, body) {
-  const base = Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$21$(self);
+function Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody1$21$(self, body) {
+  const base = Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$22$(self);
   Demonmasterlqx$box2d_ffi$box2d$$B2JointDef$setBody1_(base, body);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody2$20$(self, body) {
-  const base = Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$21$(self);
+function Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody2$21$(self, body) {
+  const base = Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$22$(self);
   Demonmasterlqx$box2d_ffi$box2d$$B2JointDef$setBody2_(base, body);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$21$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$22$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2RevoluteJointDef$getBase_(self);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody1$22$(self) {
-  const base = Demonmasterlqx$box2d_ffi$box2d$$JointBase$getBase$23$(self);
+function Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody1$23$(self) {
+  const base = Demonmasterlqx$box2d_ffi$box2d$$JointBase$getBase$24$(self);
   return Demonmasterlqx$box2d_ffi$box2d$$B2Joint$getBody1_(base);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody2$22$(self) {
-  const base = Demonmasterlqx$box2d_ffi$box2d$$JointBase$getBase$23$(self);
+function Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody2$23$(self) {
+  const base = Demonmasterlqx$box2d_ffi$box2d$$JointBase$getBase$24$(self);
   return Demonmasterlqx$box2d_ffi$box2d$$B2Joint$getBody2_(base);
 }
-function Demonmasterlqx$box2d_ffi$box2d$$JointBase$getBase$23$(self) {
+function Demonmasterlqx$box2d_ffi$box2d$$JointBase$getBase$24$(self) {
   return Demonmasterlqx$box2d_ffi$box2d$$B2RevoluteJoint$getBase_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getP5Instance$24$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getP5Instance$25$(self) {
   return self;
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getTouches$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getTouches$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getTouches_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchEnded$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchEnded$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setTouchEnded_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchEnded$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchEnded$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelTouchEnded_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchMoved$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchMoved$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setTouchMoved_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchMoved$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchMoved$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelTouchMoved_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchStarted$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchStarted$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setTouchStarted_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchStarted$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchStarted$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelTouchStarted_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKey$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKey$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getKey_(self);
 }
 function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$intToKeyCode(code) {
@@ -1663,7 +1645,7 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getKeyCode_(self) {
   const code = Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getKeyCodeInt_(self);
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$intToKeyCode(code);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKeyCode$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKeyCode$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getKeyCode_(self);
 }
 function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$keyCodeToInt(code) {
@@ -1962,64 +1944,64 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$keyIsDown_(self, keyCode
   const code = Demonmasterlqx$MoonP5$cmd$p5js_ffi$$keyCodeToInt(keyCode);
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$keyIsDownInt_(self, code);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$25$(self, keyCode) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$26$(self, keyCode) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$keyIsDown_(self, keyCode);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsPressed$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsPressed$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$keyIsPressed_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyPressed$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyPressed$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setKeyPressed_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyPressed$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyPressed$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelKeyPressed_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyReleased$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyReleased$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setKeyReleased_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyReleased$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyReleased$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelKeyReleased_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyTyped$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyTyped$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setKeyTyped_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyTyped$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyTyped$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelKeyTyped_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseX$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseX$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMouseX_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseY$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseY$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMouseY_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedX$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedX$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMovedX_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedY$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedY$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMovedY_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseX$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseX$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getPmouseX_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseY$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseY$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getPmouseY_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseX$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseX$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getPwinMouseX_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseY$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseY$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getPwinMouseY_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseX$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseX$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getWinMouseX_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseY$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseY$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getWinMouseY_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$mouseIsPressed$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$mouseIsPressed$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$mouseIsPressed_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButtonString$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButtonString$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMouseButtonString_(self);
 }
 function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMouseButton_(self) {
@@ -2048,133 +2030,133 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMouseButton_(self) {
     }
   }
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButton$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButton$26$(self) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$getMouseButton_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setDoubleClicked$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setDoubleClicked$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setDoubleClicked_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelDoubleClicked$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelDoubleClicked$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelDoubleClicked_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseClicked$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseClicked$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setMouseClicked_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseClicked$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseClicked$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelMouseClicked_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseDragged$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseDragged$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setMouseDragged_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseDragged$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseDragged$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelMouseDragged_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseMoved$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseMoved$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setMouseMoved_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseMoved$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseMoved$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelMouseMoved_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMousePressed$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMousePressed$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setMousePressed_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMousePressed$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMousePressed$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelMousePressed_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseReleased$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseReleased$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setMouseReleased_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseReleased$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseReleased$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelMouseReleased_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseWheel$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseWheel$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$setMouseWheel_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseWheel$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseWheel$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$cancelMouseWheel_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$requestPointerLock$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$requestPointerLock$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$requestPointerLock_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$exitPointerLock$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$exitPointerLock$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$exitPointerLock_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipseMode$25$(self, mode) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipseMode$26$(self, mode) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$ellipseMode_(self, mode);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rectMode$25$(self, mode) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rectMode$26$(self, mode) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$rectMode_(self, mode);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noSmooth$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noSmooth$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$noSmooth_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$smooth$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$smooth$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$smooth_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeCap$25$(self, cap) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeCap$26$(self, cap) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$strokeCap_(self, cap);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeJoin$25$(self, join) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeJoin$26$(self, join) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$strokeJoin_(self, join);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeWeight$25$(self, weight) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeWeight$26$(self, weight) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$strokeWeight_(self, weight);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$arc$25$(self, x, y, w, h, start, stop, mode, detail) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$arc$26$(self, x, y, w, h, start, stop, mode, detail) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$arc_(self, x, y, w, h, start, stop, new Option$Some$0$(mode), new Option$Some$1$(detail));
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$circle$25$(self, x, y, d) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$circle$26$(self, x, y, d) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$circle_(self, x, y, d);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipse$25$(self, x, y, w, h) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipse$26$(self, x, y, w, h) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$ellipse_(self, x, y, w, h);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$line$25$(self, x1, y1, x2, y2) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$line$26$(self, x1, y1, x2, y2) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$line_(self, x1, y1, x2, y2);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$point$25$(self, x, y) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$point$26$(self, x, y) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$point_(self, x, y);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quad$25$(self, x1, y1, x2, y2, x3, y3, x4, y4) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quad$26$(self, x1, y1, x2, y2, x3, y3, x4, y4) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$quad_(self, x1, y1, x2, y2, x3, y3, x4, y4);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rect$25$(self, x, y, w, h) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rect$26$(self, x, y, w, h) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$rect_(self, x, y, w, h);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$triangle$25$(self, x1, y1, x2, y2, x3, y3) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$triangle$26$(self, x1, y1, x2, y2, x3, y3) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$triangle_(self, x1, y1, x2, y2, x3, y3);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$square$25$(self, x, y, s) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$square$26$(self, x, y, s) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$square_(self, x, y, s);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezier$25$(self, x1, y1, x2, y2, x3, y3, x4, y4) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezier$26$(self, x1, y1, x2, y2, x3, y3, x4, y4) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$bezier_(self, x1, y1, x2, y2, x3, y3, x4, y4);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierPoint$25$(self, a, b, c, d, t) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierPoint$26$(self, a, b, c, d, t) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$bezierPoint_(self, a, b, c, d, t);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierTangent$25$(self, a, b, c, d, t) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierTangent$26$(self, a, b, c, d, t) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$bezierTangent_(self, a, b, c, d, t);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curve$25$(self, x1, y1, x2, y2, x3, y3, x4, y4) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curve$26$(self, x1, y1, x2, y2, x3, y3, x4, y4) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$curve_(self, x1, y1, x2, y2, x3, y3, x4, y4);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curvePoint$25$(self, a, b, c, d, t) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curvePoint$26$(self, a, b, c, d, t) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$curvePoint_(self, a, b, c, d, t);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTangent$25$(self, a, b, c, d, t) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTangent$26$(self, a, b, c, d, t) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$curveTangent_(self, a, b, c, d, t);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTightness$25$(self, amount) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTightness$26$(self, amount) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$curveTightness_(self, amount);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginContour$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginContour$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$beginContour_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endContour$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endContour$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$endContour_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginShape$25$(self, mode) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginShape$26$(self, mode) {
   if (mode === undefined) {
     Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$beginShape_(self, undefined);
     return;
@@ -2185,7 +2167,7 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginShape$25$(self, mode) {
     return;
   }
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endShape$25$(self, mode, count) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endShape$26$(self, mode, count) {
   if (mode === undefined) {
     if (count === undefined) {
       Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$endShape_(self, undefined, undefined);
@@ -2210,13 +2192,13 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endShape$25$(self, mode, count
     }
   }
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierVertex$25$(self, x2, y2, x3, y3, x4, y4) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierVertex$26$(self, x2, y2, x3, y3, x4, y4) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$bezierVertex_(self, x2, y2, x3, y3, x4, y4);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveVertex$25$(self, x, y) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveVertex$26$(self, x, y) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$curveVertex_(self, x, y);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$vertex$25$(self, x, y, z, u, v) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$vertex$26$(self, x, y, z, u, v) {
   _L: {
     if (z.$tag === 1) {
       const _Some = z;
@@ -2256,7 +2238,7 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$vertex$25$(self, x, y, z, u, v
   }
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$vertex_$46$inner(self, x, y, 0, 0, 0);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$normal$25$(self, nx, ny, nz) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$normal$26$(self, nx, ny, nz) {
   if (nz.$tag === 1) {
     const _Some = nz;
     const _nzv = _Some._0;
@@ -2267,91 +2249,91 @@ function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$normal$25$(self, nx, ny, nz) {
     return;
   }
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quadraticVertex$25$(self, x2, y2, x3, y3) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quadraticVertex$26$(self, x2, y2, x3, y3) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$quadraticVertex_(self, x2, y2, x3, y3);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noStroke$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noStroke$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$noStroke_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$background$25$(self, v1, v2, v3, a) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$background$26$(self, v1, v2, v3, a) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$background_$46$inner(self, v1, v2, v3, a);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorPara$25$(self, v1, v2, v3, a) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorPara$26$(self, v1, v2, v3, a) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$fill_colorPara_$46$inner(self, v1, v2, v3, a);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorObj$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorObj$26$(self, c) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$fill_colorObj_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginClip$25$(self, x, y, w, h) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginClip$26$(self, x, y, w, h) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$beginClip_(self, x, y, w, h);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endClip$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endClip$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$endClip_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clear$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clear$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$clear_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clip$25$(self, callback) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clip$26$(self, callback) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$clip_(self, callback);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clipOptions$25$(self, callback, options) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clipOptions$26$(self, callback, options) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$clip_options_(self, callback, options);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeUniform$25$(self, mode, max) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeUniform$26$(self, mode, max) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$colorMode_uniform_(self, mode, max);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeDetailed$25$(self, mode, max1, max2, max3, maxA) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeDetailed$26$(self, mode, max1, max2, max3, maxA) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$colorMode_detailed_$46$inner(self, mode, max1, max2, max3, maxA);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$erase$25$(self, strengthFill, strengthStroke) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$erase$26$(self, strengthFill, strengthStroke) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$erase_$46$inner(self, strengthFill, strengthStroke);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noErase$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noErase$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$noErase_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeColor$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeColor$26$(self, c) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$stroke_color_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeGray$25$(self, gray, alpha) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeGray$26$(self, gray, alpha) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$stroke_gray_$46$inner(self, gray, alpha);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeComponents$25$(self, v1, v2, v3, alpha) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeComponents$26$(self, v1, v2, v3, alpha) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$stroke_components_$46$inner(self, v1, v2, v3, alpha);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeString$25$(self, color_string) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeString$26$(self, color_string) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$stroke_string_(self, color_string);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noFill$25$(self) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noFill$26$(self) {
   Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$noFill_(self);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$brightness$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$brightness$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$brightness_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$color$25$(self, v1, v2, v3, a) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$color$26$(self, v1, v2, v3, a) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$color_$46$inner(self, v1, v2, v3, a);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$alpha$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$alpha$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$alpha_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$blue$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$blue$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$blue_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$green$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$green$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$green_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$red$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$red$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$red_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$hue$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$hue$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$hue_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lerpColor$25$(self, c1, c2, amount) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lerpColor$26$(self, c1, c2, amount) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$lerpColor_(self, c1, c2, amount);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lightness$25$(self, c) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lightness$26$(self, c) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$lightness_(self, c);
 }
-function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$paletteLerp$25$(self, colors_stops, amt) {
+function Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$paletteLerp$26$(self, colors_stops, amt) {
   return Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5Instance$paletteLerp_(self, colors_stops, amt);
 }
 function Great$45$Love$45$League$Stick_Man_Battle$server$$create_world$46$inner(gravity) {
@@ -2373,34 +2355,200 @@ function Great$45$Love$45$League$Stick_Man_Battle$server$$create_world(gravity$4
 function Great$45$Love$45$League$Stick_Man_Battle$server$$create_static_box(world, position, size) {
   const box_def = Demonmasterlqx$box2d_ffi$box2d$$b2BoxDef();
   Demonmasterlqx$box2d_ffi$box2d$$B2BoxDef$setExtents(box_def, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(size._0, size._1));
-  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setDensity$14$(box_def, 0);
+  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setDensity$15$(box_def, 0);
   const body_def = Demonmasterlqx$box2d_ffi$box2d$$b2BodyDef();
   Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setPosition(body_def, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(position._0, position._1));
-  Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$addShape(body_def, Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$13$(box_def));
+  Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$addShape(body_def, Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$14$(box_def));
   Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setRotation(body_def, 0);
-  return Demonmasterlqx$box2d_ffi$box2d$$World$createBody$12$(world, body_def);
+  Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setAllowSleep(body_def, false);
+  return Demonmasterlqx$box2d_ffi$box2d$$World$createBody$13$(world, body_def);
 }
 function Great$45$Love$45$League$Stick_Man_Battle$server$$create_dynamic_box$46$inner(world, position, size, density, friciton, groupindex) {
   const box_def = Demonmasterlqx$box2d_ffi$box2d$$b2BoxDef();
   Demonmasterlqx$box2d_ffi$box2d$$B2BoxDef$setExtents(box_def, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(size._0, size._1));
-  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setDensity$14$(box_def, density);
-  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setFriction$14$(box_def, friciton);
-  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setGroupIndex$14$(box_def, groupindex);
+  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setDensity$15$(box_def, density);
+  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setFriction$15$(box_def, friciton);
+  Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$setGroupIndex$15$(box_def, groupindex);
   const body_def = Demonmasterlqx$box2d_ffi$box2d$$b2BodyDef();
   Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setPosition(body_def, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(position._0, position._1));
-  Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$addShape(body_def, Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$13$(box_def));
+  Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$addShape(body_def, Demonmasterlqx$box2d_ffi$box2d$$ShapeDef$getBase$14$(box_def));
   Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setRotation(body_def, 0);
-  return Demonmasterlqx$box2d_ffi$box2d$$World$createBody$12$(world, body_def);
+  Demonmasterlqx$box2d_ffi$box2d$$B2BodyDef$setAllowSleep(body_def, false);
+  return Demonmasterlqx$box2d_ffi$box2d$$World$createBody$13$(world, body_def);
 }
 function Great$45$Love$45$League$Stick_Man_Battle$server$$create_joint$46$inner(world, body_a, body_b, anchor, enable_limit, lower_angle, upper_angle) {
   const joint_def = Demonmasterlqx$box2d_ffi$box2d$$b2RevoluteJointDef();
-  Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody1$20$(joint_def, body_a);
-  Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody2$20$(joint_def, body_b);
+  Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody1$21$(joint_def, body_a);
+  Demonmasterlqx$box2d_ffi$box2d$$JointDef$setBody2$21$(joint_def, body_b);
   Demonmasterlqx$box2d_ffi$box2d$$B2RevoluteJointDef$setAnchorPoint(joint_def, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(anchor._0, anchor._1));
   Demonmasterlqx$box2d_ffi$box2d$$B2RevoluteJointDef$setEnableLimit(joint_def, enable_limit);
   Demonmasterlqx$box2d_ffi$box2d$$B2RevoluteJointDef$setLowerAngle(joint_def, lower_angle);
   Demonmasterlqx$box2d_ffi$box2d$$B2RevoluteJointDef$setUpperAngle(joint_def, upper_angle);
-  return Demonmasterlqx$box2d_ffi$box2d$$World$createJoint$12$(world, Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$21$(joint_def));
+  return Demonmasterlqx$box2d_ffi$box2d$$World$createJoint$13$(world, Demonmasterlqx$box2d_ffi$box2d$$JointDefBase$getBase$22$(joint_def));
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$create_platform(world, position, size) {
+  Great$45$Love$45$League$Stick_Man_Battle$server$$platform_index.val = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_index.val + 1 | 0;
+  const body = Great$45$Love$45$League$Stick_Man_Battle$server$$create_static_box(world, position, size);
+  const index = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_index.val - 1 | 0;
+  const tmp = { body: body, index: index };
+  moonbitlang$core$array$$Array$push$1$(Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val, tmp);
+  return tmp;
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(joint, target_angle, kp, kd) {
+  const bodyA = Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody1$23$(Demonmasterlqx$box2d_ffi$box2d$$B2Joint$toRevoluteJoint(joint));
+  const bodyB = Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody2$23$(Demonmasterlqx$box2d_ffi$box2d$$B2Joint$toRevoluteJoint(joint));
+  const angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(bodyB) - Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(bodyA);
+  let error = target_angle - angle;
+  const torque = kp * error - kd * (Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity(bodyB) - Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity(bodyA));
+  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyTorque(bodyB, torque);
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_position$46$inner(body, target_pos, kp, kd) {
+  const pos = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(body);
+  const vel = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getLinearVelocity(body);
+  const error_x = target_pos._0 - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(pos);
+  const error_y = target_pos._1 - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(pos);
+  const force_x = kp * error_x - kd * Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(vel);
+  const force_y = kp * error_y - kd * Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(vel);
+  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyForce(body, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(force_x, force_y), pos);
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(body, target_angle, kp, kd) {
+  const angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(body);
+  let error = target_angle - angle;
+  const torque = kp * error - kd * Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity(body);
+  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyTorque(body, torque);
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$is_contact(a, b) {
+  const contact_list = Demonmasterlqx$box2d_ffi$box2d$$World$getContactList$13$(Great$45$Love$45$League$Stick_Man_Battle$server$$world.val);
+  const _len = contact_list.length;
+  let _tmp = 0;
+  while (true) {
+    const _i = _tmp;
+    if (_i < _len) {
+      const contact = contact_list[_i];
+      const bodyA = Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$18$(Demonmasterlqx$box2d_ffi$box2d$$B2Contact$getShape1(contact));
+      const bodyB = Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$18$(Demonmasterlqx$box2d_ffi$box2d$$B2Contact$getShape2(contact));
+      if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, a) && Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyB, b) || Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, b) && Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyB, a)) {
+        return true;
+      }
+      _tmp = _i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return false;
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$world_to_screen(world_width, world_height, x, y, ppm) {
+  return { _0: world_width / 2 + x * ppm, _1: world_height - y * ppm };
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$drawPolygon(p, shape) {
+  const vertices = Demonmasterlqx$box2d_ffi$box2d$$B2PolygonShape$getVertices(shape);
+  const global_position = moonbitlang$core$array$$Array$new$46$inner$11$(0);
+  const _len = vertices.length;
+  let _tmp = 0;
+  while (true) {
+    const _i = _tmp;
+    if (_i < _len) {
+      const vertex = vertices[_i];
+      const gvec = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getWorldPoint(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$19$(shape), vertex);
+      moonbitlang$core$array$$Array$push$11$(global_position, gvec);
+      _tmp = _i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const screen_position = moonbitlang$core$array$$Array$new$46$inner$9$(0);
+  const _len$2 = global_position.length;
+  let _tmp$2 = 0;
+  while (true) {
+    const _i = _tmp$2;
+    if (_i < _len$2) {
+      const gvec = global_position[_i];
+      const screen_coords = Great$45$Love$45$League$Stick_Man_Battle$server$$world_to_screen(1000, 1000, Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(gvec), Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(gvec), 20);
+      moonbitlang$core$array$$Array$push$9$(screen_position, screen_coords);
+      _tmp$2 = _i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  p.method_72(p.self, undefined);
+  const _end89 = screen_position.length;
+  let _tmp$3 = 0;
+  while (true) {
+    const i = _tmp$3;
+    if (i < _end89) {
+      const _bind = moonbitlang$core$array$$Array$at$9$(screen_position, i);
+      const _x = _bind._0;
+      const _y = _bind._1;
+      p.method_76(p.self, _x, _y, Option$None$2$, Option$None$2$, Option$None$2$);
+      _tmp$3 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  p.method_73(p.self, "close", undefined);
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$drawCircle(p, shape) {
+  const position = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getWorldPoint(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$20$(shape), Demonmasterlqx$box2d_ffi$box2d$$B2CircleShape$getLocalPosition(shape));
+  const radius = Demonmasterlqx$box2d_ffi$box2d$$B2CircleShape$getRadius(shape);
+  const screen_pos = Great$45$Love$45$League$Stick_Man_Battle$server$$world_to_screen(1000, 1000, Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(position), Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(position), 20);
+  const _p = 20;
+  const screen_radius = radius * _p;
+  p.method_81(p.self, 200, new Option$Some$2$(0), new Option$Some$2$(0), Option$None$2$);
+  p.method_55(p.self, screen_pos._0, screen_pos._1, screen_radius * 2);
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$draw_world(p, world) {
+  p.method_80(p.self, 255, new Option$Some$2$(204), new Option$Some$2$(0), Option$None$2$);
+  const _arr = Demonmasterlqx$box2d_ffi$box2d$$World$getBodyList$13$(world);
+  const _len = _arr.length;
+  let _tmp = 0;
+  while (true) {
+    const _i = _tmp;
+    if (_i < _len) {
+      const body = _arr[_i];
+      const _arr$2 = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getShapeList(body);
+      const _len$2 = _arr$2.length;
+      let _tmp$2 = 0;
+      while (true) {
+        const _i$2 = _tmp$2;
+        if (_i$2 < _len$2) {
+          const shape = _arr$2[_i$2];
+          const _bind = Demonmasterlqx$box2d_ffi$box2d$$Shape$getType$18$(shape);
+          switch (_bind) {
+            case 2: {
+              Great$45$Love$45$League$Stick_Man_Battle$server$$drawPolygon(p, Demonmasterlqx$box2d_ffi$box2d$$B2Shape$toPolygonShape(shape));
+              break;
+            }
+            case 3: {
+              Great$45$Love$45$League$Stick_Man_Battle$server$$drawPolygon(p, Demonmasterlqx$box2d_ffi$box2d$$B2Shape$toPolygonShape(shape));
+              break;
+            }
+            case 1: {
+              Great$45$Love$45$League$Stick_Man_Battle$server$$drawCircle(p, Demonmasterlqx$box2d_ffi$box2d$$B2Shape$toCircleShape(shape));
+              break;
+            }
+            default: {
+              moonbitlang$core$builtin$$println$12$("Unknown Shape");
+            }
+          }
+          _tmp$2 = _i$2 + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      _tmp = _i + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function Great$45$Love$45$League$Stick_Man_Battle$server$$create_particle_control$46$inner(walk_state, walk_direction, walk_cooldown, jump_cooldown, jump_state, jump_frame_count) {
+  return { walk_state: walk_state, walk_direction: walk_direction, walk_cooldown: walk_cooldown, jump_cooldown: jump_cooldown, jump_state: jump_state, jump_frame_count: jump_frame_count };
 }
 function Great$45$Love$45$League$Stick_Man_Battle$server$$create_particle(world, position) {
   Great$45$Love$45$League$Stick_Man_Battle$server$$particle_index.val = Great$45$Love$45$League$Stick_Man_Battle$server$$particle_index.val + 1 | 0;
@@ -2424,128 +2572,73 @@ function Great$45$Love$45$League$Stick_Man_Battle$server$$create_particle(world,
   const forearm_left_joint = Great$45$Love$45$League$Stick_Man_Battle$server$$create_joint$46$inner(world, left_arm, left_forearm, { _0: position._0, _1: position._1 }, true, -1.3, 1.3);
   const forearm_right_joint = Great$45$Love$45$League$Stick_Man_Battle$server$$create_joint$46$inner(world, right_arm, right_forearm, { _0: position._0, _1: position._1 }, true, -1.3, 1.3);
   const index = Great$45$Love$45$League$Stick_Man_Battle$server$$particle_index.val - 1 | 0;
-  const tmp = { torso: torso, head: head, left_thigh: left_thigh, right_thigh: right_thigh, left_shank: left_shank, right_shank: right_shank, thigh_left_joint: thigh_left_joint, thigh_right_joint: thigh_right_joint, knee_left_joint: knee_left_joint, knee_right_joint: knee_right_joint, neck_joint: neck_joint, index: index, left_forearm: left_forearm, right_forearm: right_forearm, left_arm: left_arm, right_arm: right_arm, arm_left_joint: arm_left_joint, arm_right_joint: arm_right_joint, forearm_left_joint: forearm_left_joint, forearm_right_joint: forearm_right_joint, walk_state: false, cooldown: 0 };
+  const tmp = { torso: torso, head: head, left_thigh: left_thigh, right_thigh: right_thigh, left_shank: left_shank, right_shank: right_shank, thigh_left_joint: thigh_left_joint, thigh_right_joint: thigh_right_joint, knee_left_joint: knee_left_joint, knee_right_joint: knee_right_joint, neck_joint: neck_joint, left_forearm: left_forearm, right_forearm: right_forearm, left_arm: left_arm, right_arm: right_arm, arm_left_joint: arm_left_joint, arm_right_joint: arm_right_joint, forearm_left_joint: forearm_left_joint, forearm_right_joint: forearm_right_joint, index: index, control: Great$45$Love$45$League$Stick_Man_Battle$server$$create_particle_control$46$inner(false, 1, 0, -1, false, 0) };
   moonbitlang$core$array$$Array$push$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, tmp);
   return tmp;
 }
-function Great$45$Love$45$League$Stick_Man_Battle$server$$create_platform(world, position, size) {
-  Great$45$Love$45$League$Stick_Man_Battle$server$$platform_index.val = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_index.val + 1 | 0;
-  const body = Great$45$Love$45$League$Stick_Man_Battle$server$$create_static_box(world, position, size);
-  const index = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_index.val - 1 | 0;
-  const tmp = { body: body, index: index };
-  moonbitlang$core$array$$Array$push$1$(Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val, tmp);
-  return tmp;
+function Great$45$Love$45$League$Stick_Man_Battle$server$$box2d_init(world) {
+  Great$45$Love$45$League$Stick_Man_Battle$server$$create_platform(world, { _0: 0, _1: 0 }, { _0: 10, _1: 1 });
+  Great$45$Love$45$League$Stick_Man_Battle$server$$create_particle(world, { _0: 0, _1: 10 });
+  const static_box = Great$45$Love$45$League$Stick_Man_Battle$server$$create_static_box(world, { _0: 1, _1: 10 }, { _0: 1, _1: 0.1 });
+  Demonmasterlqx$box2d_ffi$box2d$$B2Body$setAngularVelocity(static_box, 0.5);
 }
-function Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(joint, target_angle, kp, kd) {
-  const bodyA = Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody1$22$(Demonmasterlqx$box2d_ffi$box2d$$B2Joint$toRevoluteJoint(joint));
-  const bodyB = Demonmasterlqx$box2d_ffi$box2d$$Joint$getBody2$22$(Demonmasterlqx$box2d_ffi$box2d$$B2Joint$toRevoluteJoint(joint));
-  const angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(bodyB) - Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(bodyA);
-  let error = target_angle - angle;
-  error = moonbitlang$core$builtin$$Mod$mod$8$(error + 3.1415926535897931, 6.2831853071795862) - 3.1415926535897931;
-  const torque = kp * error - kd * (Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity(bodyB) - Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity(bodyA));
-  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyTorque(bodyB, torque);
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_position$46$inner(body, target_pos, kp, kd) {
-  const pos = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(body);
-  const vel = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getLinearVelocity(body);
-  const error_x = target_pos._0 - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(pos);
-  const error_y = target_pos._1 - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(pos);
-  const force_x = kp * error_x - kd * Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(vel);
-  const force_y = kp * error_y - kd * Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(vel);
-  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyForce(body, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(force_x, force_y), pos);
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(body, target_angle, kp, kd) {
-  const angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(body);
-  let error = target_angle - angle;
-  error = moonbitlang$core$builtin$$Mod$mod$8$(error + 3.1415926535897931, 6.2831853071795862) - 3.1415926535897931;
-  const torque = kp * error - kd * Demonmasterlqx$box2d_ffi$box2d$$B2Body$getAngularVelocity(body);
-  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyTorque(body, torque);
+function Great$45$Love$45$League$Stick_Man_Battle$server$$particle_jump(particle, direction) {
+  if (particle.control.jump_state) {
+    const _bind = particle.control;
+    _bind.jump_frame_count = _bind.jump_frame_count + 1 | 0;
+    if (particle.control.jump_frame_count < 40) {
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, particle.control.walk_direction * -0.2, 100, 10);
+      const bend_factor = (particle.control.jump_frame_count + 0) / (40 + 0) * -2.5;
+      moonbitlang$core$builtin$$println$8$(bend_factor);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_left_joint, -0.3 * particle.control.walk_direction, 30, 1);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_right_joint, -0.3 * particle.control.walk_direction, 30, 1);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_left_joint, 1.0995574287564276 * particle.control.walk_direction, 30, 1);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_right_joint, 1.0995574287564276 * particle.control.walk_direction, 30, 1);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_left_joint, bend_factor * particle.control.walk_direction, 50, 2);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_right_joint, bend_factor * particle.control.walk_direction, 50, 2);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_left_joint, 1 * particle.control.walk_direction, 50, 2);
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_right_joint, 0.3 * particle.control.walk_direction, 50, 2);
+      return undefined;
+    } else {
+      if (particle.control.jump_frame_count < 41) {
+        Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, 0, 100, 10);
+        const v = Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(200 * direction, 50);
+        Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyImpulse(particle.torso, v, Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso));
+        return undefined;
+      } else {
+        if (particle.control.jump_frame_count < 61) {
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, 0, 100, 10);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_left_joint, 0, 30, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_right_joint, 0, 30, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_left_joint, 0, 30, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_right_joint, 0, 30, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_left_joint, 0, 70, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_right_joint, 0, 70, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_left_joint, 0, 70, 2);
+          Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_right_joint, 0, 70, 2);
+          return undefined;
+        }
+      }
+    }
+    particle.control.jump_state = false;
+    return;
+  } else {
+    return;
+  }
 }
 function Great$45$Love$45$League$Stick_Man_Battle$server$$which_platform(particle) {
-  const contact_list = Demonmasterlqx$box2d_ffi$box2d$$World$getContactList$12$(Great$45$Love$45$League$Stick_Man_Battle$server$$world.val);
-  const _len = contact_list.length;
+  const _arr = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val;
+  const _len = _arr.length;
   let _tmp = 0;
   while (true) {
     const _i = _tmp;
     if (_i < _len) {
-      const contact = contact_list[_i];
-      const bodyA = Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$17$(Demonmasterlqx$box2d_ffi$box2d$$B2Contact$getShape1(contact));
-      const bodyB = Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$17$(Demonmasterlqx$box2d_ffi$box2d$$B2Contact$getShape2(contact));
-      if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.left_shank) || Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyB, particle.left_shank)) {
-        const other_body = Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.left_shank) ? bodyB : bodyA;
-        const _arr = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val;
-        const _len$2 = _arr.length;
-        let _tmp$2 = 0;
-        while (true) {
-          const _i$2 = _tmp$2;
-          if (_i$2 < _len$2) {
-            const i = _arr[_i$2];
-            if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(other_body, i.body)) {
-              return i.index;
-            }
-            _tmp$2 = _i$2 + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
+      const platform = _arr[_i];
+      if (Great$45$Love$45$League$Stick_Man_Battle$server$$is_contact(particle.left_shank, platform.body)) {
+        return platform.index;
       }
-      if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.right_shank) || Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyB, particle.right_shank)) {
-        const other_body = Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.right_shank) ? bodyB : bodyA;
-        const _arr = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val;
-        const _len$2 = _arr.length;
-        let _tmp$2 = 0;
-        while (true) {
-          const _i$2 = _tmp$2;
-          if (_i$2 < _len$2) {
-            const i = _arr[_i$2];
-            if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(other_body, i.body)) {
-              return i.index;
-            }
-            _tmp$2 = _i$2 + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
-      }
-      if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.left_thigh) || Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyB, particle.left_thigh)) {
-        const other_body = Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.left_thigh) ? bodyB : bodyA;
-        const _arr = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val;
-        const _len$2 = _arr.length;
-        let _tmp$2 = 0;
-        while (true) {
-          const _i$2 = _tmp$2;
-          if (_i$2 < _len$2) {
-            const i = _arr[_i$2];
-            if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(other_body, i.body)) {
-              return i.index;
-            }
-            _tmp$2 = _i$2 + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
-      }
-      if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.right_thigh) || Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyB, particle.right_thigh)) {
-        const other_body = Great$45$Love$45$League$Stick_Man_Battle$server$$equals(bodyA, particle.right_thigh) ? bodyB : bodyA;
-        const _arr = Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val;
-        const _len$2 = _arr.length;
-        let _tmp$2 = 0;
-        while (true) {
-          const _i$2 = _tmp$2;
-          if (_i$2 < _len$2) {
-            const i = _arr[_i$2];
-            if (Great$45$Love$45$League$Stick_Man_Battle$server$$equals(other_body, i.body)) {
-              return i.index;
-            }
-            _tmp$2 = _i$2 + 1 | 0;
-            continue;
-          } else {
-            break;
-          }
-        }
+      if (Great$45$Love$45$League$Stick_Man_Battle$server$$is_contact(particle.right_shank, platform.body)) {
+        return platform.index;
       }
       _tmp = _i + 1 | 0;
       continue;
@@ -2555,49 +2648,7 @@ function Great$45$Love$45$League$Stick_Man_Battle$server$$which_platform(particl
   }
   return -1;
 }
-function Great$45$Love$45$League$Stick_Man_Battle$server$$walk(particle, direction) {
-  const index = Great$45$Love$45$League$Stick_Man_Battle$server$$which_platform(particle);
-  let left_target = 0;
-  let right_target = 0;
-  let left_arm_target = 0;
-  let right_arm_target = 0;
-  if (particle.walk_state) {
-    left_target = -0.5;
-    right_target = 0.8;
-    left_arm_target = -0.5;
-    right_arm_target = 0.5;
-  } else {
-    left_target = 0.8;
-    right_target = -0.5;
-    left_arm_target = 0.5;
-    right_arm_target = -0.5;
-  }
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_left_joint, left_target, 50, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_right_joint, right_target, 50, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_left_joint, -1.0995574287564276 * direction, 30, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_right_joint, -1.0995574287564276 * direction, 30, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_left_joint, left_arm_target, 30, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_right_joint, right_arm_target, 30, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_left_joint, 1.0995574287564276 * direction, 30, 1);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_right_joint, 1.0995574287564276 * direction, 30, 1);
-  if (particle.cooldown <= 0) {
-    particle.walk_state = !particle.walk_state;
-    particle.cooldown = 20;
-  } else {
-    particle.cooldown = particle.cooldown - 1 | 0;
-  }
-  if (index === -1) {
-    return undefined;
-  }
-  const platform = moonbitlang$core$array$$Array$at$1$(Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val, index);
-  const p_angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(platform.body);
-  const target_y = (Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso)) - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(platform.body))) * Kaida$45$Amethyst$math$$tan(p_angle) + Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(platform.body));
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_position$46$inner(particle.torso, { _0: Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso)), _1: target_y + 3.4 }, 300, 10);
-  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, p_angle * 0.7, 300, 10);
-  const v = Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(50 * direction * Kaida$45$Amethyst$math$$cos(p_angle), 100 * direction * Kaida$45$Amethyst$math$$sin(p_angle));
-  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyForce(particle.torso, v, Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso));
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$stand(particle) {
+function Great$45$Love$45$League$Stick_Man_Battle$server$$particle_stand(particle) {
   const index = Great$45$Love$45$League$Stick_Man_Battle$server$$which_platform(particle);
   Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_left_joint, 0, 50, 2);
   Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_right_joint, 0, 50, 2);
@@ -2607,158 +2658,92 @@ function Great$45$Love$45$League$Stick_Man_Battle$server$$stand(particle) {
   Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_right_joint, 0, 10, 2);
   Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_left_joint, 0, 30, 2);
   Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_right_joint, 0, 30, 2);
+  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, 0, 100, 10);
   if (index === -1) {
-    moonbitlang$core$builtin$$println$11$("Can't find platform");
     return undefined;
   }
-  moonbitlang$core$builtin$$println$2$(index);
   const platform = moonbitlang$core$array$$Array$at$1$(Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val, index);
   const p_angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(platform.body);
   const target_y = (Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso)) - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(platform.body))) * Kaida$45$Amethyst$math$$tan(p_angle) + Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(platform.body));
   Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_position$46$inner(particle.torso, { _0: Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso)), _1: target_y + 3.7 }, 300, 10);
 }
-function Great$45$Love$45$League$Stick_Man_Battle$server$$world_to_screen(world_width, world_height, x, y, ppm) {
-  return { _0: world_width / 2 + x * ppm, _1: world_height - y * ppm };
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$drawPolygon(p, shape) {
-  const vertices = Demonmasterlqx$box2d_ffi$box2d$$B2PolygonShape$getVertices(shape);
-  const global_position = moonbitlang$core$array$$Array$new$46$inner$10$(0);
-  const _len = vertices.length;
-  let _tmp = 0;
-  while (true) {
-    const _i = _tmp;
-    if (_i < _len) {
-      const vertex = vertices[_i];
-      const gvec = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getWorldPoint(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$18$(shape), vertex);
-      moonbitlang$core$array$$Array$push$10$(global_position, gvec);
-      _tmp = _i + 1 | 0;
-      continue;
+function Great$45$Love$45$League$Stick_Man_Battle$server$$particle_walk(particle, direction) {
+  particle.control.walk_direction = direction;
+  if (!particle.control.jump_state) {
+    if (particle.control.walk_state) {
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_left_joint, -0.5, 50, 1);
     } else {
-      break;
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_left_joint, 0.8, 50, 1);
     }
-  }
-  const screen_position = moonbitlang$core$array$$Array$new$46$inner$9$(0);
-  const _len$2 = global_position.length;
-  let _tmp$2 = 0;
-  while (true) {
-    const _i = _tmp$2;
-    if (_i < _len$2) {
-      const gvec = global_position[_i];
-      const screen_coords = Great$45$Love$45$League$Stick_Man_Battle$server$$world_to_screen(1000, 1000, Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(gvec), Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(gvec), 20);
-      moonbitlang$core$array$$Array$push$9$(screen_position, screen_coords);
-      _tmp$2 = _i + 1 | 0;
-      continue;
+    if (particle.control.walk_state) {
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_right_joint, 0.8, 50, 1);
     } else {
-      break;
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.thigh_right_joint, -0.5, 50, 1);
     }
-  }
-  p.method_72(p.self, undefined);
-  const _end41 = screen_position.length;
-  let _tmp$3 = 0;
-  while (true) {
-    const i = _tmp$3;
-    if (i < _end41) {
-      const _bind = moonbitlang$core$array$$Array$at$9$(screen_position, i);
-      const _x = _bind._0;
-      const _y = _bind._1;
-      p.method_76(p.self, _x, _y, Option$None$2$, Option$None$2$, Option$None$2$);
-      _tmp$3 = i + 1 | 0;
-      continue;
+    Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_left_joint, -1.0995574287564276 * direction, 30, 1);
+    Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.knee_right_joint, -1.0995574287564276 * direction, 30, 1);
+    if (particle.control.walk_state) {
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_left_joint, -0.5, 30, 1);
     } else {
-      break;
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_left_joint, 0.5, 30, 1);
     }
-  }
-  p.method_73(p.self, "close", undefined);
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$drawCircle(p, shape) {
-  const position = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getWorldPoint(Demonmasterlqx$box2d_ffi$box2d$$Shape$getBody$19$(shape), Demonmasterlqx$box2d_ffi$box2d$$B2CircleShape$getLocalPosition(shape));
-  const radius = Demonmasterlqx$box2d_ffi$box2d$$B2CircleShape$getRadius(shape);
-  const screen_pos = Great$45$Love$45$League$Stick_Man_Battle$server$$world_to_screen(1000, 1000, Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(position), Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(position), 20);
-  const _p = 20;
-  const screen_radius = radius * _p;
-  p.method_81(p.self, 200, new Option$Some$2$(0), new Option$Some$2$(0), Option$None$2$);
-  p.method_55(p.self, screen_pos._0, screen_pos._1, screen_radius * 2);
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$draw_world(p, world) {
-  p.method_80(p.self, 255, new Option$Some$2$(204), new Option$Some$2$(0), Option$None$2$);
-  const _arr = Demonmasterlqx$box2d_ffi$box2d$$World$getBodyList$12$(world);
-  const _len = _arr.length;
-  let _tmp = 0;
-  while (true) {
-    const _i = _tmp;
-    if (_i < _len) {
-      const body = _arr[_i];
-      const _arr$2 = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getShapeList(body);
-      const _len$2 = _arr$2.length;
-      let _tmp$2 = 0;
-      while (true) {
-        const _i$2 = _tmp$2;
-        if (_i$2 < _len$2) {
-          const shape = _arr$2[_i$2];
-          const _bind = Demonmasterlqx$box2d_ffi$box2d$$Shape$getType$17$(shape);
-          switch (_bind) {
-            case 2: {
-              Great$45$Love$45$League$Stick_Man_Battle$server$$drawPolygon(p, Demonmasterlqx$box2d_ffi$box2d$$B2Shape$toPolygonShape(shape));
-              break;
-            }
-            case 3: {
-              Great$45$Love$45$League$Stick_Man_Battle$server$$drawPolygon(p, Demonmasterlqx$box2d_ffi$box2d$$B2Shape$toPolygonShape(shape));
-              break;
-            }
-            case 1: {
-              Great$45$Love$45$League$Stick_Man_Battle$server$$drawCircle(p, Demonmasterlqx$box2d_ffi$box2d$$B2Shape$toCircleShape(shape));
-              break;
-            }
-            default: {
-              moonbitlang$core$builtin$$println$11$("Unknown Shape");
-            }
-          }
-          _tmp$2 = _i$2 + 1 | 0;
-          continue;
-        } else {
-          break;
-        }
-      }
-      _tmp = _i + 1 | 0;
-      continue;
+    if (particle.control.walk_state) {
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_right_joint, 0.5, 30, 1);
     } else {
-      return;
+      Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.arm_right_joint, -0.5, 30, 1);
     }
+    Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_left_joint, 1.0995574287564276 * direction, 30, 1);
+    Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_joint$46$inner(particle.forearm_right_joint, 1.0995574287564276 * direction, 30, 1);
   }
-}
-function Great$45$Love$45$League$Stick_Man_Battle$server$$box2d_init(world) {
-  Great$45$Love$45$League$Stick_Man_Battle$server$$create_platform(world, { _0: 0, _1: 0 }, { _0: 10, _1: 1 });
-  Great$45$Love$45$League$Stick_Man_Battle$server$$create_particle(world, { _0: 0, _1: 10 });
-  const static_box = Great$45$Love$45$League$Stick_Man_Battle$server$$create_static_box(world, { _0: 1, _1: 10 }, { _0: 1, _1: 0.1 });
-  Demonmasterlqx$box2d_ffi$box2d$$B2Body$setAngularVelocity(static_box, 0.5);
+  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, 0, 100, 10);
+  if (particle.control.walk_cooldown <= 0) {
+    particle.control.walk_state = !particle.control.walk_state;
+    particle.control.walk_cooldown = 20;
+  } else {
+    const _bind = particle.control;
+    _bind.walk_cooldown = _bind.walk_cooldown - 1 | 0;
+  }
+  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyForce(particle.torso, Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(50 * direction, 0), Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso));
+  const index = Great$45$Love$45$League$Stick_Man_Battle$server$$which_platform(particle);
+  if (index === -1) {
+    return undefined;
+  }
+  const platform = moonbitlang$core$array$$Array$at$1$(Great$45$Love$45$League$Stick_Man_Battle$server$$platform_list.val, index);
+  const p_angle = Demonmasterlqx$box2d_ffi$box2d$$B2Body$getRotation(platform.body);
+  const target_y = (Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso)) - Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(platform.body))) * Kaida$45$Amethyst$math$$tan(p_angle) + Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getY(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(platform.body));
+  Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_position$46$inner(particle.torso, { _0: Demonmasterlqx$box2d_ffi$box2d$$B2Vec2$getX(Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso)), _1: target_y + 3.5 }, 300, 10);
+  const v = Demonmasterlqx$box2d_ffi$box2d$$b2Vec2(50 * direction * Kaida$45$Amethyst$math$$cos(p_angle), 50 * direction * Kaida$45$Amethyst$math$$sin(p_angle));
+  Demonmasterlqx$box2d_ffi$box2d$$B2Body$applyForce(particle.torso, v, Demonmasterlqx$box2d_ffi$box2d$$B2Body$getCenterPosition(particle.torso));
 }
 (() => {
   Great$45$Love$45$League$Stick_Man_Battle$server$$box2d_init(Great$45$Love$45$League$Stick_Man_Battle$server$$world.val);
   Great$45$Love$45$League$Stick_Man_Battle$server$$getP5Instance$46$inner((p) => {
-    const _arr = Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val;
-    const _len = _arr.length;
-    let _tmp = 0;
-    while (true) {
-      const _i = _tmp;
-      if (_i < _len) {
-        const particle = _arr[_i];
-        if (Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$25$(p, 0)) {
-          Great$45$Love$45$League$Stick_Man_Battle$server$$walk(particle, -1);
-        } else {
-          if (Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$25$(p, 3)) {
-            Great$45$Love$45$League$Stick_Man_Battle$server$$walk(particle, 1);
-          } else {
-            Great$45$Love$45$League$Stick_Man_Battle$server$$stand(particle);
-          }
-        }
-        Great$45$Love$45$League$Stick_Man_Battle$server$$maintain_rotation$46$inner(particle.torso, 0, 30, 10);
-        _tmp = _i + 1 | 0;
-        continue;
+    if (Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$26$(p, 0)) {
+      Great$45$Love$45$League$Stick_Man_Battle$server$$particle_walk(moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0), -1);
+    } else {
+      if (Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$26$(p, 3)) {
+        Great$45$Love$45$League$Stick_Man_Battle$server$$particle_walk(moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0), 1);
       } else {
-        break;
+        if (!moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_state) {
+          Great$45$Love$45$League$Stick_Man_Battle$server$$particle_stand(moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0));
+        }
       }
     }
-    Demonmasterlqx$box2d_ffi$box2d$$World$step$12$(Great$45$Love$45$League$Stick_Man_Battle$server$$world.val, 0.016666666666666666, 4);
-    Great$45$Love$45$League$Stick_Man_Battle$server$$draw_world({ self: p, method_0: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getP5Instance$24$, method_1: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getTouches$25$, method_2: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchEnded$25$, method_3: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchEnded$25$, method_4: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchMoved$25$, method_5: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchMoved$25$, method_6: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchStarted$25$, method_7: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchStarted$25$, method_8: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKey$25$, method_9: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKeyCode$25$, method_10: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$25$, method_11: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsPressed$25$, method_12: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyPressed$25$, method_13: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyPressed$25$, method_14: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyReleased$25$, method_15: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyReleased$25$, method_16: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyTyped$25$, method_17: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyTyped$25$, method_18: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseX$25$, method_19: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseY$25$, method_20: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedX$25$, method_21: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedY$25$, method_22: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseX$25$, method_23: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseY$25$, method_24: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseX$25$, method_25: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseY$25$, method_26: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseX$25$, method_27: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseY$25$, method_28: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$mouseIsPressed$25$, method_29: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButtonString$25$, method_30: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButton$25$, method_31: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setDoubleClicked$25$, method_32: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelDoubleClicked$25$, method_33: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseClicked$25$, method_34: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseClicked$25$, method_35: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseDragged$25$, method_36: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseDragged$25$, method_37: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseMoved$25$, method_38: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseMoved$25$, method_39: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMousePressed$25$, method_40: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMousePressed$25$, method_41: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseReleased$25$, method_42: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseReleased$25$, method_43: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseWheel$25$, method_44: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseWheel$25$, method_45: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$requestPointerLock$25$, method_46: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$exitPointerLock$25$, method_47: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipseMode$25$, method_48: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rectMode$25$, method_49: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noSmooth$25$, method_50: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$smooth$25$, method_51: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeCap$25$, method_52: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeJoin$25$, method_53: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeWeight$25$, method_54: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$arc$25$, method_55: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$circle$25$, method_56: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipse$25$, method_57: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$line$25$, method_58: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$point$25$, method_59: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quad$25$, method_60: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rect$25$, method_61: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$triangle$25$, method_62: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$square$25$, method_63: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezier$25$, method_64: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierPoint$25$, method_65: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierTangent$25$, method_66: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curve$25$, method_67: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curvePoint$25$, method_68: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTangent$25$, method_69: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTightness$25$, method_70: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginContour$25$, method_71: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endContour$25$, method_72: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginShape$25$, method_73: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endShape$25$, method_74: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierVertex$25$, method_75: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveVertex$25$, method_76: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$vertex$25$, method_77: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$normal$25$, method_78: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quadraticVertex$25$, method_79: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noStroke$25$, method_80: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$background$25$, method_81: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorPara$25$, method_82: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorObj$25$, method_83: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginClip$25$, method_84: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endClip$25$, method_85: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clear$25$, method_86: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clip$25$, method_87: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clipOptions$25$, method_88: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeUniform$25$, method_89: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeDetailed$25$, method_90: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$erase$25$, method_91: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noErase$25$, method_92: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeColor$25$, method_93: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeGray$25$, method_94: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeComponents$25$, method_95: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeString$25$, method_96: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noFill$25$, method_97: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$brightness$25$, method_98: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$color$25$, method_99: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$alpha$25$, method_100: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$blue$25$, method_101: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$green$25$, method_102: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$red$25$, method_103: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$hue$25$, method_104: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lerpColor$25$, method_105: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lightness$25$, method_106: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$paletteLerp$25$ }, Great$45$Love$45$League$Stick_Man_Battle$server$$world.val);
+    if (Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$26$(p, 22)) {
+      if (moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_cooldown <= 0) {
+        if (!moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_state) {
+          moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_state = true;
+          moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_frame_count = 0;
+          moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_cooldown = 61;
+        }
+      }
+    }
+    if (moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control.jump_cooldown > 0) {
+      const _bind = moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0).control;
+      _bind.jump_cooldown = _bind.jump_cooldown - 1 | 0;
+    }
+    Great$45$Love$45$League$Stick_Man_Battle$server$$particle_jump(moonbitlang$core$array$$Array$at$4$(Great$45$Love$45$League$Stick_Man_Battle$server$$particle_list.val, 0), 0);
+    Demonmasterlqx$box2d_ffi$box2d$$World$step$13$(Great$45$Love$45$League$Stick_Man_Battle$server$$world.val, 0.016666666666666666, 4);
+    Great$45$Love$45$League$Stick_Man_Battle$server$$draw_world({ self: p, method_0: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getP5Instance$25$, method_1: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getTouches$26$, method_2: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchEnded$26$, method_3: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchEnded$26$, method_4: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchMoved$26$, method_5: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchMoved$26$, method_6: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setTouchStarted$26$, method_7: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelTouchStarted$26$, method_8: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKey$26$, method_9: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getKeyCode$26$, method_10: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsDown$26$, method_11: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$keyIsPressed$26$, method_12: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyPressed$26$, method_13: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyPressed$26$, method_14: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyReleased$26$, method_15: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyReleased$26$, method_16: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setKeyTyped$26$, method_17: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelKeyTyped$26$, method_18: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseX$26$, method_19: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseY$26$, method_20: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedX$26$, method_21: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMovedY$26$, method_22: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseX$26$, method_23: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPmouseY$26$, method_24: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseX$26$, method_25: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getPwinMouseY$26$, method_26: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseX$26$, method_27: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getWinMouseY$26$, method_28: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$mouseIsPressed$26$, method_29: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButtonString$26$, method_30: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$getMouseButton$26$, method_31: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setDoubleClicked$26$, method_32: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelDoubleClicked$26$, method_33: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseClicked$26$, method_34: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseClicked$26$, method_35: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseDragged$26$, method_36: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseDragged$26$, method_37: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseMoved$26$, method_38: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseMoved$26$, method_39: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMousePressed$26$, method_40: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMousePressed$26$, method_41: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseReleased$26$, method_42: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseReleased$26$, method_43: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$setMouseWheel$26$, method_44: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$cancelMouseWheel$26$, method_45: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$requestPointerLock$26$, method_46: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$exitPointerLock$26$, method_47: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipseMode$26$, method_48: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rectMode$26$, method_49: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noSmooth$26$, method_50: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$smooth$26$, method_51: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeCap$26$, method_52: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeJoin$26$, method_53: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeWeight$26$, method_54: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$arc$26$, method_55: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$circle$26$, method_56: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$ellipse$26$, method_57: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$line$26$, method_58: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$point$26$, method_59: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quad$26$, method_60: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$rect$26$, method_61: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$triangle$26$, method_62: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$square$26$, method_63: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezier$26$, method_64: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierPoint$26$, method_65: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierTangent$26$, method_66: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curve$26$, method_67: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curvePoint$26$, method_68: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTangent$26$, method_69: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveTightness$26$, method_70: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginContour$26$, method_71: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endContour$26$, method_72: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginShape$26$, method_73: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endShape$26$, method_74: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$bezierVertex$26$, method_75: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$curveVertex$26$, method_76: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$vertex$26$, method_77: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$normal$26$, method_78: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$quadraticVertex$26$, method_79: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noStroke$26$, method_80: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$background$26$, method_81: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorPara$26$, method_82: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$fillColorObj$26$, method_83: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$beginClip$26$, method_84: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$endClip$26$, method_85: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clear$26$, method_86: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clip$26$, method_87: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$clipOptions$26$, method_88: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeUniform$26$, method_89: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$colorModeDetailed$26$, method_90: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$erase$26$, method_91: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noErase$26$, method_92: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeColor$26$, method_93: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeGray$26$, method_94: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeComponents$26$, method_95: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$strokeString$26$, method_96: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$noFill$26$, method_97: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$brightness$26$, method_98: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$color$26$, method_99: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$alpha$26$, method_100: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$blue$26$, method_101: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$green$26$, method_102: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$red$26$, method_103: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$hue$26$, method_104: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lerpColor$26$, method_105: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$lightness$26$, method_106: Demonmasterlqx$MoonP5$cmd$p5js_ffi$$P5JS$paletteLerp$26$ }, Great$45$Love$45$League$Stick_Man_Battle$server$$world.val);
   }, 1000, 1000);
 })();
