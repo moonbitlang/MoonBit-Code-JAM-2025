@@ -1,3 +1,939 @@
+// 画布上下文变量
+let ctx = null;
+
+// 初始化画布上下文
+function initCanvas() {
+    const canvas = document.getElementById('canvas');
+    if (canvas) {
+        ctx = canvas.getContext('2d');
+    } else {
+        console.error('找不到画布元素');
+    }
+}
+
+// 天气系统配置
+const weatherConfigs = {
+    0: { // Clear
+        name: '晴朗',
+        skyModifier: { r: 0, g: 0, b: 0 },
+        groundModifier: { r: 0, g: 0, b: 0 },
+        duration: 3600 // 60秒 (3600帧)
+    },
+    1: { // Rain
+        name: '下雨',
+        skyModifier: { r: -20, g: -20, b: -10 },
+        groundModifier: { r: -10, g: -5, b: -5 },
+        duration: 4800 // 80秒 (4800帧)
+    },
+    2: { // Storm
+        name: '暴风雨',
+        skyModifier: { r: -40, g: -40, b: -30 },
+        groundModifier: { r: -20, g: -15, b: -10 },
+        duration: 3600 // 60秒 (3600帧)
+    },
+    3: { // Snow
+        name: '下雪',
+        skyModifier: { r: 10, g: 10, b: 20 },
+        groundModifier: { r: 20, g: 20, b: 25 },
+        duration: 4800 // 80秒 (4800帧)
+    }
+};
+
+// 天气系统状态
+let weatherSystem = {
+    currentWeather: 0, // 当前天气类型
+    weatherIntensity: 0, // 天气强度 (0-100)
+    weatherDuration: 0, // 当前天气持续时间
+    weatherTransition: 0, // 天气过渡进度
+    lightningFlash: 0, // 闪电闪光强度
+    thunderShake: 0, // 雷声震动强度
+    rainDrops: [], // 雨滴数组
+    snowFlakes: [] // 雪花数组
+};
+
+// 平滑插值函数
+function smoothStep(t) {
+    return t * t * (3 - 2 * t);
+}
+
+// 更平滑的插值函数
+function smootherStep(t) {
+    return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
+// 获取天气系统状态
+function getWeatherState() {
+    return {
+        currentWeather: weatherSystem.currentWeather,
+        weatherIntensity: weatherSystem.weatherIntensity / 100,
+        weatherDuration: weatherSystem.weatherDuration,
+        weatherTransition: weatherSystem.weatherTransition / 100,
+        lightningFlash: weatherSystem.lightningFlash / 100,
+        thunderShake: weatherSystem.thunderShake / 100
+    };
+}
+
+function getRainDrops() {
+    return weatherSystem.rainDrops;
+}
+
+function getSnowFlakes() {
+    return weatherSystem.snowFlakes;
+}
+
+// 绘制雨滴
+function drawRain() {
+    const rainDrops = getRainDrops();
+    const weatherState = getWeatherState();
+    
+    if (rainDrops.length === 0) return;
+    
+    // 确保强度值在合理范围内
+    const intensity = Math.min(Math.max(weatherState.weatherIntensity, 0), 1);
+    
+    ctx.save();
+    ctx.strokeStyle = `rgba(135, 206, 235, ${0.3 + intensity * 0.4})`; // 天蓝色，透明度随强度变化
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+    
+    for (const drop of rainDrops) {
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x, drop.y + drop.length);
+        ctx.stroke();
+    }
+    
+    ctx.restore();
+}
+
+// 绘制雪花
+function drawSnow() {
+    const snowFlakes = getSnowFlakes();
+    const weatherState = getWeatherState();
+    
+    if (snowFlakes.length === 0) return;
+    
+    // 确保强度值在合理范围内
+    const intensity = Math.min(Math.max(weatherState.weatherIntensity, 0), 1);
+    
+    ctx.save();
+    ctx.fillStyle = `rgba(255, 255, 255, ${0.4 + intensity * 0.4})`; // 白色，透明度随强度变化
+    
+    for (const flake of snowFlakes) {
+        ctx.save();
+        ctx.translate(flake.x, flake.y);
+        ctx.rotate(flake.rotation * Math.PI / 180);
+        
+        // 绘制简单的雪花形状
+        ctx.beginPath();
+        ctx.arc(0, 0, flake.size, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 添加雪花的十字形状
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.6 + intensity * 0.3})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(-flake.size, 0);
+        ctx.lineTo(flake.size, 0);
+        ctx.moveTo(0, -flake.size);
+        ctx.lineTo(0, flake.size);
+        ctx.stroke();
+        
+        ctx.restore();
+    }
+    
+    ctx.restore();
+}
+
+// 绘制闪电效果
+function drawLightning() {
+    const weatherState = getWeatherState();
+    const flashIntensity = Math.min(Math.max(weatherState.lightningFlash, 0), 1);
+    
+    if (flashIntensity > 0) {
+        ctx.save();
+        ctx.fillStyle = `rgba(255, 255, 255, ${flashIntensity * 0.8})`;
+        ctx.fillRect(0, 0, 160, 160);
+        ctx.restore();
+    }
+}
+
+// 绘制雷声震动效果
+function drawThunderShake() {
+    const weatherState = getWeatherState();
+    const shakeIntensity = Math.min(Math.max(weatherState.thunderShake, 0), 1);
+    
+    if (shakeIntensity > 0) {
+        ctx.save();
+        ctx.fillStyle = `rgba(0, 0, 0, ${shakeIntensity * 0.1})`;
+        ctx.fillRect(0, 0, 160, 160);
+        ctx.restore();
+    }
+}
+
+// 初始化天气系统
+function initWeatherSystem() {
+    
+    // 随机选择初始天气
+    weatherSystem.currentWeather = selectRandomWeather();
+    weatherSystem.weatherIntensity = 0;
+    weatherSystem.weatherDuration = 0;
+    weatherSystem.rainDrops = [];
+    weatherSystem.snowFlakes = [];
+    weatherSystem.lightningFlash = 0;
+    weatherSystem.thunderShake = 0;
+    weatherSystem.weatherTransition = 0;
+    
+}
+
+// 更新天气系统
+function updateWeatherSystem() {
+    // 检查天气变化
+    changeWeather();
+    
+    // 更新天气持续时间
+    weatherSystem.weatherDuration++;
+    
+    // 更新天气强度
+    updateWeatherIntensity();
+    
+    // 更新天气效果
+    updateWeatherEffects();
+}
+
+// 选择随机天气（避免重复选择相同天气）
+function selectRandomWeather() {
+    // 如果是初始化（currentWeather为undefined或0），则从所有天气中随机选择
+    if (weatherSystem.currentWeather === undefined || weatherSystem.currentWeather === 0) {
+        return Math.floor(Math.random() * 4); // 0-3随机选择
+    }
+    
+    const availableWeathers = [0, 1, 2, 3].filter(w => w !== weatherSystem.currentWeather);
+    const randomIndex = Math.floor(Math.random() * availableWeathers.length);
+    return availableWeathers[randomIndex];
+}
+
+// 改变天气
+function changeWeather() {
+    const currentDuration = weatherConfigs[weatherSystem.currentWeather].duration;
+    
+    // 如果当前天气持续时间超过配置的持续时间，或者随机触发天气变化
+    const shouldChange = weatherSystem.weatherDuration >= currentDuration || 
+                        (weatherSystem.weatherDuration > 300 && Math.random() < 0.002); // 0.2%概率随机变化
+    
+    if (shouldChange) {
+        const newWeather = selectRandomWeather();
+        
+        // 开始天气过渡
+        weatherSystem.weatherTransition = 0;
+        weatherSystem.currentWeather = newWeather;
+        weatherSystem.weatherDuration = 0;
+        
+        // 天气变化
+    }
+}
+
+// 更新天气强度
+function updateWeatherIntensity() {
+    const currentDuration = weatherConfigs[weatherSystem.currentWeather].duration;
+    const progress = (weatherSystem.weatherDuration * 100) / currentDuration;
+    
+    // 天气强度在开始和结束时较低，中间较高
+    if (progress < 20) {
+        weatherSystem.weatherIntensity = progress * 5;
+    } else if (progress > 80) {
+        weatherSystem.weatherIntensity = (100 - progress) * 5;
+    } else {
+        weatherSystem.weatherIntensity = 100;
+    }
+}
+
+// 更新天气效果
+function updateWeatherEffects() {
+    switch (weatherSystem.currentWeather) {
+        case 1: // Rain
+            updateRainEffects();
+            break;
+        case 2: // Storm
+            updateStormEffects();
+            break;
+        case 3: // Snow
+            updateSnowEffects();
+            break;
+        case 0: // Clear
+        default:
+            clearWeatherEffects();
+            break;
+    }
+}
+
+// 更新下雨效果
+function updateRainEffects() {
+    // 生成雨滴
+    if (Math.random() < 0.3) {
+        const rainDrop = {
+            x: Math.random() * 160,
+            y: -10,
+            speed: Math.random() * 3 + 2,
+            length: Math.random() * 8 + 5
+        };
+        weatherSystem.rainDrops.push(rainDrop);
+    }
+    
+    // 更新雨滴位置
+    for (let i = weatherSystem.rainDrops.length - 1; i >= 0; i--) {
+        const drop = weatherSystem.rainDrops[i];
+        drop.x += (Math.random() - 0.5) * 2; // 轻微左右摆动
+        drop.y += drop.speed;
+        
+        if (drop.y > 170) {
+            weatherSystem.rainDrops.splice(i, 1);
+        }
+    }
+}
+
+// 更新暴风雨效果
+function updateStormEffects() {
+    // 更新下雨效果
+    updateRainEffects();
+    
+    // 闪电效果
+    if (Math.random() < 0.003) { // 0.3%概率
+        weatherSystem.lightningFlash = 100;
+    }
+    
+    // 更新闪电闪光
+    if (weatherSystem.lightningFlash > 0) {
+        weatherSystem.lightningFlash -= 5;
+        if (weatherSystem.lightningFlash < 0) {
+            weatherSystem.lightningFlash = 0;
+        }
+    }
+    
+    // 雷声震动效果
+    if (weatherSystem.lightningFlash > 50) {
+        weatherSystem.thunderShake = 100;
+    }
+    
+    // 更新雷声震动
+    if (weatherSystem.thunderShake > 0) {
+        weatherSystem.thunderShake -= 3;
+        if (weatherSystem.thunderShake < 0) {
+            weatherSystem.thunderShake = 0;
+        }
+    }
+}
+
+// 更新下雪效果
+function updateSnowEffects() {
+    // 生成雪花
+    if (Math.random() < 0.2) {
+        const snowFlake = {
+            x: Math.random() * 160,
+            y: -5,
+            speed: Math.random() * 2 + 1,
+            size: Math.random() * 3 + 1,
+            drift: (Math.random() - 0.5) * 2,
+            rotation: Math.random() * 360
+        };
+        weatherSystem.snowFlakes.push(snowFlake);
+    }
+    
+    // 更新雪花位置
+    for (let i = weatherSystem.snowFlakes.length - 1; i >= 0; i--) {
+        const flake = weatherSystem.snowFlakes[i];
+        flake.x += flake.drift;
+        flake.y += flake.speed;
+        flake.rotation += 2;
+        
+        if (flake.y > 170) {
+            weatherSystem.snowFlakes.splice(i, 1);
+        }
+    }
+}
+
+// 清除天气效果
+function clearWeatherEffects() {
+    weatherSystem.rainDrops = [];
+    weatherSystem.snowFlakes = [];
+    weatherSystem.lightningFlash = 0;
+    weatherSystem.thunderShake = 0;
+}
+
+
+
+// 更新天气显示
+function updateWeatherDisplay() {
+    const weatherState = getWeatherState();
+    const weatherNames = ['晴朗', '下雨', '暴风雨', '下雪'];
+    const weatherIcons = ['☀️', '🌧️', '⛈️', '❄️'];
+    const currentWeatherName = weatherNames[weatherState.currentWeather] || '未知';
+    const currentWeatherIcon = weatherIcons[weatherState.currentWeather] || '☀️';
+    
+    // 更新天气显示元素
+    const weatherElement = document.getElementById('weather');
+    if (weatherElement) {
+        weatherElement.textContent = currentWeatherName;
+    }
+    
+    // 更新天气图标（如果HUD中有图标元素）
+    const weatherIconElement = document.querySelector('.hud-item.weather .hud-icon');
+    if (weatherIconElement) {
+        weatherIconElement.textContent = currentWeatherIcon;
+    }
+}
+
+// 天气效果绘制函数
+function drawWeatherEffects() {
+    const weatherState = getWeatherState();
+    
+    // 根据天气类型绘制不同效果
+    switch (weatherState.currentWeather) {
+        case 1: // Rain
+            const rainDrops = getRainDrops();
+            if (rainDrops.length > 0) {
+                drawRain();
+            }
+            break;
+        case 2: // Storm
+            const stormRainDrops = getRainDrops();
+            if (stormRainDrops.length > 0) {
+                drawRain();
+                drawLightning();
+                drawThunderShake();
+            }
+            break;
+        case 3: // Snow
+            const snowFlakes = getSnowFlakes();
+            if (snowFlakes.length > 0) {
+                drawSnow();
+            }
+            break;
+        case 0: // Clear
+        default:
+            // 晴朗天气，不绘制特殊效果
+            break;
+    }
+}
+
+
+
+// 应用天气颜色修改
+function applyWeatherModifier(color, modifier, intensity) {
+    // 解析颜色
+    const r = parseInt(color.slice(1, 3), 16);
+    const g = parseInt(color.slice(3, 5), 16);
+    const b = parseInt(color.slice(5, 7), 16);
+    
+    // 应用修改器
+    const newR = Math.max(0, Math.min(255, r + modifier.r * intensity));
+    const newG = Math.max(0, Math.min(255, g + modifier.g * intensity));
+    const newB = Math.max(0, Math.min(255, b + modifier.b * intensity));
+    
+    // 返回新颜色
+    return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+}
+
+// 改进的颜色插值函数
+function lerpColor(color1, color2, t) {
+    // 确保t在0-1范围内
+    t = Math.max(0, Math.min(1, t));
+    
+    const r1 = parseInt(color1.slice(1, 3), 16);
+    const g1 = parseInt(color1.slice(3, 5), 16);
+    const b1 = parseInt(color1.slice(5, 7), 16);
+    
+    const r2 = parseInt(color2.slice(1, 3), 16);
+    const g2 = parseInt(color2.slice(3, 5), 16);
+    const b2 = parseInt(color2.slice(5, 7), 16);
+    
+    // 使用更精确的插值，避免舍入误差
+    const r = Math.round(r1 + (r2 - r1) * t);
+    const g = Math.round(g1 + (g2 - g1) * t);
+    const b = Math.round(b1 + (b2 - b1) * t);
+    
+    // 确保颜色值在有效范围内
+    const clampedR = Math.max(0, Math.min(255, r));
+    const clampedG = Math.max(0, Math.min(255, g));
+    const clampedB = Math.max(0, Math.min(255, b));
+    
+    return `rgb(${clampedR}, ${clampedG}, ${clampedB})`;
+}
+
+// 定义时间段的颜色配置 - 更明显的颜色变化
+const timeConfigs = {
+    dawn: {
+        sunPos: { x: 20, y: 40 },
+        sunColor: '#FF4500', // 更红的黎明太阳
+        skyTop: '#000080',   // 深蓝天空
+        skyBottom: '#FF6347', // 橙红底部
+        ground: '#8B4513',   // 棕色地面
+        sunRadius: 14
+    },
+    morning: {
+        sunPos: { x: 60, y: 20 },
+        sunColor: '#FFD700', // 金黄色太阳
+        skyTop: '#4169E1',   // 皇家蓝
+        skyBottom: '#87CEEB', // 天蓝色
+        ground: '#228B22',   // 绿色地面
+        sunRadius: 16
+    },
+    noon: {
+        sunPos: { x: 100, y: 10 },
+        sunColor: '#FFFFFF', // 白色太阳
+        skyTop: '#87CEEB',   // 天蓝色
+        skyBottom: '#F0F8FF', // 爱丽丝蓝
+        ground: '#32CD32',   // 亮绿色
+        sunRadius: 18
+    },
+    evening: {
+        sunPos: { x: 140, y: 40 },
+        sunColor: '#FF0000', // 红色太阳
+        skyTop: '#FF4500',   // 橙红色
+        skyBottom: '#FF8C00', // 深橙色
+        ground: '#8B4513',   // 棕色地面
+        sunRadius: 16
+    },
+    night: {
+        moonPos: { x: 120, y: 20 },
+        moonColor: '#FFFFFF', // 白色月亮
+        skyTop: '#000000',   // 黑色天空
+        skyBottom: '#191970', // 午夜蓝
+        ground: '#2F4F4F',   // 深灰绿色
+        moonRadius: 16
+    }
+};
+
+// 星星系统
+let stars = [];
+let starsInitialized = false;
+let meteors = [];
+
+
+// 星星类型定义
+const starTypes = [
+    { color: [255, 255, 255], name: 'white' },      // 白色星星
+    { color: [200, 220, 255], name: 'blue' },       // 蓝色星星
+    { color: [255, 255, 200], name: 'yellow' },     // 黄色星星
+    { color: [255, 200, 200], name: 'red' },        // 红色星星
+    { color: [200, 255, 200], name: 'green' }       // 绿色星星
+];
+
+function initStars() {
+    if (starsInitialized) return;
+    
+    stars = [];
+    // 创建星空（更丰富的密度与类型）
+    for (let i = 0; i < 60; i++) {
+        const starType = starTypes[Math.floor(Math.random() * starTypes.length)];
+        const size = Math.random() * 0.9 + 0.6; // 更细腻的小星点
+        
+        stars.push({
+            x: Math.random() * 160,
+            y: Math.random() * 80,
+            size: size,
+            brightness: Math.random() * 0.9 + 0.1,
+            twinkleSpeed: Math.random() * 0.03 + 0.005,
+            twinklePhase: Math.random() * Math.PI * 2,
+            color: starType.color,
+            type: starType.name,
+            spike: Math.random() < 0.18, // 部分星星带尖芒
+            driftSpeed: Math.random() * 0.0003 + 0.00005,
+            driftAmp: Math.random() * 0.6 + 0.2
+        });
+    }
+    
+    
+    starsInitialized = true;
+}
+
+
+
+function drawStars(alpha = 1) {
+    if (!starsInitialized) {
+        initStars();
+    }
+    
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const timeMs = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+    
+    // 绘制星星
+    for (const star of stars) {
+        // 计算闪烁效果
+        const twinkle = Math.sin(timeMs * star.twinkleSpeed + star.twinklePhase) * 0.4 + 0.6;
+        const currentBrightness = star.brightness * twinkle;
+        const px = star.x + Math.sin(timeMs * star.driftSpeed + star.twinklePhase) * star.driftAmp;
+        const py = star.y + Math.cos(timeMs * star.driftSpeed + star.twinklePhase) * (star.driftAmp * 0.5);
+        
+        // 柔和光晕
+        const glowRadius = star.size * 3.2;
+        const glow = ctx.createRadialGradient(px, py, 0, px, py, glowRadius);
+        glow.addColorStop(0, `rgba(${star.color[0]}, ${star.color[1]}, ${star.color[2]}, ${Math.min(0.4, currentBrightness * 0.4)})`);
+        glow.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(px, py, glowRadius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 星星核心
+        ctx.fillStyle = `rgba(${star.color[0]}, ${star.color[1]}, ${star.color[2]}, ${Math.min(1, currentBrightness)})`;
+        ctx.beginPath();
+        ctx.arc(px, py, star.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 星芒（少量亮星）
+        if (star.spike) {
+            ctx.save();
+            ctx.strokeStyle = `rgba(${star.color[0]}, ${star.color[1]}, ${star.color[2]}, ${Math.min(0.5, currentBrightness * 0.5)})`;
+            ctx.lineWidth = 0.4;
+            ctx.beginPath();
+            ctx.moveTo(px - star.size * 2.2, py);
+            ctx.lineTo(px + star.size * 2.2, py);
+            ctx.moveTo(px, py - star.size * 2.2);
+            ctx.lineTo(px, py + star.size * 2.2);
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+    
+    ctx.restore();
+}
+
+// 将增强版星星绘制函数暴露给内部作用域的备用实现复用
+if (typeof window !== 'undefined') {
+    window.__globalDrawStars = drawStars;
+}
+
+// 流星系统（夜间偶发）
+function spawnMeteor() {
+    // 限制同时存在的流星数量
+    if (meteors.length >= 2) return;
+    const fromLeft = Math.random() < 0.6;
+    const startX = fromLeft ? -10 : Math.random() * 60;
+    const startY = Math.random() * 20 + 5;
+    const speed = Math.random() * 1.2 + 1.3;
+    const angle = (fromLeft ? 35 : 25) * Math.PI / 180; // 斜向右下
+    const vx = Math.cos(angle) * speed;
+    const vy = Math.sin(angle) * speed;
+    meteors.push({
+        x: startX,
+        y: startY,
+        vx,
+        vy,
+        length: Math.random() * 14 + 10,
+        width: Math.random() * 0.8 + 0.6,
+        life: 0,
+        maxLife: Math.floor(Math.random() * 60) + 60, // 1-2秒
+        hue: 200 + Math.random() * 40 // 蓝白色调
+    });
+}
+
+function updateMeteors() {
+    for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += m.vx;
+        m.y += m.vy;
+        m.life += 1;
+        if (m.life > m.maxLife || m.x > 180 || m.y > 120) {
+            meteors.splice(i, 1);
+        }
+    }
+}
+
+function drawMeteors() {
+    // 以小概率生成
+    if (Math.random() < 0.02) spawnMeteor();
+    updateMeteors();
+    if (meteors.length === 0) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const m of meteors) {
+        const tailDX = -m.vx;
+        const tailDY = -m.vy;
+        const tailLen = m.length;
+        const mag = Math.hypot(tailDX, tailDY) || 1;
+        const ux = (tailDX / mag) * tailLen;
+        const uy = (tailDY / mag) * tailLen;
+
+        const grad = ctx.createLinearGradient(m.x, m.y, m.x + ux, m.y + uy);
+        grad.addColorStop(0, `hsla(${m.hue}, 100%, 85%, 0.85)`);
+        grad.addColorStop(1, 'hsla(0, 0%, 100%, 0)');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = m.width;
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(m.x + ux, m.y + uy);
+        ctx.stroke();
+
+        // 头部发光
+        const headGlow = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.width * 3);
+        headGlow.addColorStop(0, `hsla(${m.hue}, 100%, 90%, 0.8)`);
+        headGlow.addColorStop(1, 'hsla(0, 0%, 100%, 0)');
+        ctx.fillStyle = headGlow;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.width * 3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+function drawBackground() {
+    // 完全依赖mbt文件中的主题设置
+    const theme = typeof exports.get_theme === 'function' ? exports.get_theme() : 0;
+    
+    // 获取当前分数，用于计算时间变化
+    const score = exports.get_score ? exports.get_score() : 0;
+    
+    // 流畅的时间计算 - 每60分一个周期，更慢更自然的变化
+    const cycleScore = score % 60; // 每60分一个完整周期
+    let timeOfDay, sunMoonX, sunMoonY, sunMoonRadius, sunMoonColor;
+    let skyGradient, groundColor;
+    
+    if (theme === 0) {
+        // 地球主题 - 使用mbt文件设置
+        if (!backgroundGradients) {
+            initBackgroundGradients();
+        }
+        
+        // 简化的时间段定义
+        let currentPhase, nextPhase, phaseProgress;
+        
+        if (cycleScore < 12) {
+            // 黎明到早晨 (0-12分)
+            currentPhase = 'dawn';
+            nextPhase = 'morning';
+            phaseProgress = cycleScore / 12;
+        } else if (cycleScore < 24) {
+            // 早晨到中午 (12-24分)
+            currentPhase = 'morning';
+            nextPhase = 'noon';
+            phaseProgress = (cycleScore - 12) / 12;
+        } else if (cycleScore < 36) {
+            // 中午到傍晚 (24-36分)
+            currentPhase = 'noon';
+            nextPhase = 'evening';
+            phaseProgress = (cycleScore - 24) / 12;
+        } else if (cycleScore < 48) {
+            // 傍晚到夜晚 (36-48分)
+            currentPhase = 'evening';
+            nextPhase = 'night';
+            phaseProgress = (cycleScore - 36) / 12;
+        } else {
+            // 夜晚到黎明 (48-60分)
+            currentPhase = 'night';
+            nextPhase = 'dawn';
+            phaseProgress = (cycleScore - 48) / 12;
+        }
+        
+        const current = timeConfigs[currentPhase];
+        const next = timeConfigs[nextPhase];
+        
+        // 使用更平滑的插值
+        const smoothProgress = smootherStep(phaseProgress);
+        
+        // 插值计算位置
+        if (currentPhase === 'night' || nextPhase === 'night') {
+            // 月亮位置
+            const moonPos = currentPhase === 'night' ? current.moonPos : next.moonPos;
+            const nextMoonPos = nextPhase === 'night' ? next.moonPos : current.moonPos;
+            sunMoonX = moonPos.x + (nextMoonPos.x - moonPos.x) * smoothProgress;
+            sunMoonY = moonPos.y + (nextMoonPos.y - moonPos.y) * smoothProgress;
+            sunMoonRadius = current.moonRadius + (next.moonRadius - current.moonRadius) * smoothProgress;
+            sunMoonColor = lerpColor(current.moonColor, next.moonColor, smoothProgress);
+        } else {
+            // 太阳位置
+            const sunPos = current.sunPos;
+            const nextSunPos = next.sunPos;
+            sunMoonX = sunPos.x + (nextSunPos.x - sunPos.x) * smoothProgress;
+            sunMoonY = sunPos.y + (nextSunPos.y - sunPos.y) * smoothProgress;
+            sunMoonRadius = current.sunRadius + (next.sunRadius - current.sunRadius) * smoothProgress;
+            sunMoonColor = lerpColor(current.sunColor, next.sunColor, smoothProgress);
+        }
+        
+        // 插值计算天空渐变
+        skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        let skyTopColor = lerpColor(current.skyTop, next.skyTop, smoothProgress);
+        let skyBottomColor = lerpColor(current.skyBottom, next.skyBottom, smoothProgress);
+        
+        // 应用天气效果到天空颜色
+        const weatherConfig = weatherConfigs[weatherSystem.currentWeather];
+        if (weatherSystem.weatherIntensity > 0) {
+            skyTopColor = applyWeatherModifier(skyTopColor, weatherConfig.skyModifier, weatherSystem.weatherIntensity);
+            skyBottomColor = applyWeatherModifier(skyBottomColor, weatherConfig.skyModifier, weatherSystem.weatherIntensity);
+        }
+        
+        skyGradient.addColorStop(0, skyTopColor);
+        skyGradient.addColorStop(1, skyBottomColor);
+        
+        // 插值计算地面颜色
+        groundColor = lerpColor(current.ground, next.ground, smoothProgress);
+        
+        // 应用天气效果到地面颜色
+        if (weatherSystem.weatherIntensity > 0) {
+            groundColor = applyWeatherModifier(groundColor, weatherConfig.groundModifier, weatherSystem.weatherIntensity);
+        }
+        
+        // 确定当前时间段（用于星星显示等）
+        if (cycleScore < 12) timeOfDay = 'dawn';
+        else if (cycleScore < 24) timeOfDay = 'morning';
+        else if (cycleScore < 36) timeOfDay = 'noon';
+        else if (cycleScore < 48) timeOfDay = 'evening';
+        else timeOfDay = 'night';
+        
+        //
+        
+        // 绘制天空
+        ctx.fillStyle = skyGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 绘制太阳或月亮
+        ctx.fillStyle = sunMoonColor;
+        ctx.beginPath();
+        ctx.arc(sunMoonX, sunMoonY, sunMoonRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 添加太阳/月亮的光晕效果
+        if (timeOfDay !== 'night') {
+            // 太阳光晕
+            const glowGradient = ctx.createRadialGradient(sunMoonX, sunMoonY, 0, sunMoonX, sunMoonY, sunMoonRadius * 2);
+            glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+            glowGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+            glowGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = glowGradient;
+            ctx.beginPath();
+            ctx.arc(sunMoonX, sunMoonY, sunMoonRadius * 2, 0, Math.PI * 2);
+            ctx.fill();
+        } else {
+            // 月亮光晕
+            const moonGlowGradient = ctx.createRadialGradient(sunMoonX, sunMoonY, 0, sunMoonX, sunMoonY, sunMoonRadius * 1.5);
+            moonGlowGradient.addColorStop(0, 'rgba(240, 248, 255, 0.2)');
+            moonGlowGradient.addColorStop(0.7, 'rgba(240, 248, 255, 0.05)');
+            moonGlowGradient.addColorStop(1, 'rgba(240, 248, 255, 0)');
+            ctx.fillStyle = moonGlowGradient;
+            ctx.beginPath();
+            ctx.arc(sunMoonX, sunMoonY, sunMoonRadius * 1.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // 绘制星星（在夜晚和黎明时显示，并添加淡入淡出效果）
+        if (timeOfDay === 'night' || timeOfDay === 'dawn') {
+            drawStars(timeOfDay === 'night' ? 1 : 0.3); // 夜晚完全显示，黎明半透明
+        }
+
+        // 改进的云层系统
+        ctx.save();
+        
+        // 根据时间段调整云层透明度
+        let cloudAlpha = 0.55;
+        if (timeOfDay === 'dawn' || timeOfDay === 'evening') {
+            cloudAlpha = 0.7; // 黎明和傍晚云层更明显
+        } else if (timeOfDay === 'night') {
+            cloudAlpha = 0.3; // 夜晚云层更淡
+        }
+        
+        ctx.globalAlpha = cloudAlpha;
+        ctx.fillStyle = '#FFFFFF';
+        
+        for (const c of clouds) {
+            // 添加云层的阴影效果
+            ctx.save();
+            ctx.globalAlpha = cloudAlpha * 0.3;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.beginPath();
+            ctx.arc(c.x + 1, c.y + 1, c.r, 0, Math.PI * 2);
+            ctx.arc(c.x + c.r * 0.8 + 1, c.y + 2, c.r * 0.8, 0, Math.PI * 2);
+            ctx.arc(c.x - c.r * 0.6 + 1, c.y + 2, c.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            
+            // 绘制云层主体
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+            ctx.arc(c.x + c.r * 0.8, c.y + 1, c.r * 0.8, 0, Math.PI * 2);
+            ctx.arc(c.x - c.r * 0.6, c.y + 1, c.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 移动云层（添加更自然的飘动效果）
+            const windEffect = Math.sin(animationTime * 0.0005 + c.y * 0.01) * 0.1;
+            c.x -= c.s * (1 + windEffect);
+            
+            if (c.x < -c.r - 4) {
+                c.x = 160 + c.r + 4;
+                c.y = Math.random() * 60 + 6;
+                c.r = Math.random() * 6 + 6;
+                c.s = Math.random() * 0.2 + 0.1;
+            }
+        }
+        ctx.restore();
+
+        // 改进的地面系统
+        const groundH = 12;
+        
+        // 根据时间段调整地面颜色和纹理
+        let groundTextureColor, groundShadowColor;
+        if (timeOfDay === 'dawn' || timeOfDay === 'evening') {
+            groundTextureColor = 'rgba(139, 69, 19, 0.4)'; // 棕色纹理
+            groundShadowColor = 'rgba(0, 0, 0, 0.2)';
+        } else if (timeOfDay === 'night') {
+            groundTextureColor = 'rgba(25, 25, 112, 0.3)'; // 深蓝色纹理
+            groundShadowColor = 'rgba(0, 0, 0, 0.4)';
+        } else {
+            groundTextureColor = 'rgba(34, 139, 34, 0.3)'; // 绿色纹理
+            groundShadowColor = 'rgba(0, 0, 0, 0.1)';
+        }
+        
+        // 绘制地面阴影
+        ctx.fillStyle = groundShadowColor;
+        ctx.fillRect(0, canvas.height - groundH - 2, canvas.width, 2);
+        
+        // 绘制地面主体
+        ctx.fillStyle = groundColor;
+        ctx.fillRect(0, canvas.height - groundH, canvas.width, groundH);
+        
+        // 改进的地面纹理
+        const textureOffset = (animationTime * 0.05) % 8;
+        ctx.fillStyle = groundTextureColor;
+        
+        // 添加更多样化的地面纹理
+        for (let i = 0; i < canvas.width + 8; i += 8) {
+            const x = (i - textureOffset) % (canvas.width + 8);
+            
+            // 主要纹理点
+            ctx.fillRect(x, canvas.height - 18, 2, 2);
+            ctx.fillRect(x + 4, canvas.height - 16, 1, 1);
+            
+            // 添加随机的小纹理点
+            if (Math.random() < 0.3) {
+                ctx.fillRect(x + 2, canvas.height - 17, 1, 1);
+            }
+            if (Math.random() < 0.2) {
+                ctx.fillRect(x + 6, canvas.height - 15, 1, 1);
+            }
+        }
+        
+        // 添加地面高光效果（在白天）
+        if (timeOfDay === 'morning' || timeOfDay === 'noon') {
+            const highlightGradient = ctx.createLinearGradient(0, canvas.height - groundH, 0, canvas.height);
+            highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+            highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = highlightGradient;
+            ctx.fillRect(0, canvas.height - groundH, canvas.width, groundH);
+        }
+    } else if (theme === 1) {
+        // 太空主题 - 星空背景
+        ctx.fillStyle = '#000011';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 绘制星星
+        drawStars();
+        
+        // 太空地面
+        ctx.fillStyle = '#1a1a2e';
+        ctx.fillRect(0, canvas.height - 12, canvas.width, 12);
+    }
+}
 // flappy_bird_game.js
 
 // 全局变量存储游戏状态
@@ -22,7 +958,8 @@ class AudioManager {
         this.loadSound('item', 'sounds/item.mp3');
         this.loadSound('score', 'sounds/score.mp3');
         this.loadSound('gameover', 'sounds/gameover.mp3');
-        this.loadSound('background', 'sounds/background.mp3');
+        // 背景音乐文件不存在，跳过加载
+        // this.loadSound('background', 'sounds/background.mp3');
     }
 
     loadSound(name, src) {
@@ -161,23 +1098,17 @@ window.setVolume = function(value) {
 };
 
 
-// 简单的调试函数
-window.checkGameState = function() {
-    if (gameExports) {
-        console.log('游戏状态:', {
-            分数: typeof gameExports.get_score === 'function' ? gameExports.get_score() : '未知',
-            形态: typeof gameExports.get_evolution_stage === 'function' ? gameExports.get_evolution_stage() : '未知',
-            游戏开始: typeof gameExports.is_game_started === 'function' ? gameExports.is_game_started() : '未知',
-            游戏结束: typeof gameExports.is_game_over === 'function' ? gameExports.is_game_over() : '未知'
-        });
-    } else {
-        console.log('游戏尚未加载完成');
-    }
-};
+//
+
+//
+
+//
+
+//
 
 async function loadFlappyBirdWasm() {
     try {
-        console.log('开始加载Flappy Bird WebAssembly模块...');
+        // 开始加载 WebAssembly 模块
         
         // 移除图片加载，使用纯几何图形渲染
         
@@ -191,9 +1122,7 @@ async function loadFlappyBirdWasm() {
         const imports = {
             env: {
                 memory: memory,
-                trace: function(message) {
-                    console.log('WASM Trace:', message);
-                }
+                trace: function(message) {}
             },
             spectest: {
                 print: () => {},
@@ -213,11 +1142,11 @@ async function loadFlappyBirdWasm() {
             }
         };
         
-        console.log('使用WebAssembly.instantiateStreaming...');
+        // 使用 WebAssembly.instantiateStreaming
         // 加版本参数避免浏览器缓存旧的 wasm
         const wasmUrl = 'flappybird_js.wasm?v=' + Math.floor(Date.now() / 1000);
         const module = await WebAssembly.instantiateStreaming(fetch(wasmUrl), imports);
-        console.log('Flappy Bird WebAssembly模块实例化成功');
+        // WebAssembly 模块实例化成功
         
         // 检测所有导出的函数和对象
         const exports = module.instance.exports;
@@ -226,63 +1155,7 @@ async function loadFlappyBirdWasm() {
         gameExports = exports;
         const exportKeys = Object.keys(exports);
         
-        console.log('=== 所有导出的内容 ===');
-        console.log('总共有', exportKeys.length, '个导出项');
-        
-        // 分类导出项
-        const functions = [];
-        const memories = [];
-        const tables = [];
-        const globals = [];
-        
-        exportKeys.forEach(key => {
-            const item = exports[key];
-            if (typeof item === 'function') {
-                functions.push(key);
-            } else if (item instanceof WebAssembly.Memory) {
-                memories.push(key);
-            } else if (item instanceof WebAssembly.Table) {
-                tables.push(key);
-            } else if (item instanceof WebAssembly.Global) {
-                globals.push(key);
-            }
-        });
-        
-        // 显示分类结果
-        console.log('\n=== 导出函数 (', functions.length, '个) ===');
-        functions.forEach(func => {
-            console.log('-', func);
-        });
-        
-        if (memories.length > 0) {
-            console.log('\n=== 导出内存 (', memories.length, '个) ===');
-            memories.forEach(mem => {
-                console.log('-', mem);
-            });
-        }
-        
-        if (tables.length > 0) {
-            console.log('\n=== 导出表 (', tables.length, '个) ===');
-            tables.forEach(table => {
-                console.log('-', table);
-            });
-        }
-        
-        if (globals.length > 0) {
-            console.log('\n=== 导出全局变量 (', globals.length, '个) ===');
-            globals.forEach(global => {
-                console.log('-', global);
-            });
-        }
-        
-        // 测试调用一些常见函数
-        console.log('\n=== 测试调用函数 ===');
-        
-        if (functions.includes('add')) {
-            console.log('测试 add(1, 2):', exports.add(1, 2));
-        }
-        
-        console.log('\n=== 导出检测完成 ===');
+        //
         
         // ==================== 将导出函数接入渲染循环与输入 ====================
         const canvas = document.getElementById('canvas');
@@ -297,15 +1170,12 @@ async function loadFlappyBirdWasm() {
             return;
         }
         
-        console.log('Canvas初始化成功:', canvas.width, 'x', canvas.height);
+        // Canvas 初始化完成
         
         // 禁用图片平滑，保持像素清晰
         ctx.imageSmoothingEnabled = false;
         
-        // 测试绘制一个简单的矩形来验证Canvas工作
-        ctx.fillStyle = '#FF0000';
-        ctx.fillRect(10, 10, 50, 50);
-        console.log('Canvas测试绘制完成');
+        //
         
         // 设置Canvas为高分辨率，但保持游戏逻辑尺寸
         const scale = 4; // 放大4倍，从160x160变成640x640
@@ -315,9 +1185,7 @@ async function loadFlappyBirdWasm() {
         canvas.style.height = '640px';
         ctx.scale(scale, scale);
         
-        // 视觉用：云层与小鸟速度平滑
-        let lastBy = 80;
-        let smoothVy = 0;
+        // 视觉用：云层
         const clouds = Array.from({ length: 4 }, () => ({
             x: Math.random() * 160,
             y: Math.random() * 60 + 6,
@@ -337,6 +1205,8 @@ async function loadFlappyBirdWasm() {
         const difficultyEl = document.getElementById('difficulty');
         const comboEl = document.getElementById('combo');
         const timeEl = document.getElementById('time');
+        const timeItemEl = document.getElementById('timeItem');
+        const maxComboEl = document.getElementById('maxCombo');
         
 
         // 初始化游戏（安全判断导出是否存在）
@@ -373,6 +1243,14 @@ let survivalMode = {
         // 视觉反馈变量
         let screenShake = 0;
         let screenShakeIntensity = 0;
+        // Boss 视觉攻击效果队列（小鸟拾取道具时触发）
+        // 统计：最大连击
+        let maxCombo = parseInt(localStorage.getItem('flappyBirdMaxCombo') || '0');
+        function updateMaxComboDisplay() {
+            if (maxComboEl) maxComboEl.textContent = String(maxCombo);
+        }
+        updateMaxComboDisplay();
+        let bossAttackVisuals = [];
         
         
         
@@ -381,6 +1259,8 @@ let survivalMode = {
         
         // 游戏模式选择函数
         window.selectGameMode = function(mode) {
+            // 生存模式(2)合并为挑战模式(4)
+            if (mode === 2) mode = 4;
             currentGameMode = mode; // 保存当前模式
             // 退出模式选择状态
             inModeSelection = false;
@@ -390,10 +1270,7 @@ let survivalMode = {
                 
                 // 特别检查挑战模式
                 if (mode === 4) { // Challenge模式
-                    console.log('✅ 挑战模式已设置');
-                    const bossExists = exports.get_boss_exists ? exports.get_boss_exists() : 0;
-                    const bossHealth = exports.get_boss_health ? exports.get_boss_health() : 0;
-                    console.log('set_game_mode后: Boss存在=', bossExists, '生命=', bossHealth);
+                    //
                 }
             }
             
@@ -403,7 +1280,7 @@ let survivalMode = {
                     exports.game_start();
                     // 再次检查速度
                     if (mode === 4) {
-                        console.log('游戏开始后速度:', exports.get_pipe_speed ? exports.get_pipe_speed() : '未知');
+                        //
                     }
                     // 挑战模式：检查Boss是否正确创建
                     if (mode === 4) {
@@ -414,11 +1291,8 @@ let survivalMode = {
                                 const bx = exports.get_boss_x ? exports.get_boss_x() : -1;
                                 const by = exports.get_boss_y ? exports.get_boss_y() : -1;
                                 const bh = exports.get_boss_health ? exports.get_boss_health() : -1;
-                                console.log('挑战模式Boss检查: mode=', gm, 'exists=', be, 'pos=(', bx, ',', by, ') health=', bh);
-                                
                                 if (be === 0) {
-                                    console.error('❌ Boss未创建！尝试手动创建...');
-                                    // 这里可以添加手动创建Boss的逻辑
+                                    //
                                 }
                             } catch (e) {
                                 console.error('Boss检查异常:', e);
@@ -467,13 +1341,11 @@ let survivalMode = {
         
         // 显示模式选择界面
         window.showModeSelection = function() {
-            console.log('显示模式选择界面');
             const startScreen = document.getElementById('startScreen');
             const gameOverScreen = document.getElementById('gameOverScreen');
             if (startScreen && gameOverScreen) {
                 startScreen.style.display = 'block';
                 gameOverScreen.style.display = 'none';
-                console.log('界面切换完成');
             }
             // 进入模式选择状态，防止渲染循环因 over=true 把界面切回“游戏结束”
             inModeSelection = true;
@@ -527,15 +1399,15 @@ let survivalMode = {
             },
             KeyJ: () => {
                 // J键：玩家攻击（挑战模式）
-                console.log('J键按下 - 玩家攻击');
                 if (typeof exports.player_attack_export === 'function') {
                     exports.player_attack_export();
                     // 添加攻击震动效果
                     addScreenShake(3);
-                    console.log('玩家攻击已触发');
-                } else {
-                    console.log('player_attack_export 函数不存在');
                 }
+            },
+            KeyQ: () => {
+                // Q键：手动触发天气变化（用于测试）
+                // 已禁用
             }
         };
         const keyMapUp = {
@@ -604,25 +1476,128 @@ let survivalMode = {
             // 完全依赖mbt文件中的主题设置
             const theme = typeof exports.get_theme === 'function' ? exports.get_theme() : 0;
             
+            // 使用连续时间驱动昼夜循环，避免基于分数的跳变导致卡顿
+            // 一个完整昼夜时长（秒）
+            const dayDurationSeconds = 60; 
+            const dayProgress = ((animationTime / 1000) / dayDurationSeconds) % 1; // 0..1
+            const cycleScore = dayProgress * 60; // 统一复用下方分段逻辑
+            let timeOfDay, sunMoonX, sunMoonY, sunMoonRadius, sunMoonColor;
+            let skyGradient, groundColor;
+            
             if (theme === 0) {
-                // 地球主题 - 使用mbt文件设置
+                // 地球主题
                 if (!backgroundGradients) {
                     initBackgroundGradients();
                 }
                 
-                // 天空渐变
-                ctx.fillStyle = backgroundGradients.sky;
+                // 根据分数计算时间变化
+                if (cycleScore <= 12) {
+                    // 黎明（0-12分）
+                    timeOfDay = 'dawn';
+                    const progress = smootherStep(cycleScore / 12); // 0到1（平滑）
+                    
+                    // 太阳从左侧升起
+                    sunMoonX = 20 + progress * 40; // 从20到60
+                    sunMoonY = 40 - progress * 20; // 从40到20
+                    sunMoonRadius = 14;
+                    sunMoonColor = `rgb(${255}, ${200 + progress * 55}, ${100 + progress * 155})`; // 从橙黄到亮黄
+                    
+                    // 天空渐变：从深蓝到浅蓝
+                    skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    skyGradient.addColorStop(0, `rgb(${50 + progress * 100}, ${100 + progress * 100}, ${150 + progress * 105})`);
+                    skyGradient.addColorStop(1, `rgb(${135 + progress * 70}, ${206 + progress * 49}, ${235 + progress * 20})`);
+                    
+                    // 地面颜色：从深绿到亮绿
+                    groundColor = `rgb(${34 + progress * 20}, ${100 + progress * 39}, ${34 + progress * 20})`;
+                } else if (cycleScore <= 24) {
+                    // 早晨（12-24分）
+                    timeOfDay = 'morning';
+                    const progress = smootherStep((cycleScore - 12) / 12); // 0到1（平滑）
+                    
+                    // 太阳在顶部中央
+                    sunMoonX = 60 + progress * 40; // 从60到100
+                    sunMoonY = 20 - progress * 10; // 从20到10
+                    sunMoonRadius = 16 + progress * 2; // 从16到18
+                    sunMoonColor = `rgb(255, 255, ${200 + progress * 55})`; // 从亮黄到白黄
+                    
+                    // 天空渐变：明亮的蓝色
+                    skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    skyGradient.addColorStop(0, `rgb(${150 + progress * 105}, ${200 + progress * 55}, ${255})`);
+                    skyGradient.addColorStop(1, `rgb(${205 + progress * 50}, ${255}, ${255})`);
+                    
+                    // 地面颜色：明亮的绿色
+                    groundColor = `rgb(${54 + progress * 20}, ${139 + progress * 20}, ${54 + progress * 20})`;
+                } else if (cycleScore <= 36) {
+                    // 中午（24-36分）
+                    timeOfDay = 'noon';
+                    const progress = smootherStep((cycleScore - 24) / 12); // 0到1（平滑）
+                    
+                    // 太阳从右侧落下
+                    sunMoonX = 100 + progress * 40; // 从100到140
+                    sunMoonY = 10 + progress * 30; // 从10到40
+                    sunMoonRadius = 18 - progress * 2; // 从18到16
+                    sunMoonColor = `rgb(255, ${200 - progress * 100}, ${50 - progress * 50})`; // 从白黄到橙红
+                    
+                    // 天空渐变：从蓝到橙红
+                    skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    skyGradient.addColorStop(0, `rgb(${255}, ${200 - progress * 100}, ${100 - progress * 50})`);
+                    skyGradient.addColorStop(0.7, `rgb(${255}, ${150 - progress * 50}, ${50})`);
+                    skyGradient.addColorStop(1, `rgb(${200 - progress * 50}, ${100 - progress * 50}, ${50})`);
+                    
+                    // 地面颜色：从亮绿到深绿
+                    groundColor = `rgb(${74 - progress * 20}, ${159 - progress * 20}, ${74 - progress * 20})`;
+                } else if (cycleScore <= 60) {
+                    // 夜晚（48-60分）
+                    timeOfDay = 'night';
+                    const progress = smootherStep((cycleScore - 48) / 12); // 0到1（平滑）
+                    
+                    // 月亮在右侧
+                    sunMoonX = 140 - progress * 20; // 从140到120
+                    sunMoonY = 40 - progress * 20; // 从40到20
+                    sunMoonRadius = 16;
+                    sunMoonColor = `rgb(${220 + progress * 35}, ${220 + progress * 35}, ${255})`; // 从浅蓝到白
+                    
+                    // 天空渐变：深蓝色
+                    skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    skyGradient.addColorStop(0, `rgb(${10 - progress * 10}, ${10 - progress * 10}, ${50 - progress * 20})`);
+                    skyGradient.addColorStop(1, `rgb(${20 - progress * 20}, ${20 - progress * 20}, ${100 - progress * 50})`);
+                    
+                    // 地面颜色：深绿色
+                    groundColor = `rgb(${34 - progress * 14}, ${100 - progress * 50}, ${34 - progress * 14})`;
+                }
+                
+                // 绘制天空（加入细微亮度脉动，避免静态感）
+                ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // 轻微整体曝光变化（极小幅度），让过渡更自然
+                const exposure = 1 + Math.sin(animationTime * 0.0003) * 0.02;
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, Math.min(1, (exposure - 1) * 8));
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
 
-                // 太阳（左上）
-                ctx.fillStyle = backgroundGradients.sun;
+        // 绘制太阳或月亮
+                ctx.fillStyle = sunMoonColor;
                 ctx.beginPath();
-                ctx.arc(20, 20, 14, 0, Math.PI * 2);
+                ctx.arc(sunMoonX, sunMoonY, sunMoonRadius, 0, Math.PI * 2);
                 ctx.fill();
+                
+        // 夜晚与黎明的星星淡入淡出
+                if (timeOfDay === 'night') {
+            drawStars(1);
+            drawMeteors();
+                } else if (timeOfDay === 'dawn') {
+            drawStars(0.3);
+                }
 
                 // 云层
                 ctx.save();
-                ctx.globalAlpha = 0.55;
+                let cloudAlpha = 0.55;
+                if (timeOfDay === 'dawn') cloudAlpha = 0.6;
+                else if (timeOfDay === 'night') cloudAlpha = 0.3;
+                ctx.globalAlpha = cloudAlpha;
                 ctx.fillStyle = '#FFFFFF';
                 for (const c of clouds) {
                     ctx.beginPath();
@@ -643,12 +1618,17 @@ let survivalMode = {
 
                 // 地面
                 const groundH = 12;
-                ctx.fillStyle = backgroundGradients.ground;
+                ctx.fillStyle = groundColor;
                 ctx.fillRect(0, canvas.height - groundH, canvas.width, groundH);
                 
-                // 地面纹理
+                // 地面纹理（与时间平滑联动）
                 const textureOffset = (animationTime * 0.05) % 8;
                 ctx.fillStyle = 'rgba(34, 139, 34, 0.3)';
+                for (let i = 0; i < canvas.width + 8; i += 8) {
+                    const x = (i - textureOffset) % (canvas.width + 8);
+                    ctx.fillRect(x, canvas.height - 18, 2, 2);
+                    ctx.fillRect(x + 4, canvas.height - 16, 1, 1);
+                }
             } else if (theme === 1) {
                 // 太空主题 - 星空背景
                 ctx.fillStyle = '#000011';
@@ -661,31 +1641,23 @@ let survivalMode = {
                 ctx.fillStyle = '#1a1a2e';
                 ctx.fillRect(0, canvas.height - 12, canvas.width, 12);
             }
-            
-            // 地面纹理（仅地球主题）
-            if (theme === 0) {
-                const textureOffset = (animationTime * 0.05) % 8;
-                for (let i = 0; i < canvas.width + 8; i += 8) {
-                    const x = (i - textureOffset) % (canvas.width + 8);
-                    ctx.fillRect(x, canvas.height - 18, 2, 2);
-                    ctx.fillRect(x + 4, canvas.height - 16, 1, 1);
-                }
-            }
         }
         
-        function drawStars() {
-            // 绘制星空
-            ctx.fillStyle = '#FFFFFF';
-            for (let i = 0; i < 50; i++) {
-                const x = (i * 37) % canvas.width;
-                const y = (i * 23) % (canvas.height - 20);
-                const size = (i % 3) + 1;
-                ctx.fillRect(x, y, size, size);
+        function drawStars(alpha = 1) {
+            if (typeof window !== 'undefined' && typeof window.__globalDrawStars === 'function') {
+                window.__globalDrawStars(alpha);
+                return;
             }
-            
-            // 顶部浅线
-            ctx.fillStyle = 'rgba(255,255,255,0.25)';
-            ctx.fillRect(0, canvas.height - 12, canvas.width, 1);
+            // 兜底：简单点星
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#FFFFFF';
+            for (let i = 0; i < 30; i++) {
+                const x = (i * 53) % canvas.width;
+                const y = (i * 31) % (canvas.height - 20);
+                ctx.fillRect(x, y, 1, 1);
+            }
+            ctx.restore();
         }
 
         function drawBird(x, y) {
@@ -763,9 +1735,22 @@ let survivalMode = {
                 return;
             }
             
-            // 护盾闪烁效果
-            if (typeof exports.has_shield_effect === 'function' && exports.has_shield_effect() === 1) {
-                const blinkAlpha = 0.5 + 0.5 * Math.sin(Date.now() * 0.01);
+            // 护盾闪烁效果：从活动效果列表中检测护盾是否存在
+            let hasShield = false;
+            if (typeof exports.get_active_effects_count === 'function') {
+                const effectsCount = exports.get_active_effects_count();
+                for (let ei = 0; ei < effectsCount; ei++) {
+                    const t = exports.get_effect_type(ei);
+                    const rt = exports.get_effect_remaining_time(ei);
+                    if (t === 0 && rt > 0) { // 0 = Shield
+                        hasShield = true;
+                        break;
+                    }
+                }
+            }
+            if (hasShield) {
+                const tMs = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+                const blinkAlpha = 0.75 + 0.25 * Math.sin(tMs * 0.02);
                 ctx.globalAlpha = blinkAlpha;
             } else {
                 ctx.globalAlpha = 1.0;
@@ -818,8 +1803,9 @@ let survivalMode = {
             ctx.closePath();
             ctx.fill();
             
-            // 翅膀动画效果 - 按比例缩放，增大翅膀尺寸
-            const wingOffset = Math.sin(Date.now() * 0.01) * (finalSize/4);
+            // 翅膀动画效果 - 使用rAF时间戳
+            const timeMs = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+            const wingOffset = Math.sin(timeMs * 0.01) * (finalSize/4);
             const wingColor = adjustColor(birdColor, -20);
             
             // 绘制翅膀，使用多个小圆形模拟羽毛
@@ -858,19 +1844,48 @@ let survivalMode = {
                 ctx.fill();
             }
             
+            // 绘制护盾外观覆盖（使用满不透明度，避免被整体闪烁影响）
+            if (hasShield) {
+                ctx.save();
+                ctx.globalAlpha = 1.0;
+                const time = ((typeof performance !== 'undefined' ? performance.now() : Date.now())) * 0.004;
+                const ringCount = 2;
+                for (let r = 0; r < ringCount; r++) {
+                    const t = time + r * Math.PI / ringCount;
+                    const pulse = (Math.sin(t) + 1) * 0.5; // 0~1
+                    const radius = finalSize/2 + 2 + pulse * 3 + r * 1.5;
+                    const hue = 200; // 蓝色护盾
+                    const sat = 85;
+                    const light = 60 + pulse * 15;
+                    ctx.strokeStyle = `hsla(${hue}, ${sat}%, ${Math.floor(light)}%, ${0.55 - r*0.15})`;
+                    ctx.lineWidth = 1 + pulse * 0.8;
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                // 微弱的能量光晕
+                const grad = ctx.createRadialGradient(x, y, finalSize/2, x, y, finalSize/2 + 8);
+                grad.addColorStop(0, 'rgba(135,206,250,0.10)');
+                grad.addColorStop(1, 'rgba(30,144,255,0.08)');
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(x, y, finalSize/2 + 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
             ctx.restore();
             
             // 确保透明度被重置，避免影响后续绘制
             ctx.globalAlpha = 1.0;
             
             // 所有形态保持完全相同的形状，不添加任何特殊特效
-            lastBy = y;
         }
 
         function drawPipes() {
             // 调试输出已关闭
             if (typeof exports.get_pipes_count !== 'function') {
-                console.log('get_pipes_count 函数不存在');
                 return;
             }
             const count = exports.get_pipes_count();
@@ -1070,10 +2085,10 @@ let survivalMode = {
                 if (collected === 1) {
                     // 检测道具收集并播放音效
                     audioManager.play('item');
-                    // 添加道具收集粒子效果
-                    for (let j = 0; j < 3; j++) {
-                        createParticle(x, y, 'item');
-                    }
+                    // 更精致的拾取效果
+                    spawnPickupBurst(x + 5, y + 5, type);
+                    // 触发对Boss的视觉攻击效果
+                    triggerBossVisualAttack(type);
                     continue;
                 }
                 
@@ -1128,6 +2143,10 @@ let survivalMode = {
                         color = '#FF4500';
                         symbol = '🔍';
                         break;
+                    case 13: // Freeze - 冰冻
+                        color = '#7FDBFF';
+                        symbol = '🧊';
+                        break;
                     default:
                         color = '#808080';
                         symbol = '?';
@@ -1170,10 +2189,10 @@ function drawSurvivalItems() {
                 if (collected === 1) {
                     // 检测生成模式道具收集并播放音效
                     audioManager.play('item');
-                    // 添加道具收集粒子效果
-                    for (let j = 0; j < 5; j++) {
-                        createParticle(x, y, 'item');
-                    }
+                    // 更精致的拾取效果
+                    spawnPickupBurst(x, y, type);
+                    // 触发对Boss的视觉攻击效果
+                    triggerBossVisualAttack(type);
                     continue;
                 }
                 
@@ -1235,17 +2254,38 @@ function drawSurvivalItems() {
             }
         }
 
-        // 绘制Boss
-        function drawBoss() {
+        function getBossRenderPosition() {
+            const bxRaw = (typeof exports.get_boss_x === 'function') ? exports.get_boss_x() : 0;
+            const byRaw = (typeof exports.get_boss_y === 'function') ? exports.get_boss_y() : 0;
+            const defaultX = (typeof canvas !== 'undefined' && canvas) ? (canvas.width / 2 - 15) : 65;
+            const defaultY = 25; // 上方偏中
+            // MoonBit 端可能返回的是中心坐标；JS 绘制以左上角为锚点，需左移/上移半径
+            let x = bxRaw - 15;
+            let y = byRaw - 15;
+            const maxW = (typeof canvas !== 'undefined' && canvas) ? (canvas.width - 30) : 160 - 30;
+            const maxH = (typeof canvas !== 'undefined' && canvas) ? (canvas.height - 40) : 160 - 40;
+            if (!(x > 0 && x < maxW)) x = defaultX;
+            if (!(y > 0 && y < maxH)) y = defaultY;
+            return { x, y };
+        }
+
+        // 记录供覆盖层（血条/名称）绘制用的数据
+        let lastBossOverlay = null;
+
+        // 绘制Boss主体（不含血条/名称）
+        function drawBossCore() {
             if (typeof exports.get_boss_exists !== 'function') return;
             const bossExists = exports.get_boss_exists();
             if (bossExists !== 1) return;
 
             const bossType = (typeof exports.get_boss_type === 'function') ? exports.get_boss_type() : 0;
-            const bossX = (typeof exports.get_boss_x === 'function') ? exports.get_boss_x() : 0;
-            const bossY = (typeof exports.get_boss_y === 'function') ? exports.get_boss_y() : 0;
-            const bossHealth = (typeof exports.get_boss_health === 'function') ? exports.get_boss_health() : 0;
-            const bossMaxHealth = (typeof exports.get_boss_max_health === 'function') ? exports.get_boss_max_health() : 1;
+            const pos = getBossRenderPosition();
+            const bossX = pos.x;
+            const bossY = pos.y;
+            const bossHealthRaw = (typeof exports.get_boss_health === 'function') ? exports.get_boss_health() : 0;
+            const bossMaxHealthRaw = (typeof exports.get_boss_max_health === 'function') ? exports.get_boss_max_health() : 1;
+            const bossHealth = Math.max(0, (bossHealthRaw | 0));
+            const bossMaxHealth = Math.max(1, (bossMaxHealthRaw | 0));
             const bossPhase = (typeof exports.get_boss_phase === 'function') ? exports.get_boss_phase() : 0;
 
             // 根据Boss类型选择颜色和样式
@@ -1269,58 +2309,145 @@ function drawSurvivalItems() {
             }
 
             // 绘制Boss主体
-            const gradient = ctx.createRadialGradient(bossX + 15, bossY + 15, 0, bossX + 15, bossY + 15, 20);
-            gradient.addColorStop(0, bossColor);
-            gradient.addColorStop(1, adjustColor(bossColor, -40));
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.arc(bossX + 15, bossY + 15, 15, 0, Math.PI * 2);
-            ctx.fill();
+            if (bossType === 2) {
+                // 岩石巨人（Q 版）：缩小并以 Boss 中心点居中渲染
+                const baseX = bossX;
+                const baseY = bossY;
+                const unit = 4; // 缩小单元尺寸，呈现 Q 版效果
+                // 形象在局部坐标中的包围盒（单位为 unit）：x ∈ [3, 10.8]，y ∈ [0, 11.5]
+                // 因此中心约为 (6.9u, 5.75u)，将其对齐到 (baseX+15, baseY+15)
+                const centerUx = 6.9;
+                const centerUy = 5.75;
+                ctx.save();
+                ctx.translate(baseX + 15 - centerUx * unit, baseY + 15 - centerUy * unit);
+                // 配色
+                const rockBase = '#8D8F93';
+                const rockShadow = '#6E7074';
+                const rockEdge = '#BDC3C7';
+                // 抖动/蓄力效果（二阶段略微发光）
+                if (bossPhase === 2) {
+                    ctx.shadowColor = '#C0C0C0';
+                    ctx.shadowBlur = 5;
+                }
+                // 头部
+                drawRockBlock(5 * unit, 0 * unit, 3 * unit, 3 * unit, rockBase, rockShadow, rockEdge);
+                // 眼睛
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(5 * unit + 3, 1 * unit + 3, 3, 3);
+                ctx.fillRect(7 * unit + 3, 1 * unit + 3, 3, 3);
+                ctx.fillStyle = '#2C3E50';
+                ctx.fillRect(5 * unit + 4, 1 * unit + 4, 1, 1);
+                ctx.fillRect(7 * unit + 4, 1 * unit + 4, 1, 1);
+                // 身体
+                drawRockBlock(4 * unit, 3 * unit, 5 * unit, 5 * unit, rockBase, rockShadow, rockEdge);
+                // 手臂
+                drawRockBlock(3 * unit, 3.5 * unit, 1.8 * unit, 3.8 * unit, rockBase, rockShadow, rockEdge);
+                drawRockBlock(9 * unit, 3.5 * unit, 1.8 * unit, 3.8 * unit, rockBase, rockShadow, rockEdge);
+                // 腿
+                drawRockBlock(4.3 * unit, 8 * unit, 1.9 * unit, 3.5 * unit, rockBase, rockShadow, rockEdge);
+                drawRockBlock(7 * unit, 8 * unit, 1.9 * unit, 3.5 * unit, rockBase, rockShadow, rockEdge);
+                // 裂纹线条
+                drawCracks(rockEdge, unit);
+                ctx.restore();
+            } else {
+                const gradient = ctx.createRadialGradient(bossX + 15, bossY + 15, 0, bossX + 15, bossY + 15, 20);
+                gradient.addColorStop(0, bossColor);
+                gradient.addColorStop(1, adjustColor(bossColor, -40));
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(bossX + 15, bossY + 15, 15, 0, Math.PI * 2);
+                ctx.fill();
+            }
 
             // 绘制Boss边框
             ctx.strokeStyle = '#FFFFFF';
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // 绘制Boss名称
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '8px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(bossName, bossX + 15, bossY - 5);
+            // 记录覆盖层绘制需要的数据
+            const approxBossHeight = (bossType === 2) ? 46 : 30; // 岩石巨人更高一些
+            lastBossOverlay = {
+                bossX,
+                bossY,
+                bossColor,
+                bossName,
+                bossHealth,
+                bossMaxHealth,
+                bossType,
+                bossPhase,
+                approxBossHeight
+            };
+        }
 
-            // 绘制Boss血条 - 增大血条尺寸以便观察血量变化
-            const healthBarWidth = 60;  // 从30增加到60像素
-            const healthBarHeight = 8;  // 从4增加到8像素
-            const healthPercent = bossHealth / bossMaxHealth;
-            
-            // 血条背景 - 居中显示
-            const healthBarX = bossX - (healthBarWidth - 30) / 2; // 居中血条
-            const healthBarY = bossY - 20; // 稍微上移
+        // 绘制Boss覆盖层（血条/名称/发光描边等，置于管道之上）
+        function drawBossOverlay() {
+            if (!lastBossOverlay) return;
+            const canvasW = (typeof canvas !== 'undefined' && canvas) ? canvas.width : 160;
+            const canvasH = (typeof canvas !== 'undefined' && canvas) ? canvas.height : 160;
+            const healthBarWidth = 60;
+            const healthBarHeight = 8;
+            const {
+                bossX,
+                bossY,
+                bossColor,
+                bossName,
+                bossHealth,
+                bossMaxHealth,
+                bossType,
+                bossPhase,
+                approxBossHeight
+            } = lastBossOverlay;
+
+            // 健壮计算
+            const bh = Math.max(0, bossHealth | 0);
+            const bmh = Math.max(1, bossMaxHealth | 0);
+            let healthPercent = bh / bmh;
+            if (!isFinite(healthPercent) || healthPercent < 0) healthPercent = 0;
+            if (healthPercent > 1) healthPercent = 1;
+
+            // 根据空间决定血条在上方还是下方，避免遮挡Boss
+            const preferAboveY = bossY - 24; // 上方再多留一点空间
+            const preferBelowY = bossY + approxBossHeight + 6; // 下方多留
+            let hbY = preferAboveY;
+            // 如果上方空间不足，则放到下方
+            if (preferAboveY < 6) hbY = preferBelowY;
+            // 夹紧于画布
+            const hbX = bossX - (healthBarWidth - 30) / 2;
+            const clampedX = Math.max(0, Math.min(hbX, canvasW - healthBarWidth));
+            const clampedY = Math.max(0, Math.min(hbY, canvasH - healthBarHeight));
+
+            // 背景
             ctx.fillStyle = '#333333';
-            ctx.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
-            
-            // 血条填充
+            ctx.fillRect(clampedX, clampedY, healthBarWidth, healthBarHeight);
+            // 填充
             ctx.fillStyle = bossColor;
-            ctx.fillRect(healthBarX, healthBarY, healthBarWidth * healthPercent, healthBarHeight);
-            
-            // 血条边框
+            ctx.fillRect(clampedX, clampedY, healthBarWidth * healthPercent, healthBarHeight);
+            // 边框
             ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 2; // 增加边框宽度
-            ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+            ctx.lineWidth = 2;
+            ctx.strokeRect(clampedX, clampedY, healthBarWidth, healthBarHeight);
 
-            // 绘制血量数值（居中显示当前/最大值）
+            // 数值（居中到血条内部）
             ctx.fillStyle = '#FFFFFF';
             ctx.font = '7px Arial';
             ctx.textAlign = 'center';
-            const hpText = bossHealth + '/' + bossMaxHealth;
+            const hpText = bh + '/' + bmh;
+            const centerY = clampedY + healthBarHeight / 2 + 2; // 微调垂直居中
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 1;
-            ctx.strokeText(hpText, bossX + healthBarWidth / 2, bossY - 17);
-            ctx.fillText(hpText, bossX + healthBarWidth / 2, bossY - 17);
+            ctx.strokeText(hpText, bossX + healthBarWidth / 2, centerY);
+            ctx.fillText(hpText, bossX + healthBarWidth / 2, centerY);
 
-            // 二阶段特效
-            if (bossPhase === 2) {
-                // 添加愤怒效果
+            // 名称放到与血条相反的一侧，避免重叠
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '8px Arial';
+            ctx.textAlign = 'center';
+            const nameAbove = (hbY >= bossY); // 如果血条在下方，则名称在上方，反之亦然
+            const nameY = nameAbove ? Math.max(8, bossY - 8) : Math.min(canvasH - 6, bossY + approxBossHeight + 2);
+            ctx.fillText(bossName, bossX + 15, nameY);
+
+            // 二阶段外发光描边（非岩石巨人用）
+            if (bossPhase === 2 && bossType !== 2) {
                 ctx.shadowColor = bossColor;
                 ctx.shadowBlur = 10;
                 ctx.strokeStyle = bossColor;
@@ -1328,340 +2455,61 @@ function drawSurvivalItems() {
                 ctx.stroke();
                 ctx.shadowBlur = 0;
             }
+
+            // 使用一次后清理，避免过期数据
+            lastBossOverlay = null;
+        }
+
+        // 辅助：绘制岩石块（带高光与阴影）
+        function drawRockBlock(x, y, w, h, base, shadow, edge) {
+            ctx.fillStyle = base;
+            ctx.fillRect(x, y, w, h);
+            // 阴影
+            ctx.fillStyle = shadow;
+            ctx.fillRect(x, y + h - 2, w, 2);
+            ctx.fillRect(x + w - 2, y, 2, h);
+            // 高光边
+            ctx.fillStyle = edge;
+            ctx.fillRect(x, y, w, 1);
+            ctx.fillRect(x, y, 1, h);
+            // 倒角
+            ctx.fillRect(x + 1, y + 1, w - 2, 1);
+            ctx.fillRect(x + 1, y + 1, 1, h - 2);
+        }
+
+        // 辅助：绘制裂纹
+        function drawCracks(color, unit) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            // 身体裂纹
+            ctx.moveTo(4 * unit + 3, 3 * unit + 2);
+            ctx.lineTo(5.1 * unit, 4.2 * unit);
+            ctx.lineTo(4.7 * unit, 5.6 * unit);
+            ctx.moveTo(7 * unit + 2, 3.1 * unit + 2);
+            ctx.lineTo(7.8 * unit, 4.8 * unit);
+            ctx.lineTo(6.9 * unit, 6.3 * unit);
+            // 头部裂纹
+            ctx.moveTo(5.3 * unit, 0.7 * unit);
+            ctx.lineTo(6 * unit, 1.8 * unit);
+            ctx.stroke();
         }
 
         // 测试函数：手动创建投射物
         function testCreateProjectile() {
-            if (typeof exports.player_attack_export === 'function') {
-                console.log("🧪 测试：手动创建投射物");
-                exports.player_attack_export();
-            } else {
-                console.log("❌ player_attack_export函数不存在");
-            }
+            // removed
         }
         
-        // 调试函数：检查所有WASM导出函数
-        function debugWasmFunctions() {
-            console.log("🔍 检查WASM导出函数状态:");
-            
-            const functions = [
-                'get_projectiles_count',
-                'get_projectile_x',
-                'get_projectile_y', 
-                'get_projectile_damage',
-                'get_projectile_active',
-                'player_attack_export',
-                'get_boss_exists',
-                'get_game_mode'
-            ];
-            
-            functions.forEach(funcName => {
-                const exists = typeof exports[funcName] === 'function';
-                console.log(`${exists ? '✅' : '❌'} ${funcName}: ${exists ? '存在' : '不存在'}`);
-            });
-            
-            // 检查当前游戏状态
-            if (typeof exports.get_game_mode === 'function') {
-                const mode = exports.get_game_mode();
-                console.log(`🎮 当前游戏模式: ${mode}`);
-            }
-            
-            if (typeof exports.get_boss_exists === 'function') {
-                const bossExists = exports.get_boss_exists();
-                console.log(`👹 Boss存在: ${bossExists}`);
-            }
-            
-            if (typeof exports.get_projectiles_count === 'function') {
-                const count = exports.get_projectiles_count();
-                console.log(`🎯 当前投射物数量: ${count}`);
-            }
-        }
         
-        // 凤凰复活机制调试函数
-        function debugPhoenixRebirth() {
-            console.log('=== 凤凰复活机制调试 ===');
-            if (typeof exports.get_evolution_stage === 'function') {
-                const stage = exports.get_evolution_stage();
-                console.log('当前形态:', ['雏鸟', '成鸟', '雄鹰', '凤凰', '神龙'][stage]);
-                if (stage === 3) { // 凤凰形态
-                    console.log('✅ 当前为凤凰形态，具有60%重生概率');
-                    console.log('重生机制：碰撞时60%概率触发重生，40%概率正常扣血');
-                    console.log('重生效果：红色粒子特效 + 涅槃提示 + 重置位置');
-                } else {
-                    console.log('❌ 当前不是凤凰形态，无重生能力');
-                }
-            }
-            if (typeof exports.get_player_lives === 'function') {
-                console.log('当前生命数:', exports.get_player_lives());
-            }
-            if (typeof exports.get_phoenix_effects_count === 'function') {
-                console.log('当前凤凰特效数量:', exports.get_phoenix_effects_count());
-            }
-            if (typeof exports.get_nirvana_notification_active === 'function') {
-                console.log('涅槃提示状态:', exports.get_nirvana_notification_active());
-            }
-        }
         
-        // 详细的涅槃调试函数
-        function debugNirvanaDetailed() {
-            console.log('=== 详细涅槃调试 ===');
-            
-            // 检查形态
-            const stage = typeof exports.get_evolution_stage === 'function' ? exports.get_evolution_stage() : -1;
-            console.log('1. 当前形态:', stage, '(', ['雏鸟', '成鸟', '雄鹰', '凤凰', '神龙'][stage], ')');
-            
-            // 检查涅槃提示状态
-            const nirvanaActive = typeof exports.get_nirvana_notification_active === 'function' ? 
-                exports.get_nirvana_notification_active() : false;
-            console.log('2. 涅槃提示激活:', nirvanaActive);
-            
-            // 检查HTML元素
-            const nirvanaElement = document.getElementById('nirvanaNotification');
-            console.log('3. HTML涅槃元素存在:', !!nirvanaElement);
-            if (nirvanaElement) {
-                console.log('4. HTML涅槃元素显示状态:', nirvanaElement.style.display);
-            }
-            
-            // 检查凤凰特效
-            const effectsCount = typeof exports.get_phoenix_effects_count === 'function' ? 
-                exports.get_phoenix_effects_count() : 0;
-            console.log('5. 凤凰特效数量:', effectsCount);
-            
-            // 检查特效详情
-            if (effectsCount > 0) {
-                console.log('6. 凤凰特效详情:');
-                for (let i = 0; i < effectsCount; i++) {
-                    const x = typeof exports.get_phoenix_effect_x === 'function' ? exports.get_phoenix_effect_x(i) : 0;
-                    const y = typeof exports.get_phoenix_effect_y === 'function' ? exports.get_phoenix_effect_y(i) : 0;
-                    const life = typeof exports.get_phoenix_effect_life === 'function' ? exports.get_phoenix_effect_life(i) : 0;
-                    const phase = typeof exports.get_phoenix_effect_phase === 'function' ? exports.get_phoenix_effect_phase(i) : 0;
-                    console.log(`   特效${i}: 位置(${x},${y}) 生命${life} 阶段${phase}`);
-                }
-            }
-            
-            // 检查游戏状态
-            const gameStarted = typeof exports.is_game_started === 'function' ? exports.is_game_started() : 0;
-            const gameOver = typeof exports.is_game_over === 'function' ? exports.is_game_over() : 0;
-            console.log('7. 游戏状态: 开始=', gameStarted, '结束=', gameOver);
-        }
         
-        // 测试凤凰特效渲染
-        function testPhoenixEffects() {
-            console.log('🔥 测试凤凰特效渲染');
-            
-            // 手动创建一些测试特效
-            const testEffects = [
-                { x: 200, y: 200, life: 60, size: 15, intensity: 100, phase: 0 },
-                { x: 200, y: 200, life: 80, size: 20, intensity: 150, phase: 1 },
-                { x: 200, y: 200, life: 100, size: 30, intensity: 200, phase: 2 }
-            ];
-            
-            // 临时替换渲染函数来测试
-            const originalDrawPhoenixEffects = drawPhoenixEffects;
-            drawPhoenixEffects = function() {
-                console.log('🎨 开始渲染凤凰特效');
-                testEffects.forEach((effect, i) => {
-                    console.log(`渲染特效${i}:`, effect);
-                    ctx.save();
-                    switch(effect.phase) {
-                        case 0:
-                            drawFireParticle(effect.x, effect.y, effect.size, effect.intensity);
-                            break;
-                        case 1:
-                            drawLightEffect(effect.x, effect.y, effect.size, effect.intensity);
-                            break;
-                        case 2:
-                            drawRebirthRing(effect.x, effect.y, effect.size, effect.intensity);
-                            break;
-                    }
-                    ctx.restore();
-                });
-            };
-            
-            // 3秒后恢复原函数
-            setTimeout(() => {
-                drawPhoenixEffects = originalDrawPhoenixEffects;
-                console.log('✅ 凤凰特效测试完成，已恢复原函数');
-            }, 3000);
-        }
         
-        // 简单测试渲染函数
-        function testSimpleRender() {
-            console.log('🎨 测试简单渲染');
-            
-            // 直接在当前画布上绘制一个简单的红色圆圈
-            ctx.save();
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
-            ctx.beginPath();
-            ctx.arc(200, 200, 20, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-            
-            console.log('✅ 简单渲染测试完成');
-        }
         
-        // 完整涅槃调试函数
-        function debugNirvanaComplete() {
-            console.log('🔥 完整涅槃调试开始');
-            
-            // 1. 检查游戏状态
-            const gameStarted = typeof exports.is_game_started === 'function' ? exports.is_game_started() : 0;
-            const gameOver = typeof exports.is_game_over === 'function' ? exports.is_game_over() : 0;
-            console.log('游戏状态: 开始=', gameStarted, '结束=', gameOver);
-            
-            // 2. 检查进化阶段
-            const evolutionStage = typeof exports.get_evolution_stage === 'function' ? exports.get_evolution_stage() : -1;
-            console.log('进化阶段:', evolutionStage, '(4=凤凰)');
-            
-            // 3. 检查涅槃提示
-            const nirvanaActive = typeof exports.get_nirvana_notification_active === 'function' ? exports.get_nirvana_notification_active() : 0;
-            const nirvanaTime = typeof exports.get_nirvana_notification_time === 'function' ? exports.get_nirvana_notification_time() : 0;
-            console.log('涅槃提示: 激活=', nirvanaActive, '时间=', nirvanaTime);
-            
-            // 4. 检查凤凰特效
-            const effectsCount = typeof exports.get_phoenix_effects_count === 'function' ? exports.get_phoenix_effects_count() : 0;
-            console.log('凤凰特效数量:', effectsCount);
-            
-            if (effectsCount > 0) {
-                for (let i = 0; i < effectsCount; i++) {
-                    const x = exports.get_phoenix_effect_x(i);
-                    const y = exports.get_phoenix_effect_y(i);
-                    const life = exports.get_phoenix_effect_life(i);
-                    const size = exports.get_phoenix_effect_size(i);
-                    const intensity = exports.get_phoenix_effect_intensity(i);
-                    const phase = exports.get_phoenix_effect_phase(i);
-                    console.log(`特效${i}: 位置(${x},${y}) 生命${life} 大小${size} 强度${intensity} 阶段${phase}`);
-                }
-            }
-            
-            // 5. 检查画布状态
-            console.log('画布状态: 宽度=', canvas.width, '高度=', canvas.height);
-            console.log('画布上下文:', ctx ? '存在' : '不存在');
-            
-            // 6. 检查渲染函数
-            console.log('drawPhoenixEffects函数:', typeof drawPhoenixEffects);
-            console.log('drawFireParticle函数:', typeof drawFireParticle);
-            console.log('drawLightEffect函数:', typeof drawLightEffect);
-            console.log('drawRebirthRing函数:', typeof drawRebirthRing);
-            
-            console.log('🔥 完整涅槃调试结束');
-        }
         
-        // 强制创建涅槃特效测试
-        function forceCreateNirvanaEffects() {
-            console.log('🔥 强制创建涅槃特效测试');
-            
-            // 直接调用WASM函数创建特效
-            if (typeof exports.create_phoenix_rebirth_effect === 'function') {
-                console.log('调用WASM创建涅槃特效');
-                exports.create_phoenix_rebirth_effect(100, 100);
-                
-                // 检查是否创建成功
-                setTimeout(() => {
-                    const count = exports.get_phoenix_effects_count();
-                    console.log('创建后特效数量:', count);
-                }, 100);
-            } else {
-                console.log('❌ create_phoenix_rebirth_effect 函数不存在');
-            }
-        }
         
-        // 测试凤凰涅槃特效（直接调用MoonBit函数）
-        function testPhoenixRebirth() {
-            console.log('🔥 测试凤凰涅槃特效');
-            
-            if (typeof exports.test_phoenix_rebirth === 'function') {
-                exports.test_phoenix_rebirth();
-                console.log('✅ 已调用凤凰涅槃测试函数');
-                
-                // 检查激活状态
-                setTimeout(() => {
-                    const active = typeof exports.get_phoenix_rebirth_active === 'function' ? 
-                        exports.get_phoenix_rebirth_active() : 0;
-                    const duration = typeof exports.get_phoenix_rebirth_duration === 'function' ? 
-                        exports.get_phoenix_rebirth_duration() : 0;
-                    console.log('🔥 凤凰涅槃状态: 激活=', active, '持续时间=', duration);
-                }, 100);
-            } else {
-                console.log('❌ test_phoenix_rebirth 函数不存在');
-            }
-        }
         
-        // 测试凤凰涅槃右上角提示显示
-        function testPhoenixNotification() {
-            console.log('🔥 测试凤凰涅槃右上角提示');
-            
-            // 检查相关函数是否存在
-            const hasActiveFunction = typeof exports.get_phoenix_rebirth_active === 'function';
-            const hasDurationFunction = typeof exports.get_phoenix_rebirth_duration === 'function';
-            
-            console.log('函数检查: 激活函数=', hasActiveFunction, '持续时间函数=', hasDurationFunction);
-            
-            if (hasActiveFunction && hasDurationFunction) {
-                const active = exports.get_phoenix_rebirth_active();
-                const duration = exports.get_phoenix_rebirth_duration();
-                console.log('当前状态: 激活=', active, '持续时间=', duration);
-                
-                if (active === 1) {
-                    console.log('✅ 凤凰涅槃特效已激活，应该显示在右上角');
-                } else {
-                    console.log('❌ 凤凰涅槃特效未激活，先调用 testPhoenixRebirth() 激活');
-                }
-            } else {
-                console.log('❌ 缺少必要的导出函数');
-            }
-        }
         
-        // 将测试函数添加到全局，方便在控制台调用
-        window.testCreateProjectile = testCreateProjectile;
-        window.debugWasmFunctions = debugWasmFunctions;
-        window.debugPhoenixRebirth = debugPhoenixRebirth;
-        window.debugNirvanaDetailed = debugNirvanaDetailed;
-        window.testPhoenixEffects = testPhoenixEffects;
-        window.testSimpleRender = testSimpleRender;
-        window.debugNirvanaComplete = debugNirvanaComplete;
-        window.forceCreateNirvanaEffects = forceCreateNirvanaEffects;
-        window.testPhoenixRebirth = testPhoenixRebirth;
-        window.testPhoenixNotification = testPhoenixNotification;
         
-        // 测试神龙自动效果
-        function testDragonAutoBoost() {
-            console.log('🐉 测试神龙自动效果');
-            
-            // 检查当前形态
-            const evolutionStage = typeof exports.get_evolution_stage === 'function' ? 
-                exports.get_evolution_stage() : 0;
-            console.log('当前形态:', evolutionStage, '(4=神龙)');
-            
-            if (evolutionStage !== 4) {
-                console.log('❌ 当前不是神龙形态，需要达到50分才能触发神龙形态');
-                console.log('当前分数:', typeof exports.get_score === 'function' ? exports.get_score() : 'N/A');
-                return;
-            }
-            
-            // 检查神龙自动效果状态
-            const active = typeof exports.get_dragon_auto_boost_active === 'function' ? 
-                exports.get_dragon_auto_boost_active() : 0;
-            const duration = typeof exports.get_dragon_auto_boost_duration === 'function' ? 
-                exports.get_dragon_auto_boost_duration() : 0;
-            const cooldown = typeof exports.get_dragon_auto_boost_cooldown === 'function' ? 
-                exports.get_dragon_auto_boost_cooldown() : 0;
-            
-            console.log('🐉 神龙自动效果状态:');
-            console.log('  激活状态:', active);
-            console.log('  持续时间:', duration, '帧');
-            console.log('  冷却时间:', cooldown, '帧');
-            
-            if (active === 1) {
-                console.log('✅ 神龙自动效果已激活');
-            } else if (cooldown > 0) {
-                console.log('⏳ 神龙自动效果冷却中，剩余', Math.ceil(cooldown / 60), '秒');
-            } else {
-                console.log('🔄 神龙自动效果准备就绪，将在下次触发时激活');
-            }
-        }
-        
-        window.testDragonAutoBoost = testDragonAutoBoost;
         
         // 绘制投射物
         function drawProjectiles() {
@@ -1707,6 +2555,7 @@ function drawSurvivalItems() {
                 ctx.fill();
                 ctx.shadowBlur = 0;
             }
+            // 保留仅绘制投射物
         }
 
         // 绘制挑战模式UI
@@ -1745,8 +2594,15 @@ function drawSurvivalItems() {
             const dragonAutoBoostCooldown = typeof exports.get_dragon_auto_boost_cooldown === 'function' ? 
                 exports.get_dragon_auto_boost_cooldown() : 0;
             
-            // 如果没有普通道具效果、凤凰涅槃特效和神龙自动效果，则返回
-            if (count === 0 && phoenixRebirthActive === 0 && dragonAutoBoostActive === 0) return;
+            // 神龙自动效果是否处于激活时段（基于剩余时长，避免误判）
+            const isDragonAutoActive = dragonAutoBoostDuration > 0;
+            // 仅当进化阶段为神龙(4)时才显示龙威相关UI
+            const evolutionStage = typeof exports.get_evolution_stage === 'function' ? 
+                exports.get_evolution_stage() : 0;
+            const isDragonAuraVisible = isDragonAutoActive && evolutionStage === 4;
+
+            // 如果没有普通道具效果、凤凰涅槃特效和（满足条件的）龙威效果，则返回
+            if (count === 0 && phoenixRebirthActive === 0 && !isDragonAuraVisible) return;
             
             // 效果显示区域
             const startX = 120;
@@ -1762,8 +2618,8 @@ function drawSurvivalItems() {
                 const type = exports.get_effect_type(i);
                 const remainingTime = exports.get_effect_remaining_time(i);
                 
-                // 如果龙威效果激活，隐藏单独的护盾(0)、加速(1)和龙威(12)效果
-                if (dragonAutoBoostActive && (type === 0 || type === 1 || type === 12)) {
+                // 如果龙威效果正在显示，隐藏单独的护盾(0)、加速(1)和龙威(12)效果
+                if (isDragonAuraVisible && (type === 0 || type === 1 || type === 12)) {
                     continue;
                 }
                 
@@ -1920,8 +2776,8 @@ function drawSurvivalItems() {
                 ctx.restore();
             }
             
-            // 显示神龙自动效果
-            if (dragonAutoBoostActive === 1) {
+            // 显示神龙自动效果（仅神龙形态）
+            if (isDragonAuraVisible) {
                 const x = startX;
                 const y = startY + displayIndex * (itemHeight + spacing);
                 
@@ -2184,28 +3040,18 @@ function drawSurvivalItems() {
         // 凤凰重生特效渲染函数
         function drawPhoenixEffects() {
             if (typeof exports.get_phoenix_effects_count !== 'function') {
-                console.log('❌ get_phoenix_effects_count 函数不存在');
                 return;
             }
             const count = exports.get_phoenix_effects_count();
             
             if (count === 0) {
                 // 只在第一次调用时记录
-                if (!drawPhoenixEffects._logged) {
-                    console.log('ℹ️ 当前没有凤凰特效需要渲染');
-                    drawPhoenixEffects._logged = true;
-                }
+                if (!drawPhoenixEffects._logged) { drawPhoenixEffects._logged = true; }
                 return;
             }
-            
-            // 调试：记录凤凰特效数量
-            console.log(`🔥 渲染${count}个凤凰特效`);
             
             // 检查画布上下文
-            if (!ctx) {
-                console.error('❌ 画布上下文不存在');
-                return;
-            }
+            if (!ctx) { return; }
             
             for (let i = 0; i < count; i++) {
                 const x = exports.get_phoenix_effect_x(i);
@@ -2215,173 +3061,130 @@ function drawSurvivalItems() {
                 const intensity = exports.get_phoenix_effect_intensity(i);
                 const phase = exports.get_phoenix_effect_phase(i);
                 
-                // 调试：记录特效详情
-                console.log(`特效${i}: 位置(${x},${y}) 生命${life} 大小${size} 强度${intensity} 阶段${phase}`);
-                
                 ctx.save();
                 
                 try {
                     switch(phase) {
                         case 0: // 火焰粒子
-                            console.log(`🔥 绘制火焰粒子 ${i}`);
-                            drawFireParticle(x, y, size, intensity);
+                            drawFireParticle(x, y, size, intensity, life);
                             break;
                         case 1: // 光芒效果
-                            console.log(`✨ 绘制光芒效果 ${i}`);
-                            drawLightEffect(x, y, size, intensity);
+                            drawLightEffect(x, y, size, intensity, life);
                             break;
                         case 2: // 重生光环
-                            console.log(`💫 绘制重生光环 ${i}`);
-                            drawRebirthRing(x, y, size, intensity);
+                            drawRebirthRing(x, y, size, intensity, life);
                             break;
-                        default:
-                            console.log(`❓ 未知特效阶段 ${phase}`);
                     }
-                } catch (error) {
-                    console.error(`❌ 渲染特效${i}时出错:`, error);
-                }
+                } catch (error) {}
                 
                 ctx.restore();
             }
         }
         
-        // 火焰粒子渲染
-        function drawFireParticle(x, y, size, intensity) {
-            const alpha = intensity * 2 / 3 / 255;
+        // 火焰粒子渲染 - 简化为单一圆形，减小渲染大小
+        function drawFireParticle(x, y, size, intensity, life) {
+            // 轻微闪烁（随生命周期衰减），并缩小范围
+            const baseAlpha = intensity * 2 / 3 / 255;
+            const lifeFactor = Math.max(0.2, Math.min(1, life / 45));
+            const alpha = baseAlpha * lifeFactor;
             const red = 255;
-            const green = Math.min(255, 100 + intensity / 3);
-            const blue = 0;
+            const green = Math.min(255, 120 + intensity / 4);
+            const blue = 20;
             
-            // 绘制火焰粒子核心
-            const gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
-            gradient.addColorStop(0, `rgba(${red}, ${green}, ${blue}, ${alpha})`);
-            gradient.addColorStop(0.7, `rgba(${red}, ${green}, ${blue}, ${alpha * 0.5})`);
-            gradient.addColorStop(1, `rgba(${red}, ${green}, ${blue}, 0)`);
+            // 更小更精致
+            const renderSize = Math.max(0.5, size * 0.45);
+            
+            // 核心亮点 + 细微羽化
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, renderSize);
+            gradient.addColorStop(0.0, `rgba(${red}, ${green}, ${blue}, ${alpha})`);
+            gradient.addColorStop(0.5, `rgba(${red}, ${green - 30}, ${blue}, ${alpha * 0.5})`);
+            gradient.addColorStop(1.0, `rgba(${red}, ${green - 60}, ${blue}, 0)`);
             
             ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.arc(x, y, renderSize, 0, Math.PI * 2);
             ctx.fill();
             
-            // 添加火焰边缘效果
-            const edgeSize = size + 2;
-            const edgeAlpha = alpha * 0.3;
-            const edgeGradient = ctx.createRadialGradient(x, y, 0, x, y, edgeSize);
-            edgeGradient.addColorStop(0, `rgba(${red}, ${green + 50}, ${blue}, ${edgeAlpha})`);
-            edgeGradient.addColorStop(1, `rgba(${red}, ${green + 50}, ${blue}, 0)`);
-            
-            ctx.fillStyle = edgeGradient;
+            // 细微外环勾勒，提升“精致”感
+            ctx.strokeStyle = `rgba(255, 180, 60, ${alpha * 0.4})`;
+            ctx.lineWidth = Math.max(0.5, renderSize * 0.12);
             ctx.beginPath();
-            ctx.arc(x, y, edgeSize, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.arc(x, y, renderSize * 0.85, 0, Math.PI * 2);
+            ctx.stroke();
         }
         
-        // 光芒效果渲染
-        function drawLightEffect(x, y, size, intensity) {
-            const alpha = intensity / 255;
+        // 光芒效果渲染 - 简化为单一圆形，减小渲染大小
+        function drawLightEffect(x, y, size, intensity, life) {
+            // 柔和金色光芒，更小更聚焦，带细微跳动
+            const baseAlpha = intensity / 255;
+            const pulse = 0.9 + 0.1 * Math.sin((life % 12) * 0.5);
+            const alpha = baseAlpha * 0.6 * pulse;
             const red = 255;
-            const green = Math.min(255, 215 + intensity / 5);
-            const blue = 0;
+            const green = Math.min(255, 215 + intensity / 6);
+            const blue = 40;
             
-            // 绘制光芒核心
-            const coreGradient = ctx.createRadialGradient(x, y, 0, x, y, size);
-            coreGradient.addColorStop(0, `rgba(${red}, ${green}, ${blue}, ${alpha})`);
-            coreGradient.addColorStop(0.5, `rgba(${red}, ${green}, ${blue}, ${alpha * 0.7})`);
-            coreGradient.addColorStop(1, `rgba(${red}, ${green}, ${blue}, 0)`);
+            const renderSize = Math.max(1, size * 0.55);
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, renderSize);
+            gradient.addColorStop(0.0, `rgba(${red}, ${green}, ${blue}, ${alpha})`);
+            gradient.addColorStop(0.4, `rgba(${red}, ${green}, ${blue}, ${alpha * 0.35})`);
+            gradient.addColorStop(1.0, `rgba(${red}, ${green}, ${blue}, 0)`);
             
-            ctx.fillStyle = coreGradient;
+            ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.arc(x, y, renderSize, 0, Math.PI * 2);
             ctx.fill();
             
-            // 绘制光芒外圈
-            const outerSize = size + 8;
-            const outerAlpha = alpha * 0.3;
-            const outerGradient = ctx.createRadialGradient(x, y, 0, x, y, outerSize);
-            outerGradient.addColorStop(0, `rgba(${red}, ${green}, ${blue}, ${outerAlpha})`);
-            outerGradient.addColorStop(1, `rgba(${red}, ${green}, ${blue}, 0)`);
-            
-            ctx.fillStyle = outerGradient;
+            // 细环描边
+            ctx.strokeStyle = `rgba(255, 220, 120, ${alpha * 0.5})`;
+            ctx.lineWidth = Math.max(0.5, renderSize * 0.1);
             ctx.beginPath();
-            ctx.arc(x, y, outerSize, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // 绘制光芒射线
-            ctx.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${alpha * 0.5})`;
-            ctx.lineWidth = 2;
-            for (let i = 0; i < 8; i++) {
-                const angle = (i * 45) * Math.PI / 180;
-                const rayLength = size + 10;
-                const rayX = x + Math.cos(angle) * rayLength;
-                const rayY = y + Math.sin(angle) * rayLength;
-                
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.lineTo(rayX, rayY);
-                ctx.stroke();
-            }
+            ctx.arc(x, y, renderSize * 0.8, 0, Math.PI * 2);
+            ctx.stroke();
         }
         
-        // 重生光环渲染
-        function drawRebirthRing(x, y, size, intensity) {
-            const alpha = intensity * 3 / 4 / 255;
-            const red = Math.min(255, 200 + intensity / 4);
-            const green = Math.min(255, 100 + intensity / 2);
+        // 重生光环渲染 - 简化为纯色圆形，减小渲染大小
+        function drawRebirthRing(x, y, size, intensity, life) {
+            // 细薄的发光环，半径更小，随生命周期轻微扩大
+            const baseAlpha = intensity * 3 / 4 / 255;
+            const alpha = baseAlpha * 0.6;
+            const red = Math.min(255, 210 + intensity / 5);
+            const green = Math.min(255, 140 + intensity / 4);
             const blue = 255;
             
-            // 绘制重生光环外圈
-            const outerGradient = ctx.createRadialGradient(x, y, size - 4, x, y, size);
-            outerGradient.addColorStop(0, `rgba(${red}, ${green}, ${blue}, 0)`);
-            outerGradient.addColorStop(1, `rgba(${red}, ${green}, ${blue}, ${alpha})`);
+            const baseSize = Math.max(1, size * 0.5);
+            const renderSize = baseSize * (1 + Math.min(0.2, (45 - Math.max(0, 45 - life)) * 0.003));
+            const inner = renderSize * 0.78;
+            const outer = renderSize;
             
-            ctx.fillStyle = outerGradient;
+            // 外发光
+            const glow = ctx.createRadialGradient(x, y, inner, x, y, outer * 1.15);
+            glow.addColorStop(0.0, `rgba(${red}, ${green}, ${blue}, ${alpha * 0.25})`);
+            glow.addColorStop(1.0, `rgba(${red}, ${green}, ${blue}, 0)`);
+            ctx.fillStyle = glow;
             ctx.beginPath();
-            ctx.arc(x, y, size, 0, Math.PI * 2);
-            ctx.arc(x, y, size - 4, 0, Math.PI * 2, true);
+            ctx.arc(x, y, outer * 1.15, 0, Math.PI * 2);
             ctx.fill();
             
-            // 绘制重生光环内圈
-            const innerSize = size - 8;
-            const innerAlpha = alpha * 0.5;
-            const innerGradient = ctx.createRadialGradient(x, y, innerSize - 4, x, y, innerSize);
-            innerGradient.addColorStop(0, `rgba(${red}, ${green}, ${blue}, 0)`);
-            innerGradient.addColorStop(1, `rgba(${red}, ${green}, ${blue}, ${innerAlpha})`);
-            
-            ctx.fillStyle = innerGradient;
+            // 细环
+            ctx.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+            ctx.lineWidth = Math.max(0.6, renderSize * 0.12);
             ctx.beginPath();
-            ctx.arc(x, y, innerSize, 0, Math.PI * 2);
-            ctx.arc(x, y, innerSize - 4, 0, Math.PI * 2, true);
-            ctx.fill();
-            
-            // 绘制重生符文
-            drawRebirthRune(x, y, size / 2, red, green, blue, alpha);
+            ctx.arc(x, y, (inner + outer) / 2, 0, Math.PI * 2);
+            ctx.stroke();
         }
         
-        // 重生符文渲染
+        // 重生符文渲染 - 简化为纯色圆形
         function drawRebirthRune(x, y, size, r, g, b, alpha) {
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-            ctx.lineWidth = 2;
-            
-            // 绘制简单的凤凰符号
+            // 更小的中心符点，极简
+            const s = Math.max(0.5, size * 0.6);
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, s);
+            gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha * 0.8})`);
+            gradient.addColorStop(0.6, `rgba(${r}, ${g}, ${b}, ${alpha * 0.35})`);
+            gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+            ctx.fillStyle = gradient;
             ctx.beginPath();
-            // 凤凰身体
-            ctx.arc(x, y, size / 3, 0, Math.PI * 2);
-            ctx.stroke();
-            
-            // 凤凰翅膀
-            ctx.beginPath();
-            ctx.moveTo(x - size / 3, y);
-            ctx.lineTo(x - size / 2, y - size / 4);
-            ctx.lineTo(x - size / 2, y + size / 4);
-            ctx.closePath();
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.moveTo(x + size / 3, y);
-            ctx.lineTo(x + size / 2, y - size / 4);
-            ctx.lineTo(x + size / 2, y + size / 4);
-            ctx.closePath();
-            ctx.stroke();
+            ctx.arc(x, y, s, 0, Math.PI * 2);
+            ctx.fill();
         }
 
         // 缓存UI元素和值，避免重复更新
@@ -2438,8 +3241,11 @@ function drawSurvivalItems() {
         
         // 优化的粒子效果系统
         let particles = [];
-        const MAX_PARTICLES = 50; // 限制最大粒子数量
+        const MAX_PARTICLES = 120; // 限制最大粒子数量，适度提升以适配新特效
         const PARTICLE_POOL = []; // 粒子对象池
+        // 漂浮文本标签层
+        let floatingLabels = [];
+        const MAX_LABELS = 12;
         
         // 初始化粒子池
         function initParticlePool() {
@@ -2461,20 +3267,56 @@ function drawSurvivalItems() {
                 y: y,
                 vx: (Math.random() - 0.5) * 2,
                 vy: (Math.random() - 0.5) * 2,
+                ax: 0,
+                ay: 0.05, // 轻微重力
                 life: 1.0,
                 decay: 0.02,
                 size: Math.random() * 3 + 1,
                 color: type === 'score' ? '#FFD700' : type === 'item' ? '#FF6B35' : '#FFFFFF',
-                type: type
+                type: type,
+                shape: 'circle',
+                angle: Math.random() * Math.PI * 2,
+                angularVelocity: (Math.random() - 0.5) * 0.2,
+                drag: 0.98,
+                strokeWidth: 1,
+                ringRadius: 0,
+                ringGrowth: 0
             };
             particles.push(particle);
+        }
+
+        // 创建更灵活的粒子（支持指定属性）
+        function createAdvancedParticle(x, y, props) {
+            if (particles.length >= MAX_PARTICLES) {
+                particles.shift();
+            }
+            const base = {
+                x: x, y: y,
+                vx: 0, vy: 0, ax: 0, ay: 0.05,
+                life: 1.0, decay: 0.03,
+                size: 2, color: '#FFFFFF', type: 'custom',
+                shape: 'circle', angle: 0, angularVelocity: 0,
+                drag: 0.98, strokeWidth: 1,
+                ringRadius: 0, ringGrowth: 0
+            };
+            particles.push(Object.assign(base, props));
         }
         
         function updateParticles() {
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
+                // 物理更新
+                p.vx += p.ax;
+                p.vy += p.ay;
+                p.vx *= p.drag;
+                p.vy *= p.drag;
                 p.x += p.vx;
                 p.y += p.vy;
+                p.angle += p.angularVelocity;
+                // 环形特效半径扩散
+                if (p.shape === 'ring') {
+                    p.ringRadius += p.ringGrowth;
+                }
                 p.life -= p.decay;
                 
                 if (p.life <= 0) {
@@ -2489,13 +3331,199 @@ function drawSurvivalItems() {
             ctx.save();
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
-                ctx.globalAlpha = p.life;
+                ctx.globalAlpha = Math.max(0, p.life);
+                if (p.shape === 'ring') {
+                    ctx.strokeStyle = p.color;
+                    ctx.lineWidth = p.strokeWidth;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, Math.max(0, p.ringRadius), 0, Math.PI * 2);
+                    ctx.stroke();
+                    continue;
+                }
+
                 ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
+                switch (p.shape) {
+                    case 'square': {
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.angle);
+                        ctx.fillRect(-p.size, -p.size, p.size * 2, p.size * 2);
+                        ctx.restore();
+                        break;
+                    }
+                    case 'star': {
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.angle);
+                        ctx.beginPath();
+                        const spikes = 5;
+                        const outer = p.size * 1.8;
+                        const inner = p.size * 0.7;
+                        for (let s = 0; s < spikes; s++) {
+                            const rot1 = (Math.PI / spikes) * 2 * s;
+                            ctx.lineTo(Math.cos(rot1) * outer, Math.sin(rot1) * outer);
+                            const rot2 = rot1 + Math.PI / spikes;
+                            ctx.lineTo(Math.cos(rot2) * inner, Math.sin(rot2) * inner);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                        ctx.restore();
+                        break;
+                    }
+                    default: {
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
             }
             ctx.restore();
+        }
+
+        // 浮动标签：用于分数与拾取提示
+        function createFloatingLabel(text, x, y, color = '#FFFFFF') {
+            if (floatingLabels.length >= MAX_LABELS) {
+                floatingLabels.shift();
+            }
+            floatingLabels.push({
+                text: text,
+                x: x,
+                y: y,
+                vy: -0.35,
+                life: 1.0,
+                decay: 0.02,
+                color: color,
+                scale: 1
+            });
+        }
+
+        function updateFloatingLabels() {
+            for (let i = floatingLabels.length - 1; i >= 0; i--) {
+                const lb = floatingLabels[i];
+                lb.y += lb.vy;
+                lb.vy *= 0.98;
+                lb.life -= lb.decay;
+                lb.scale += 0.005;
+                if (lb.life <= 0) floatingLabels.splice(i, 1);
+            }
+        }
+
+        function drawFloatingLabels() {
+            if (floatingLabels.length === 0) return;
+            ctx.save();
+            for (let i = 0; i < floatingLabels.length; i++) {
+                const lb = floatingLabels[i];
+                ctx.globalAlpha = Math.max(0, lb.life);
+                ctx.fillStyle = lb.color;
+                ctx.font = `${Math.floor(10 * lb.scale)}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.fillText(lb.text, lb.x, lb.y);
+            }
+            ctx.restore();
+        }
+
+        // 拾取与得分的高级粒子特效
+        function spawnScoreBurst(x, y, delta) {
+            const d = Math.max(1, delta || 1);
+            // 扩散环
+            createAdvancedParticle(x, y, {
+                shape: 'ring', color: '#FFD700', strokeWidth: 1.5,
+                ringRadius: 2, ringGrowth: 0.9, life: 0.9, decay: 0.035
+            });
+            // 金色纸屑
+            const confettiColors = ['#FFD700', '#FFF3B0', '#FFA500', '#FFFFFF'];
+            for (let i = 0; i < 10 + d * 2; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 0.6 + Math.random() * 1.2;
+                createAdvancedParticle(x, y, {
+                    shape: 'square', color: confettiColors[i % confettiColors.length],
+                    vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    angularVelocity: (Math.random() - 0.5) * 0.5,
+                    size: 1.5 + Math.random() * 1.5, life: 1.0, decay: 0.03
+                });
+            }
+            // 闪烁星星
+            for (let i = 0; i < 6; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 0.4 + Math.random() * 0.8;
+                createAdvancedParticle(x, y, {
+                    shape: 'star', color: '#FFF8DC',
+                    vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    size: 1.2 + Math.random() * 1.2, life: 0.9, decay: 0.04
+                });
+            }
+            createFloatingLabel(`+${d}`, x, y - 6, '#FFD700');
+        }
+
+        function getItemColor(type) {
+            switch(type) {
+                case 0: return '#00BFFF';
+                case 1: return '#FF4500';
+                case 2: return '#9370DB';
+                case 3: return '#FFD700';
+                case 4: return '#FF69B4';
+                case 5: return '#8A2BE2';
+                case 6: return '#32CD32';
+                case 7: return '#FF1493';
+                case 8: return '#FFD700';
+                case 9: return '#FF6347';
+                case 10: return '#800080';
+                case 11: return '#FF4500';
+                case 12: return '#FFA500'; // DragonPower - 龙威
+                case 13: return '#7FDBFF'; // Freeze - 冰冻
+                default: return '#808080';
+            }
+        }
+
+        function getPickupLabel(type) {
+            switch(type) {
+                case 0: return '护盾';
+                case 1: return '加速';
+                case 2: return '缩小';
+                case 3: return '磁铁';
+                case 4: return '重力';
+                case 5: return '传送';
+                case 6: return '翻倍';
+                case 7: return '生命';
+                case 8: return '金币';
+                case 9: return '进化';
+                case 10: return '隐形';
+                case 11: return '放大';
+                case 12: return '龙威';
+                case 13: return '冻结';
+                default: return '拾取';
+            }
+        }
+
+        function spawnPickupBurst(x, y, type) {
+            const color = getItemColor(type);
+            // 环形波
+            createAdvancedParticle(x, y, {
+                shape: 'ring', color: color, strokeWidth: 1.2,
+                ringRadius: 1.5, ringGrowth: 0.7, life: 0.9, decay: 0.035
+            });
+            // 彩屑
+            for (let i = 0; i < 12; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 0.8 + Math.random() * 1.1;
+                createAdvancedParticle(x, y, {
+                    shape: 'square', color: color,
+                    vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    angularVelocity: (Math.random() - 0.5) * 0.4,
+                    size: 1.4 + Math.random() * 1.6, life: 0.95, decay: 0.03
+                });
+            }
+            // 星光
+            for (let i = 0; i < 5; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 0.3 + Math.random() * 0.7;
+                createAdvancedParticle(x, y, {
+                    shape: 'star', color: '#FFFFFF',
+                    vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+                    size: 1.0 + Math.random() * 1.2, life: 0.8, decay: 0.04
+                });
+            }
+            createFloatingLabel(`+${getPickupLabel(type)}`, x, y - 6, color);
         }
         
         // 屏幕震动效果
@@ -2511,6 +3539,77 @@ function drawSurvivalItems() {
                 const shakeY = (Math.random() - 0.5) * screenShakeIntensity;
                 ctx.translate(shakeX, shakeY);
             }
+        }
+        
+        // 触发Boss视觉攻击效果（基于拾取的道具类型）
+        function triggerBossVisualAttack(itemType) {
+            if (typeof exports.get_boss_exists !== 'function' || exports.get_boss_exists() !== 1) return;
+            const pos = (typeof getBossRenderPosition === 'function') ? getBossRenderPosition() : { x: 65, y: 25 };
+            const bossX = pos.x;
+            const bossY = pos.y;
+            const birdX = (typeof exports.get_bird_x === 'function') ? exports.get_bird_x() : 45;
+            const birdY = (typeof exports.get_bird_y === 'function') ? exports.get_bird_y() : 80;
+            const color = getItemColor(itemType);
+            // 建立一条从鸟到Boss的能量束
+            bossAttackVisuals.push({
+                type: 'beam',
+                color: color,
+                startX: birdX,
+                startY: birdY,
+                endX: bossX + 15,
+                endY: bossY + 15,
+                life: 12, // 帧数
+                width: 2.5
+            });
+            // 在Boss端爆裂
+            bossAttackVisuals.push({
+                type: 'burst',
+                color: color,
+                x: bossX + 15,
+                y: bossY + 15,
+                radius: 3,
+                life: 14
+            });
+            // 轻微屏幕震动
+            addScreenShake(3);
+        }
+
+        // 绘制并更新视觉攻击效果
+        function drawBossVisualAttacks() {
+            if (!bossAttackVisuals || bossAttackVisuals.length === 0) return;
+            const next = [];
+            for (let v of bossAttackVisuals) {
+                if (v.type === 'beam') {
+                    const alpha = Math.max(0, v.life / 12);
+                    ctx.strokeStyle = v.color;
+                    ctx.globalAlpha = 0.4 + 0.6 * alpha;
+                    ctx.lineWidth = v.width * (0.7 + 0.3 * Math.random());
+                    ctx.beginPath();
+                    ctx.moveTo(v.startX, v.startY);
+                    // 稍微抖动的折线段，制造能量波动
+                    const midX = (v.startX + v.endX) / 2 + (Math.random() - 0.5) * 4;
+                    const midY = (v.startY + v.endY) / 2 + (Math.random() - 0.5) * 4;
+                    ctx.lineTo(midX, midY);
+                    ctx.lineTo(v.endX, v.endY);
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                    v.life--;
+                    if (v.life > 0) next.push(v);
+                } else if (v.type === 'burst') {
+                    const alpha = Math.max(0, v.life / 14);
+                    const radius = v.radius * (1 + (14 - v.life) * 0.6);
+                    ctx.strokeStyle = v.color;
+                    ctx.globalAlpha = 0.5 * alpha;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(v.x, v.y, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                    v.life--;
+                    if (v.life > 0) next.push(v);
+                }
+            }
+            bossAttackVisuals = next;
         }
         
         
@@ -2548,19 +3647,13 @@ function drawSurvivalItems() {
                     exports.get_nirvana_notification_active() : false;
                 
                 // 调试涅槃通知状态
-                if (nirvanaActive) {
-                    console.log('🔥 涅槃通知激活，显示提示');
-                }
-                
                 if (nirvanaActive && nirvanaNotification.style.display === 'none') {
                     nirvanaNotification.style.display = 'block';
-                    console.log('✅ 涅槃通知已显示');
                 } else if (!nirvanaActive && nirvanaNotification.style.display === 'block') {
                     nirvanaNotification.style.display = 'none';
-                    console.log('❌ 涅槃通知已隐藏');
                 }
             } else {
-                console.error('❌ 找不到涅槃通知元素');
+                //
             }
             
             // 只在分数变化时更新
@@ -2592,9 +3685,9 @@ function drawSurvivalItems() {
                         switch (m) {
                             case 0: return '经典';
                             case 1: return '限时';
-                            case 2: return '生存';
+                            case 2: return '挑战';
                             case 3: return '完美';
-                            case 5: return '困难';
+                            case 5: return '极速';
                             case 4: return '挑战';
                             case 6: return '挑战';
                             default: return '经典';
@@ -2602,6 +3695,14 @@ function drawSurvivalItems() {
                     })(effectiveMode);
                     uiUpdateQueue.push({ element: currentModeEl, value: modeName });
                     lastUIValues.gameMode = effectiveMode;
+                    // 限时模式显示时间HUD，其它模式隐藏
+                    if (typeof timeItemEl !== 'undefined' && timeItemEl) {
+                        if (effectiveMode === 1) {
+                            if (timeItemEl.style.display !== '') timeItemEl.style.display = '';
+                        } else {
+                            if (timeItemEl.style.display !== 'none') timeItemEl.style.display = 'none';
+                        }
+                    }
                 }
             }
             
@@ -2611,31 +3712,28 @@ function drawSurvivalItems() {
                     exports.get_evolution_stage() : 0;
                 if (evolutionStage !== lastUIValues.evolutionStage) {
                     const stageNames = ['雏鸟', '成鸟', '雄鹰', '凤凰', '神龙'];
-                    uiUpdateQueue.push({ element: evolutionEl, value: '形态: ' + stageNames[evolutionStage] });
+                    uiUpdateQueue.push({ element: evolutionEl, value: stageNames[evolutionStage] });
                     lastUIValues.evolutionStage = evolutionStage;
                 }
             }
             
             if (livesEl) {
-                // 在生存模式下显示血量，其他模式显示生命数
-                const gameMode = typeof exports.get_game_mode === 'function' ? exports.get_game_mode() : 0;
+                // 挑战/Boss 时显示血量，其他模式显示生命数
                 const bossExists = typeof exports.get_boss_exists === 'function' ? exports.get_boss_exists() : 0;
-                
+
                 let displayValue;
-                if (gameMode === 2 || bossExists === 1) {
-                    // 生存模式：显示血量
-                    const currentHealth = typeof exports.get_player_current_health === 'function' ? 
+                if (bossExists === 1) {
+                    const currentHealth = typeof exports.get_player_current_health === 'function' ?
                         exports.get_player_current_health() : 1;
-                    const maxHealth = typeof exports.get_player_max_health === 'function' ? 
+                    const maxHealth = typeof exports.get_player_max_health === 'function' ?
                         exports.get_player_max_health() : 1;
-                    displayValue = `血量: ${currentHealth}/${maxHealth}`;
+                    displayValue = `${currentHealth}/${maxHealth}`;
                 } else {
-                    // 其他模式（包括挑战模式）：显示生命数
-                    const lives = typeof exports.get_player_lives === 'function' ? 
+                    const lives = typeof exports.get_player_lives === 'function' ?
                         exports.get_player_lives() : 1;
-                    displayValue = `生命: ${lives}`;
+                    displayValue = String(lives);
                 }
-                
+
                 if (displayValue !== lastUIValues.lives) {
                     uiUpdateQueue.push({ element: livesEl, value: displayValue });
                     lastUIValues.lives = displayValue;
@@ -2646,7 +3744,7 @@ function drawSurvivalItems() {
                 const gold = typeof exports.get_player_gold === 'function' ? 
                     exports.get_player_gold() : 0;
                 if (gold !== lastUIValues.gold) {
-                    uiUpdateQueue.push({ element: goldEl, value: '金币: ' + gold });
+                    uiUpdateQueue.push({ element: goldEl, value: String(gold) });
                     lastUIValues.gold = gold;
                 }
             }
@@ -2663,7 +3761,7 @@ function drawSurvivalItems() {
                 const experience = typeof exports.get_player_experience === 'function' ? 
                     exports.get_player_experience() : 0;
                 if (difficulty !== lastUIValues.difficulty) {
-                    uiUpdateQueue.push({ element: difficultyEl, value: '难度: ' + difficulty });
+                    uiUpdateQueue.push({ element: difficultyEl, value: String(difficulty) });
                     lastUIValues.difficulty = difficulty;
                 }
             }
@@ -2672,7 +3770,26 @@ function drawSurvivalItems() {
                 const combo = typeof exports.get_combo_count === 'function' ? 
                     exports.get_combo_count() : 0;
                 if (combo !== lastUIValues.combo) {
-                    uiUpdateQueue.push({ element: comboEl, value: '连击: ' + combo });
+                    uiUpdateQueue.push({ element: comboEl, value: String(combo) });
+                    // 视觉提示：当连击增加时触发发光动画
+                    if (typeof lastUIValues.combo === 'number' && combo > lastUIValues.combo) {
+                        try {
+                            comboEl.classList.add('combo-active');
+                            setTimeout(() => comboEl.classList.remove('combo-active'), 500);
+                            // 连击里程碑提示：5连/10连播放提示音
+                            if (combo === 5 || combo === 10) {
+                                audioManager.play('item');
+                            }
+                        } catch (e) {}
+                    }
+                    // 更新最大连击显示与存储
+                    if (typeof maxCombo !== 'undefined' && combo > maxCombo) {
+                        maxCombo = combo;
+                        try { localStorage.setItem('flappyBirdMaxCombo', String(maxCombo)); } catch (e) {}
+                        if (maxComboEl) {
+                            uiUpdateQueue.push({ element: maxComboEl, value: String(maxCombo) });
+                        }
+                    }
                     lastUIValues.combo = combo;
                 }
             }
@@ -2758,8 +3875,14 @@ function drawSurvivalItems() {
             accumulated -= stepMs;
         }
         
-        // 更新动画时间
+        // 更新动画时间（仅内部使用，不再写入 window）
         animationTime += dt;
+        
+        // 更新天气系统
+        updateWeatherSystem();
+        
+        // 更新天气显示
+        updateWeatherDisplay();
 
         // 渲染每帧执行（读状态→绘制）
         const bx = exports.get_bird_x ? exports.get_bird_x() : 45;
@@ -2771,10 +3894,9 @@ function drawSurvivalItems() {
         // 检测分数变化并播放音效
         if (score > lastScore) {
             audioManager.play('score');
-            // 添加得分粒子效果
-            for (let i = 0; i < 5; i++) {
-                createParticle(80, 80, 'score');
-            }
+            const delta = score - lastScore;
+            // 更精致的得分特效
+            spawnScoreBurst(80, 80, delta);
             lastScore = score;
         }
 
@@ -2800,8 +3922,18 @@ function drawSurvivalItems() {
             
             drawBackground();
             
-            // 绘制管道
-            
+            // 绘制天气效果
+            drawWeatherEffects();
+
+            // 若存在Boss，先绘制Boss主体于管道之前（Boss在管道后面）
+            try {
+                const bossExistsEarly = (typeof exports.get_boss_exists === 'function') ? exports.get_boss_exists() : 0;
+                if (bossExistsEarly === 1) {
+                    drawBossCore();
+                }
+            } catch (e) {}
+
+            // 绘制管道（覆盖于Boss主体之上）
             drawPipes();
             
             // 绘制道具和效果
@@ -2817,24 +3949,98 @@ function drawSurvivalItems() {
         
         if (gameModeVal === 4 || gameModeVal === 6 || bossExistsNow === 1) {
             drawSurvivalItems();
-            drawBoss();
+            // 先绘制Boss主体（置于管道之下/同层），后续再绘制覆盖层
+            drawBossCore();
             drawSurvivalUI();
         }
             
             
             // 绘制小鸟
-            
             drawBird(bx, by);
+
+            // 绘制Boss覆盖层（血条/名称等，置于前景最上层）
+            drawBossOverlay();
+
+            // 冰冻视觉效果：在小鸟周围绘制半透明冰方块
+            try {
+                if (typeof exports.has_freeze_effect_export === 'function' && exports.has_freeze_effect_export() === 1) {
+                    const size = typeof exports.get_effective_bird_size_export === 'function' ? exports.get_effective_bird_size_export() : 12;
+                    const pad = 3;
+                    ctx.save();
+                    ctx.strokeStyle = 'rgba(173, 216, 230, 0.9)';
+                    ctx.fillStyle = 'rgba(173, 216, 230, 0.25)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.rect(bx - size / 2 - pad, by - size / 2 - pad, size + pad * 2, size + pad * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    // 冰纹裂痕
+                    ctx.strokeStyle = 'rgba(135, 206, 235, 0.6)';
+                    ctx.beginPath();
+                    ctx.moveTo(bx - size / 2 - pad + 2, by - size / 2);
+                    ctx.lineTo(bx + size / 2 + pad - 2, by + size / 2);
+                    ctx.moveTo(bx + size / 2 + pad - 2, by - size / 2);
+                    ctx.lineTo(bx - size / 2 - pad + 2, by + size / 2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            } catch (e) {}
+
+            // 传送视觉效果（保持鸟的x不动，仅渲染特效与进度）
+            try {
+                const tpActive = (typeof exports.get_teleport_active === 'function') ? exports.get_teleport_active() : 0;
+                if (tpActive === 1) {
+                    const progress = (typeof exports.get_teleport_progress === 'function') ? exports.get_teleport_progress() : 0; // 0-100
+                    // 速度线条（在鸟前方）
+                    const streakCount = 6;
+                    for (let i = 0; i < streakCount; i++) {
+                        const len = 6 + (i * 2);
+                        const offsetY = -8 + i * 3;
+                        ctx.strokeStyle = `rgba(135, 206, 235, ${0.2 + 0.1 * i})`;
+                        ctx.lineWidth = 1 + (i % 2);
+                        ctx.beginPath();
+                        ctx.moveTo(bx + 8, by + offsetY);
+                        ctx.lineTo(bx + 8 + len, by + offsetY);
+                        ctx.stroke();
+                    }
+
+                    // 传送目标提示（鸟前方固定距离位置的闪烁标记）
+                    const targetX = bx + 100; // 画面坐标前方100像素，仅用于视觉提示
+                    const alpha = 0.4 + 0.6 * Math.sin((performance.now() / 100) % (2 * Math.PI));
+                    ctx.strokeStyle = `rgba(32, 178, 170, ${alpha.toFixed(2)})`;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(targetX, by, 6 + (progress / 20), 0, Math.PI * 2);
+                    ctx.stroke();
+
+                    // 传送进度条（鸟下方）
+                    const barW = 40;
+                    const barH = 4;
+                    const barX = bx - barW / 2;
+                    const barY = by + 16;
+                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                    ctx.fillRect(barX, barY, barW, barH);
+                    ctx.fillStyle = 'rgba(32,178,170,0.9)';
+                    ctx.fillRect(barX, barY, (barW * progress) / 100, barH);
+                }
+            } catch (e) {
+                // 忽略视觉效果错误，避免影响主循环
+            }
             
-            // 在挑战模式下，投射物应该在小鸟之后绘制，确保显示在最前面
+            // 在挑战模式下，投射物在小鸟之后绘制
             if (gameModeVal === 4 || gameModeVal === 6 || bossExistsNow === 1) {
                 drawProjectiles();
             }
+            // 独立于投射物的拾取→Boss视觉攻击效果，每帧绘制
+            if (gameModeVal === 4 || gameModeVal === 6 || bossExistsNow === 1) {
+                drawBossVisualAttacks();
+            }
             
-            // 更新和绘制粒子
-            
+            // 更新和绘制粒子与飘字
             updateParticles();
             drawParticles();
+            updateFloatingLabels();
+            drawFloatingLabels();
             
             
         } catch (error) {
@@ -2873,15 +4079,26 @@ function drawSurvivalItems() {
                 
                 // 在控制台显示FPS（可选）
                 if (performanceStats.fps < 50) {
-                    console.warn(`低FPS警告: ${performanceStats.fps}fps`);
+                    //
                 }
             }
         }
         
+        // 初始化画布上下文
+        initCanvas();
+        
+        // 初始化天气系统
+        initWeatherSystem();
+        
+        // 初始化天气显示
+        if (typeof updateWeatherDisplay === 'function') {
+            updateWeatherDisplay();
+        }
+        
+        
         // 启动游戏循环
         requestAnimationFrame(frame);
     } catch (error) {
-        console.error('加载Flappy Bird WebAssembly模块失败:', error);
         
         // 显示用户友好的错误信息
         const errorMessage = document.createElement('div');

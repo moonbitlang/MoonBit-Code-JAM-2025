@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird - WASM版本</title>
+    <title>Flappy Bird </title>
     <style>
         body {
             margin: 0;
@@ -222,7 +222,7 @@
         /* 游戏HUD样式 */
         #gameHUD {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             width: 100%;
             max-width: 640px;
@@ -241,6 +241,7 @@
             display: flex;
             gap: 20px;
             align-items: center;
+            flex-wrap: nowrap;
         }
         
         .hud-item {
@@ -250,9 +251,10 @@
             background: rgba(135, 206, 235, 0.2);
             padding: 10px 15px;
             border-radius: 20px;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease, color 0.3s ease;
             border: 1px solid rgba(135, 206, 235, 0.3);
             min-width: 80px;
+            white-space: nowrap;
         }
         
         .hud-item:hover {
@@ -277,6 +279,22 @@
             font-weight: bold;
             color: #FFFFFF;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+        }
+
+        /* 避免数值变动引起布局抖动：固定字符宽度并对齐 */
+        #score {
+            display: inline-block;
+            min-width: 4ch;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+        }
+        #combo {
+            display: inline-block;
+            min-width: 3ch;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
         }
         
         /* 涅槃提示样式 */
@@ -820,17 +838,16 @@
         <!-- 左侧信息面板 -->
         <div id="infoPanel">
             <div class="info-section">
-                <h1>Flappy Bird - WebAssembly版本</h1>
+                <h1>Flappy Bird</h1>
                 <h3>🎮 游戏介绍</h3>
-                <p>控制小鸟穿越管道，收集道具，体验形态进化！</p>
+                <p>控制小鸟穿越管道，收集道具，体验形态进化，挑战高分！</p>
                 <div class="game-modes">
                     <h4>游戏模式</h4>
                     <ul>
                         <li><strong>经典模式</strong> - 传统道具玩法</li>
                         <li><strong>限时模式</strong> - 30秒挑战</li>
-                        <li><strong>生存模式</strong> - 3条生命</li>
-                        <li><strong>困难模式</strong> - 高难度挑战</li>
-                        <li><strong>挑战模式(完善中)</strong> - 道具收集+Boss战斗</li>
+                        <li><strong>挑战模式</strong> - 道具收集+Boss战斗（开发中）</li>
+                        <li><strong>极速模式</strong> - 高速高难挑战（？？？）</li>
                     </ul>
                 </div>
             </div>
@@ -922,11 +939,18 @@
                             <span>体型回到第一阶段</span>
                         </div>
                     </div>
+                    <div class="item-card">
+                        <div class="item-icon">🧊</div>
+                        <div class="item-info">
+                            <strong>冰冻</strong>
+                            <span>0.3秒内无法操控，但仍受重力影响</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="info-section">
-                <h3>🔥 生存模式道具</h3>
+                <h3>挑战模式道具</h3>
                 <div class="items-grid">
                     <div class="item-card">
                         <div class="item-icon">⚡</div>
@@ -997,6 +1021,11 @@
                         <span>神龙 (50分)</span>
                     </div>
                 </div>
+                <div class="evolution-extras" style="margin-top:8px; font-size: 12px; color:#666; line-height:1.6;">
+                    <div><strong>凤凰涅槃</strong>：碰撞时有概率无损重生并重置场景</div>
+                    <div><strong>龙威</strong>：每5秒触发2秒的加速与护盾强化</div>
+                    <div>其他形态能力：暂无</div>
+                </div>
             </div>
             
             <div class="info-section">
@@ -1004,7 +1033,7 @@
                 <div class="controls">
                     <div class="control-item">
                         <kbd>空格键</kbd>
-                        <span>跳跃/开始游戏/攻击(Boss战)</span>
+                        <span>跳跃/开始游戏</span>
                     </div>
                     <div class="control-item">
                         <kbd>↑↓</kbd>
@@ -1015,9 +1044,6 @@
                         <span>控制速度</span>
                     </div>
                 </div>
-                <div style="margin-top: 10px; padding: 10px; background: rgba(255, 107, 107, 0.2); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
-
-                </div>
             </div>
         </div>
         
@@ -1025,7 +1051,7 @@
         <div id="gameArea">
             <!-- 涅槃提示 -->
             <div id="nirvanaNotification" class="nirvana-notification" style="display: none;">
-                <div class="nirvana-text">🔥 凤凰涅槃重生！</div>
+                <div class="nirvana-text"> 凤凰涅槃重生！</div>
             </div>
             
             <!-- 游戏HUD信息条 -->
@@ -1060,10 +1086,20 @@
                         <span class="hud-label">模式</span>
                         <span id="currentMode" class="hud-value">经典</span>
                     </div>
+                    <div class="hud-item time" id="timeItem" style="display:none;">
+                        <span class="hud-icon">⏱️</span>
+                        <span class="hud-label">时间</span>
+                        <span id="time" class="hud-value">30s</span>
+                    </div>
                     <div class="hud-item gold">
                         <span class="hud-icon">💰</span>
                         <span class="hud-label">金币</span>
                         <span id="gold" class="hud-value">0</span>
+                    </div>
+                    <div class="hud-item weather">
+                        <span class="hud-icon">☀️</span>
+                        <span class="hud-label">天气</span>
+                        <span id="weather" class="hud-value">晴朗</span>
                     </div>
                 </div>
             </div>
@@ -1077,9 +1113,8 @@
                     <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
                         <button onclick="selectGameMode(0)" style="padding: 5px 10px; margin: 2px;">经典模式</button>
                         <button onclick="selectGameMode(1)" style="padding: 5px 10px; margin: 2px;">限时模式 (30秒)</button>
-                        <button onclick="selectGameMode(2)" style="padding: 5px 10px; margin: 2px;">生存模式 (3条命)</button>
-                        <button onclick="selectGameMode(4)" style="padding: 5px 10px; margin: 2px;">挑战模式 (收集道具击败Boss)</button>
-                        <button onclick="selectGameMode(5)" style="padding: 5px 10px; margin: 2px;">困难模式</button>
+                        <button onclick="selectGameMode(4)" style="padding: 5px 10px; margin: 2px;">挑战模式（开发中）</button>
+                        <button onclick="selectGameMode(5)" style="padding: 5px 10px; margin: 2px;">极速模式</button>
                     </div>
                     <div style="margin-top: 10px; font-size: 12px;">按空格键快速开始经典模式</div>
                 </div>
@@ -1121,6 +1156,10 @@
                         <span>最高分:</span>
                         <span id="highScore">0</span>
                     </div>
+                <div class="audio-control-item">
+                    <span>最大连击:</span>
+                    <span id="maxCombo">0</span>
+                </div>
                 </div>
             </div>
             
@@ -1145,7 +1184,6 @@
     </div>
     
     <script>
-        // 清除任何可能存在的测试函数引用
         if (typeof window.testSounds !== 'undefined') {
             delete window.testSounds;
         }
@@ -1174,31 +1212,12 @@
         }
         
         function setVolume(value) {
-            console.log('设置音量:', value);
             const volumeValue = document.getElementById('volumeValue');
             if (volumeValue) {
                 volumeValue.textContent = value + '%';
-                console.log('音量显示已更新为:', volumeValue.textContent);
-            } else {
-                console.error('找不到volumeValue元素');
             }
         }
         
-        // 测试音量功能
-        function testVolume() {
-            console.log('测试音量功能...');
-            const volumeSlider = document.getElementById('volumeSlider');
-            const volumeValue = document.getElementById('volumeValue');
-            console.log('音量滑块:', volumeSlider);
-            console.log('音量显示:', volumeValue);
-            if (volumeSlider && volumeValue) {
-                console.log('当前滑块值:', volumeSlider.value);
-                console.log('当前显示值:', volumeValue.textContent);
-            }
-        }
-        
-        // 全局测试函数
-        window.testVolume = testVolume;
         
         // 最高分管理
         let highScore = parseInt(localStorage.getItem('flappyBirdHighScore') || '0');
@@ -1233,21 +1252,18 @@
                 document.documentElement.requestFullscreen().then(() => {
                     fullscreenStatus.textContent = '开启';
                 }).catch(err => {
-                    console.log('无法进入全屏模式:', err);
                     alert('无法进入全屏模式，请检查浏览器设置');
                 });
             } else {
                 // 退出全屏
                 document.exitFullscreen().then(() => {
                     fullscreenStatus.textContent = '关闭';
-                }).catch(err => {
-                    console.log('无法退出全屏模式:', err);
-                });
+                }).catch(err => {});
             }
         }
         
         function showHelp() {
-            alert('游戏帮助：\n1. 按空格键跳跃\n2. 左右键控制速度\n3. 收集道具获得特殊能力\n4. 避免撞到管道');
+            alert('游戏帮助：\n1. 按上下键移动\n2. 左右键控制速度\n3. 收集道具解锁型态获得特殊能力\n4. 避免撞到管道');
         }
         
         // 页面加载时初始化
@@ -1261,25 +1277,18 @@
             if (volumeSlider && volumeValue) {
                 // 初始化显示
                 volumeValue.textContent = volumeSlider.value + '%';
-                console.log('音量初始化完成:', volumeSlider.value);
                 
                 // 添加事件监听器
                 volumeSlider.addEventListener('input', function() {
-                    console.log('音量滑块值变化:', this.value);
                     volumeValue.textContent = this.value + '%';
                 });
                 
                 volumeSlider.addEventListener('change', function() {
-                    console.log('音量滑块最终值:', this.value);
                     volumeValue.textContent = this.value + '%';
                 });
                 
-                console.log('音量事件监听器已添加');
-            } else {
-                console.error('找不到音量相关元素:', {volumeSlider: !!volumeSlider, volumeValue: !!volumeValue});
             }
-            
-            // 监听分数变化
+
             const scoreElement = document.getElementById('score');
             if (scoreElement) {
                 const observer = new MutationObserver(function(mutations) {
@@ -1291,6 +1300,11 @@
                 });
                 observer.observe(scoreElement, { childList: true, characterData: true, subtree: true });
             }
+            try {
+                if (typeof updateWeatherDisplay === 'function') {
+                    updateWeatherDisplay();
+                }
+            } catch (e) {}
         });
     </script>
     <script src="game.js"></script>
