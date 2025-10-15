@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>跳一跳之丝路寻踪</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .game-container {
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-family: "ThaleahFat", Arial, sans-serif;
+            color: #8B4513;
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        
+        .instructions h2 {
+            color: #8B4513;
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .instructions section {
+            margin-bottom: 15px;
+        }
+        
+        .instructions h3 {
+            color: #5D3A1A;
+            margin-bottom: 5px;
+        }
+        
+        .instructions ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        
+        canvas {
+            border: 2px solid #8B4513;
+            background-color: #E8E0D0;
+        }
+    </style>
+    <script src="src.js" defer></script>
+</head>
+
+<body>
+	<h1>跳一跳之丝路寻踪</h1>
+	
+    <div class="game-container">
+        
+
+         
+
+        <div class="instructions">
+            <h2>游戏说明</h2>
+            
+            <section>
+                <h3>开始游戏</h3>
+                <p>启动程序后，进入第一关（新手关）界面，按空格键开始游戏。</p>
+            </section>
+            
+            <section>
+                <h3>控制方式</h3>
+                <ul>
+                    <li>蓄力跳跃：按住空格键为马匹蓄力</li>
+                    <li>释放跳跃：松开空格键，马匹根据蓄力时间大小向前跳跃</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h3>游戏流程</h3>
+                <ul>
+                    <li>Easy新手关：初始生命10，货物3；共3个驿站、1座大山、1个终点驿站。成功通过后自动进入Hard挑战关。</li>
+                    <li>Hard挑战关：初始生命100，货物40；共100个驿站、40座大山、1个终点驿站。通过此关即为最终胜利。</li>
+                </ul>
+            </section>
+            
+            <section>
+                <h3>规则与结算</h3>
+                <ul>
+                    <li>成功跳上驿站：得分+10</li>
+                    <li>跳到大山：触发山贼事件，货物数量-1</li>
+                    <li>跳空跌落：生命值-1</li>
+                    <li>当生命值或货物数量降至0时，游戏失败，重回本关起点</li>
+                    <li>抵达本关最后的终点驿站即可进入下一关</li>
+                    <li>通关最终关卡即为胜利，结算剩余货物</li>
+                </ul>
+            </section>
+        </div>
+        
+       
+    </div>
+	<canvas id="canvas" style="display: block; margin: 0 auto;" height="600" width="800"></canvas>
+</body>
+
+</html>

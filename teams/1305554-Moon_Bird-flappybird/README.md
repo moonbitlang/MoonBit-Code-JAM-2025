@@ -10,6 +10,7 @@
   - 高性能：主逻辑使用 MoonBit，WASM 执行，Canvas 渲染，稳定 60FPS。
   - 可扩展：模式、道具、进化、Boss 皆模块化，便于新增/替换。
   - 可玩性：正负面道具、演化阈值与多模式，形成富有变化的局内决策。
+- B站视频链接：https://www.bilibili.com/video/BV1tEnczQELy
 
 ### 形态进化
 - 0 分：雏鸟

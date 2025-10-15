@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大道一念</title>
+    <script src="Survivors.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mainContainer {
+            display: flex;
+            flex: 1;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .gameArea {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            letter-spacing: 3px;
+        }
+
+        #canvas {
+            /* 关键：CSS尺寸与属性尺寸保持一致 */
+            width: 960px;
+            height: 720px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            display: block;
+        }
+
+        .infoContainer {
+            flex: 0 0 400px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 720px;
+        }
+
+        .infoContainer .title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-align: left;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 10px;
+        }
+
+        .game-description {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .features {
+            margin-bottom: 25px;
+        }
+
+        .features h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .features ul {
+            padding-left: 20px;
+        }
+
+        .features li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .controls {
+            margin-bottom: 25px;
+        }
+
+        .controls h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .controls p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .start-btn {
+            background: linear-gradient(to right, #ff8c00, #ffcc00);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            align-self: center;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .start-btn:active {
+            transform: translateY(1px);
+        }
+
+        .size-info {
+            margin-top: 15px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1400px) {
+            .mainContainer {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .infoContainer {
+                flex: none;
+                width: 100%;
+                max-width: 960px;
+            }
+            
+            #canvas {
+                width: 100%;
+                max-width: 960px;
+                height: auto;
+                aspect-ratio: 4/3; /* 保持4:3宽高比 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainContainer">
+        <div class="gameArea">
+            <div class="title">大道一念</div>
+            <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
+            <button class="start-btn" onclick="location.reload()">重新开始游戏</button>
+        </div>
+        
+        <div class="infoContainer">
+            <div class="title">游戏介绍</div>
+            <div class="game-description">
+                《大道一念》是一款融合东方玄幻与修真元素的动作冒险游戏。玩家将扮演一位初入修真界的修士，在浩瀚的修真世界中探索、战斗、成长，最终达到大道归一的境界。
+            </div>
+            
+            <div class="features">
+                <h3>游戏特色</h3>
+                <ul>
+                    <li>独特的修真系统 - 体验从炼气到化神的完整修真历程</li>
+                    <li>自由探索的开放世界 - 跨越九州大陆，探索神秘秘境</li>
+                    <li>丰富的功法技能 - 数百种功法任你搭配，创造独特战斗风格</li>
+                    <li>深度的剧情体验 - 多线剧情，你的选择将影响世界走向</li>
+                    <li>精美的像素画面 - 传统像素风格与现代渲染技术完美结合</li>
+                </ul>
+            </div>
+            
+            <div class="controls">
+                <h3>操作说明</h3>
+                <p>移动：WASD</p>
+                <p>攻击：自动攻击</p>
+                <p>手动升级：Q键（你确定要这样吗）</p>
+                <p>闪避：空格键（计划中）</p>
+                <p>打开菜单：ESC键</p>
+            </div>
+            
+            <div class="features">
+                <h3>系统要求</h3>
+                <ul>
+                    <li>操作系统：Windows 10 或更高版本</li>
+                    <li>处理器：Intel Core i5 或同等AMD处理器</li>
+                    <li>内存：8GB RAM（其实完全不需要这么多内存）</li>
+                    <li>显卡：NVIDIA GeForce GTX 960 或同等显卡（没有也可以玩其实）</li>
+                    <li>存储空间：需要10MB可用空间（美术资源太占空间了）</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
