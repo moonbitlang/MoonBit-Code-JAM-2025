@@ -14,6 +14,8 @@ Pokemoon 是一款基于 MoonBit 语言开发的类宝可梦战斗游戏。我�
 - **文化融合**：结合编程语言文化和宝可梦元素
 - **技术展示**：展示 MoonBit 语言在游戏开发中的能力
 
+B站视频链接：https://www.bilibili.com/video/BV19QpmzaE3f
+
 ## 操作说明
 
 开始游戏
