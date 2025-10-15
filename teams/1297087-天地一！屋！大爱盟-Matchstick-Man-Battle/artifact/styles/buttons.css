@@ -1,0 +1,24 @@
+/* 共享导航按钮样式 */
+.nav-btn {
+  display: inline-block;
+  background: linear-gradient(180deg, #4CAF50 0%, #3A9B3A 100%);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  transition: transform 0.06s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.nav-btn.secondary {
+  background: linear-gradient(180deg, #2196F3 0%, #1A78C2 100%);
+}
+
+.nav-btn:focus { outline: none; }
+.nav-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.nav-btn:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(0,0,0,0.18); opacity: 0.95; }
+
+/* small spacing helper */
+.nav-btn + .nav-btn { margin-left: 8px; }

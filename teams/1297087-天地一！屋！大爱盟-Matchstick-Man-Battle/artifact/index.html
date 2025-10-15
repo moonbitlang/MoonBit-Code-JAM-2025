@@ -20,12 +20,19 @@
             font-style: normal;
         }
     </style>
+    <link rel="stylesheet" href="./styles/buttons.css">
     <script src="./box2d.js"></script>
     <script src="./p5.js"></script>
     <script src="./Game.js"></script>
 </head>
 
 <body>
+    <!-- 导航按钮：打开地图设计器 与 打开 Map Loader -->
+    <div style="text-align:center; margin:12px 0;">
+        <a href="map_designer/map_designer.html"><button type="button" id="btn-open-designer" class="nav-btn">打开地图设计器</button></a>
+        <a href="map_loader/map_loader.html"><button type="button" id="btn-open-loader" class="nav-btn secondary">打开 Map Loader</button></a>
+    </div>
+
     <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
 </body>
 
