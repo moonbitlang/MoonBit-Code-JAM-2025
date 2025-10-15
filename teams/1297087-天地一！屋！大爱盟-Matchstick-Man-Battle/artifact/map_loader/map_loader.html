@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script type="text/javascript" src="./jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+    jQuery.noConflict();
+    Object.extend = jQuery.extend;
+    </script>
+    <!-- <script src="lib/jquery.svg.min.js"></script> -->
+
+    <script type="text/javascript">
+    const min = Math.min;
+    </script>
+    
+    
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    <link rel="stylesheet" href="../styles/buttons.css">
+    <script src="./box2d.js"></script>
+    <script src="./p5.js"></script>
+    <!-- <script src="bundle.js"></script> -->
+</head>
+
+
+
+<body>
+    <div class="container">
+        <h1>上传 JSON 文件并显示为字符串</h1>
+
+                <label for="jsonFileInput">选择一个 JSON 文件:</label>
+                <input type="file" id="jsonFileInput" accept=".json">
+
+                <!-- 导航按钮：返回主页面 与 打开地图设计器 -->
+                <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+                    <a href="../index.html"><button type="button" id="btn-back-home" class="nav-btn">返回主页面</button></a>
+                    <a href="../map_designer/map_designer.html"><button type="button" id="btn-open-designer" class="nav-btn secondary">打开地图设计器</button></a>
+                </div>
+
+        <h2>文件内容 (JSON 字符串):</h2>
+        <pre id="fileContentDisplay">请选择一个 JSON 文件...</pre>
+    </div>
+    
+    <script src="./test_render.js"></script>
+
+    <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
+</body>
+
+</html>
