@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贪吃蛇游戏 - MoonBit</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c0c0c, #1a1a2e, #16213e, #0f3460);
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+                       radial-gradient(circle at 80% 20%, rgba(255, 82, 82, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .game-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(255, 255, 255, 0.05),
+                        0 0 30px rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            animation: containerSlideIn 0.8s ease-out;
+        }
+        
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            animation: shimmer 3s infinite linear;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A, #CDDC39);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #4CAF50, transparent);
+            border-radius: 2px;
+        }
+        
+        #canvas {
+            border: 4px solid #4CAF50;
+            background: 
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0c0c0c 100%),
+                repeating-linear-gradient(45deg, rgba(76, 175, 80, 0.05) 0px, rgba(76, 175, 80, 0.05) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(-45deg, rgba(76, 175, 80, 0.03) 0px, rgba(76, 175, 80, 0.03) 2px, transparent 2px, transparent 20px);
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.7),
+                inset 0 0 20px rgba(76, 175, 80, 0.2),
+                0 0 0 1px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            width: 600px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #canvas::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 82, 82, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+            animation: canvasGlow 4s ease-in-out infinite alternate;
+        }
+        
+        #canvas:hover {
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.8),
+                inset 0 0 25px rgba(76, 175, 80, 0.3),
+                0 0 0 1px rgba(76, 175, 80, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        @keyframes canvasGlow {
+            0% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0.7;
+            }
+        }
+        
+        .score {
+            font-size: 32px;
+            margin: 25px 0;
+            font-weight: 600;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(135deg, 
+                rgba(76, 175, 80, 0.15), 
+                rgba(76, 175, 80, 0.05),
+                rgba(76, 175, 80, 0.1));
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .score::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .score:hover::before {
+            left: 100%;
+        }
+        
+        #score {
+            color: #4CAF50;
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 
+                0 0 10px rgba(76, 175, 80, 0.5),
+                0 0 20px rgba(76, 175, 80, 0.3);
+            animation: scorePulse 2s ease-in-out infinite;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A, #CDDC39);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .controls {
+            margin: 30px 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.6),
+                        0 0 0 1px rgba(255, 255, 255, 0.15);
+            background: linear-gradient(145deg, #45a049, #4CAF50);
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:active {
+            transform: translateY(0) scale(1);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .game-over {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            animation: fadeInOverlay 0.5s ease-out;
+        }
+        
+        .game-over-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(20, 20, 20, 0.98));
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7),
+                        0 0 0 1px rgba(255, 82, 82, 0.2),
+                        0 0 40px rgba(255, 82, 82, 0.3);
+            animation: gameOverSlideIn 0.6s ease-out 0.2s both;
+        }
+        
+        .game-over h2 {
+            color: #FF5252;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+            animation: gameOverText 1s ease-in-out infinite alternate;
+        }
+        
+        .game-over p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            font-size: 16px;
+            color: #aaa;
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .mobile-controls {
+            display: none;
+            margin-top: 35px;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .direction-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .direction-btn {
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .direction-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.3s ease;
+        }
+        
+        .direction-btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 3px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .direction-btn:active::before {
+            left: 100%;
+        }
+
+        .music-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        @keyframes containerSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        @keyframes titleGlow {
+            0% { text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 0 rgba(76, 175, 80, 0.5); }
+            100% { text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 0 20px rgba(76, 175, 80, 0.8); }
+        }
+        
+        @keyframes scorePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes gameOverSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes gameOverText {
+            0% { transform: scale(1); text-shadow: 0 0 15px rgba(255, 82, 82, 0.5); }
+            100% { transform: scale(1.05); text-shadow: 0 0 25px rgba(255, 82, 82, 0.8); }
+        }
+        
+        @keyframes snakeSegment {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+            }
+            25% { 
+                transform: scale(1.1) rotate(5deg);
+                box-shadow: 0 0 15px rgba(76, 175, 80, 1);
+            }
+            50% { 
+                transform: scale(1.05) rotate(-5deg);
+                box-shadow: 0 0 20px rgba(76, 175, 80, 0.9);
+            }
+            75% { 
+                transform: scale(1.1) rotate(3deg);
+                box-shadow: 0 0 15px rgba(76, 175, 80, 1);
+            }
+            100% { 
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+            }
+        }
+        
+        @keyframes snakeHead {
+            0% { 
+                transform: scale(1);
+                background: radial-gradient(circle, #4CAF50, #45a049);
+            }
+            50% { 
+                transform: scale(1.2);
+                background: radial-gradient(circle, #8BC34A, #4CAF50);
+            }
+            100% { 
+                transform: scale(1);
+                background: radial-gradient(circle, #4CAF50, #45a049);
+            }
+        }
+        
+        @keyframes foodPulse {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 15px rgba(255, 82, 82, 0.8);
+                background: radial-gradient(circle, #FF5252, #D32F2F);
+            }
+            25% { 
+                transform: scale(1.3) rotate(90deg);
+                box-shadow: 0 0 25px rgba(255, 82, 82, 1);
+                background: radial-gradient(circle, #FF8A80, #FF5252);
+            }
+            50% { 
+                transform: scale(1.2) rotate(180deg);
+                box-shadow: 0 0 30px rgba(255, 82, 82, 0.9);
+                background: radial-gradient(circle, #FF5252, #D32F2F);
+            }
+            75% { 
+                transform: scale(1.3) rotate(270deg);
+                box-shadow: 0 0 25px rgba(255, 82, 82, 1);
+                background: radial-gradient(circle, #FF8A80, #FF5252);
+            }
+            100% { 
+                transform: scale(1) rotate(360deg);
+                box-shadow: 0 0 15px rgba(255, 82, 82, 0.8);
+                background: radial-gradient(circle, #FF5252, #D32F2F);
+            }
+        }
+        
+        @keyframes foodGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 5px rgba(255, 82, 82, 0.7));
+            }
+            50% { 
+                filter: drop-shadow(0 0 15px rgba(255, 82, 82, 1)) 
+                        drop-shadow(0 0 25px rgba(255, 235, 59, 0.5));
+            }
+        }
+        
+        /* 蛇身样式增强 */
+        .snake-segment {
+            animation: snakeSegment 2s ease-in-out infinite;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .snake-head {
+            animation: snakeHead 1.5s ease-in-out infinite;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 食物样式增强 */
+        .food-item {
+            animation: foodPulse 3s ease-in-out infinite, 
+                       foodGlow 2s ease-in-out infinite;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 25px;
+                margin: 15px;
+                border-radius: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .score {
+                font-size: 26px;
+                padding: 12px 25px;
+            }
+            
+            #score {
+                font-size: 30px;
+            }
+            
+            #canvas {
+                width: 320px;
+                height: 320px;
+            }
+            
+            button {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+            
+            .mobile-controls {
+                display: flex;
+            }
+            
+            .instructions {
+                display: none;
+            }
+            
+            .direction-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 24px;
+            }
+            
+            .game-over-content {
+                padding: 30px;
+                margin: 20px;
+            }
+            
+            .game-over h2 {
+                font-size: 2.2rem;
+            }
+            
+            .game-over p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            #canvas {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .score {
+                font-size: 22px;
+            }
+            
+            #score {
+                font-size: 26px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .direction-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+<h1>贪吃蛇游戏</h1>
+<div class="score">分数: <span id="score">0</span></div>
+        <canvas id="canvas" width="800" height="800"></canvas>
+        <div class="controls">
+<button id="start-btn">开始游戏</button>
+<button id="pause-btn">暂停</button>
+        </div>
+<div class="instructions">
+    使用wasd控制蛇。点击按钮可开启音乐。
+</div>
+        
+        <div class="mobile-controls">
+            <div class="direction-row">
+                <button class="direction-btn" id="up-btn">↑</button>
+            </div>
+            <div class="direction-row">
+                <button class="direction-btn" id="left-btn">←</button>
+                <button class="direction-btn" id="right-btn">→</button>
+            </div>
+            <div class="direction-row">
+                <button class="direction-btn" id="down-btn">↓</button>
+            </div>
+        </div>
+        
+        <!-- 音乐控制 -->
+        <div class="music-controls">
+            <button id="music-toggle">🔇 音乐关</button>
+        </div>
+    </div>
+    
+    <div id="game-over" class="game-over">
+        <div class="game-over-content">
+<h2>游戏结束!</h2>
+<p>你的分数: <span id="final-score">0</span></p>
+<button id="restart-btn">再玩一次</button>
+        </div>
+    </div>
+    
+    <!-- 背景音乐 -->
+    <audio id="bg-music" loop>
+        <source src="music/retro-arcade-game-music-396890.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+
+    <!-- MoonBit 编译后的游戏逻辑 -->
+    <script src="target/js/release/build/snake-game.js"></script>
+
+    <script>
+        // 游戏配置
+        const GRID_SIZE = 20;
+        const GAME_SPEED = 150;
+        
+        // 游戏状态
+        let gameRunning = false;
+        let gameLoop;
+        let canvas, ctx;
+        let musicEnabled = false;
+        let bgMusic;
+        
+        // 初始化游戏
+        function initGame() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            bgMusic = document.getElementById('bg-music');
+            
+            // 设置事件监听器
+            document.getElementById('start-btn').addEventListener('click', startGame);
+            document.getElementById('pause-btn').addEventListener('click', togglePause);
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
+            document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+            
+            // 键盘控制
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // 移动设备控制 
+            document.getElementById('up-btn').addEventListener('touchstart', () => handleDirectionBtn(0));
+            document.getElementById('down-btn').addEventListener('touchstart', () => handleDirectionBtn(1));
+            document.getElementById('left-btn').addEventListener('touchstart', () => handleDirectionBtn(2));
+            document.getElementById('right-btn').addEventListener('touchstart', () => handleDirectionBtn(3));
+            
+            // 同时为桌面测试添加点击事件
+            document.getElementById('up-btn').addEventListener('click', () => handleDirectionBtn(0));
+            document.getElementById('down-btn').addEventListener('click', () => handleDirectionBtn(1));
+            document.getElementById('left-btn').addEventListener('click', () => handleDirectionBtn(2));
+            document.getElementById('right-btn').addEventListener('click', () => handleDirectionBtn(3));
+            
+            // 初始化游戏状态
+            updateScore();
+            
+            // 开始定期更新分数显示
+            setInterval(updateScore, 100);
+        }
+        
+        function resetGame() {
+            // MoonBit 引擎会处理游戏重置
+            updateScore();
+        }
+        
+        function startGame() {
+            // 直接调用MoonBit游戏状态的方法来开始游戏
+            if (username$snake$45$game$$game_state) {
+                // 如果游戏已经结束，先重启游戏
+                if (username$snake$45$game$$game_state.game_over) {
+                    restartGame();
+                    return;
+                }
+                
+                // 调用MoonBit的start_game函数
+                if (typeof username$snake$45$game$$start_game === 'function') {
+                    username$snake$45$game$$start_game();
+                }
+            }
+            
+            // 更新按钮状态
+            document.getElementById('start-btn').textContent = '重新开始';
+            document.getElementById('pause-btn').textContent = '暂停';
+            
+            // 游戏开始时，如果音乐已启用，播放音乐
+            if (musicEnabled && bgMusic.paused) {
+                bgMusic.play().catch(error => {
+                    console.log('音乐播放失败:', error);
+                });
+            }
+            
+            gameRunning = true;
+        }
+        
+        function togglePause() {
+            // 检查游戏状态是否可用
+            if (!username$snake$45$game$$game_state) {
+                console.log('游戏状态未初始化');
+                return;
+            }
+            
+            // 如果游戏未开始或已结束，不允许暂停
+            if (!username$snake$45$game$$game_state.game_started || 
+                username$snake$45$game$$game_state.game_over) {
+                console.log('游戏未开始或已结束，无法暂停');
+                return;
+            }
+            
+            // 直接在JavaScript中切换暂停状态
+            username$snake$45$game$$game_state.game_paused = !username$snake$45$game$$game_state.game_paused;
+            
+            // 立即更新按钮状态
+            const pauseBtn = document.getElementById('pause-btn');
+            if (username$snake$45$game$$game_state.game_paused) {
+                pauseBtn.textContent = '继续';
+                if (musicEnabled && !bgMusic.paused) {
+                    bgMusic.pause();
+                }
+            } else {
+                pauseBtn.textContent = '暂停';
+                if (musicEnabled && bgMusic.paused) {
+                    bgMusic.play().catch(error => {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            }
+        }
+        
+        function restartGame() {
+            document.getElementById('game-over').style.display = 'none';
+            
+            // 直接调用MoonBit的restart_game函数
+            if (typeof username$snake$45$game$$restart_game === 'function') {
+                username$snake$45$game$$restart_game();
+            }
+            
+            // 确保游戏结束显示状态被重置
+            if (username$snake$45$game$$game_state) {
+                username$snake$45$game$$game_state.game_over_displayed = false;
+            }
+            
+            gameRunning = true;
+            
+            // 更新按钮状态
+            document.getElementById('start-btn').textContent = '重新开始';
+            document.getElementById('pause-btn').textContent = '暂停';
+            
+            if (musicEnabled && bgMusic.paused) {
+                bgMusic.play().catch(error => {
+                    console.log('音乐播放失败:', error);
+                });
+            }
+        }
+        
+        // 渲染由 MoonBit 的 Selene 引擎处理
+        
+        function handleKeyPress(e) {
+            // 处理重启快捷键
+            if (e.key.toLowerCase() === 'r' && username$snake$45$game$$game_state && username$snake$45$game$$game_state.game_over) {
+                restartGame();
+                return;
+            }
+            
+            // 处理E键重启（根据用户反馈）
+            if (e.key.toLowerCase() === 'e' && username$snake$45$game$$game_state && username$snake$45$game$$game_state.game_over) {
+                restartGame();
+                return;
+            }
+            
+            // 其他按键由 MoonBit 的 Selene 引擎处理
+        }
+        
+        function handleDirectionBtn(dir) {
+            // 移动设备按钮控制可以通过模拟键盘事件实现
+            const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+            if (dir >= 0 && dir < keys.length) {
+                const event = new KeyboardEvent('keydown', { key: keys[dir] });
+                document.dispatchEvent(event);
+            }
+        }
+        
+        function updateScore() {
+            if (username$snake$45$game$$game_state && typeof username$snake$45$game$$game_state.score !== 'undefined') {
+                const score = username$snake$45$game$$game_state.score;
+                document.getElementById('score').textContent = score;
+            }
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            if (username$snake$45$game$$game_state && typeof username$snake$45$game$$game_state.score !== 'undefined') {
+                const score = username$snake$45$game$$game_state.score;
+                document.getElementById('final-score').textContent = score;
+            }
+            document.getElementById('game-over').style.display = 'block';
+            
+            // 游戏结束时暂停音乐
+            if (musicEnabled && !bgMusic.paused) {
+                bgMusic.pause();
+            }
+        }
+        
+        // 监听游戏状态变化（用于显示游戏结束界面）
+        function checkGameOver() {
+            if (username$snake$45$game$$game_state) {
+                if (username$snake$45$game$$game_state.game_over && 
+                    !username$snake$45$game$$game_state.game_over_displayed) {
+                    gameOver();
+                    username$snake$45$game$$game_state.game_over_displayed = true;
+                }
+                
+                // 如果游戏没有结束，确保游戏结束界面隐藏
+                if (!username$snake$45$game$$game_state.game_over) {
+                    document.getElementById('game-over').style.display = 'none';
+                    // 确保重置游戏结束显示状态
+                    if (username$snake$45$game$$game_state.game_over_displayed) {
+                        username$snake$45$game$$game_state.game_over_displayed = false;
+                    }
+                }
+            }
+        }
+        
+        // 检查游戏状态并更新UI
+        function updateGameUI() {
+            if (username$snake$45$game$$game_state) {
+                const gameState = username$snake$45$game$$game_state;
+                const pauseBtn = document.getElementById('pause-btn');
+                const startBtn = document.getElementById('start-btn');
+                
+                // 更新开始按钮文本
+                if (!gameState.game_started) {
+                    startBtn.textContent = '开始游戏';
+                } else {
+                    startBtn.textContent = '重新开始';
+                }
+                
+                // 更新暂停按钮文本和状态
+                if (!gameState.game_started || gameState.game_over) {
+                    pauseBtn.disabled = true;
+                    pauseBtn.textContent = '暂停';
+                } else {
+                    pauseBtn.disabled = false;
+                    if (gameState.game_paused) {
+                        pauseBtn.textContent = '继续';
+                    } else {
+                        pauseBtn.textContent = '暂停';
+                    }
+                }
+            }
+        }
+        
+        // 定期检查游戏状态
+        setInterval(checkGameOver, 100);
+        setInterval(updateGameUI, 100);
+        
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const musicBtn = document.getElementById('music-toggle');
+            
+            if (musicEnabled) {
+                // 启用音乐
+                musicBtn.innerHTML = '🔊 音乐开';
+                musicBtn.style.background = 'linear-gradient(145deg, #2196F3, #1976D2)';
+                musicBtn.style.boxShadow = '0 6px 20px rgba(33, 150, 243, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)';
+                
+                // 如果游戏正在运行，播放音乐
+                if (gameRunning && bgMusic.paused) {
+                    bgMusic.play().catch(error => {
+                        console.log('音乐播放失败:', error);
+                    });
+                }
+            } else {
+                // 禁用音乐
+                musicBtn.innerHTML = '🔇 音乐关';
+                musicBtn.style.background = 'linear-gradient(145deg, #4CAF50, #45a049)';
+                musicBtn.style.boxShadow = '0 6px 20px rgba(76, 175, 80, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)';
+                
+                // 暂停音乐
+                if (!bgMusic.paused) {
+                    bgMusic.pause();
+                }
+            }
+        }
+        
+        // 页面加载时初始化游戏
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>
