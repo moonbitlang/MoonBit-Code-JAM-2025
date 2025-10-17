@@ -2,6 +2,8 @@ const ASSET_PATHS = [
   "assets/gfx/background_tile.png",
   "assets/gfx/explosion150xA.png",
 
+  "assets/gfx/pickups/ChargeShield.png",
+
   "assets/gui/guide/squad_guide_01.png",
   "assets/gui/guide/squad_guide_02.png",
   "assets/gui/guide/squad_guide_03.png",
@@ -108,19 +110,24 @@ async function main() {
 }
 
 function startGame() {
-    console.log("[Preloader] All assets loaded. Starting game systems...");
-    const loadingScreen = document.getElementById('loading-screen');
-    const canvasContainer = document.getElementById('canvas-container');
-    
-    loadingScreen.style.display = 'none';
-    canvasContainer.style.display = 'block';
+  console.log("[Preloader] All assets loaded. Starting game systems...");
+  const loadingScreen = document.getElementById('loading-screen');
+  const canvasContainer = document.getElementById('canvas-container');
+  
+  if (loadingScreen) loadingScreen.style.display = 'none';
+  if (canvasContainer) canvasContainer.style.display = 'block';
 
+  const script = document.createElement('script');
+  script.src = "./js/CyberScavenger.js";
+  script.defer = true;
+
+  script.onload = function() {
+    console.log("[Preloader] CyberScavenger.js loaded. Starting post-processing loop.");
     startPostProcessingLoop();
-
-    const script = document.createElement('script');
-    script.src = "js/CyberScavenger.js";
-    script.defer = true;
-    document.body.appendChild(script);
+  };
+  
+  // 4. 将脚本添加到页面，开始加载
+  document.body.appendChild(script);
 }
 
 window.addEventListener('load', main);

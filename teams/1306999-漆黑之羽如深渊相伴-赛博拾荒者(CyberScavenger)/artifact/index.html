@@ -2,62 +2,65 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>CyberScavenger with Shaders</title>
-    <style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>CyberScavenger</title>
+   <style>
         @font-face {
             font-family: 'mplus_hzk'; 
             src: url('assets/fonts/mplus_hzk.ttf'); 
         }
-        body { 
-            margin: 0; 
-            background-color: #1a1a1a; 
-            display: flex;
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            color: white;
-            font-family: sans-serif;
+        html, body {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: #000;
         }
-        #loading-screen { text-align: center; }
-        #progress-container {
-            width: 400px; height: 30px; border: 2px solid #555;
-            background-color: #333; border-radius: 15px;
-            margin-top: 20px; position: relative; overflow: hidden;
+        #canvas-container {
+            position: absolute; /* 使用绝对定位，由JS来控制位置 */
+            width: 1280px;
+            height: 720px;
+            transform-origin: top left; /* 将缩放基点设为左上角 */
         }
-        #progress-bar {
-            width: 0%; height: 100%; background-color: #4a90e2;
-            transition: width 0.1s ease-in-out; border-radius: 15px;
+        canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
         }
-        #progress-text {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); font-size: 16px;
-            font-weight: bold; text-shadow: 1px 1px 2px #000;
-        }
-        #canvas-container { 
-            position: relative; 
-            display: none; /* 游戏界面默认隐藏 */
-        }
-        canvas { 
-            position: absolute; top: 0; left: 0; 
-        }
-        #game-canvas { visibility: hidden; }
+        #game-canvas { visibility: hidden; z-index: 0; }
         #fx-canvas { z-index: 1; }
-        #ui-canvas { z-index: 2; }
+        #ui-canvas { z-index: 2; touch-action: none; }
+
+        
+        #loading-screen, #rotate-prompt { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #000; color: white; text-align: center; z-index: 9999; }
+        #rotate-prompt { display: none; }
+        #progress-container { width: 400px; height: 30px; border: 2px solid #555; background-color: #333; border-radius: 15px; margin-top: 20px; position: relative; overflow: hidden; }
+        #progress-bar { width: 0%; height: 100%; background-color: #4a90e2; transition: width 0.1s ease-in-out; border-radius: 15px; }
+        #progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 16px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+        
+        @media (orientation: portrait) {
+            #rotate-prompt { display: flex; }
+            body > div:not(#rotate-prompt) { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div id="loading-screen">
-        <h2>Loading...</h2>
-        <div id="progress-container">
-            <div id="progress-bar"></div>
-            <div id="progress-text">0%</div>
-        </div>
+    <div id="rotate-prompt">
+        <p>为了获得最佳体验，请将您的设备旋转至横屏模式。</p>
     </div>
 
-    <div id="canvas-container" style="width: 1280px; height: 720px;">
-        <canvas id="game-canvas" width="1280" height="720"></canvas>
-        <canvas id="fx-canvas" width="1280" height="720"></canvas>
-        <canvas id="ui-canvas" width="1280" height="720"></canvas>
+    <div id="wrapper">
+        <div id="loading-screen">
+            <h2>Loading...</h2>
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+                <div id="progress-text">0%</div>
+            </div>
+        </div>
+
+        <div id="canvas-container" style="display: none;">
+            <canvas id="game-canvas" width="1280" height="720"></canvas>
+            <canvas id="fx-canvas" width="1280" height="720"></canvas>
+            <canvas id="ui-canvas" width="1280" height="720"></canvas>
+        </div>
     </div>
     
     <script src="js/preloader.js"></script> 
@@ -84,7 +87,6 @@
             gl_FragColor = color;
         }
     </script>
-
     <script>
         let gl; let shaderProgram; let positionBuffer; let textureCoordBuffer;
         let gameTexture; let pixelSizeUniformLocation; let pixelSize = 5.0;
@@ -145,7 +147,6 @@
                 console.error('Shader error: ' + gl.getShaderInfoLog(shader)); gl.deleteShader(shader); return null;
             } return shader;
         }
-
         function startPostProcessingLoop() {
             const gameCanvas = document.getElementById('game-canvas');
 
@@ -164,6 +165,40 @@
         }
 
         document.getElementById('ui-canvas').addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+    <script>
+        (function() {
+            const gameContainer = document.getElementById('canvas-container');
+            const GAME_WIDTH = 1280;
+            const GAME_HEIGHT = 720;
+
+            // 创建一个全局对象，存储所有适配所需的数据
+            window.gameViewport = { scale: 1.0, left: 0, top: 0 };
+
+            function resizeGame() {
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                const scale = Math.min(screenWidth / GAME_WIDTH, screenHeight / GAME_HEIGHT);
+                
+                const newWidth = GAME_WIDTH * scale;
+                const newHeight = GAME_HEIGHT * scale;
+                
+                const newLeft = (screenWidth - newWidth) / 2;
+                const newTop = (screenHeight - newHeight) / 2;
+
+                // 应用 CSS Transform，实现视觉上的缩放和居中
+                gameContainer.style.transform = `translate(${newLeft}px, ${newTop}px) scale(${scale})`;
+                
+                // 【核心】将所有需要的数据都存储到全局对象中
+                window.gameViewport.scale = scale;
+                window.gameViewport.left = newLeft;
+                window.gameViewport.top = newTop;
+            }
+
+            window.addEventListener('resize', resizeGame);
+            window.addEventListener('load', resizeGame);
+        })();
     </script>
 </body>
 </html>
