@@ -157,7 +157,7 @@ const Milky2018$selene$position$$positions = moonbitlang$core$builtin$$Map$new$4
 const Milky2018$selene$system$$all_entities = moonbitlang$core$set$$Set$new$46$inner$3$(8);
 const Milky2018$selene$camera$$uis = moonbitlang$core$builtin$$Map$new$46$inner$4$(8);
 const Milky2018$selene$sprite$$sprites = moonbitlang$core$builtin$$Map$new$46$inner$5$(8);
-const lfegg$chtholly$$game_state = { player: Milky2018$selene$system$$Entity$new(), shoot_cooldown: 0, hp: 3, hp_ui: Milky2018$selene$system$$Entity$new(), invincible_ticks: 0, enemy: Milky2018$selene$system$$Entity$new(), enemy_shoot_cd: 0, phase: 0, start_ui: Milky2018$selene$system$$Entity$new(), gameover_ui: Milky2018$selene$system$$Entity$new(), start_tip_ui: Milky2018$selene$system$$Entity$new(), gameover_tip_ui: Milky2018$selene$system$$Entity$new() };
+const lfegg$chtholly$$game_state = { player: Milky2018$selene$system$$Entity$new(), shoot_cooldown: 0, hp: 3, hp_ui: Milky2018$selene$system$$Entity$new(), invincible_ticks: 0, enemy: Milky2018$selene$system$$Entity$new(), enemy_shoot_cd: 0, phase: 0, start_ui: Milky2018$selene$system$$Entity$new(), gameover_ui: Milky2018$selene$system$$Entity$new(), start_tip_ui: Milky2018$selene$system$$Entity$new(), gameover_tip_ui: Milky2018$selene$system$$Entity$new(), victory_ui: Milky2018$selene$system$$Entity$new(), victory_tip_ui: Milky2018$selene$system$$Entity$new(), level_ui0: Milky2018$selene$system$$Entity$new(), level_ui1: Milky2018$selene$system$$Entity$new(), level_ui2: Milky2018$selene$system$$Entity$new(), level_index: 1, input_cd: 0, block_enter_until_release: false, go_ui0: Milky2018$selene$system$$Entity$new(), go_ui1: Milky2018$selene$system$$Entity$new(), gameover_index: 0, hard_pattern_toggle: false, current_enemy_hp: 100, current_enemy_speed: 1.5, current_enemy_bullet_speed: 2.5, current_enemy_shoot_cd: 30 };
 const Milky2018$selene$system$$deferred_events = moonbitlang$core$array$$Array$new$46$inner$6$(0);
 const lfegg$chtholly$$bullet_owners = moonbitlang$core$builtin$$Map$new$46$inner$7$(8);
 const Milky2018$selene$sprite$$animation_id_generator = moonbitlang$core$ref$$Ref$new$8$(0);
@@ -210,6 +210,24 @@ function moonbitlang$core$builtin$$Logger$write_char$19$(self, ch) {
 }
 function moonbitlang$core$builtin$$op_notequal$3$(x, y) {
   return !(x === y);
+}
+function moonbitlang$core$array$$Array$at$20$(self, index) {
+  const len = self.length;
+  if (index >= 0 && index < len) {
+    $bound_check(self, index);
+    return self[index];
+  } else {
+    return $panic();
+  }
+}
+function moonbitlang$core$array$$Array$at$3$(self, index) {
+  const len = self.length;
+  if (index >= 0 && index < len) {
+    $bound_check(self, index);
+    return self[index];
+  } else {
+    return $panic();
+  }
 }
 function moonbitlang$core$builtin$$Logger$write_string$19$(self, str) {
   const _bind$8 = self;
@@ -2754,7 +2772,7 @@ function moonbitlang$core$array$$ArrayView$rev_inplace$17$(self) {
     }
   }
 }
-function moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1009(_env, a, b) {
+function moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1017(_env, a, b) {
   const swaps = _env._2;
   const arr = _env._1;
   const cmp = _env._0;
@@ -2766,10 +2784,10 @@ function moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1009(_env, a, b) {
     return;
   }
 }
-function moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1010(_env, a, b, c) {
-  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1009(_env, a, b);
-  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1009(_env, b, c);
-  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1009(_env, a, b);
+function moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1018(_env, a, b, c) {
+  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1017(_env, a, b);
+  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1017(_env, b, c);
+  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1017(_env, a, b);
 }
 function moonbitlang$core$array$$choose_pivot_by$15$(arr, cmp) {
   const len = arr.len;
@@ -2780,11 +2798,11 @@ function moonbitlang$core$array$$choose_pivot_by$15$(arr, cmp) {
     const c = Math.imul(len / 4 | 0, 3) | 0;
     const _env = { _0: cmp, _1: arr, _2: swaps };
     if (len > 50) {
-      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1010(_env, a - 1 | 0, a, a + 1 | 0);
-      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1010(_env, b - 1 | 0, b, b + 1 | 0);
-      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1010(_env, c - 1 | 0, c, c + 1 | 0);
+      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1018(_env, a - 1 | 0, a, a + 1 | 0);
+      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1018(_env, b - 1 | 0, b, b + 1 | 0);
+      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1018(_env, c - 1 | 0, c, c + 1 | 0);
     }
-    moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1010(_env, a, b, c);
+    moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1018(_env, a, b, c);
   }
   if (swaps.val === 12) {
     moonbitlang$core$array$$ArrayView$rev_inplace$15$(arr);
@@ -2793,7 +2811,7 @@ function moonbitlang$core$array$$choose_pivot_by$15$(arr, cmp) {
     return { _0: b, _1: swaps.val === 0 };
   }
 }
-function moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1029(_env, a, b) {
+function moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1037(_env, a, b) {
   const swaps = _env._2;
   const arr = _env._1;
   const cmp = _env._0;
@@ -2805,10 +2823,10 @@ function moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1029(_env, a, b) {
     return;
   }
 }
-function moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1030(_env, a, b, c) {
-  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1029(_env, a, b);
-  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1029(_env, b, c);
-  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1029(_env, a, b);
+function moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1038(_env, a, b, c) {
+  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1037(_env, a, b);
+  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1037(_env, b, c);
+  moonbitlang$core$array$$choose_pivot_by$46$sort_2$47$1037(_env, a, b);
 }
 function moonbitlang$core$array$$choose_pivot_by$17$(arr, cmp) {
   const len = arr.len;
@@ -2819,11 +2837,11 @@ function moonbitlang$core$array$$choose_pivot_by$17$(arr, cmp) {
     const c = Math.imul(len / 4 | 0, 3) | 0;
     const _env = { _0: cmp, _1: arr, _2: swaps };
     if (len > 50) {
-      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1030(_env, a - 1 | 0, a, a + 1 | 0);
-      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1030(_env, b - 1 | 0, b, b + 1 | 0);
-      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1030(_env, c - 1 | 0, c, c + 1 | 0);
+      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1038(_env, a - 1 | 0, a, a + 1 | 0);
+      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1038(_env, b - 1 | 0, b, b + 1 | 0);
+      moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1038(_env, c - 1 | 0, c, c + 1 | 0);
     }
-    moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1030(_env, a, b, c);
+    moonbitlang$core$array$$choose_pivot_by$46$sort_3$47$1038(_env, a, b, c);
   }
   if (swaps.val === 12) {
     moonbitlang$core$array$$ArrayView$rev_inplace$17$(arr);
@@ -5959,7 +5977,14 @@ function lfegg$chtholly$$spawn_bullet(pos, vel, owner) {
   const e = Milky2018$selene$system$$Entity$new();
   moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, e, pos);
   moonbitlang$core$builtin$$Map$set$9$(Milky2018$selene$velocity$$velocities, e, vel);
-  const anim = Milky2018$selene$sprite$$Animation$new("pixel_adventure/Other/Confetti (16x16).png", 1, 16, 16, undefined, false, Option$None$0$, undefined, undefined);
+  owner === 1;
+  const img = "pixel_adventure/Other/Confetti (16x16).png";
+  owner === 1;
+  const bw = 16;
+  owner === 1;
+  const bh = 16;
+  const offx = owner === 1 ? 0 : 16;
+  const anim = Milky2018$selene$sprite$$Animation$new(img, 1, bh, bw, undefined, false, Option$None$0$, Milky2018$selene$math$$Vec2D$new(offx, 0), undefined);
   const spr = Milky2018$selene$sprite$$Sprite$new_animation(anim, 5);
   moonbitlang$core$builtin$$Map$set$7$(lfegg$chtholly$$bullet_owners, e, owner);
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, e, spr);
@@ -5981,15 +6006,16 @@ function lfegg$chtholly$$enemy_ai_system(_discard_) {
   }
   const pos = moonbitlang$core$builtin$$Map$at$2$(Milky2018$selene$position$$positions, enemy);
   const vel = moonbitlang$core$builtin$$Map$at$9$(Milky2018$selene$velocity$$velocities, enemy);
+  const speed = lfegg$chtholly$$game_state.current_enemy_speed;
   let vx = vel.x;
   if (pos.x <= 0) {
-    vx = 1.5;
+    vx = speed;
   } else {
     if (pos.x >= 528) {
-      vx = -1.5;
+      vx = -speed;
     } else {
       if (vx === 0) {
-        vx = 1.5;
+        vx = speed;
       }
     }
   }
@@ -6001,10 +6027,33 @@ function lfegg$chtholly$$enemy_ai_system(_discard_) {
     lfegg$chtholly$$game_state.enemy_shoot_cd = lfegg$chtholly$$game_state.enemy_shoot_cd - 1 | 0;
     return;
   } else {
-    const muzzle = Milky2018$selene$math$$Vec2D$new(pos.x + 8, pos.y + 32 - 8);
-    lfegg$chtholly$$spawn_bullet(muzzle, Milky2018$selene$math$$Vec2D$new(0, 2.5), 2);
-    lfegg$chtholly$$game_state.enemy_shoot_cd = 30;
-    return;
+    if (lfegg$chtholly$$game_state.level_index === 2) {
+      const cx = pos.x + 8;
+      const cy = pos.y + 8;
+      const s = lfegg$chtholly$$game_state.current_enemy_bullet_speed;
+      const dirs = [Milky2018$selene$math$$Vec2D$new(0, 1), Milky2018$selene$math$$Vec2D$new(0, -1), Milky2018$selene$math$$Vec2D$new(1, 0), Milky2018$selene$math$$Vec2D$new(-1, 0), Milky2018$selene$math$$Vec2D$new(0.70710678, 0.70710678), Milky2018$selene$math$$Vec2D$new(0.70710678, -0.70710678), Milky2018$selene$math$$Vec2D$new(-0.70710678, 0.70710678), Milky2018$selene$math$$Vec2D$new(-0.70710678, -0.70710678)];
+      const _len = dirs.length;
+      let _tmp = 0;
+      while (true) {
+        const _i = _tmp;
+        if (_i < _len) {
+          const d = dirs[_i];
+          lfegg$chtholly$$spawn_bullet(Milky2018$selene$math$$Vec2D$new(cx, cy), Milky2018$selene$math$$Vec2D$new(d.x * s, d.y * s), 2);
+          _tmp = _i + 1 | 0;
+          continue;
+        } else {
+          break;
+        }
+      }
+      lfegg$chtholly$$game_state.enemy_shoot_cd = lfegg$chtholly$$game_state.current_enemy_shoot_cd;
+      lfegg$chtholly$$game_state.hard_pattern_toggle = !lfegg$chtholly$$game_state.hard_pattern_toggle;
+      return;
+    } else {
+      const muzzle = Milky2018$selene$math$$Vec2D$new(pos.x + 8, pos.y + 32 - 8);
+      lfegg$chtholly$$spawn_bullet(muzzle, Milky2018$selene$math$$Vec2D$new(0, lfegg$chtholly$$game_state.current_enemy_bullet_speed), 2);
+      lfegg$chtholly$$game_state.enemy_shoot_cd = lfegg$chtholly$$game_state.current_enemy_shoot_cd;
+      return;
+    }
   }
 }
 function lfegg$chtholly$$update_hp_ui(ui) {
@@ -6012,6 +6061,97 @@ function lfegg$chtholly$$update_hp_ui(ui) {
   const text = Milky2018$selene$sprite$$Text$new$46$inner(`Player HP: ${moonbitlang$core$int$$Int$to_string$46$inner(lfegg$chtholly$$game_state.hp, 10)} | Enemy HP: ${moonbitlang$core$int$$Int$to_string$46$inner(enemy_hp, 10)}`, "red", "30px ThaleahFat");
   const spr = Milky2018$selene$sprite$$Sprite$new_text(text, 10000);
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, ui, spr);
+}
+function lfegg$chtholly$$destroy_all_bullets() {
+  const to_destroy = [];
+  const _bind$8 = moonbitlang$core$builtin$$Map$iter2$7$(lfegg$chtholly$$bullet_owners);
+  _bind$8((b, __) => {
+    moonbitlang$core$array$$Array$push$3$(to_destroy, b);
+    return 1;
+  });
+  const _len = to_destroy.length;
+  let _tmp = 0;
+  while (true) {
+    const _i = _tmp;
+    if (_i < _len) {
+      const b = to_destroy[_i];
+      Milky2018$selene$system$$Entity$destroy(b);
+      moonbitlang$core$builtin$$Map$remove$7$(lfegg$chtholly$$bullet_owners, b);
+      moonbitlang$core$builtin$$Map$remove$10$(lfegg$chtholly$$hit_bullets, b);
+      _tmp = _i + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
+}
+function lfegg$chtholly$$hide_victory_ui() {
+  const _bind$8 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.victory_ui);
+  if (_bind$8 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.victory_ui);
+  }
+  const _bind$9 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.victory_tip_ui);
+  if (_bind$9 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.victory_tip_ui);
+  }
+  lfegg$chtholly$$game_state.victory_ui = Milky2018$selene$system$$Entity$new();
+  lfegg$chtholly$$game_state.victory_tip_ui = Milky2018$selene$system$$Entity$new();
+}
+function lfegg$chtholly$$show_victory_ui() {
+  lfegg$chtholly$$hide_victory_ui();
+  const ui = Milky2018$selene$system$$Entity$new();
+  moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, ui, Milky2018$selene$camera$$Ui$new());
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, ui, Milky2018$selene$math$$Vec2D$new(40, 176));
+  const text = Milky2018$selene$sprite$$Text$new$46$inner("You Win", "green", "48px ThaleahFat");
+  moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, ui, Milky2018$selene$sprite$$Sprite$new_text(text, 10000));
+  const tip_e = Milky2018$selene$system$$Entity$new();
+  moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, tip_e, Milky2018$selene$camera$$Ui$new());
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, tip_e, Milky2018$selene$math$$Vec2D$new(40, 226));
+  const tip = Milky2018$selene$sprite$$Text$new$46$inner("Press Enter to Level Select", "blue", "24px ThaleahFat");
+  moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, tip_e, Milky2018$selene$sprite$$Sprite$new_text(tip, 9999));
+  lfegg$chtholly$$game_state.victory_ui = ui;
+  lfegg$chtholly$$game_state.victory_tip_ui = tip_e;
+}
+function lfegg$chtholly$$win_game() {
+  if (lfegg$chtholly$$game_state.phase !== 3) {
+    lfegg$chtholly$$game_state.phase = 3;
+    lfegg$chtholly$$destroy_all_bullets();
+    const _bind$8 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.player);
+    if (_bind$8 === undefined) {
+    } else {
+      Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.player);
+    }
+    const _bind$9 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.enemy);
+    if (_bind$9 === undefined) {
+    } else {
+      Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.enemy);
+    }
+    const rm = [];
+    const _bind$10 = moonbitlang$core$builtin$$Map$iter2$7$(lfegg$chtholly$$enemy_hps);
+    _bind$10((e, __) => {
+      moonbitlang$core$array$$Array$push$3$(rm, e);
+      return 1;
+    });
+    const _len = rm.length;
+    let _tmp = 0;
+    while (true) {
+      const _i = _tmp;
+      if (_i < _len) {
+        const e = rm[_i];
+        moonbitlang$core$builtin$$Map$remove$7$(lfegg$chtholly$$enemy_hps, e);
+        _tmp = _i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    lfegg$chtholly$$show_victory_ui();
+    return;
+  } else {
+    return;
+  }
 }
 function lfegg$chtholly$$enemy_hit_system(_discard_) {
   if (lfegg$chtholly$$game_state.phase !== 1) {
@@ -6075,6 +6215,7 @@ function lfegg$chtholly$$enemy_hit_system(_discard_) {
         lfegg$chtholly$$update_hp_ui(lfegg$chtholly$$game_state.hp_ui);
         if (next === 0) {
           Milky2018$selene$system$$Entity$destroy(enemy);
+          lfegg$chtholly$$win_game();
         }
         _foreach_result$2.val = new $64$moonbitlang$47$core$47$builtin$46$ForeachResult$Break$5$(undefined);
         return 0;
@@ -6142,50 +6283,89 @@ function lfegg$chtholly$$hide_start_ui() {
   } else {
     Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.start_tip_ui);
   }
+  const _bind$10 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.level_ui0);
+  if (_bind$10 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.level_ui0);
+  }
+  const _bind$11 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.level_ui1);
+  if (_bind$11 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.level_ui1);
+  }
+  const _bind$12 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.level_ui2);
+  if (_bind$12 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.level_ui2);
+  }
   lfegg$chtholly$$game_state.start_ui = Milky2018$selene$system$$Entity$new();
   lfegg$chtholly$$game_state.start_tip_ui = Milky2018$selene$system$$Entity$new();
+  lfegg$chtholly$$game_state.level_ui0 = Milky2018$selene$system$$Entity$new();
+  lfegg$chtholly$$game_state.level_ui1 = Milky2018$selene$system$$Entity$new();
+  lfegg$chtholly$$game_state.level_ui2 = Milky2018$selene$system$$Entity$new();
+}
+function lfegg$chtholly$$update_level_menu_ui() {
+  const names = ["Easy", "Normal", "Hard"];
+  const entities = [lfegg$chtholly$$game_state.level_ui0, lfegg$chtholly$$game_state.level_ui1, lfegg$chtholly$$game_state.level_ui2];
+  const idx = lfegg$chtholly$$game_state.level_index;
+  let i = 0;
+  while (true) {
+    if (i < 3) {
+      const name = moonbitlang$core$array$$Array$at$20$(names, i);
+      const is_sel = i === idx;
+      const color = is_sel ? "blue" : "black";
+      const text = Milky2018$selene$sprite$$Text$new$46$inner(name, color, "24px ThaleahFat");
+      moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, moonbitlang$core$array$$Array$at$3$(entities, i), Milky2018$selene$sprite$$Sprite$new_text(text, 9999));
+      i = i + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
 }
 function lfegg$chtholly$$show_start_ui() {
   lfegg$chtholly$$hide_start_ui();
+  lfegg$chtholly$$game_state.block_enter_until_release = true;
   const ui = Milky2018$selene$system$$Entity$new();
   moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, ui, Milky2018$selene$camera$$Ui$new());
   moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, ui, Milky2018$selene$math$$Vec2D$new(40, 156));
   const title = Milky2018$selene$sprite$$Text$new$46$inner("Chtholly", "white", "48px ThaleahFat");
-  const tip = Milky2018$selene$sprite$$Text$new$46$inner("Press Enter to Start", "blue", "24px ThaleahFat");
+  const tip = Milky2018$selene$sprite$$Text$new$46$inner("Select Level: ↑/↓  Enter", "blue", "24px ThaleahFat");
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, ui, Milky2018$selene$sprite$$Sprite$new_text(title, 10000));
   const tip_e = Milky2018$selene$system$$Entity$new();
   moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, tip_e, Milky2018$selene$camera$$Ui$new());
   moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, tip_e, Milky2018$selene$math$$Vec2D$new(40, 226));
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, tip_e, Milky2018$selene$sprite$$Sprite$new_text(tip, 9999));
+  const li0 = Milky2018$selene$system$$Entity$new();
+  const li1 = Milky2018$selene$system$$Entity$new();
+  const li2 = Milky2018$selene$system$$Entity$new();
+  const _arr = [li0, li1, li2];
+  const _len = _arr.length;
+  let _tmp = 0;
+  while (true) {
+    const _i = _tmp;
+    if (_i < _len) {
+      const e = _arr[_i];
+      moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, e, Milky2018$selene$camera$$Ui$new());
+      _tmp = _i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, li0, Milky2018$selene$math$$Vec2D$new(40, 266));
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, li1, Milky2018$selene$math$$Vec2D$new(40, 292));
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, li2, Milky2018$selene$math$$Vec2D$new(40, 318));
+  lfegg$chtholly$$game_state.level_ui0 = li0;
+  lfegg$chtholly$$game_state.level_ui1 = li1;
+  lfegg$chtholly$$game_state.level_ui2 = li2;
+  lfegg$chtholly$$update_level_menu_ui();
   lfegg$chtholly$$game_state.start_ui = ui;
   lfegg$chtholly$$game_state.start_tip_ui = tip_e;
 }
 function lfegg$chtholly$$game_start(_backend) {
   lfegg$chtholly$$game_state.phase = 0;
   lfegg$chtholly$$show_start_ui();
-}
-function lfegg$chtholly$$destroy_all_bullets() {
-  const to_destroy = [];
-  const _bind$8 = moonbitlang$core$builtin$$Map$iter2$7$(lfegg$chtholly$$bullet_owners);
-  _bind$8((b, __) => {
-    moonbitlang$core$array$$Array$push$3$(to_destroy, b);
-    return 1;
-  });
-  const _len = to_destroy.length;
-  let _tmp = 0;
-  while (true) {
-    const _i = _tmp;
-    if (_i < _len) {
-      const b = to_destroy[_i];
-      Milky2018$selene$system$$Entity$destroy(b);
-      moonbitlang$core$builtin$$Map$remove$7$(lfegg$chtholly$$bullet_owners, b);
-      moonbitlang$core$builtin$$Map$remove$10$(lfegg$chtholly$$hit_bullets, b);
-      _tmp = _i + 1 | 0;
-      continue;
-    } else {
-      return;
-    }
-  }
 }
 function lfegg$chtholly$$hide_gameover_ui() {
   const _bind$8 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.gameover_ui);
@@ -6198,8 +6378,39 @@ function lfegg$chtholly$$hide_gameover_ui() {
   } else {
     Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.gameover_tip_ui);
   }
+  const _bind$10 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.go_ui0);
+  if (_bind$10 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.go_ui0);
+  }
+  const _bind$11 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.go_ui1);
+  if (_bind$11 === undefined) {
+  } else {
+    Milky2018$selene$system$$Entity$destroy(lfegg$chtholly$$game_state.go_ui1);
+  }
   lfegg$chtholly$$game_state.gameover_ui = Milky2018$selene$system$$Entity$new();
   lfegg$chtholly$$game_state.gameover_tip_ui = Milky2018$selene$system$$Entity$new();
+  lfegg$chtholly$$game_state.go_ui0 = Milky2018$selene$system$$Entity$new();
+  lfegg$chtholly$$game_state.go_ui1 = Milky2018$selene$system$$Entity$new();
+}
+function lfegg$chtholly$$update_gameover_menu_ui() {
+  const names = ["Restart", "Back to Level Select"];
+  const entities = [lfegg$chtholly$$game_state.go_ui0, lfegg$chtholly$$game_state.go_ui1];
+  const idx = lfegg$chtholly$$game_state.gameover_index;
+  let i = 0;
+  while (true) {
+    if (i < 2) {
+      const name = moonbitlang$core$array$$Array$at$20$(names, i);
+      const is_sel = i === idx;
+      const color = is_sel ? "blue" : "black";
+      const text = Milky2018$selene$sprite$$Text$new$46$inner(name, color, "24px ThaleahFat");
+      moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, moonbitlang$core$array$$Array$at$3$(entities, i), Milky2018$selene$sprite$$Sprite$new_text(text, 9999));
+      i = i + 1 | 0;
+      continue;
+    } else {
+      return;
+    }
+  }
 }
 function lfegg$chtholly$$show_gameover_ui() {
   lfegg$chtholly$$hide_gameover_ui();
@@ -6211,8 +6422,18 @@ function lfegg$chtholly$$show_gameover_ui() {
   const tip_e = Milky2018$selene$system$$Entity$new();
   moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, tip_e, Milky2018$selene$camera$$Ui$new());
   moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, tip_e, Milky2018$selene$math$$Vec2D$new(40, 226));
-  const tip = Milky2018$selene$sprite$$Text$new$46$inner("Press Enter to Start", "blue", "24px ThaleahFat");
+  const tip = Milky2018$selene$sprite$$Text$new$46$inner("Select: ↑/↓  Enter", "blue", "24px ThaleahFat");
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, tip_e, Milky2018$selene$sprite$$Sprite$new_text(tip, 9999));
+  const op0 = Milky2018$selene$system$$Entity$new();
+  const op1 = Milky2018$selene$system$$Entity$new();
+  moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, op0, Milky2018$selene$camera$$Ui$new());
+  moonbitlang$core$builtin$$Map$set$4$(Milky2018$selene$camera$$uis, op1, Milky2018$selene$camera$$Ui$new());
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, op0, Milky2018$selene$math$$Vec2D$new(40, 266));
+  moonbitlang$core$builtin$$Map$set$2$(Milky2018$selene$position$$positions, op1, Milky2018$selene$math$$Vec2D$new(40, 292));
+  lfegg$chtholly$$game_state.go_ui0 = op0;
+  lfegg$chtholly$$game_state.go_ui1 = op1;
+  lfegg$chtholly$$game_state.gameover_index = 0;
+  lfegg$chtholly$$update_gameover_menu_ui();
   lfegg$chtholly$$game_state.gameover_ui = ui;
   lfegg$chtholly$$game_state.gameover_tip_ui = tip_e;
 }
@@ -6330,7 +6551,7 @@ function lfegg$chtholly$$spawn_enemy(pos, vel, hp) {
 }
 function lfegg$chtholly$$add_enemy() {
   const center_top = Milky2018$selene$math$$Vec2D$new(264, 64);
-  lfegg$chtholly$$spawn_enemy(center_top, Milky2018$selene$math$$Vec2D$new(1.5, 0), 100);
+  lfegg$chtholly$$spawn_enemy(center_top, Milky2018$selene$math$$Vec2D$new(lfegg$chtholly$$game_state.current_enemy_speed, 0), lfegg$chtholly$$game_state.current_enemy_hp);
 }
 function lfegg$chtholly$$add_hp_ui() {
   const ui = Milky2018$selene$system$$Entity$new();
@@ -6348,6 +6569,30 @@ function lfegg$chtholly$$add_player() {
   const sprite = Milky2018$selene$sprite$$Sprite$new_animation(animation, 10);
   moonbitlang$core$builtin$$Map$set$5$(Milky2018$selene$sprite$$sprites, entity, sprite);
   lfegg$chtholly$$game_state.player = entity;
+}
+function lfegg$chtholly$$apply_difficulty_settings() {
+  const idx = lfegg$chtholly$$game_state.level_index;
+  if (idx === 0) {
+    lfegg$chtholly$$game_state.current_enemy_hp = 60;
+    lfegg$chtholly$$game_state.current_enemy_speed = 1.2000000000000002;
+    lfegg$chtholly$$game_state.current_enemy_bullet_speed = 2;
+    lfegg$chtholly$$game_state.current_enemy_shoot_cd = 45;
+    return;
+  } else {
+    if (idx === 2) {
+      lfegg$chtholly$$game_state.current_enemy_hp = 140;
+      lfegg$chtholly$$game_state.current_enemy_speed = 1.875;
+      lfegg$chtholly$$game_state.current_enemy_bullet_speed = 3.125;
+      lfegg$chtholly$$game_state.current_enemy_shoot_cd = 45;
+      return;
+    } else {
+      lfegg$chtholly$$game_state.current_enemy_hp = 100;
+      lfegg$chtholly$$game_state.current_enemy_speed = 1.5;
+      lfegg$chtholly$$game_state.current_enemy_bullet_speed = 2.5;
+      lfegg$chtholly$$game_state.current_enemy_shoot_cd = 30;
+      return;
+    }
+  }
 }
 function lfegg$chtholly$$start_game() {
   lfegg$chtholly$$destroy_all_bullets();
@@ -6382,10 +6627,14 @@ function lfegg$chtholly$$start_game() {
   }
   lfegg$chtholly$$hide_start_ui();
   lfegg$chtholly$$hide_gameover_ui();
+  lfegg$chtholly$$hide_victory_ui();
   lfegg$chtholly$$game_state.hp = 3;
   lfegg$chtholly$$game_state.invincible_ticks = 0;
   lfegg$chtholly$$game_state.shoot_cooldown = 0;
   lfegg$chtholly$$game_state.enemy_shoot_cd = 0;
+  lfegg$chtholly$$game_state.input_cd = 0;
+  lfegg$chtholly$$game_state.hard_pattern_toggle = false;
+  lfegg$chtholly$$apply_difficulty_settings();
   lfegg$chtholly$$add_player();
   lfegg$chtholly$$add_enemy();
   const _bind$11 = moonbitlang$core$builtin$$Map$get$5$(Milky2018$selene$sprite$$sprites, lfegg$chtholly$$game_state.hp_ui);
@@ -6398,14 +6647,67 @@ function lfegg$chtholly$$start_game() {
 }
 function lfegg$chtholly$$player_input_system(_discard_) {
   if (lfegg$chtholly$$game_state.phase === 0) {
+    if (lfegg$chtholly$$game_state.input_cd > 0) {
+      lfegg$chtholly$$game_state.input_cd = lfegg$chtholly$$game_state.input_cd - 1 | 0;
+    }
+    if (Milky2018$selene$system$$is_pressed(26) && lfegg$chtholly$$game_state.input_cd === 0) {
+      lfegg$chtholly$$game_state.level_index = lfegg$chtholly$$game_state.level_index > 0 ? lfegg$chtholly$$game_state.level_index - 1 | 0 : 0;
+      lfegg$chtholly$$update_level_menu_ui();
+      lfegg$chtholly$$game_state.input_cd = 10;
+    } else {
+      if (Milky2018$selene$system$$is_pressed(27) && lfegg$chtholly$$game_state.input_cd === 0) {
+        lfegg$chtholly$$game_state.level_index = lfegg$chtholly$$game_state.level_index < 2 ? lfegg$chtholly$$game_state.level_index + 1 | 0 : 2;
+        lfegg$chtholly$$update_level_menu_ui();
+        lfegg$chtholly$$game_state.input_cd = 10;
+      }
+    }
+    if (lfegg$chtholly$$game_state.block_enter_until_release) {
+      if (!Milky2018$selene$system$$is_pressed(31)) {
+        lfegg$chtholly$$game_state.block_enter_until_release = false;
+      }
+    } else {
+      if (Milky2018$selene$system$$is_pressed(31)) {
+        lfegg$chtholly$$start_game();
+      }
+    }
+    return undefined;
+  }
+  if (lfegg$chtholly$$game_state.phase === 3) {
+    if (lfegg$chtholly$$game_state.input_cd > 0) {
+      lfegg$chtholly$$game_state.input_cd = lfegg$chtholly$$game_state.input_cd - 1 | 0;
+    }
     if (Milky2018$selene$system$$is_pressed(31)) {
-      lfegg$chtholly$$start_game();
+      lfegg$chtholly$$hide_victory_ui();
+      lfegg$chtholly$$game_state.phase = 0;
+      lfegg$chtholly$$game_state.block_enter_until_release = true;
+      lfegg$chtholly$$show_start_ui();
     }
     return undefined;
   }
   if (lfegg$chtholly$$game_state.phase === 2) {
+    if (lfegg$chtholly$$game_state.input_cd > 0) {
+      lfegg$chtholly$$game_state.input_cd = lfegg$chtholly$$game_state.input_cd - 1 | 0;
+    }
+    if (Milky2018$selene$system$$is_pressed(26) && lfegg$chtholly$$game_state.input_cd === 0) {
+      lfegg$chtholly$$game_state.gameover_index = lfegg$chtholly$$game_state.gameover_index > 0 ? lfegg$chtholly$$game_state.gameover_index - 1 | 0 : 0;
+      lfegg$chtholly$$update_gameover_menu_ui();
+      lfegg$chtholly$$game_state.input_cd = 10;
+    } else {
+      if (Milky2018$selene$system$$is_pressed(27) && lfegg$chtholly$$game_state.input_cd === 0) {
+        lfegg$chtholly$$game_state.gameover_index = lfegg$chtholly$$game_state.gameover_index < 1 ? lfegg$chtholly$$game_state.gameover_index + 1 | 0 : 1;
+        lfegg$chtholly$$update_gameover_menu_ui();
+        lfegg$chtholly$$game_state.input_cd = 10;
+      }
+    }
     if (Milky2018$selene$system$$is_pressed(31)) {
-      lfegg$chtholly$$start_game();
+      if (lfegg$chtholly$$game_state.gameover_index === 0) {
+        lfegg$chtholly$$start_game();
+      } else {
+        lfegg$chtholly$$hide_gameover_ui();
+        lfegg$chtholly$$game_state.phase = 0;
+        lfegg$chtholly$$game_state.block_enter_until_release = true;
+        lfegg$chtholly$$show_start_ui();
+      }
     }
     return undefined;
   }
