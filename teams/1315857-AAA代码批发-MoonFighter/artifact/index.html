@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonFighter - WASM-4 Game</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        #main-container {
+            display: grid;
+            grid-template-columns: 300px 640px 300px;
+            gap: 30px;
+            max-width: 1300px;
+            width: 100%;
+            align-items: start;
+        }
+        
+        #left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        #title-section {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 136, 1); }
+        }
+        
+        .subtitle {
+            color: #88ffdd;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-box h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding-bottom: 8px;
+        }
+        
+        .info-box p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-box li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #ccc;
+        }
+        
+        .info-box li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+        }
+        
+        #center-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        #game-container {
+            position: relative;
+            background: #000;
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid #00ff88;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.4);
+        }
+        
+        canvas {
+            display: block;
+            width: 640px;
+            height: 640px;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;
+            border-radius: 8px;
+        }
+        
+        #status {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            font-size: 1.1em;
+        }
+        
+        #right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .control-row {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            gap: 15px;
+        }
+        
+        .key {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 45px;
+            height: 35px;
+            padding: 0 12px;
+            background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+            border: 2px solid #00ff88;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #00ff88;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+            font-size: 1.1em;
+        }
+        
+        .key-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        #debug {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85em;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        #debug h3 {
+            color: #ffaa00;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        
+        #debug-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #aaa;
+            line-height: 1.4;
+        }
+        
+        .loading { color: #ffaa00; }
+        .error { color: #ff4444; }
+        .success { color: #00ff88; }
+        
+        @media (max-width: 1280px) {
+            #main-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            #left-panel, #right-panel {
+                max-width: 640px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <div id="left-panel">
+            <div id="title-section">
+                <h1>🌙 MoonFighter</h1>
+                <p class="subtitle">MoonBit × WASM-4</p>
+            </div>
+            
+            <div class="info-box">
+                <h3>📖 游戏说明</h3>
+                <ul>
+                    <li>控制飞船消灭敌机</li>
+                    <li>每击毁一架敌机得 10 分</li>
+                    <li>避免与敌机碰撞</li>
+                    <li>挑战最高分数记录</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3>🎯 游戏特色</h3>
+                <p>这是一个使用 MoonBit 编程语言开发的复古风格太空射击游戏，运行在 WASM-4 虚拟游戏机上。</p>
+                <p>体验经典的像素艺术风格和流畅的游戏体验！</p>
+            </div>
+        </div>
+        
+        <div id="center-panel">
+            <div id="game-container">
+                <canvas id="canvas" width="160" height="160"></canvas>
+            </div>
+            <div id="status" class="loading">正在初始化...</div>
+        </div>
+        
+        <div id="right-panel">
+            <div class="info-box">
+                <h3>🎮 操作控制</h3>
+                <div class="control-row">
+                    <div class="key-group">
+                        <div class="key">←</div>
+                        <div class="key">→</div>
+                    </div>
+                    <span>移动飞船</span>
+                </div>
+                <div class="control-row">
+                    <div class="key">Z</div>
+                    <span>发射子弹</span>
+                </div>
+                <div class="control-row">
+                    <div class="key">R</div>
+                    <span>重新开始</span>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h3>💡 游戏提示</h3>
+                <ul>
+                    <li>保持移动避免被击中</li>
+                    <li>预判敌机移动轨迹</li>
+                    <li>合理使用子弹</li>
+                    <li>注意屏幕边界</li>
+                </ul>
+            </div>
+            
+            <div id="debug">
+                <h3>🔧 调试信息</h3>
+                <div id="debug-content">等待日志...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let logCount = 0;
+        let lastLogTime = Date.now();
+        const MAX_LOGS = 100;
+        
+        const debugLog = function(msg) {
+            logCount++;
+            const now = Date.now();
+            
+            if (msg.includes('[TRACE]') && now - lastLogTime < 1000) {
+                return;
+            }
+            lastLogTime = now;
+            
+            const debugContent = document.getElementById('debug-content');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const lines = debugContent.textContent.split('\n');
+            if (lines.length > MAX_LOGS) {
+                lines.shift();
+                debugContent.textContent = lines.join('\n');
+            }
+            
+            debugContent.textContent += '[' + timestamp + '] ' + msg + '\n';
+            debugContent.parentElement.scrollTop = debugContent.parentElement.scrollHeight;
+            console.log(msg);
+        };
+        
+        class WASM4Runtime {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d', { 
+                    alpha: false,
+                    desynchronized: true
+                });
+                
+                this.ctx.imageSmoothingEnabled = false;
+                this.memory = null;
+                this.instance = null;
+                
+                this.PALETTE = 0x04;
+                this.DRAW_COLORS = 0x14;
+                this.GAMEPAD1 = 0x16;
+                this.GAMEPAD2 = 0x17;
+                this.GAMEPAD3 = 0x18;
+                this.GAMEPAD4 = 0x19;
+                this.FRAMEBUFFER = 0xa0;
+                
+                this.palette = [0xe0f8cf, 0x86c06c, 0x306850, 0x071821];
+                this.gamepadState = 0;
+                
+                this.keyMap = {
+                    'ArrowLeft': 0x10,
+                    'ArrowRight': 0x20,
+                    'ArrowUp': 0x40,
+                    'ArrowDown': 0x80,
+                    'z': 0x01, 'Z': 0x01,
+                    'x': 0x02, 'X': 0x02,
+                    'r': 0x01, 'R': 0x01
+                };
+                
+                this.setupInput();
+                debugLog('运行时初始化完成');
+            }
+            
+            setupInput() {
+                const self = this;
+                window.addEventListener('keydown', function(e) {
+                    const btn = self.keyMap[e.key];
+                    if (btn !== undefined) {
+                        self.gamepadState |= btn;
+                        e.preventDefault();
+                        // 调试按键
+                        if (e.key === 'r' || e.key === 'R') {
+                            debugLog('R键按下 - 手柄状态: 0x' + self.gamepadState.toString(16));
+                        }
+                    }
+                });
+                
+                window.addEventListener('keyup', function(e) {
+                    const btn = self.keyMap[e.key];
+                    if (btn !== undefined) {
+                        self.gamepadState &= ~btn;
+                        e.preventDefault();
+                    }
+                });
+            }
+            
+            readString(ptr) {
+                if (!this.memory) return '';
+                const mem = new Uint8Array(this.memory.buffer);
+                let end = ptr;
+                while (end < mem.length && mem[end] !== 0) end++;
+                const bytes = mem.slice(ptr, end);
+                return new TextDecoder().decode(bytes);
+            }
+            
+            getDrawColors() {
+                if (!this.memory) return [1, 0, 0, 0];
+                const view = new DataView(this.memory.buffer);
+                const dc = view.getUint16(this.DRAW_COLORS, true);
+                return [
+                    dc & 0xf,
+                    (dc >> 4) & 0xf,
+                    (dc >> 8) & 0xf,
+                    (dc >> 12) & 0xf
+                ];
+            }
+            
+            getPaletteColor(index) {
+                if (index === 0) return 'transparent';
+                const color = this.palette[index - 1] || 0;
+                const r = (color >> 16) & 0xff;
+                const g = (color >> 8) & 0xff;
+                const b = color & 0xff;
+                return 'rgb(' + r + ',' + g + ',' + b + ')';
+            }
+            
+            drawPixelText(str, x, y, color) {
+                this.ctx.save();
+                this.ctx.fillStyle = color;
+                // 因为整个 canvas 已经被 scale(4, 4)，这里直接用 8px 字体
+                // 实际渲染时会变成 32px，非常清晰
+                this.ctx.font = 'bold 8px monospace';
+                this.ctx.textBaseline = 'top';
+                this.ctx.textAlign = 'left';
+                this.ctx.fillText(str, x, y);
+                this.ctx.restore();
+            }
+            
+            createImports() {
+                const self = this;
+                this.memory = new WebAssembly.Memory({ 
+                    initial: 1,
+                    maximum: 1
+                });
+                
+                return {
+                    env: {
+                        memory: this.memory,
+                        
+                        line: function(x1, y1, x2, y2) {
+                            const colors = self.getDrawColors();
+                            if (colors[0]) {
+                                self.ctx.strokeStyle = self.getPaletteColor(colors[0]);
+                                self.ctx.lineWidth = 1;
+                                self.ctx.beginPath();
+                                self.ctx.moveTo(x1, y1);
+                                self.ctx.lineTo(x2, y2);
+                                self.ctx.stroke();
+                            }
+                        },
+                        
+                        rect: function(x, y, w, h) {
+                            const colors = self.getDrawColors();
+                            if (colors[0]) {
+                                self.ctx.fillStyle = self.getPaletteColor(colors[0]);
+                                self.ctx.fillRect(x, y, w, h);
+                            }
+                        },
+                        
+                        text: function(strPtr, x, y) {
+                            const str = self.readString(strPtr);
+                            const colors = self.getDrawColors();
+                            if (colors[0]) {
+                                const color = self.getPaletteColor(colors[0]);
+                                self.drawPixelText(str, x, y, color);
+                            }
+                        },
+                        
+                        textUtf8: function(strPtr, len, x, y) {
+                            const bytes = new Uint8Array(self.memory.buffer, strPtr, len);
+                            const str = new TextDecoder().decode(bytes);
+                            const colors = self.getDrawColors();
+                            if (colors[0]) {
+                                const color = self.getPaletteColor(colors[0]);
+                                self.drawPixelText(str, x, y, color);
+                            }
+                        },
+                        
+                        trace: function() {},
+                        traceUtf8: function() {},
+                        tracef: function() {},
+                        blit: function() {},
+                        blitSub: function() {},
+                        hline: function() {},
+                        vline: function() {},
+                        oval: function() {},
+                        tone: function() {},
+                        diskr: function() { return 0; },
+                        diskw: function() { return 0; }
+                    }
+                };
+            }
+            
+            updateMemory() {
+                if (!this.memory) return;
+                
+                const view = new DataView(this.memory.buffer);
+                
+                // 更新调色板
+                for (let i = 0; i < 4; i++) {
+                    const addr = this.PALETTE + i * 4;
+                    if (addr + 3 < this.memory.buffer.byteLength) {
+                        this.palette[i] = view.getUint32(addr, true) & 0xffffff;
+                    }
+                }
+                
+                // 更新手柄状态 - 同时写入 index 0 和 1
+                if (this.GAMEPAD1 < this.memory.buffer.byteLength) {
+                    view.setUint8(0x16, this.gamepadState); // index 0
+                }
+                if (0x17 < this.memory.buffer.byteLength) {
+                    view.setUint8(0x17, this.gamepadState); // index 1  
+                }
+            }
+            
+            async load(wasmPath) {
+                try {
+                    debugLog('正在加载 ' + wasmPath + '...');
+                    const response = await fetch(wasmPath);
+                    
+                    if (!response.ok) {
+                        throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+                    }
+                    
+                    const bytes = await response.arrayBuffer();
+                    debugLog('WASM 文件大小: ' + bytes.byteLength + ' 字节');
+                    
+                    const imports = this.createImports();
+                    const result = await WebAssembly.instantiate(bytes, imports);
+                    
+                    this.instance = result.instance;
+                    
+                    debugLog('内存大小: ' + this.memory.buffer.byteLength + ' 字节');
+                    
+                    const exports = Object.keys(this.instance.exports);
+                    debugLog('导出函数: ' + exports.join(', '));
+                    
+                    if (this.instance.exports.start) {
+                        debugLog('调用 start() 函数...');
+                        this.instance.exports.start();
+                    }
+                    
+                    return true;
+                } catch (error) {
+                    debugLog('错误: ' + error.message);
+                    throw error;
+                }
+            }
+            
+            gameLoop() {
+                const self = this;
+                
+                // 先更新手柄状态
+                self.updateMemory();
+                
+                // 清空画布
+                self.ctx.fillStyle = '#000';
+                self.ctx.fillRect(0, 0, 160, 160);
+                
+                // 调用游戏更新
+                if (self.instance.exports.update) {
+                    self.instance.exports.update();
+                } else if (self.instance.exports.upd) {
+                    self.instance.exports.upd();
+                }
+                
+                requestAnimationFrame(function() {
+                    self.gameLoop();
+                });
+            }
+        }
+        
+        (async function() {
+            const canvas = document.getElementById('canvas');
+            const statusEl = document.getElementById('status');
+            const runtime = new WASM4Runtime(canvas);
+            
+            // 使用高分辨率 canvas 但保持逻辑尺寸
+            const displayScale = 4; // 显示时放大4倍
+            canvas.width = 160 * displayScale;
+            canvas.height = 160 * displayScale;
+            canvas.style.width = '640px';
+            canvas.style.height = '640px';
+            
+            // 缩放绘图上下文，这样所有绘制命令自动放大
+            runtime.ctx.scale(displayScale, displayScale);
+            
+            // 确保像素完美
+            runtime.ctx.imageSmoothingEnabled = false;
+            runtime.ctx.webkitImageSmoothingEnabled = false;
+            runtime.ctx.mozImageSmoothingEnabled = false;
+            runtime.ctx.msImageSmoothingEnabled = false;
+            
+            try {
+                statusEl.textContent = '⏳ 正在加载游戏...';
+                statusEl.className = 'loading';
+                
+                const paths = [
+                    'moonfighter.wasm',
+                    'target/wasm-gc/release/build/moonfighter.wasm',
+                    './moonfighter.wasm'
+                ];
+                
+                let loaded = false;
+                for (let i = 0; i < paths.length; i++) {
+                    try {
+                        await runtime.load(paths[i]);
+                        loaded = true;
+                        debugLog('✓ 成功从 ' + paths[i] + ' 加载');
+                        break;
+                    } catch (e) {
+                        debugLog('✗ 无法从 ' + paths[i] + ' 加载: ' + e.message);
+                    }
+                }
+                
+                if (!loaded) {
+                    throw new Error('无法从任何路径加载 WASM 文件');
+                }
+                
+                statusEl.textContent = '✓ 游戏已就绪 - 开始游戏！';
+                statusEl.className = 'success';
+                
+                debugLog('启动游戏循环...');
+                runtime.gameLoop();
+                
+            } catch (error) {
+                statusEl.textContent = '✗ 加载失败: ' + error.message;
+                statusEl.className = 'error';
+                debugLog('致命错误: ' + error.message);
+            }
+        })();
+    </script>
+</body>
+</html>
