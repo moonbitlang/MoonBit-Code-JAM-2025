@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地牢骑士 - Dungeon Knight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .game-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .left-panel {
+            width: 300px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            flex: 0 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffcc70, #c850c0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1.0rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .game-info {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+
+        .game-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffcc70;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .game-info p {
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .game-info ul {
+            margin-left: 20px;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .game-info li {
+            margin-bottom: 8px;
+        }
+
+        .game-wrapper {
+            flex: 0 0 auto;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            background: #111;
+        }
+
+        .right-panel {
+            width: 300px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .controls {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+        }
+
+        .controls h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffcc70;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .control-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .key {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 50px;
+            text-align: center;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            flex: 0 0 auto;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+
+    <script src="game.js" defer></script>
+</head>
+
+<body>
+    <div class="game-container">
+        <div class="left-panel">
+            <div class="header">
+                <h1>地牢骑士</h1>
+                <div class="subtitle">Dungeon Knight</div>
+            </div>
+            
+            <div class="game-info">
+                <h2>游戏说明</h2>
+                <p>扮演地牢骑士，在黑暗势力的围攻中生存下来，击败最终的Boss获得胜利！</p>
+                <ul>
+                    <li>灵活躲避Boss的致命技能，寻找攻击时机</li>
+                    <li>对敌人造成伤害可以增加你的分数</li>
+                    <li>击杀小兵可以回复生命值，维持生存</li>
+                    <li>合理利用翻滚技能躲避密集弹幕</li>
+                    <li>击败最终Boss即可获得胜利</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="game-wrapper">
+            <canvas id="canvas" width="640" height="790"></canvas>
+        </div>
+        
+        <div class="right-panel">
+            <div class="controls">
+                <h2>操作说明</h2>
+                <div class="control-item">
+                    <div class="key">↑</div>
+                    <div>向上移动</div>
+                </div>
+                <div class="control-item">
+                    <div class="key">↓</div>
+                    <div>向下移动</div>
+                </div>
+                <div class="control-item">
+                    <div class="key">←</div>
+                    <div>向左移动</div>
+                </div>
+                <div class="control-item">
+                    <div class="key">→</div>
+                    <div>向右移动</div>
+                </div>
+                <div class="control-item">
+                    <div class="key">空格</div>
+                    <div>翻滚闪避</div>
+                </div>
+                <div class="control-item">
+                    <div class="key">A</div>
+                    <div>攻击</div>
+                </div>
+           </div>
+            
+            <div class="footer">
+                Quaestiox © 2025
+            </div>
+        </div>
+    </div>
+</body>
+</html>
