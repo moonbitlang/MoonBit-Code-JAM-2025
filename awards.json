@@ -1,22 +1,22 @@
 {
   "awards": [
     {
-      "name": "月度最佳视觉奖",
+      "name": "9月月度最佳视觉奖",
       "icon": "🎨",
       "color": "#FF6B6B",
-      "gameId": "1301523-果壳超玩会-宝可MoonPokemoon"
+      "gameId": "1306999-漆黑之羽如深渊相伴-赛博拾荒者(CyberScavenger)"
     },
     {
-      "name": "月度最佳创意奖",
+      "name": "9月月度最佳创意奖",
       "icon": "💡",
       "color": "#4ECDC4",
-      "gameId": "1301530-llm_game-双相迷宫"
+      "gameId": "1314247-spoqs-水墨之灵"
     },
     {
-      "name": "月度最佳 AI 玩法奖",
-      "icon": "🤖",
-      "color": "#45B7D1",
-      "gameId": "spaceack-CS赏金猎手-Moonbit中国象棋战役版"
+      "name": "9月月度最佳创意奖",
+      "icon": "💡",
+      "color": "#4ECDC4",
+      "gameId": "1305554-Moon_Bird-flappybird"
     }
   ]
 }
