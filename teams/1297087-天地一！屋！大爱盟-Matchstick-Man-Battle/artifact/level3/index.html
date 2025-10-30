@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level 3</title>
+
+    <link rel="stylesheet" href="../styles/buttons.css">
+    <style>
+      /* 把页面顶边距去掉，让 canvas 紧贴导航下方并保留 8px 间距 */
+      body { margin: 0; }
+      .nav-bar { padding: 12px; display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .canvas-wrap { display: flex; justify-content: center; align-items: flex-start; margin: 0; padding-top: 8px; }
+    </style>
+  </head>
+  <body>
+    <div class="nav-bar">
+      <a href="../index.html"><button type="button" class="nav-btn">返回主页面</button></a>
+      <a href="../map_designer/map_designer.html"><button type="button" class="nav-btn secondary">打开地图设计器</button></a>
+    </div>
+
+    <!-- p5 会将画布注入此容器 -->
+    <div id="p5-root" class="canvas-wrap"></div>
+
+    <!-- 保持与主页面一致的运行环境 -->
+    <script type="text/javascript" src="../jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+      jQuery.noConflict();
+      Object.extend = jQuery.extend;
+    </script>
+    <script src="../lib/jquery.svg.min.js"></script>
+    <script src="../box2d.js"></script>
+    <script src="../p5.js"></script>
+    <script src="../level3.js"></script>
+  </body>
+</html>
