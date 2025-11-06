@@ -1,0 +1,25 @@
+{
+  "name": "moonbit-game",
+  "version": "0.1.0",
+  "description": "Electron wrapper for the MoonBit HTML5 game",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.example.moonbit",
+    "productName": "MoonBit",
+    "files": [
+      "**/*"
+    ],
+    "directories": {
+      "buildResources": "build"
+    }
+  },
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.6.0"
+  }
+}
