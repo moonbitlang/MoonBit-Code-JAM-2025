@@ -14,12 +14,30 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%, #0a0a0a 100%);
+            background-attachment: fixed;
             color: #fff;
             min-height: 100vh;
             padding: 20px;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.01) 35px, rgba(255,255,255,.01) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.01) 35px, rgba(255,255,255,.01) 70px);
+            pointer-events: none;
+            z-index: 1;
         }
 
         .mainContainer {
@@ -30,6 +48,8 @@
             margin: 0 auto;
             width: 100%;
             padding: 20px;
+            position: relative;
+            z-index: 2;
         }
 
         .gameArea {
@@ -39,40 +59,73 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .title {
             font-size: 2.5rem;
             margin-bottom: 20px;
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             color: #fff;
             letter-spacing: 3px;
+            background: linear-gradient(90deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         #canvas {
-            /* 关键：CSS尺寸与属性尺寸保持一致 */
+            
             width: 960px;
             height: 720px;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
             display: block;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .infoContainer {
-            flex: 0 0 400px;
+            width: 380px;
             padding: 25px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            max-height: 720px;
+            max-height: 960px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        
+        .infoContainer::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .infoContainer::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .infoContainer::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        .infoContainer::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.5);
         }
 
         .infoContainer .title {
@@ -82,12 +135,14 @@
             text-align: left;
             border-bottom: 2px solid #ffcc00;
             padding-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
         }
 
         .game-description {
             line-height: 1.6;
             margin-bottom: 20px;
             font-size: 1.1rem;
+            color: #e0e0e0;
         }
 
         .features {
@@ -98,6 +153,7 @@
             color: #ffcc00;
             margin-bottom: 10px;
             font-size: 1.3rem;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
         }
 
         .features ul {
@@ -107,6 +163,7 @@
         .features li {
             margin-bottom: 8px;
             line-height: 1.5;
+            color: #d0d0d0;
         }
 
         .controls {
@@ -117,11 +174,13 @@
             color: #ffcc00;
             margin-bottom: 10px;
             font-size: 1.3rem;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
         }
 
         .controls p {
             margin-bottom: 8px;
             line-height: 1.5;
+            color: #d0d0d0;
         }
 
         .start-btn {
@@ -141,7 +200,7 @@
 
         .start-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
         }
 
         .start-btn:active {
@@ -155,6 +214,7 @@
             padding: 10px;
             border-radius: 5px;
             font-size: 0.9rem;
+            color: #a0a0a0;
         }
 
         @media (max-width: 1400px) {
@@ -164,17 +224,32 @@
             }
             
             .infoContainer {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
                 flex: none;
                 width: 100%;
                 max-width: 960px;
+                margin-top: 20px;
             }
             
             #canvas {
                 width: 100%;
                 max-width: 960px;
                 height: auto;
-                aspect-ratio: 4/3; /* 保持4:3宽高比 */
+                aspect-ratio: 4/3; 
             }
+        }
+
+        
+        @keyframes breathe {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .gameArea {
+            animation: breathe 4s ease-in-out infinite;
         }
     </style>
 </head>
