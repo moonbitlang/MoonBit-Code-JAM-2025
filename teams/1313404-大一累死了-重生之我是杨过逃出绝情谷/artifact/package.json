@@ -1,0 +1,17 @@
+{
+  "name": "shendiao-game",
+  "version": "1.0.0",
+  "description": "神雕侠侣游戏 - JavaScript版本",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve",
+    "build": "echo 'No build step needed for static site'",
+    "dev": "serve"
+  },
+  "keywords": ["game", "javascript", "html5", "canvas"],
+  "author": "大一累死了",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
