@@ -1,4 +1,4 @@
-// 游戏主类
+
 class ShenDiaoGame {
   constructor() {
     this.canvas = document.getElementById("gameCanvas");
@@ -7,7 +7,7 @@ class ShenDiaoGame {
     this.loadingProgress = document.getElementById("loadingProgress");
     this.battleIndicator = document.querySelector(".battle-indicator");
 
-    // 游戏状态
+
     this.gameState = {
       foundXiaolongnv: false,
       foundJueqingdan: false,
@@ -16,24 +16,24 @@ class ShenDiaoGame {
       enteredCave: false,
     };
 
-    // 战斗系统
+
     this.fightSystem = new FightSystem(this);
 
-    // 场景系统
+
     this.sceneSystem = new SceneSystem(this);
 
-    // 玩家角色
+
     this.player = new PlayerCharacter(this);
 
-    // 输入处理
+
     this.keys = {};
     this.setupInput();
 
-    // 资源加载
+
     this.images = {};
     this.loadResources();
 
-    // 游戏循环
+
     this.lastTime = 0;
     this.gameLoop = this.gameLoop.bind(this);
   }
@@ -162,7 +162,7 @@ class ShenDiaoGame {
   }
 }
 
-// 战斗系统类
+
 class FightSystem {
   constructor(game) {
     this.game = game;
@@ -463,7 +463,7 @@ class FightSystem {
   }
 }
 
-// 战斗角色类
+
 class BattleCharacter {
   constructor(name, size, position) {
     this.name = name;
@@ -555,7 +555,7 @@ class BattleCharacter {
   }
 }
 
-// 场景系统类
+
 class SceneSystem {
   constructor(game) {
     this.game = game;
@@ -578,7 +578,7 @@ class SceneSystem {
   }
 }
 
-// 玩家角色类
+
 class PlayerCharacter {
   constructor(game) {
     this.game = game;
@@ -633,7 +633,7 @@ class PlayerCharacter {
   }
 }
 
-// 初始化游戏
+
 window.onload = function () {
   const game = new ShenDiaoGame();
   window.game = game;
