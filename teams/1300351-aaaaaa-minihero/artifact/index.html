@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <script> 
+        let llmresult = "[]"
+        let stime = Date.now()
+        let callcnt = 300
+        function observe_and_act(ostr, raw = false) {
+            try {
+                let ret = []
+                if (raw) {
+                    if (llmresult == null) {
+                        callcnt--;
+                        if (callcnt < 0) {
+                            callcnt = 300
+                            llmresult = "[]"
+                        } else {
+                            return []
+                        }
+                    }
+                    
+                    let back = llmresult
+                    llmresult = null
+                    let r = /```json(.*)```/g.exec(back)                        
+                    console.log("back", back)
+                    try {
+                        if (r == null) {
+                            ret = JSON.parse(back)
+                        } else if (r.length > 1) {
+                            ret = JSON.parse(r[1])
+                        } else {
+                            ret = []
+                        }
+                    } catch(e) {
+                        ret = []
+                    }
+                    
+                    if (back != null) {
+                        console.log("post", ostr, "back", ret)
+                        stime = Date.now()
+                        fetch('http://localhost:8081/chat', {
+                            method: 'POST', // 或者 'PUT' 取决于你想要的操作
+                            headers: {
+                                'Content-Type': 'text/plain' // 设置Content-Type为text/plain
+                            },
+                            body: ostr // 直接传递字符串
+                        })
+                        .then(response => response.text()) // 如果服务器返回文本，可以使用.text()
+                        .then(data => {
+                            console.log("answer consume:", Date.now() - stime)
+                            llmresult = data
+                        })
+                        .catch(err => console.log(err))
+                    }
+                } else {
+                    let env = JSON.parse(ostr);
+                    //TODO RL dealing 
+                }
+            } catch(e) {
+                console.log(e)
+            }  
+            return []
+            //return json describes the act
+        }
+    </script>
+    <script src="survivors.js" defer></script>
+</head>
+
+<body>
+    <div style="display: flex;">
+        <div style="width: 300px;">
+            WASD移动,攻击和交互。<br/>
+            交互人类会回血。<br/>
+            可以攻击怪物和怪物的巢穴。<br/>
+            Q切换大世界和小区域, 大世界用颜色表示势力, 有四个国家, 无主地绿色, 以及象征魔物占领地黑色。<br/>
+            小区域内也可以从地图边缘回到大世界, 小区域里水域不可建造和移动。<br/>
+            这个世界在自然演化中。每10天会出现一个怪物巢穴, 怪物巢穴每天会生成不离开区域的魔物。<br/>
+            你是拯救世界的勇者之一, 在你所在的附近会不断出现新的人物, 超过5人的区域在一段时间后会形成城镇, 产生领主, 领主会下令各种建筑, 许多建筑会有金币产出。<br/>
+            消灭魔物和怪物巢穴会获得功绩。满1000点功绩进入自己国度的村镇会自动消耗并成为当地的领主, 获得经济建筑营利的税收。<br/>
+            带领人类发展壮大, 消灭魔物吧。<br/>
+            当然, 也可以尽可能多地刷金币! <br/>   
+        </div>
+        <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
+        <div style="width: 300px;" id="logBoard"></div>
+    </div>
+    <div id ="board"></div>
+</body>
+
+</html>
