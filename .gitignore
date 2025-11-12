@@ -3,3 +3,5 @@ dist
 .mooncakes
 .moonagent
 target
+.DS_Store
+**/.DS_Store

@@ -1,19 +1,24 @@
-# 铜偶戏（非最终版）
+# 铜偶戏（Copper Puppetry）
 
 ## 游戏简介
 
-一个使用 MoonBit + Vue + ThreeJs 开发的战棋游戏，战斗部分还未完全开发完成。
-
-Bilibili演示视频https://www.bilibili.com/video/BV1vcW6z7Eu2/
+- 铜偶戏（Copper Puppetry）是一个赛博风格的 3D 回合制战棋游戏，玩家可以通过操控自己的铜偶在地牢中战斗、采矿、获取资源、召唤敌人、建造建筑，也可以通过获取到的资源升级铜偶或者扩充自己的铜偶队伍。
+- 玩家的最终目标为操纵铜偶小队深入地牢最深处打败两只 BOSS 并获得胜利，如果某一次遇到挫败也不要苦恼，可以选择撤退及时止损。我们还有游戏存档机制，玩家可以下载当前的游戏进度到本地，再次打开游戏时无需从头开始，上传存档即可继续游玩。
+- 游戏中的铜偶有五种职业，每种职业都有五只不同的铜偶，还有十三种不同的怪物，五种不同资源，八种不同建筑，他们都有单独的立绘与建模设计！
+- 实机游戏视频：待补充。
+- PV：https://www.bilibili.com/video/BV1vcW6z7Eu2/
 
 ## 操作说明
 
-根据游戏内引导即可/
+我们提供了内置的新手教程，游戏的操作与正常战棋游戏无异，根据游戏内引导进行操作即可。
 
 ## 技术特色
 
-- 使用了大量 AI 资源生成技术
-- 使用了 MoonBit JavaScript Backend + Vue + ThreeJS + CloudFlare R2 技术栈
+- 游戏基于 MoonBit JavaScript 后端开发，融合 Vue + Three.js 技术栈。
+- 我们通过一套特殊的 EventLoop + MessageQueue 实现了 MoonBit 与 JavaScript 前后端的无缝交互，通过“事件处理”机制实现了“后端维持 Model，前端转 Model 为渲染的类 TEA 理念”。
+- 游戏的数值设计经过深思熟虑，遵循了低 RTK(Round To Kill) 设计哲学，保证了玩家的游戏体验在 1~3 RTK 范围内。
+- 游戏中的美术、音乐音效资源大多来自 AI 生成工具，包括但不限于 Nano Banana、Tripo 3D、Suno，我们对游戏模型均进行了优化（如 Draco 压缩、减少面数，游戏开始前预缓存）来确保游戏性能。同时将资源挂载至 CloudFlare R2 存储，玩家只需要在第一次进入游戏时缓存一次游戏资源，以后都可以直接进入游戏。
+- 我们为游戏制作了本地（Native）应用支持，游戏可以运行在 Windows/macOS/Linux/Android/iOS 五个平台，而且我们更加推荐 PC 玩家使用本地方式运行游戏，会有非常流畅的游戏体验！
 
 ## 团队信息
 
