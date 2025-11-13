@@ -223,6 +223,19 @@ const nopublish$survivors$$show_to_board = (str) => (function(){
   board.innerText = str
   return ""
 })();
+const nopublish$survivors$$aiBoardLog = (s) => (function(){
+  let p = document.createElement("pre");
+  p.innerText = s;
+  if (aiBoard.childElementCount > 0) {
+    aiBoard.insertBefore(p, aiBoard.children[0])
+  } else {
+    aiBoard.appendChild(p)
+  }
+  if (aiBoard.childElementCount > 50) {
+    aiBoard.removeChild(aiBoard.childNodes[aiBoard.childElementCount - 1]) 
+  }
+  return
+})();
 const nopublish$survivors$$strategy = (observeStr, raw) => (function(){
   return observe_and_act(observeStr, raw)
 })();
@@ -266,7 +279,7 @@ const Milky2018$selene$inputs$$from_string$46$constr$47$3369 = 31;
 const Milky2018$selene$inputs$$from_string$46$constr$47$3370 = 32;
 const Milky2018$selene$entity$$entity_generator = { val: 0 };
 const Milky2018$selene$plugins$$default_plugin$46$constr$47$4244 = new $64$Milky2018$47$selene$47$system$46$Schedule$Render(0);
-const nopublish$survivors$$new$46$42$bind$124$1041 = "";
+const nopublish$survivors$$new$46$42$bind$124$1061 = "";
 const nopublish$survivors$$world$46$constr$47$4271 = new Option$Some$0$(90);
 const nopublish$survivors$$world$46$constr$47$4272 = new Option$Some$0$(130);
 const nopublish$survivors$$world$46$constr$47$4273 = new Option$Some$0$(300);
@@ -295,23 +308,23 @@ const nopublish$survivors$$world$46$constr$47$4295 = new Option$Some$0$(340);
 const nopublish$survivors$$world$46$constr$47$4296 = new Option$Some$0$(30);
 const nopublish$survivors$$world$46$constr$47$4297 = new Option$Some$0$(380);
 const nopublish$survivors$$world$46$constr$47$4298 = new Option$Some$0$(30);
-const nopublish$survivors$$buildDescs$46$42$bind$124$1326 = "空";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1336 = "田地";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1346 = "民居";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1356 = "公寓";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1366 = "工坊";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1376 = "魔物巢穴";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1386 = "宝箱";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1396 = "市政厅";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1406 = "铁匠铺";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1416 = "酒馆";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1426 = "研究所";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1436 = "募兵所";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1446 = "步兵兵营";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1456 = "弓兵兵营";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1466 = "攻城兵兵营";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1476 = "商铺";
-const nopublish$survivors$$buildDescs$46$42$bind$124$1486 = "城墙";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1346 = "空";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1356 = "田地";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1366 = "民居";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1376 = "公寓";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1386 = "工坊";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1396 = "魔物巢穴";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1406 = "宝箱";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1416 = "市政厅";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1426 = "铁匠铺";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1436 = "酒馆";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1446 = "研究所";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1456 = "募兵所";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1466 = "步兵兵营";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1476 = "弓兵兵营";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1486 = "攻城兵兵营";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1496 = "商铺";
+const nopublish$survivors$$buildDescs$46$42$bind$124$1506 = "城墙";
 const nopublish$survivors$$lordChosenBuildings = [1, 2, 7, 8, 9, 11, 12, 13, 14, 15, 16];
 const nopublish$survivors$$nearPoses = [[-1, 0], [1, 0], [0, 1], [0, -1]];
 const nopublish$survivors$$barbarian_nums = [5, 4, 3, 3, 2, 1];
@@ -322,31 +335,31 @@ const nopublish$survivors$$emptySprite$46$constr$47$4364 = "white";
 const nopublish$survivors$$emptySprite$46$constr$47$4365 = "16px ThaleahFat";
 const nopublish$survivors$$entity_from$46$constr$47$4527 = new Option$Some$0$(0);
 const nopublish$survivors$$entity_from$46$constr$47$4528 = new Option$Some$0$(0);
-const nopublish$survivors$$new$46$constr$47$4873 = true;
-const nopublish$survivors$$game_start1$46$constr$47$5250 = new Option$Some$0$(0);
-const nopublish$survivors$$game_start1$46$constr$47$5251 = new Option$Some$0$(640);
-const nopublish$survivors$$game_start1$46$constr$47$5252 = new Option$Some$0$(0);
-const nopublish$survivors$$game_start1$46$constr$47$5253 = new Option$Some$0$(640);
+const nopublish$survivors$$new$46$constr$47$4863 = true;
+const nopublish$survivors$$game_start1$46$constr$47$5244 = new Option$Some$0$(0);
+const nopublish$survivors$$game_start1$46$constr$47$5245 = new Option$Some$0$(640);
+const nopublish$survivors$$game_start1$46$constr$47$5246 = new Option$Some$0$(0);
+const nopublish$survivors$$game_start1$46$constr$47$5247 = new Option$Some$0$(640);
+const nopublish$survivors$$game_start1$46$constr$47$5248 = new Option$Some$0$(0);
+const nopublish$survivors$$game_start1$46$constr$47$5249 = new Option$Some$0$(2);
+const nopublish$survivors$$game_start1$46$constr$47$5250 = new Option$Some$0$(60);
+const nopublish$survivors$$game_start1$46$constr$47$5251 = new Option$Some$0$(2);
+const nopublish$survivors$$game_start1$46$constr$47$5252 = new Option$Some$0$(120);
+const nopublish$survivors$$game_start1$46$constr$47$5253 = new Option$Some$0$(2);
 const nopublish$survivors$$game_start1$46$constr$47$5254 = new Option$Some$0$(0);
-const nopublish$survivors$$game_start1$46$constr$47$5255 = new Option$Some$0$(2);
-const nopublish$survivors$$game_start1$46$constr$47$5256 = new Option$Some$0$(60);
-const nopublish$survivors$$game_start1$46$constr$47$5257 = new Option$Some$0$(2);
-const nopublish$survivors$$game_start1$46$constr$47$5258 = new Option$Some$0$(120);
-const nopublish$survivors$$game_start1$46$constr$47$5259 = new Option$Some$0$(2);
-const nopublish$survivors$$game_start1$46$constr$47$5260 = new Option$Some$0$(0);
-const nopublish$survivors$$game_start1$46$constr$47$5261 = new Option$Some$0$(12);
-const nopublish$survivors$$game_start1$46$constr$47$5262 = new Option$Some$0$(50);
-const nopublish$survivors$$game_start1$46$constr$47$5263 = new Option$Some$0$(12);
-const nopublish$survivors$$game_start1$46$constr$47$5264 = new Option$Some$0$(300);
-const nopublish$survivors$$game_start1$46$constr$47$5265 = new Option$Some$0$(4);
-const nopublish$survivors$$game_start1$46$constr$47$5266 = new Option$Some$0$(380);
-const nopublish$survivors$$game_start1$46$constr$47$5267 = new Option$Some$0$(4);
-const nopublish$survivors$$game_start1$46$constr$47$5268 = new Option$Some$0$(300);
-const nopublish$survivors$$game_start1$46$constr$47$5269 = new Option$Some$0$(16);
-const nopublish$survivors$$game_start1$46$constr$47$5270 = new Option$Some$0$(380);
-const nopublish$survivors$$game_start1$46$constr$47$5271 = new Option$Some$0$(16);
-const nopublish$survivors$$game_start1$46$constr$47$5272 = "white";
-const nopublish$survivors$$game_start1$46$constr$47$5273 = "16px ThaleahFat";
+const nopublish$survivors$$game_start1$46$constr$47$5255 = new Option$Some$0$(12);
+const nopublish$survivors$$game_start1$46$constr$47$5256 = new Option$Some$0$(50);
+const nopublish$survivors$$game_start1$46$constr$47$5257 = new Option$Some$0$(12);
+const nopublish$survivors$$game_start1$46$constr$47$5258 = new Option$Some$0$(300);
+const nopublish$survivors$$game_start1$46$constr$47$5259 = new Option$Some$0$(4);
+const nopublish$survivors$$game_start1$46$constr$47$5260 = new Option$Some$0$(380);
+const nopublish$survivors$$game_start1$46$constr$47$5261 = new Option$Some$0$(4);
+const nopublish$survivors$$game_start1$46$constr$47$5262 = new Option$Some$0$(300);
+const nopublish$survivors$$game_start1$46$constr$47$5263 = new Option$Some$0$(16);
+const nopublish$survivors$$game_start1$46$constr$47$5264 = new Option$Some$0$(380);
+const nopublish$survivors$$game_start1$46$constr$47$5265 = new Option$Some$0$(16);
+const nopublish$survivors$$game_start1$46$constr$47$5266 = "white";
+const nopublish$survivors$$game_start1$46$constr$47$5267 = "16px ThaleahFat";
 const nopublish$survivors$$step$46$constr$47$5478 = true;
 const moonbitlang$core$builtin$$seed = moonbitlang$core$builtin$$random_seed();
 const Milky2018$selene$style$$styles = moonbitlang$core$builtin$$Map$new$46$inner$0$(8);
@@ -474,7 +487,7 @@ const _bind$73 = moonbitlang$core$set$$Set$new$46$inner$20$(8);
 const _bind$74 = moonbitlang$core$set$$Set$new$46$inner$20$(8);
 const nopublish$survivors$$nations = [_tmp, _tmp$2, _tmp$3, _tmp$4, _tmp$5, { tops: _bind$72, areas: _bind$73, roles: _bind$74, gold: 0, eco: 0, soldierNum: 0, popu: 0, iconId: 5, heros: _bind$71, cacheEco: 0 }];
 const nopublish$survivors$$clickWidgets = moonbitlang$core$set$$Set$new$46$inner$24$(8);
-const nopublish$survivors$$buildDescs = [{ name: nopublish$survivors$$buildDescs$46$42$bind$124$1326, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1336, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 20, ecoCost: 20, ecoPerson: 0, foodPerson: 3, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1346, armyLimit: 0, popuLimit: 4, cityDefense: 0, maxLimit: 10, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1356, armyLimit: 0, popuLimit: 8, cityDefense: 0, maxLimit: 40, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1366, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 50, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1376, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 100, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1386, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 100, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1396, armyLimit: 0, popuLimit: 2, cityDefense: 0, maxLimit: 1, ecoCost: 5, ecoPerson: 1, foodPerson: 0, equipPerson: 0, maxPerson: 5 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1406, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 4, ecoCost: 20, ecoPerson: 0, foodPerson: 0, equipPerson: 0.5, maxPerson: 2 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1416, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 20, ecoPerson: 2, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1426, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1436, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1446, armyLimit: 10, popuLimit: 0, cityDefense: 0, maxLimit: 10, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 10 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1456, armyLimit: 10, popuLimit: 0, cityDefense: 0, maxLimit: 10, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 10 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1466, armyLimit: 10, popuLimit: 0, cityDefense: 0, maxLimit: 10, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 10 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1476, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 50, ecoPerson: 10, foodPerson: 0, equipPerson: 0, maxPerson: 5 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1486, armyLimit: 0, popuLimit: 0, cityDefense: 20, maxLimit: 10, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }];
+const nopublish$survivors$$buildDescs = [{ name: nopublish$survivors$$buildDescs$46$42$bind$124$1346, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1356, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 20, ecoCost: 20, ecoPerson: 0, foodPerson: 3, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1366, armyLimit: 0, popuLimit: 4, cityDefense: 0, maxLimit: 10, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1376, armyLimit: 0, popuLimit: 8, cityDefense: 0, maxLimit: 40, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1386, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 50, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1396, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 100, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1406, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 100, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1416, armyLimit: 0, popuLimit: 2, cityDefense: 0, maxLimit: 1, ecoCost: 5, ecoPerson: 1, foodPerson: 1, equipPerson: 0, maxPerson: 5 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1426, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 4, ecoCost: 20, ecoPerson: 0, foodPerson: 0, equipPerson: 0.5, maxPerson: 2 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1436, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 20, ecoPerson: 2, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1446, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 1 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1456, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1466, armyLimit: 10, popuLimit: 0, cityDefense: 0, maxLimit: 10, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 10 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1476, armyLimit: 10, popuLimit: 0, cityDefense: 0, maxLimit: 10, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 10 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1486, armyLimit: 10, popuLimit: 0, cityDefense: 0, maxLimit: 10, ecoCost: 15, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 10 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1496, armyLimit: 0, popuLimit: 0, cityDefense: 0, maxLimit: 1, ecoCost: 50, ecoPerson: 10, foodPerson: 0, equipPerson: 0, maxPerson: 5 }, { name: nopublish$survivors$$buildDescs$46$42$bind$124$1506, armyLimit: 0, popuLimit: 0, cityDefense: 20, maxLimit: 10, ecoCost: 10, ecoPerson: 0, foodPerson: 0, equipPerson: 0, maxPerson: 0 }];
 const nopublish$survivors$$waterSprite = Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Ground/Grass.png", 1, 16, 16, { _0: 0, _1: 0 }, 0), -1, Option$None$0$, undefined), 1, undefined);
 const nopublish$survivors$$desertSprite = Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Ground/Shore.png", 1, 16, 16, { _0: 0, _1: 0 }, 0), -1, Option$None$0$, undefined), 1, undefined);
 const nopublish$survivors$$grassSprite = Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Ground/Grass.png", 1, 16, 16, { _0: 32, _1: 0 }, 0), -1, Option$None$0$, undefined), 1, undefined);
@@ -502,6 +515,7 @@ const nopublish$survivors$$grass3 = Milky2018$selene$sprite$$Animation$new(Milky
 const nopublish$survivors$$grasses = [nopublish$survivors$$grass1, nopublish$survivors$$grass2, nopublish$survivors$$grass3, nopublish$survivors$$grass4, nopublish$survivors$$grass5];
 const nopublish$survivors$$levelEnemySprites = [Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Slimes/Slime.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Slimes/MegaSlimeGreen.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Slimes/MegaSlimeBlue.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Orcs/ClubGoblin.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Orcs/SpearGoblin.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Orcs/OrcMage.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/GiantAnimals/GiantCrab.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Frostborn/Mammoth.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Frostborn/Wendigo.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined), Milky2018$selene$sprite$$Sprite$from_animation(Milky2018$selene$sprite$$Animation$new(Milky2018$selene$sprite$$frames_from_atlas$46$inner("assets/MiniWorldSprites/Characters/Monsters/Frostborn/Yeti.png", 1, 16, 16, { _0: 64, _1: 0 }, 0), -1, Option$None$0$, undefined), 3, undefined)];
 const nopublish$survivors$$emptySprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new("", nopublish$survivors$$emptySprite$46$constr$47$4364, nopublish$survivors$$emptySprite$46$constr$47$4365, undefined, undefined), 2, undefined);
+const nopublish$survivors$$epool = moonbitlang$core$set$$Set$new$46$inner$1$(8);
 function moonbitlang$core$abort$$abort$25$(msg) {
   $panic();
 }
@@ -11167,7 +11181,7 @@ function nopublish$survivors$$Widget$new(off, shapeSize) {
     const _Some = shapeSize;
     _bind$81 = _Some;
   }
-  return { id: _bind$75, entity: _bind$76, visible: true, offset: _bind$77, shapeSize: _bind$81, children: _bind$78, parent: _bind$79, mouse_release: _bind$80, nick: nopublish$survivors$$new$46$42$bind$124$1041 };
+  return { id: _bind$75, entity: _bind$76, visible: true, offset: _bind$77, shapeSize: _bind$81, children: _bind$78, parent: _bind$79, mouse_release: _bind$80, nick: nopublish$survivors$$new$46$42$bind$124$1061 };
 }
 function nopublish$survivors$$Widget$visible_in_tree(self) {
   if (!self.visible) {
@@ -11517,12 +11531,12 @@ function nopublish$survivors$$gen_nation() {
   return nation;
 }
 function nopublish$survivors$$get_nation(nationId) {
-  const _start739 = nopublish$survivors$$nations.length;
-  const _end740 = nationId + 1 | 0;
-  let _tmp$6 = _start739;
+  const _start757 = nopublish$survivors$$nations.length;
+  const _end758 = nationId + 1 | 0;
+  let _tmp$6 = _start757;
   while (true) {
     const i = _tmp$6;
-    if (i < _end740) {
+    if (i < _end758) {
       nopublish$survivors$$gen_nation();
       _tmp$6 = i + 1 | 0;
       continue;
@@ -11574,11 +11588,11 @@ function nopublish$survivors$$get_nation_name(nationId) {
 }
 function nopublish$survivors$$NationTable$render(self) {
   const start = self.lines.length;
-  const _end921 = nopublish$survivors$$nations.length;
+  const _end941 = nopublish$survivors$$nations.length;
   let _tmp$6 = start;
   while (true) {
     const i = _tmp$6;
-    if (i < _end921) {
+    if (i < _end941) {
       const line = nopublish$survivors$$NationLine$new(i);
       nopublish$survivors$$Widget$add_child(self.table, line.line);
       nopublish$survivors$$Widget$set_text(line.name, nopublish$survivors$$get_nation_name(i), undefined, undefined, undefined);
@@ -11589,11 +11603,11 @@ function nopublish$survivors$$NationTable$render(self) {
       break;
     }
   }
-  const _end927 = self.lines.length;
+  const _end947 = self.lines.length;
   let _tmp$7 = 0;
   while (true) {
     const i = _tmp$7;
-    if (i < _end927) {
+    if (i < _end947) {
       const line = moonbitlang$core$array$$Array$at$52$(self.lines, i);
       nopublish$survivors$$Widget$set_offset(line.line, { _0: 0, _1: ((i + 1 | 0) + 0) * 20 });
       const nation = nopublish$survivors$$get_nation(i);
@@ -11705,7 +11719,8 @@ function nopublish$survivors$$Area$alloc_role_to_build(self, build, role) {
   role.jobGx = role.gx;
   role.jobGy = role.gy;
   role.jobBuildCate = build.cate;
-  if (role.nationId === nopublish$survivors$$world.player.nationId) {
+  const areaId = (Math.imul(self.gx, 18) | 0) + self.gy | 0;
+  if (role.nationId === nopublish$survivors$$world.player.nationId && (areaId === nopublish$survivors$$world.showAreaId && nopublish$survivors$$world.inGlobe)) {
     nopublish$survivors$$log(`角色[${moonbitlang$core$int$$Int$to_string$46$inner(role.id, 10)}]前往了${moonbitlang$core$array$$Array$at$45$(nopublish$survivors$$buildDescs, build.cate).name}[${moonbitlang$core$int$$Int$to_string$46$inner(build.id, 10)}]处工作`);
   }
   if (build.nationId >= 0) {
@@ -11948,6 +11963,7 @@ function nopublish$survivors$$Area$recalc_build_stat(self) {
   let cacheEcoSpeed = 0;
   let cacheFoodSpeed = 0;
   let cacheEquipSpeed = 0;
+  let foodConsume = 0;
   const _it$2 = moonbitlang$core$builtin$$Map$iterator2$66$(self.roleOccupy);
   while (true) {
     const _bind$75 = moonbitlang$core$builtin$$Iterator2$next$66$(_it$2);
@@ -11959,6 +11975,9 @@ function nopublish$survivors$$Area$recalc_build_stat(self) {
       const _roleId = _x._1;
       if (moonbitlang$core$builtin$$Map$contains$23$(nopublish$survivors$$world.roleMap, _roleId)) {
         const role = moonbitlang$core$builtin$$Map$at$23$(nopublish$survivors$$world.roleMap, _roleId);
+        if (role.life.hp <= 0) {
+          continue;
+        }
         if (role.nationId === self.nationId) {
           if (role.cate === 3) {
           } else {
@@ -11968,6 +11987,9 @@ function nopublish$survivors$$Area$recalc_build_stat(self) {
           }
           cachePopuNum = cachePopuNum + 1 | 0;
           if (role.jobBuildCate >= 0) {
+            if (!role.inTeam) {
+              foodConsume = foodConsume + 1;
+            }
             _L: {
               _L$2: {
                 const _bind$76 = role.jobBuildCate;
@@ -12037,7 +12059,7 @@ function nopublish$survivors$$Area$recalc_build_stat(self) {
     nopublish$survivors$$Widget$set_text(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).popu, `人口(${moonbitlang$core$int$$Int$to_string$46$inner(cachePopuNum, 10)}/${moonbitlang$core$int$$Int$to_string$46$inner(self.popuLimit, 10)})`, undefined, undefined, undefined);
     nopublish$survivors$$Widget$set_text(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).army, `部队(${moonbitlang$core$int$$Int$to_string$46$inner(cacheArmyNum, 10)}/${moonbitlang$core$int$$Int$to_string$46$inner(cacheArmyLimit, 10)})`, undefined, undefined, undefined);
     nopublish$survivors$$Widget$set_text(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).eco, `经济:${String(self.eco)}(+${String(self.ecoSpeed)})`, undefined, undefined, undefined);
-    nopublish$survivors$$Widget$set_text(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).food, `食物:${String(self.food)}(+${String(self.foodSpeed)})`, undefined, undefined, undefined);
+    nopublish$survivors$$Widget$set_text(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).food, `食物:${String(self.food)}(+${String(self.foodSpeed - foodConsume)})`, undefined, undefined, undefined);
     nopublish$survivors$$Widget$set_text(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).equip, `装备:${String(self.equip)}(+${String(self.equipSpeed)})`, undefined, undefined, undefined);
     return;
   } else {
@@ -12364,6 +12386,7 @@ function nopublish$survivors$$GameWorld$renderBuildLines(self) {
         continue;
       }
     }
+    let lineIdx = 0;
     const _len = nopublish$survivors$$lordChosenBuildings.length;
     let _tmp$6 = 0;
     while (true) {
@@ -12374,75 +12397,32 @@ function nopublish$survivors$$GameWorld$renderBuildLines(self) {
           const lines = nopublish$survivors$$BuildLine$new(cate);
           moonbitlang$core$builtin$$Map$set$64$(buildLines, cate, lines);
           nopublish$survivors$$Widget$add_child(moonbitlang$core$array$$Array$at$40$(self.areaLower, 0).tabs, lines.line);
+          nopublish$survivors$$Widget$set_offset(lines.line, { _0: 0, _1: 60 + (lineIdx + 0) * 12 });
+        } else {
+          const lines = moonbitlang$core$builtin$$Map$at$64$(buildLines, cate);
+          nopublish$survivors$$Widget$set_offset(lines.line, { _0: 0, _1: 60 + (lineIdx + 0) * 12 });
+        }
+        lineIdx = lineIdx + 1 | 0;
+        const lines = moonbitlang$core$builtin$$Map$at$64$(buildLines, cate);
+        if (!moonbitlang$core$builtin$$Map$contains$66$(area.buildStat, cate)) {
+          nopublish$survivors$$BuildLine$set_alloc(lines, 0, 0);
+          nopublish$survivors$$BuildLine$set_num(lines, 0);
+          nopublish$survivors$$Widget$show(lines.line);
+        } else {
+          const buildNum = moonbitlang$core$builtin$$Map$at$66$(area.buildStat, cate);
+          const personLimit = Math.imul(moonbitlang$core$array$$Array$at$45$(nopublish$survivors$$buildDescs, cate).maxPerson, buildNum) | 0;
+          let existNum = 0;
+          if (moonbitlang$core$builtin$$Map$contains$66$(area.buildCatePersonNum, cate)) {
+            existNum = moonbitlang$core$builtin$$Map$at$66$(area.buildCatePersonNum, cate);
+          }
+          nopublish$survivors$$BuildLine$set_alloc(lines, existNum, personLimit);
+          nopublish$survivors$$BuildLine$set_num(lines, buildNum);
+          nopublish$survivors$$Widget$show(lines.line);
         }
         _tmp$6 = _i + 1 | 0;
         continue;
       } else {
-        break;
-      }
-    }
-    const _it$2 = moonbitlang$core$builtin$$Map$iterator2$66$(area.buildStat);
-    while (true) {
-      const _bind$75 = moonbitlang$core$builtin$$Iterator2$next$66$(_it$2);
-      if (_bind$75 === undefined) {
-        break;
-      } else {
-        const _Some = _bind$75;
-        const _x = _Some;
-        const _cate = _x._0;
-        if (!moonbitlang$core$builtin$$Map$contains$64$(buildLines, _cate)) {
-          const lines = nopublish$survivors$$BuildLine$new(_cate);
-          moonbitlang$core$builtin$$Map$set$64$(buildLines, _cate, lines);
-          nopublish$survivors$$Widget$add_child(moonbitlang$core$array$$Array$at$40$(self.areaLower, 0).tabs, lines.line);
-        }
-        continue;
-      }
-    }
-    let lineIdx = 0;
-    const _it$3 = moonbitlang$core$builtin$$Map$iterator2$66$(area.buildStat);
-    while (true) {
-      const _bind$75 = moonbitlang$core$builtin$$Iterator2$next$66$(_it$3);
-      if (_bind$75 === undefined) {
-        break;
-      } else {
-        const _Some = _bind$75;
-        const _x = _Some;
-        const _cate = _x._0;
-        const _buildNum = _x._1;
-        const personLimit = Math.imul(moonbitlang$core$array$$Array$at$45$(nopublish$survivors$$buildDescs, _cate).maxPerson, _buildNum) | 0;
-        let existNum = 0;
-        if (moonbitlang$core$builtin$$Map$contains$66$(area.buildCatePersonNum, _cate)) {
-          existNum = moonbitlang$core$builtin$$Map$at$66$(area.buildCatePersonNum, _cate);
-        }
-        if (moonbitlang$core$builtin$$Map$contains$64$(buildLines, _cate)) {
-          const lines = moonbitlang$core$builtin$$Map$at$64$(buildLines, _cate);
-          nopublish$survivors$$Widget$set_offset(lines.line, { _0: 0, _1: 60 + (lineIdx + 0) * 12 });
-          nopublish$survivors$$BuildLine$set_alloc(lines, existNum, personLimit);
-          nopublish$survivors$$BuildLine$set_num(lines, _buildNum);
-          nopublish$survivors$$Widget$show(lines.line);
-          lineIdx = lineIdx + 1 | 0;
-        }
-        continue;
-      }
-    }
-    const _it$4 = moonbitlang$core$builtin$$Map$iterator2$64$(buildLines);
-    while (true) {
-      const _bind$75 = moonbitlang$core$builtin$$Iterator2$next$64$(_it$4);
-      if (_bind$75 === undefined) {
         return;
-      } else {
-        const _Some = _bind$75;
-        const _x = _Some;
-        const _cate = _x._0;
-        const _lines = _x._1;
-        if (!moonbitlang$core$builtin$$Map$contains$66$(area.buildStat, _cate)) {
-          nopublish$survivors$$Widget$set_offset(_lines.line, { _0: 0, _1: 60 + (lineIdx + 0) * 12 });
-          nopublish$survivors$$BuildLine$set_alloc(_lines, 0, 0);
-          nopublish$survivors$$BuildLine$set_num(_lines, 0);
-          nopublish$survivors$$Widget$show(_lines.line);
-          lineIdx = lineIdx + 1 | 0;
-        }
-        continue;
       }
     }
   } else {
@@ -12456,7 +12436,7 @@ function nopublish$survivors$$BuildLine$new(cate) {
   const _bind$78 = nopublish$survivors$$Widget$new({ _0: 75, _1: 0 }, { _0: 5, _1: 10 });
   const _bind$79 = nopublish$survivors$$Widget$new({ _0: 80, _1: 0 }, undefined);
   const _bind$80 = nopublish$survivors$$Widget$new({ _0: 120, _1: 0 }, { _0: 5, _1: 10 });
-  const _bind$81 = nopublish$survivors$$Widget$new({ _0: 135, _1: 0 }, { _0: 20, _1: 10 });
+  const _bind$81 = nopublish$survivors$$Widget$new({ _0: 135, _1: 0 }, { _0: 10, _1: 10 });
   const line = { line: _bind$75, name: _bind$76, num: _bind$77, minus: _bind$78, allocs: _bind$79, add: _bind$80, choose: _bind$81, cate: cate };
   nopublish$survivors$$Widget$add_child(_bind$75, _bind$76);
   nopublish$survivors$$Widget$add_child(_bind$75, _bind$77);
@@ -12472,7 +12452,7 @@ function nopublish$survivors$$BuildLine$new(cate) {
     moonbitlang$core$builtin$$println$22$("build add");
     if (!nopublish$survivors$$world.inGlobe && nopublish$survivors$$world.showAreaId >= 0) {
       const area = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, nopublish$survivors$$world.showAreaId);
-      if (!(area.nationId === nopublish$survivors$$world.player.id)) {
+      if (!(area.nationId === nopublish$survivors$$world.player.nationId)) {
         nopublish$survivors$$log("不可以调整不属于自己的城市");
         return undefined;
       }
@@ -12480,7 +12460,7 @@ function nopublish$survivors$$BuildLine$new(cate) {
         nopublish$survivors$$log("空闲的人物不够");
         return undefined;
       }
-      nopublish$survivors$$Area$auto_alloc_to_cate$46$inner(area, cate, area.nationId === nopublish$survivors$$world.player.id);
+      nopublish$survivors$$Area$auto_alloc_to_cate$46$inner(area, cate, area.nationId === nopublish$survivors$$world.player.nationId);
       nopublish$survivors$$Area$recalc_build_stat(area);
       if (nopublish$survivors$$Widget$visible_in_tree(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).tabs) && !moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).showHero) {
         nopublish$survivors$$AreaLowerTab$render(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0));
@@ -12497,7 +12477,7 @@ function nopublish$survivors$$BuildLine$new(cate) {
     moonbitlang$core$builtin$$println$22$("build minus");
     if (!nopublish$survivors$$world.inGlobe && nopublish$survivors$$world.showAreaId >= 0) {
       const area = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, nopublish$survivors$$world.showAreaId);
-      if (!(area.nationId === nopublish$survivors$$world.player.id)) {
+      if (!(area.nationId === nopublish$survivors$$world.player.nationId)) {
         nopublish$survivors$$log("不可以调整不属于自己的城市");
         return undefined;
       }
@@ -12548,11 +12528,11 @@ function nopublish$survivors$$HeroPage$render(self) {
   nopublish$survivors$$Widget$set_text(_tmp$6, `英雄数量:${moonbitlang$core$int$$Int$to_string$46$inner(_p.size, 10)}`, undefined, undefined, undefined);
   const start = self.lines.length;
   const heroIds = moonbitlang$core$set$$Set$to_array$20$(nation.heros);
-  const _end890 = heroIds.length;
+  const _end910 = heroIds.length;
   let _tmp$7 = start;
   while (true) {
     const i = _tmp$7;
-    if (i < _end890) {
+    if (i < _end910) {
       if (self.dieHeroLine.length > 0) {
         const line = moonbitlang$core$array$$Array$remove$26$(self.dieHeroLine, 0);
         moonbitlang$core$array$$Array$push$26$(self.lines, line);
@@ -12567,11 +12547,11 @@ function nopublish$survivors$$HeroPage$render(self) {
       break;
     }
   }
-  const _end897 = heroIds.length;
+  const _end917 = heroIds.length;
   let _tmp$8 = 0;
   while (true) {
     const i = _tmp$8;
-    if (i < _end897) {
+    if (i < _end917) {
       const heroId = moonbitlang$core$array$$Array$at$20$(heroIds, i);
       const line = moonbitlang$core$array$$Array$at$26$(self.lines, i);
       if (moonbitlang$core$builtin$$Map$contains$23$(nopublish$survivors$$world.roleMap, heroId)) {
@@ -12593,7 +12573,7 @@ function nopublish$survivors$$HeroPage$render(self) {
   nopublish$survivors$$Widget$show(self.page);
 }
 function nopublish$survivors$$HeroLine$new() {
-  const line = { line: nopublish$survivors$$Widget$new(undefined, undefined), hero: nopublish$survivors$$Widget$new({ _0: 0, _1: 0 }, undefined), left: nopublish$survivors$$Widget$new({ _0: 40, _1: 0 }, undefined), soldierTypeName: nopublish$survivors$$Widget$new({ _0: 60, _1: 0 }, undefined), right: nopublish$survivors$$Widget$new({ _0: 100, _1: 0 }, undefined), leftFollow: nopublish$survivors$$Widget$new({ _0: 110, _1: 0 }, undefined), follow: nopublish$survivors$$Widget$new({ _0: 115, _1: 0 }, undefined), rightFollow: nopublish$survivors$$Widget$new({ _0: 140, _1: 0 }, undefined), control: nopublish$survivors$$Widget$new({ _0: 145, _1: 0 }, { _0: 30, _1: 10 }), heroId: -1 };
+  const line = { line: nopublish$survivors$$Widget$new(undefined, undefined), hero: nopublish$survivors$$Widget$new({ _0: 0, _1: 0 }, undefined), left: nopublish$survivors$$Widget$new({ _0: 55, _1: 0 }, { _0: 5, _1: 10 }), soldierTypeName: nopublish$survivors$$Widget$new({ _0: 60, _1: 0 }, undefined), right: nopublish$survivors$$Widget$new({ _0: 100, _1: 0 }, { _0: 5, _1: 10 }), leftFollow: nopublish$survivors$$Widget$new({ _0: 110, _1: 0 }, { _0: 5, _1: 10 }), follow: nopublish$survivors$$Widget$new({ _0: 115, _1: 0 }, undefined), rightFollow: nopublish$survivors$$Widget$new({ _0: 135, _1: 0 }, { _0: 5, _1: 10 }), control: nopublish$survivors$$Widget$new({ _0: 140, _1: 0 }, { _0: 20, _1: 10 }), heroId: -1 };
   nopublish$survivors$$Widget$set_text(line.left, "<", undefined, undefined, undefined);
   nopublish$survivors$$Widget$add_onclick(line.left, (btn) => {
     moonbitlang$core$builtin$$println$22$("hero minus soldier");
@@ -12675,6 +12655,21 @@ function nopublish$survivors$$HeroLine$new() {
   });
   line.rightFollow.nick = "rightFollow";
   line.control.nick = "hero-control";
+  nopublish$survivors$$Widget$set_text(line.control, "控制", undefined, undefined, undefined);
+  nopublish$survivors$$Widget$add_onclick(line.control, (btn) => {
+    moonbitlang$core$builtin$$println$22$("control");
+    if (moonbitlang$core$builtin$$Map$contains$23$(nopublish$survivors$$world.roleMap, line.heroId)) {
+      const hero = moonbitlang$core$builtin$$Map$at$23$(nopublish$survivors$$world.roleMap, line.heroId);
+      if (hero.id !== nopublish$survivors$$world.player.id && hero.nationId === nopublish$survivors$$world.player.nationId) {
+        nopublish$survivors$$GameWorld$set_hero(nopublish$survivors$$world, hero);
+        return;
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  });
   nopublish$survivors$$Widget$add_child(line.line, line.hero);
   nopublish$survivors$$Widget$add_child(line.line, line.left);
   nopublish$survivors$$Widget$add_child(line.line, line.soldierTypeName);
@@ -12856,6 +12851,27 @@ function nopublish$survivors$$Area$show_area_building_texts(self) {
     return;
   }
 }
+function nopublish$survivors$$GameWorld$set_hero(self, role) {
+  self.player = role;
+  Milky2018$selene$system$$deferred_event_system(0);
+  moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, self.player.ge, nopublish$survivors$$heroSprite);
+  moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, self.player.ae, nopublish$survivors$$heroSprite);
+  nopublish$survivors$$GameWorld$camera_center_at(self, self.player);
+  Milky2018$selene$system$$deferred_event_system(0);
+  nopublish$survivors$$Role$toGlobe(self.player);
+}
+function nopublish$survivors$$GameWorld$camera_center_at(self, role) {
+  if (role.inGlobe) {
+    nopublish$survivors$$GameWorld$showGlobe(self);
+    Milky2018$selene$entity$$Entity$respawn(role.ge);
+    return;
+  } else {
+    self.showAreaId = (Math.imul(role.gx, 18) | 0) + role.gx | 0;
+    nopublish$survivors$$GameWorld$showArea(self, (Math.imul(role.gx, 18) | 0) + role.gx | 0);
+    Milky2018$selene$entity$$Entity$respawn(role.ae);
+    return;
+  }
+}
 function nopublish$survivors$$Role$switch_follow_solider_type$46$inner(self, dir) {
   if (dir === -1) {
     const _bind$75 = self.followSoldierType;
@@ -12894,11 +12910,11 @@ function nopublish$survivors$$Role$switch_follow_solider_type$46$inner(self, dir
 }
 function nopublish$survivors$$Role$clear_soldiers(self) {
   const soldiers = moonbitlang$core$array$$Array$copy$20$(self.soldiers);
-  const _end782 = soldiers.length;
+  const _end800 = soldiers.length;
   let _tmp$6 = 0;
   while (true) {
     const idx = _tmp$6;
-    if (idx < _end782) {
+    if (idx < _end800) {
       const roleId = moonbitlang$core$array$$Array$at$20$(soldiers, idx);
       if (moonbitlang$core$builtin$$Map$contains$23$(nopublish$survivors$$world.roleMap, roleId)) {
         const role = moonbitlang$core$builtin$$Map$at$23$(nopublish$survivors$$world.roleMap, roleId);
@@ -13003,7 +13019,7 @@ function nopublish$survivors$$HeroPage$new() {
       }
       if (area.eco >= 10) {
         area.eco = area.eco - 10;
-        nopublish$survivors$$GameWorld$genNPC$46$inner(nopublish$survivors$$world, gx, gy, area.nationId, nopublish$survivors$$new$46$constr$47$4873);
+        nopublish$survivors$$GameWorld$genNPC$46$inner(nopublish$survivors$$world, gx, gy, area.nationId, nopublish$survivors$$new$46$constr$47$4863);
         if (moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).showHero) {
           nopublish$survivors$$AreaLowerTab$render(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0));
           return;
@@ -13091,10 +13107,10 @@ function nopublish$survivors$$Role$hide(self) {
   }
   if (Milky2018$selene$entity$$Entity$is_alive(self.ge)) {
     Milky2018$selene$entity$$Entity$destroy(self.ge);
-    return;
-  } else {
-    return;
   }
+  Milky2018$selene$system$$deferred_event_system(0);
+  moonbitlang$core$set$$Set$add$1$(nopublish$survivors$$epool, self.ae);
+  moonbitlang$core$set$$Set$add$1$(nopublish$survivors$$epool, self.ge);
 }
 function nopublish$survivors$$Role$is_equiped(self) {
   if (self.equiped || (self.cate === 3 || self.cate === 2)) {
@@ -13239,11 +13255,11 @@ function nopublish$survivors$$GameWorld$gen_all_babarians(self) {
       if (i < 6) {
         const area = moonbitlang$core$array$$Array$at$42$(areas, i);
         if (moonbitlang$core$random$$Rand$double(nopublish$survivors$$grand) < moonbitlang$core$array$$Array$at$5$(nopublish$survivors$$barbarian_rates, i)) {
-          const _end825 = moonbitlang$core$array$$Array$at$20$(nopublish$survivors$$barbarian_nums, i);
+          const _end843 = moonbitlang$core$array$$Array$at$20$(nopublish$survivors$$barbarian_nums, i);
           let _tmp$7 = 0;
           while (true) {
             const j = _tmp$7;
-            if (j < _end825) {
+            if (j < _end843) {
               const barbarian = nopublish$survivors$$GameWorld$gen_barbarian(self, area.gx, area.gy);
               nopublish$survivors$$Role$toArea$46$inner(barbarian, true);
               _tmp$7 = j + 1 | 0;
@@ -13319,9 +13335,11 @@ function nopublish$survivors$$Role$find_atk_build_or_role(self, area) {
         if (role.inTeam) {
           continue;
         }
-        if (nopublish$survivors$$nation_negative(self.nationId, role.nationId)) {
-          self.atkTarget = role.id;
-          return true;
+        if (self.gx === role.gx && (self.gy === role.gy && role.life.hp > 0)) {
+          if (nopublish$survivors$$nation_negative(self.nationId, role.nationId)) {
+            self.atkTarget = role.id;
+            return true;
+          }
         }
       }
       continue;
@@ -13347,6 +13365,24 @@ function nopublish$survivors$$Role$find_atk_build_or_role(self, area) {
     }
   }
   return false;
+}
+function nopublish$survivors$$Area$find_wall(self) {
+  const _it = moonbitlang$core$builtin$$Map$iterator2$65$(self.buildings);
+  while (true) {
+    const _bind$75 = moonbitlang$core$builtin$$Iterator2$next$65$(_it);
+    if (_bind$75 === undefined) {
+      break;
+    } else {
+      const _Some = _bind$75;
+      const _x = _Some;
+      const _build = _x._1;
+      if (_build.cate === 16 && _build.hp > 10) {
+        return _build;
+      }
+      continue;
+    }
+  }
+  return undefined;
 }
 function nopublish$survivors$$Area$get_occupy(self, x, y) {
   const pos = (Math.imul(x, 18) | 0) + y | 0;
@@ -13802,16 +13838,6 @@ function nopublish$survivors$$Role$atk_build(self, target) {
     return;
   }
 }
-function nopublish$survivors$$GameWorld$camera_center_at(self, role) {
-  if (role.inGlobe) {
-    nopublish$survivors$$GameWorld$showGlobe(self);
-    return;
-  } else {
-    self.showAreaId = (Math.imul(role.gx, 18) | 0) + role.gx | 0;
-    nopublish$survivors$$GameWorld$showArea(self, (Math.imul(role.gx, 18) | 0) + role.gx | 0);
-    return;
-  }
-}
 function nopublish$survivors$$Nation$unreg_role(self, id) {
   moonbitlang$core$set$$Set$remove$20$(self.roles, id);
 }
@@ -13824,7 +13850,6 @@ function nopublish$survivors$$GameWorld$die(self, role) {
   if (role.soldiers.length > 0) {
     nopublish$survivors$$Role$clear_soldiers(role);
   }
-  nopublish$survivors$$Role$hide(role);
   if (role.jobBuild >= 0) {
     const area = moonbitlang$core$array$$Array$at$42$(self.areas, (Math.imul(role.jobGx, 18) | 0) + role.jobGy | 0);
     if (moonbitlang$core$builtin$$Map$contains$65$(area.buildings, role.jobBuild)) {
@@ -13836,6 +13861,7 @@ function nopublish$survivors$$GameWorld$die(self, role) {
   if (role.cate === 3 && role.nationId >= 0) {
     moonbitlang$core$set$$Set$remove$20$(nopublish$survivors$$get_nation(role.nationId).heros, role.id);
   }
+  nopublish$survivors$$Role$hide(role);
   const oldNationId = role.nationId;
   if (role.id === self.player.id) {
     const _it = moonbitlang$core$builtin$$Map$iterator2$23$(self.roleMap);
@@ -13848,12 +13874,8 @@ function nopublish$survivors$$GameWorld$die(self, role) {
         const _x = _Some;
         const _role = _x._1;
         if (_role.cate === 3 && oldNationId === _role.nationId) {
-          self.player = _role;
-          moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, self.player.ge, nopublish$survivors$$heroSprite);
-          moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, self.player.ae, nopublish$survivors$$heroSprite);
-          nopublish$survivors$$log(`因为操作的角色死亡, 所以控制迁移到了新英雄${nopublish$survivors$$Role$get_name(self.player)}`);
-          nopublish$survivors$$GameWorld$camera_center_at(self, self.player);
-          nopublish$survivors$$Role$toGlobe(self.player);
+          nopublish$survivors$$log(`因为操作的角色死亡, 所以控制迁移到了新英雄${nopublish$survivors$$Role$get_name(_role)}`);
+          nopublish$survivors$$GameWorld$set_hero(self, _role);
           break;
         }
         continue;
@@ -13981,38 +14003,7 @@ function nopublish$survivors$$Role$hp_restore(self) {
   }
 }
 function nopublish$survivors$$Role$negative(self, target) {
-  if (self.cate === target.cate) {
-    return false;
-  }
-  _L: {
-    const _bind$75 = self.cate;
-    switch (_bind$75) {
-      case 3: {
-        break _L;
-      }
-      case 1: {
-        break _L;
-      }
-      case 2: {
-        const _bind$76 = target.cate;
-        switch (_bind$76) {
-          case 3: {
-            return true;
-          }
-          case 1: {
-            return true;
-          }
-          default: {
-            return false;
-          }
-        }
-      }
-      default: {
-        return false;
-      }
-    }
-  }
-  return target.cate === 2;
+  return nopublish$survivors$$nation_negative(self.nationId, target.nationId);
 }
 function nopublish$survivors$$Role$interact(self, target) {
   if (nopublish$survivors$$Role$negative(self, target)) {
@@ -14087,7 +14078,14 @@ function nopublish$survivors$$Role$move(self, vec) {
     const area = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, idx);
     if (nopublish$survivors$$nation_negative(area.nationId, self.nationId)) {
       if (area.cityDefense > 0) {
-        area.cityDefense = area.cityDefense - (nopublish$survivors$$Role$get_atk(self) + 0);
+        const wallOp = nopublish$survivors$$Area$find_wall(area);
+        if (wallOp === undefined) {
+          area.cityDefense = 0;
+        } else {
+          const _Some = wallOp;
+          const _wall = _Some;
+          nopublish$survivors$$Role$atk_build(self, _wall);
+        }
         return undefined;
       }
     }
@@ -14290,7 +14288,7 @@ function nopublish$survivors$$Role$move_forward$46$inner(self, x, y, ofGlobe, ab
   }
 }
 function nopublish$survivors$$Role$rnd_move(self) {
-  if (self.atkArea >= 0) {
+  if (self.atkArea >= 0 && self.atkArea < nopublish$survivors$$world.areas.length) {
     const tgx = self.atkArea / 18 | 0;
     const tgy = self.atkArea - (Math.imul(18, tgx) | 0) | 0;
     if (self.inGlobe) {
@@ -14316,11 +14314,15 @@ function nopublish$survivors$$Role$rnd_move(self) {
       const area = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, areaId);
       if (moonbitlang$core$builtin$$Map$contains$65$(area.buildings, self.atkBuild)) {
         const build = moonbitlang$core$builtin$$Map$at$65$(area.buildings, self.atkBuild);
-        if (build.x !== self.ax || build.y !== self.ay) {
-          nopublish$survivors$$Role$move_forward$46$inner(self, build.x, build.y, false, true);
-          return undefined;
-        } else {
+        if (!nopublish$survivors$$nation_negative(self.nationId, build.nationId) || build.hp <= 0) {
           self.atkBuild = -1;
+        } else {
+          if (build.x !== self.ax || build.y !== self.ay) {
+            nopublish$survivors$$Role$move_forward$46$inner(self, build.x, build.y, false, true);
+            return undefined;
+          } else {
+            self.atkBuild = -1;
+          }
         }
       } else {
         self.atkBuild = -1;
@@ -14348,7 +14350,7 @@ function nopublish$survivors$$Role$rnd_move(self) {
       }
     }
   }
-  if (self.atkBuild < 0 && self.atkTarget < 0 && self.atkArea >= 0) {
+  if (self.atkBuild < 0 && self.atkTarget < 0 && (self.atkArea >= 0 && !self.inGlobe)) {
     const areaId = (Math.imul(self.gx, 18) | 0) + self.gy | 0;
     const area = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, areaId);
     if (self.atkArea === areaId) {
@@ -14462,11 +14464,11 @@ function nopublish$survivors$$Area$can_build$46$inner(self, cate, x, y, nationId
 }
 function nopublish$survivors$$Area$auto_fill_build_cate_num$46$inner(self, cate, num, useEco) {
   let successNum = 0;
-  const _end108 = Math.imul(num, 6) | 0;
+  const _end110 = Math.imul(num, 6) | 0;
   let _tmp$6 = 0;
   while (true) {
     const i = _tmp$6;
-    if (i < _end108) {
+    if (i < _end110) {
       const _bind$75 = nopublish$survivors$$Area$find_empty_pos(self);
       const _x = _bind$75._0;
       const _y = _bind$75._1;
@@ -14554,7 +14556,7 @@ function nopublish$survivors$$game_start1(duration) {
   Milky2018$selene$entity$$Entity$destroy(nopublish$survivors$$world.teamButton);
   Milky2018$selene$entity$$Entity$destroy(nopublish$survivors$$world.heroButton);
   Milky2018$selene$backend$$load_font("ThaleahFat", "assets/fonts/ThaleahFat.ttf");
-  Milky2018$selene$camera$$set_limits(nopublish$survivors$$game_start1$46$constr$47$5250, nopublish$survivors$$game_start1$46$constr$47$5251, nopublish$survivors$$game_start1$46$constr$47$5252, nopublish$survivors$$game_start1$46$constr$47$5253);
+  Milky2018$selene$camera$$set_limits(nopublish$survivors$$game_start1$46$constr$47$5244, nopublish$survivors$$game_start1$46$constr$47$5245, nopublish$survivors$$game_start1$46$constr$47$5246, nopublish$survivors$$game_start1$46$constr$47$5247);
   const nationTable = nopublish$survivors$$NationTable$new();
   nopublish$survivors$$Widget$set_offsetxy(nationTable.table, 300, 0);
   moonbitlang$core$array$$Array$push$39$(nopublish$survivors$$world.nationTable, nationTable);
@@ -14567,18 +14569,18 @@ function nopublish$survivors$$game_start1(duration) {
   nopublish$survivors$$Widget$hide(moonbitlang$core$array$$Array$at$40$(nopublish$survivors$$world.areaLower, 0).tabs);
   moonbitlang$core$set$$Set$add$20$(nopublish$survivors$$get_nation(nopublish$survivors$$world.player.nationId).heros, nopublish$survivors$$world.player.id);
   nopublish$survivors$$world.player.followSoldierType = 12;
-  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.hpText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5254, nopublish$survivors$$game_start1$46$constr$47$5255);
-  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.levelText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5256, nopublish$survivors$$game_start1$46$constr$47$5257);
-  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.atkText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5258, nopublish$survivors$$game_start1$46$constr$47$5259);
-  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.travelText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5260, nopublish$survivors$$game_start1$46$constr$47$5261);
-  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.enemyBarText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5262, nopublish$survivors$$game_start1$46$constr$47$5263);
-  const e = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.popuLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5264, nopublish$survivors$$game_start1$46$constr$47$5265);
+  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.hpText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5248, nopublish$survivors$$game_start1$46$constr$47$5249);
+  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.levelText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5250, nopublish$survivors$$game_start1$46$constr$47$5251);
+  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.atkText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5252, nopublish$survivors$$game_start1$46$constr$47$5253);
+  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.travelText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5254, nopublish$survivors$$game_start1$46$constr$47$5255);
+  Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.enemyBarText, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5256, nopublish$survivors$$game_start1$46$constr$47$5257);
+  const e = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.popuLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5258, nopublish$survivors$$game_start1$46$constr$47$5259);
   Milky2018$selene$entity$$Entity$destroy(e);
-  const e1 = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.armyLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5266, nopublish$survivors$$game_start1$46$constr$47$5267);
+  const e1 = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.armyLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5260, nopublish$survivors$$game_start1$46$constr$47$5261);
   Milky2018$selene$entity$$Entity$destroy(e1);
-  const e2 = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.ecoLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5268, nopublish$survivors$$game_start1$46$constr$47$5269);
+  const e2 = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.ecoLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5262, nopublish$survivors$$game_start1$46$constr$47$5263);
   Milky2018$selene$entity$$Entity$destroy(e2);
-  const e3 = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.foodLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5270, nopublish$survivors$$game_start1$46$constr$47$5271);
+  const e3 = Milky2018$selene$style$$add_widget(Milky2018$selene$style$$screen_root, (zindex) => Milky2018$selene$sprite$$Sprite$from_text(nopublish$survivors$$world.foodLabel, zindex, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, nopublish$survivors$$game_start1$46$constr$47$5264, nopublish$survivors$$game_start1$46$constr$47$5265);
   Milky2018$selene$entity$$Entity$destroy(e3);
   let _tmp$6 = 0;
   while (true) {
@@ -14682,7 +14684,7 @@ function nopublish$survivors$$game_start1(duration) {
         const j = _tmp$10;
         if (j < 18) {
           const grid = Milky2018$selene$style$$add_widget(nopublish$survivors$$world.areaBuildPanel, (zindex) => Milky2018$selene$sprite$$Sprite$from_animation(moonbitlang$core$array$$Array$at$41$(nopublish$survivors$$grasses, moonbitlang$core$random$$Rand$int$46$inner(nopublish$survivors$$grand, nopublish$survivors$$grasses.length)), 2, undefined), undefined, undefined, undefined, undefined, Option$None$0$, Option$None$0$, new Option$Some$0$((i + 0) * 16), new Option$Some$0$((j + 0) * 16));
-          moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, grid, Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new("", nopublish$survivors$$game_start1$46$constr$47$5272, nopublish$survivors$$game_start1$46$constr$47$5273, undefined, undefined), 2, undefined));
+          moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, grid, Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new("", nopublish$survivors$$game_start1$46$constr$47$5266, nopublish$survivors$$game_start1$46$constr$47$5267, undefined, undefined), 2, undefined));
           moonbitlang$core$array$$Array$push$1$(nopublish$survivors$$world.areaBes, grid);
           _tmp$10 = j + 1 | 0;
           continue;
@@ -14792,6 +14794,12 @@ function nopublish$survivors$$Area$lord_add_build_at$46$inner(self, cate, ax, ay
   }
 }
 function nopublish$survivors$$army_attack(src, target) {
+  if (src < 0 || src >= nopublish$survivors$$nations.length) {
+    return undefined;
+  }
+  if (target < 0 || target >= nopublish$survivors$$nations.length) {
+    return undefined;
+  }
   const nation0 = nopublish$survivors$$get_nation(src);
   const nation1 = nopublish$survivors$$get_nation(target);
   let _tmp$6;
@@ -14851,8 +14859,12 @@ function nopublish$survivors$$army_attack(src, target) {
         continue;
       }
     }
-    nopublish$survivors$$log(`国家${moonbitlang$core$int$$Int$to_string$46$inner(src, 10)}发起了对国家${moonbitlang$core$int$$Int$to_string$46$inner(target, 10)}的袭击`);
-    return;
+    if (src >= 0 && target >= 0) {
+      nopublish$survivors$$log(`国家${moonbitlang$core$int$$Int$to_string$46$inner(src, 10)}发起了对国家${moonbitlang$core$int$$Int$to_string$46$inner(target, 10)}的袭击`);
+      return;
+    } else {
+      return;
+    }
   } else {
     return;
   }
@@ -14893,6 +14905,9 @@ function nopublish$survivors$$act_arg_to_nationId(arg) {
 function nopublish$survivors$$army_attack_area(src, targetAreaId) {
   const nation0 = nopublish$survivors$$get_nation(src);
   const tarea = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, targetAreaId);
+  if (tarea.nationId === src) {
+    return undefined;
+  }
   const _p = nation0.areas;
   if (_p.size > 0) {
     const _tmp$6 = nopublish$survivors$$world.areas;
@@ -14976,6 +14991,7 @@ function nopublish$survivors$$to_war(src, target) {
   }
 }
 function nopublish$survivors$$perform_actv2(id, act, arg0) {
+  let allstr = "";
   if (act === 0) {
     let opLevel = arg0;
     if (opLevel < 0) {
@@ -14988,32 +15004,43 @@ function nopublish$survivors$$perform_actv2(id, act, arg0) {
     const gx = areaId / 18 | 0;
     const gy = areaId - (Math.imul(18, gx) | 0) | 0;
     nopublish$survivors$$GameWorld$gen_nest_gxy(nopublish$survivors$$world, opLevel, gx, gy);
-    return;
+    allstr = `${allstr}在世界${moonbitlang$core$int$$Int$to_string$46$inner(gx, 10)},${moonbitlang$core$int$$Int$to_string$46$inner(gy, 10)}处生成级别为${moonbitlang$core$int$$Int$to_string$46$inner(opLevel, 10)}的魔物巢穴\r\n`;
   } else {
     if (act === 1) {
       const nationId1 = nopublish$survivors$$act_arg_to_nationId(id);
       const areaId = nopublish$survivors$$act_arg_to_nationId(arg0);
       const area = moonbitlang$core$array$$Array$at$42$(nopublish$survivors$$world.areas, areaId);
       const nationId2 = area.nationId;
-      if (!nopublish$survivors$$nation_negative(nationId1, nationId2)) {
-        nopublish$survivors$$log(`国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}]向国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}]宣战了`);
-        nopublish$survivors$$to_war(nationId1, nationId2);
-      } else {
-        nopublish$survivors$$log(`国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}]向国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}]发起了军事行动`);
+      if (nationId1 >= 0 && (nationId2 >= 0 && nationId1 !== nationId2)) {
+        if (!nopublish$survivors$$nation_negative(nationId1, nationId2)) {
+          nopublish$survivors$$log(`国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}]向国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}]宣战了`);
+          nopublish$survivors$$to_war(nationId1, nationId2);
+        } else {
+          nopublish$survivors$$log(`国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}]向国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}]发起了军事行动`);
+        }
+      }
+      const gx = areaId / 18 | 0;
+      const gy = areaId - (Math.imul(gx, 18) | 0) | 0;
+      if (nationId1 >= 0 && area.nationId !== nationId1) {
+        allstr = `${allstr}国家[${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}]向世界${moonbitlang$core$int$$Int$to_string$46$inner(gx, 10)},${moonbitlang$core$int$$Int$to_string$46$inner(gy, 10)}处发起军事行动\r\n`;
       }
       nopublish$survivors$$army_attack_area(nationId1, areaId);
-      return;
     } else {
       if (act === 2) {
         const nationId1 = nopublish$survivors$$act_arg_to_nationId(id);
         const nationId2 = nopublish$survivors$$act_arg_to_nationId(arg0);
+        if (nationId1 === 5 || nationId2 === 5) {
+          return "";
+        }
+        if (nationId1 === 4 || nationId2 === 4) {
+          return "";
+        }
         if (moonbitlang$core$random$$Rand$double(nopublish$survivors$$grand) < 0.5) {
           nopublish$survivors$$log(`国家${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}与国家${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}议和,两国重归于好`);
+          allstr = `${allstr}国家${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}与国家${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}议和,两国重归于好\r\n`;
           nopublish$survivors$$to_peace(nationId1, nationId2);
-          return;
         } else {
           nopublish$survivors$$log(`国家${moonbitlang$core$int$$Int$to_string$46$inner(nationId1, 10)}与国家${moonbitlang$core$int$$Int$to_string$46$inner(nationId2, 10)}议和失败了`);
-          return;
         }
       } else {
         if (act >= 10 && act < 20) {
@@ -15024,16 +15051,20 @@ function nopublish$survivors$$perform_actv2(id, act, arg0) {
           const __ex = _bind$75._0;
           const __ey = _bind$75._1;
           if (__ex < 0 || __ey < 0) {
-            return undefined;
+            return allstr;
+          }
+          if (cate >= 0 && cate < nopublish$survivors$$buildDescs.length) {
+            const desc = moonbitlang$core$array$$Array$at$45$(nopublish$survivors$$buildDescs, cate);
+            const gx = areaId / 18 | 0;
+            const gy = areaId - (Math.imul(18, gx) | 0) | 0;
+            allstr = `${allstr}在世界${moonbitlang$core$int$$Int$to_string$46$inner(gx, 10)},${moonbitlang$core$int$$Int$to_string$46$inner(gy, 10)}区域内${moonbitlang$core$int$$Int$to_string$46$inner(__ex, 10)},${moonbitlang$core$int$$Int$to_string$46$inner(__ey, 10)}试图建造${desc.name}\r\n`;
           }
           nopublish$survivors$$Area$lord_add_build_at$46$inner(area, cate, __ex, __ey, 0, false);
-          return;
-        } else {
-          return;
         }
       }
     }
   }
+  return allstr;
 }
 function nopublish$survivors$$Area$auto_alloc_role(self) {
   const _len = nopublish$survivors$$lordChosenBuildings.length;
@@ -15044,7 +15075,7 @@ function nopublish$survivors$$Area$auto_alloc_role(self) {
       const cate = nopublish$survivors$$lordChosenBuildings[_i];
       const desc = moonbitlang$core$array$$Array$at$45$(nopublish$survivors$$buildDescs, cate);
       if (self.food <= 0 && desc.foodPerson <= 0) {
-        return undefined;
+        return false;
       }
       let maxPersonNum = 0;
       if (moonbitlang$core$builtin$$Map$contains$66$(self.buildStat, cate)) {
@@ -15070,7 +15101,7 @@ function nopublish$survivors$$Area$auto_alloc_role(self) {
               continue;
             }
             const role = moonbitlang$core$builtin$$Map$at$23$(nopublish$survivors$$world.roleMap, _roleId);
-            if (role.jobBuild >= 0 || (role.id === nopublish$survivors$$world.player.id || role.nationId !== self.nationId)) {
+            if (role.jobBuild >= 0 || (role.id === nopublish$survivors$$world.player.id || (role.nationId !== self.nationId || role.cate === 3))) {
               continue;
             }
             const _it$2 = moonbitlang$core$builtin$$Map$iterator2$65$(self.buildings);
@@ -15099,7 +15130,7 @@ function nopublish$survivors$$Area$auto_alloc_role(self) {
                 if (_tmp$7) {
                   nopublish$survivors$$Area$alloc_role_to_build(self, _build, role);
                   moonbitlang$core$builtin$$println$22$(`auto alloc for area: ${moonbitlang$core$int$$Int$to_string$46$inner(self.gx, 10)},${moonbitlang$core$int$$Int$to_string$46$inner(self.gy, 10)}`);
-                  return undefined;
+                  return true;
                 }
                 continue;
               }
@@ -15111,9 +15142,10 @@ function nopublish$survivors$$Area$auto_alloc_role(self) {
       _tmp$6 = _i + 1 | 0;
       continue;
     } else {
-      return;
+      break;
     }
   }
+  return false;
 }
 function nopublish$survivors$$GameWorld$genNPCForHouse(self, x, y, build) {
   if (x < 0 || (y < 0 || (x >= 18 || y >= 18))) {
@@ -15135,8 +15167,8 @@ function nopublish$survivors$$GameWorld$gen_observe_rawtext(self) {
   while (true) {
     const id = _tmp$6;
     if (id < 4) {
-      const nation = nopublish$survivors$$get_nation(id);
-      s = `${s}国家[${moonbitlang$core$int$$Int$to_string$46$inner(id, 10)}]国库资金:${String(nation.gold)}`;
+      nopublish$survivors$$get_nation(id);
+      s = `${s}国家[${moonbitlang$core$int$$Int$to_string$46$inner(id, 10)}]`;
       if (moonbitlang$core$builtin$$Map$contains$21$(self.war, id)) {
         const warset = moonbitlang$core$builtin$$Map$at$21$(self.war, id);
         if (warset.size > 0) {
@@ -15162,11 +15194,11 @@ function nopublish$survivors$$GameWorld$gen_observe_rawtext(self) {
       break;
     }
   }
-  const _end164 = self.areas.length;
+  const _end168 = self.areas.length;
   let _tmp$7 = 0;
   while (true) {
     const areaId = _tmp$7;
-    if (areaId < _end164) {
+    if (areaId < _end168) {
       const area = moonbitlang$core$array$$Array$at$42$(self.areas, areaId);
       let substr = "";
       if (area.nationId >= 0) {
@@ -15253,15 +15285,16 @@ function nopublish$survivors$$GameWorld$gen_observe_rawtext(self) {
 }
 function nopublish$survivors$$GameWorld$step(self) {
   self.accTime = 0;
+  let allstr = "";
   const actions = nopublish$survivors$$strategy(nopublish$survivors$$GameWorld$gen_observe_rawtext(nopublish$survivors$$world), true);
   let _tmp$6 = 0;
   while (true) {
     const i = _tmp$6;
-    if (i < (actions.length / 3 | 0)) {
+    if (i < (actions.length - 3 | 0)) {
       const id0 = moonbitlang$core$array$$Array$at$20$(actions, i);
       const act0 = moonbitlang$core$array$$Array$at$20$(actions, i + 1 | 0);
       const arg0 = moonbitlang$core$array$$Array$at$20$(actions, i + 2 | 0);
-      nopublish$survivors$$perform_actv2(id0, act0, arg0);
+      allstr = `${allstr}${nopublish$survivors$$perform_actv2(id0, act0, arg0)}`;
       _tmp$6 = i + 3 | 0;
       continue;
     } else {
@@ -15272,17 +15305,18 @@ function nopublish$survivors$$GameWorld$step(self) {
   let _tmp$7 = 0;
   while (true) {
     const i = _tmp$7;
-    if (i < (actions$2.length / 3 | 0)) {
+    if (i < (actions$2.length - 3 | 0)) {
       const id0 = moonbitlang$core$array$$Array$at$20$(actions$2, i);
       const act0 = moonbitlang$core$array$$Array$at$20$(actions$2, i + 1 | 0);
       const arg0 = moonbitlang$core$array$$Array$at$20$(actions$2, i + 2 | 0);
-      nopublish$survivors$$perform_actv2(id0, act0, arg0);
+      allstr = `${allstr}${nopublish$survivors$$perform_actv2(id0, act0, arg0)}`;
       _tmp$7 = i + 3 | 0;
       continue;
     } else {
       break;
     }
   }
+  nopublish$survivors$$aiBoardLog(allstr);
   const iterRoles = [];
   const _it = moonbitlang$core$builtin$$Map$iterator2$23$(nopublish$survivors$$world.roleMap);
   while (true) {
@@ -15331,7 +15365,7 @@ function nopublish$survivors$$GameWorld$step(self) {
               const _Some = _bind$75;
               const _areaId = _Some;
               const area = moonbitlang$core$array$$Array$at$42$(self.areas, _areaId);
-              if (role.id !== self.player.id) {
+              if (area.nationId !== self.player.nationId) {
                 const _bind$76 = nopublish$survivors$$Area$find_empty_pos(area);
                 const _x = _bind$76._0;
                 const _y = _bind$76._1;
@@ -15470,11 +15504,11 @@ function nopublish$survivors$$GameWorld$step(self) {
               }
             }
             if (enemies.length > 0) {
-              const _end285 = freeEquiped.length;
+              const _end296 = freeEquiped.length;
               let _tmp$11 = 0;
               while (true) {
                 const i = _tmp$11;
-                if (i < _end285) {
+                if (i < _end296) {
                   const role = moonbitlang$core$array$$Array$at$47$(freeEquiped, i);
                   const enemy = moonbitlang$core$array$$Array$at$47$(enemies, i % enemies.length | 0);
                   role.atkTarget = enemy.id;
@@ -15687,13 +15721,16 @@ function nopublish$survivors$$GameWorld$step(self) {
             if (moonbitlang$core$builtin$$Map$contains$23$(self.roleMap, _roleId)) {
               const role = moonbitlang$core$builtin$$Map$at$23$(self.roleMap, _roleId);
               if (role.nationId === area.nationId && (role.life.hp > 0 && (!role.inTeam && role.jobBuildCate >= 0))) {
-                if (area.food <= 0) {
+                const desc = moonbitlang$core$array$$Array$at$45$(nopublish$survivors$$buildDescs, role.jobBuildCate);
+                if (area.food <= 0 && desc.foodPerson <= 0) {
                   nopublish$survivors$$Area$release_role_from_build(area, role);
                   if (areaId === self.showAreaId && !self.inGlobe) {
                     s = `${s} ${nopublish$survivors$$Role$get_name(role)}`;
                   }
                 } else {
-                  area.food = area.food - 1;
+                  if (area.food > 0) {
+                    area.food = area.food - 1;
+                  }
                 }
               }
             }
@@ -15703,7 +15740,21 @@ function nopublish$survivors$$GameWorld$step(self) {
         if (s.length > 0) {
           nopublish$survivors$$log(`${s}因为食物供应不足而辞职了`);
         }
-        nopublish$survivors$$Area$auto_alloc_role(area);
+        if (nopublish$survivors$$world.inGlobe || (nopublish$survivors$$world.showAreaId !== areaId || area.nationId !== nopublish$survivors$$world.player.nationId)) {
+          let _tmp$12 = 0;
+          while (true) {
+            const i = _tmp$12;
+            if (i < 5) {
+              if (!nopublish$survivors$$Area$auto_alloc_role(area)) {
+                break;
+              }
+              _tmp$12 = i + 1 | 0;
+              continue;
+            } else {
+              break;
+            }
+          }
+        }
         _tmp$10 = areaId + 1 | 0;
         continue;
       } else {
