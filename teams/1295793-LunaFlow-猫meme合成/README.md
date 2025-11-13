@@ -23,8 +23,8 @@ cd ./MGPIC2025
 
 ## 游戏预览
 
-![游戏预览](docs/image/preview_1.png)
-![合成演示](docs/image/merge_demo.gif)
+![游戏预览](./artifacts/docs/image/preview_1.png)
+![合成演示](./artifacts/docs/image/merge_demo.gif)
 
 ## 操作指南
 
