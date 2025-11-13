@@ -1,10 +1,17 @@
 # LunaFlow / 合成猫 Meme
 
+## 游戏简介
+
 本项目是一款基于经典“合成大西瓜”玩法的轻量级合并游戏，由 [MoonBit](https://www.moonbitlang.com/) 语言与 [Selene](https://github.com/moonbit-community/selene) 游戏引擎构建。
 
 游戏视频链接: [bilibili 合成猫 Meme](https://www.bilibili.com/video/BV1s4CpBLEkK)
 
 在线试玩（GitHub Pages）：[合成猫 Meme](https://asterless.github.io/MGPIC2025/)
+
+* 从屏幕顶部落下不同等级的猫 Meme。
+* 两只相同等级的猫 Meme 相遇时会合成为更高等级的猫 Meme 并获得分数。
+* 不同等级的猫 Meme 仅会发生物理碰撞。
+* 目标是在有限空间内尽可能多地合成猫 Meme，获得高分，并防止猫 Meme 堆积到顶部。
 
 在 Linux 与 macOS 系统上，也可通过以下命令在本地 8000 端口直接运行游戏：
 
@@ -13,13 +20,6 @@ git clone https://github.com/Asterless/MGPIC2025.git
 cd ./MGPIC2025
 ./run.sh
 ```
-
-## 游戏简介
-
-* 从屏幕顶部落下不同等级的猫 Meme。
-* 两只相同等级的猫 Meme 相遇时会合成为更高等级的猫 Meme 并获得分数。
-* 不同等级的猫 Meme 仅会发生物理碰撞。
-* 目标是在有限空间内尽可能多地合成猫 Meme，获得高分，并防止猫 Meme 堆积到顶部。
 
 ## 游戏预览
 
