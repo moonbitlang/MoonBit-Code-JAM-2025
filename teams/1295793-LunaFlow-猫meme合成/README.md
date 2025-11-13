@@ -1,10 +1,17 @@
 # LunaFlow / 合成猫 Meme
 
+## 游戏简介
+
 本项目是一款基于经典“合成大西瓜”玩法的轻量级合并游戏，由 [MoonBit](https://www.moonbitlang.com/) 语言与 [Selene](https://github.com/moonbit-community/selene) 游戏引擎构建。
 
 游戏视频链接: [bilibili 合成猫 Meme](https://www.bilibili.com/video/BV1s4CpBLEkK)
 
 在线试玩（GitHub Pages）：[合成猫 Meme](https://asterless.github.io/MGPIC2025/)
+
+* 从屏幕顶部落下不同等级的猫 Meme。
+* 两只相同等级的猫 Meme 相遇时会合成为更高等级的猫 Meme 并获得分数。
+* 不同等级的猫 Meme 仅会发生物理碰撞。
+* 目标是在有限空间内尽可能多地合成猫 Meme，获得高分，并防止猫 Meme 堆积到顶部。
 
 在 Linux 与 macOS 系统上，也可通过以下命令在本地 8000 端口直接运行游戏：
 
@@ -14,26 +21,17 @@ cd ./MGPIC2025
 ./run.sh
 ```
 
-## 游戏玩法
-
-* 从屏幕顶部落下不同等级的猫 Meme。
-* 两只相同等级的猫 Meme 相遇时会合成为更高等级的猫 Meme 并获得分数。
-* 不同等级的猫 Meme 仅会发生物理碰撞。
-* 目标是在有限空间内尽可能多地合成猫 Meme，获得高分，并防止猫 Meme 堆积到顶部。
-
 ## 游戏预览
 
 ![游戏预览](./artifacts/docs/image/preview_1.png)
 ![合成演示](./artifacts/docs/image/merge_demo.gif)
 
-## 操作指南
+## 操作说明
 
 * **A / D**：左右移动指针
 * **空格（Space）**：从当前指针位置放下猫 Meme
 * **Q / E**：对所有猫 Meme 施加水平力
 * **鼠标左键点击猫 Meme**：猫 Meme 会发出可爱的叫声
-
----
 
 ## TODO 列表
 
@@ -64,7 +62,7 @@ cd ./MGPIC2025
 * [ ] **物理系统改进**：
   * [ ] 完全舍弃 Selene 原生物理引擎，以插件形式实现新的物理模块，基于圆形检测范围重新设计碰撞逻辑，确保挤压行为良定义。
 
-## 设计说明
+## 技术特色
 
 ### 核心系统设计
 
