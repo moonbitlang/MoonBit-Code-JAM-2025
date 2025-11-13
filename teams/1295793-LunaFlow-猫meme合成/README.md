@@ -2,6 +2,8 @@
 
 本项目是一款基于经典“合成大西瓜”玩法的轻量级合并游戏，由 [MoonBit](https://www.moonbitlang.com/) 语言与 [Selene](https://github.com/moonbit-community/selene) 游戏引擎构建。
 
+游戏视频链接: [bilibili 合成猫 Meme](https://www.bilibili.com/video/BV1s4CpBLEkK)
+
 在线试玩（GitHub Pages）：[合成猫 Meme](https://asterless.github.io/MGPIC2025/)
 
 在 Linux 与 macOS 系统上，也可通过以下命令在本地 8000 端口直接运行游戏：
