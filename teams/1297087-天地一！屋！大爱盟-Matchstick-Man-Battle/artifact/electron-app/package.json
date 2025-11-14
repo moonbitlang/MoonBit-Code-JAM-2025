@@ -1,0 +1,37 @@
+{
+  "name": "matchstick-man-battle-electron",
+  "version": "0.1.0",
+  "description": "Electron wrapper for Matchstick Man Battle (minimal)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --linux --win --mac"
+  },
+  "author": "Great-Love-League",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.greatlove.matchstickman",
+    "files": [
+      "**/*",
+      "!node_modules",
+      "!\.git",
+      "!electron-app/node_modules"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "linux": {
+      "target": ["AppImage","deb"]
+    },
+    "win": {
+      "target": ["nsis"]
+    },
+    "mac": {
+      "target": ["dmg"]
+    }
+  }
+}

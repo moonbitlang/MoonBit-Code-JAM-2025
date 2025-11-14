@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript">const min = Math.min;</script>
+<head>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+    jQuery.noConflict();
+    Object.extend = jQuery.extend;
+    </script>
+    <script src="lib/jquery.svg.min.js"></script>
+    
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <style>
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root { --accent-1: #667eea; --accent-2: #764ba2; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+
+        .home-card {
+            background: rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 28px;
+            width: min(960px, calc(100% - 48px));
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(6px);
+            flex-wrap: wrap;
+        }
+
+        .level-list { display: flex; gap: 14px; flex-wrap: wrap; }
+        .level-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .btn-level {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            box-shadow: 0 8px 24px rgba(102,126,234,0.22);
+        }
+        .btn-level:hover { transform: translateY(-3px); }
+
+        .meta { color: rgba(255,255,255,0.9); font-size: 14px; }
+
+        @media (max-width: 640px) {
+            .home-card { padding: 18px; gap: 12px; }
+            .level-item { width: 100%; }
+            .level-list { width: 100%; justify-content: space-between; }
+        }
+    </style>
+    <script src="./box2d.js"></script>
+    <script src=".mooncakes\Demonmasterlqx\MoonP5\p5.js"></script>
+    <script src="./assets/navigation.js"></script>
+    <script src="./target/js/release/build/server/server.js"></script>
+    <!-- <script src="./target/js/release/build/bob/bob.js"></script> -->
+</head>
+
+<body>
+    <div class="home-card">
+        <div>
+            <h1 style="margin:0 0 8px 0;">Matchstick Man Battle</h1>
+            <div class="meta">选择一个关卡开始游戏 — 已适配 HUD/FX 与本地 Box2D 回退。</div>
+        </div>
+
+        <div class="level-list">
+            <div class="level-item">
+                <button class="btn-level" id="start-level1">Level 1</button>
+            </div>
+            <div class="level-item">
+                <button class="btn-level" id="start-level2">Level 2</button>
+            </div>
+            <div class="level-item">
+                <button class="btn-level" id="start-level3">Level 3</button>
+            </div>
+            <div class="level-item">
+                <button class="btn-level" id="start-level4">Level 4</button>
+            </div>
+            <div class="level-item">
+                <button class="btn-level" id="start-level5">Level 5</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('start-level1').addEventListener('click', function() { window.location.href = 'game-level1.html'; });
+        document.getElementById('start-level2').addEventListener('click', function() { window.location.href = 'game-level2.html'; });
+        document.getElementById('start-level3').addEventListener('click', function() { window.location.href = 'game-level3.html'; });
+        document.getElementById('start-level4').addEventListener('click', function() { window.location.href = 'game-level4.html'; });
+        document.getElementById('start-level5').addEventListener('click', function() { window.location.href = 'game-level5.html'; });
+    </script>
+</body>
+
+</html>

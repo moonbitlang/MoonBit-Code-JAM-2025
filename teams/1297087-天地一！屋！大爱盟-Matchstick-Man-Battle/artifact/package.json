@@ -1,25 +1,12 @@
 {
-  "name": "moonbit-game",
+  "name": "matchstick-man-battle",
   "version": "0.1.0",
-  "description": "Electron wrapper for the MoonBit HTML5 game",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
-  },
-  "build": {
-    "appId": "com.example.moonbit",
-    "productName": "MoonBit",
-    "files": [
-      "**/*"
-    ],
-    "directories": {
-      "buildResources": "build"
-    }
-  },
-  "devDependencies": {
-    "electron": "^25.0.0",
-    "electron-builder": "^24.6.0"
+  "productName": "Matchstick Man Battle",
+  "main": "electron-main.js",
+  "author": "Great-Love-League <team@great-love-league.local>",
+  "description": "Matchstick Man Battle - desktop package",
+  "license": "MIT",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
   }
 }
