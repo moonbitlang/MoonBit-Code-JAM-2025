@@ -1,0 +1,9 @@
+{
+  "is-main": true,
+  "import": [
+    {
+      "path": "Great-Love-League/Stick_Man_Battle/server",
+      "alias": "server"
+    }
+  ]
+}
