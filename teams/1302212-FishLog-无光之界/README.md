@@ -1,5 +1,3 @@
-# My Game
-
 # 无光之界 (Lightless Realm)
 
 “当最后的光芒熄灭，世界归于沉寂与绝望。
