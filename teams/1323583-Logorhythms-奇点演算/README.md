@@ -25,6 +25,7 @@ Calculus Singularity 是一款把**逻辑证明**抽象成**推箱子解谜**的
 - **Elm Architecture 的跨语言实现**：MoonBit 负责 Model/Update，TypeScript 只拿到 `ViewModel` 并用 Pixi.js 渲染，逻辑与视图完全解耦。
 - **Pixi.js + Vite 的高性能前端**：网格、盒子、玩家、目标层均使用 Pixi 容器渲染，配合 Vite 模块热替换与 Rollup 拆分提升开发体验。
 - **可视化备份系统**：任意时刻保存 Proof Backup，缩略图由 WebGL 渲染结果截屏，帮助玩家尝试分支证明，并且可以随时撤销移动，给予玩家充分的探索自由度。
+- **关卡编辑器**：内置可视化关卡编辑器，玩家可以自由设计命题布局与目标，导出 JSON 与他人分享。
 
 ## 团队
 
