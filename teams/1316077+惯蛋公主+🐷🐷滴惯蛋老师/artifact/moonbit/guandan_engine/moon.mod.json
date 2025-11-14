@@ -1,0 +1,14 @@
+{
+  "name": "username/guandan_engine",
+  "version": "0.1.0",
+  "readme": "README.mbt.md",
+  "repository": "",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "description": "",
+  "link": {
+    "wasm": {
+      "exports": ["demo_hand", "suggest_play"]
+    }
+  }
+}

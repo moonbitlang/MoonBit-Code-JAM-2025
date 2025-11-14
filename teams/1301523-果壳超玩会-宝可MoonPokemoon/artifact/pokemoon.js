@@ -235,10 +235,10 @@ const KrystalRay$pokemoon$$weather_effect_state = { effect_entities: [], is_acti
 const KrystalRay$pokemoon$$dynamic_weather_state = { animated_entities: [], animation_timer: 0, update_interval: 0.016 };
 const KrystalRay$pokemoon$$health_bar_ui_state = { is_active: false, player_health_bar: undefined, enemy_health_bar: undefined, health_bar_entities: [], animation_timer: 0, update_interval: 0.016 };
 const KrystalRay$pokemoon$$turn_display_state = { is_active: false, turn_display: undefined, current_turn: 1, current_turn_type: "玩家", current_weather: "无天气" };
-const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$733 = "玩家回合";
-const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$734 = "1";
-const KrystalRay$pokemoon$$create_turn_display$46$initial_weather_text$124$735 = "";
-const KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1541 = ", ";
+const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$786 = "玩家回合";
+const KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$787 = "1";
+const KrystalRay$pokemoon$$create_turn_display$46$initial_weather_text$124$788 = "";
+const KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1594 = ", ";
 const KrystalRay$pokemoon$$skill_menu_state = { entities: undefined };
 const Milky2018$selene$system$$pressed_keys = moonbitlang$core$set$$Set$new$46$inner$0$(8);
 const Milky2018$selene$45$canvas$$window = Yoorkin$rabbit$45$tea$dom$$window();
@@ -271,7 +271,7 @@ const Milky2018$selene$system$$deferred_events = moonbitlang$core$array$$Array$n
 const Milky2018$selene$collision$$areas = moonbitlang$core$builtin$$Map$new$46$inner$14$(8);
 const Milky2018$selene$sprite$$sprites = moonbitlang$core$builtin$$Map$new$46$inner$15$(8);
 const Milky2018$selene$system$$timers = moonbitlang$core$array$$Array$new$46$inner$16$(0);
-const KrystalRay$pokemoon$$battle_render_state = { player_pokemon_entity: Milky2018$selene$system$$Entity$new(), enemy_pokemon_entity: Milky2018$selene$system$$Entity$new(), background_entity: Milky2018$selene$system$$Entity$new(), ui_panel_entity: Milky2018$selene$system$$Entity$new(), text_box_entity: Milky2018$selene$system$$Entity$new(), text_entity: Milky2018$selene$system$$Entity$new(), menu_entity: Milky2018$selene$system$$Entity$new(), selected_option: 0, is_active: false, current_selection_entity: Milky2018$selene$system$$Entity$new(), skill_menu_visible: false, skill_menu_selected: 0, current_player_pokemon: undefined, current_enemy_pokemon: undefined, battle_state: undefined, player_pokemon_info: undefined, enemy_pokemon_info: undefined, current_frame_count: 0, last_skill_input_frame: 0, enemy_skill_display_frame: 0, enemy_skill_message: "", enemy_turn_executed: false };
+const KrystalRay$pokemoon$$battle_render_state = { player_pokemon_entity: Milky2018$selene$system$$Entity$new(), enemy_pokemon_entity: Milky2018$selene$system$$Entity$new(), background_entity: Milky2018$selene$system$$Entity$new(), ui_panel_entity: Milky2018$selene$system$$Entity$new(), text_box_entity: Milky2018$selene$system$$Entity$new(), text_entity: Milky2018$selene$system$$Entity$new(), text_entity_line2: Milky2018$selene$system$$Entity$new(), menu_entity: Milky2018$selene$system$$Entity$new(), selected_option: 0, is_active: false, current_selection_entity: Milky2018$selene$system$$Entity$new(), skill_menu_visible: false, skill_menu_selected: 0, current_player_pokemon: undefined, current_enemy_pokemon: undefined, battle_state: undefined, player_pokemon_info: undefined, enemy_pokemon_info: undefined, current_frame_count: 0, last_skill_input_frame: 0, enemy_skill_display_frame: 0, enemy_skill_message: "", enemy_turn_executed: false };
 const KrystalRay$pokemoon$$global_indicator_entity = Milky2018$selene$system$$Entity$new();
 const KrystalRay$pokemoon$$pokemon_sprite_cache = moonbitlang$core$builtin$$Map$new$46$inner$17$(8);
 const KrystalRay$pokemoon$$battle_random_generator = moonbitlang$core$random$$Rand$chacha8$46$inner($bytes_literal$0);
@@ -1081,6 +1081,9 @@ function moonbitlang$core$string$$String$char_length_eq$46$inner(self, len, star
 }
 function moonbitlang$core$string$$ToStringView$to_string_view$27$(self) {
   return { str: self, start: 0, end: self.length };
+}
+function moonbitlang$core$string$$String$get(self, idx) {
+  return idx >= 0 && idx < self.length ? self.charCodeAt(idx) : undefined;
 }
 function moonbitlang$core$set$$Set$new$46$inner$0$(capacity) {
   const capacity$2 = moonbitlang$core$int$$Int$next_power_of_two(capacity);
@@ -2274,6 +2277,44 @@ function moonbitlang$core$builtin$$StringBuilder$new$46$inner(size_hint) {
 function moonbitlang$core$builtin$$Logger$write_char$28$(self, ch) {
   const _bind$8 = self;
   _bind$8.val = `${_bind$8.val}${String.fromCodePoint(ch)}`;
+}
+function moonbitlang$core$string$$String$char_length$46$inner(self, start_offset, end_offset) {
+  let end_offset$2;
+  if (end_offset === undefined) {
+    end_offset$2 = self.length;
+  } else {
+    const _Some = end_offset;
+    end_offset$2 = _Some;
+  }
+  if (start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= self.length)) {
+    let _tmp = start_offset;
+    let _tmp$2 = 0;
+    while (true) {
+      const utf16_index = _tmp;
+      const char_count = _tmp$2;
+      if (utf16_index < end_offset$2) {
+        const c1 = self.charCodeAt(utf16_index);
+        if (55296 <= c1 && c1 <= 56319 && (utf16_index + 1 | 0) < end_offset$2) {
+          const _tmp$3 = utf16_index + 1 | 0;
+          const c2 = self.charCodeAt(_tmp$3);
+          if (56320 <= c2 && c2 <= 57343) {
+            _tmp = utf16_index + 2 | 0;
+            _tmp$2 = char_count + 1 | 0;
+            continue;
+          } else {
+            moonbitlang$core$abort$$abort$18$("invalid surrogate pair");
+          }
+        }
+        _tmp = utf16_index + 1 | 0;
+        _tmp$2 = char_count + 1 | 0;
+        continue;
+      } else {
+        return char_count;
+      }
+    }
+  } else {
+    return moonbitlang$core$abort$$abort$19$("invalid start or end index for String::codepoint_length");
+  }
 }
 function moonbitlang$core$builtin$$op_notequal$6$(x, y) {
   return !(x === y);
@@ -7247,220 +7288,220 @@ function Milky2018$selene$system$$Backend$play_audio$81$(_self, audio_path, volu
 function Milky2018$selene$system$$Backend$preload_audio$81$(_self, audio_path) {
   Milky2018$selene$45$canvas$$get_audio(audio_path);
 }
-function moonbitlang$core$builtin$$Eq$equal$82$(_x_1124, _x_1125) {
-  if (_x_1124 === 0) {
-    if (_x_1125 === 0) {
+function moonbitlang$core$builtin$$Eq$equal$82$(_x_1177, _x_1178) {
+  if (_x_1177 === 0) {
+    if (_x_1178 === 0) {
       return true;
     } else {
       return false;
     }
   } else {
-    if (_x_1125 === 1) {
+    if (_x_1178 === 1) {
       return true;
     } else {
       return false;
     }
   }
 }
-function moonbitlang$core$builtin$$Show$output$43$(_x_1084, _x_1085) {
-  switch (_x_1084) {
+function moonbitlang$core$builtin$$Show$output$43$(_x_1137, _x_1138) {
+  switch (_x_1137) {
     case 0: {
-      _x_1085.method_0(_x_1085.self, "Normal");
+      _x_1138.method_0(_x_1138.self, "Normal");
       return;
     }
     case 1: {
-      _x_1085.method_0(_x_1085.self, "Fire");
+      _x_1138.method_0(_x_1138.self, "Fire");
       return;
     }
     case 2: {
-      _x_1085.method_0(_x_1085.self, "Water");
+      _x_1138.method_0(_x_1138.self, "Water");
       return;
     }
     case 3: {
-      _x_1085.method_0(_x_1085.self, "Electric");
+      _x_1138.method_0(_x_1138.self, "Electric");
       return;
     }
     case 4: {
-      _x_1085.method_0(_x_1085.self, "Grass");
+      _x_1138.method_0(_x_1138.self, "Grass");
       return;
     }
     case 5: {
-      _x_1085.method_0(_x_1085.self, "Ice");
+      _x_1138.method_0(_x_1138.self, "Ice");
       return;
     }
     case 6: {
-      _x_1085.method_0(_x_1085.self, "Fighting");
+      _x_1138.method_0(_x_1138.self, "Fighting");
       return;
     }
     case 7: {
-      _x_1085.method_0(_x_1085.self, "Poison");
+      _x_1138.method_0(_x_1138.self, "Poison");
       return;
     }
     case 8: {
-      _x_1085.method_0(_x_1085.self, "Ground");
+      _x_1138.method_0(_x_1138.self, "Ground");
       return;
     }
     case 9: {
-      _x_1085.method_0(_x_1085.self, "Flying");
+      _x_1138.method_0(_x_1138.self, "Flying");
       return;
     }
     case 10: {
-      _x_1085.method_0(_x_1085.self, "Psychic");
+      _x_1138.method_0(_x_1138.self, "Psychic");
       return;
     }
     case 11: {
-      _x_1085.method_0(_x_1085.self, "Bug");
+      _x_1138.method_0(_x_1138.self, "Bug");
       return;
     }
     case 12: {
-      _x_1085.method_0(_x_1085.self, "Rock");
+      _x_1138.method_0(_x_1138.self, "Rock");
       return;
     }
     case 13: {
-      _x_1085.method_0(_x_1085.self, "Ghost");
+      _x_1138.method_0(_x_1138.self, "Ghost");
       return;
     }
     case 14: {
-      _x_1085.method_0(_x_1085.self, "Dragon");
+      _x_1138.method_0(_x_1138.self, "Dragon");
       return;
     }
     case 15: {
-      _x_1085.method_0(_x_1085.self, "Dark");
+      _x_1138.method_0(_x_1138.self, "Dark");
       return;
     }
     case 16: {
-      _x_1085.method_0(_x_1085.self, "Steel");
+      _x_1138.method_0(_x_1138.self, "Steel");
       return;
     }
     default: {
-      _x_1085.method_0(_x_1085.self, "Fairy");
+      _x_1138.method_0(_x_1138.self, "Fairy");
       return;
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$equal$43$(_x_1080, _x_1081) {
-  switch (_x_1080) {
+function moonbitlang$core$builtin$$Eq$equal$43$(_x_1133, _x_1134) {
+  switch (_x_1133) {
     case 0: {
-      if (_x_1081 === 0) {
+      if (_x_1134 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_1081 === 1) {
+      if (_x_1134 === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_1081 === 2) {
+      if (_x_1134 === 2) {
         return true;
       } else {
         return false;
       }
     }
     case 3: {
-      if (_x_1081 === 3) {
+      if (_x_1134 === 3) {
         return true;
       } else {
         return false;
       }
     }
     case 4: {
-      if (_x_1081 === 4) {
+      if (_x_1134 === 4) {
         return true;
       } else {
         return false;
       }
     }
     case 5: {
-      if (_x_1081 === 5) {
+      if (_x_1134 === 5) {
         return true;
       } else {
         return false;
       }
     }
     case 6: {
-      if (_x_1081 === 6) {
+      if (_x_1134 === 6) {
         return true;
       } else {
         return false;
       }
     }
     case 7: {
-      if (_x_1081 === 7) {
+      if (_x_1134 === 7) {
         return true;
       } else {
         return false;
       }
     }
     case 8: {
-      if (_x_1081 === 8) {
+      if (_x_1134 === 8) {
         return true;
       } else {
         return false;
       }
     }
     case 9: {
-      if (_x_1081 === 9) {
+      if (_x_1134 === 9) {
         return true;
       } else {
         return false;
       }
     }
     case 10: {
-      if (_x_1081 === 10) {
+      if (_x_1134 === 10) {
         return true;
       } else {
         return false;
       }
     }
     case 11: {
-      if (_x_1081 === 11) {
+      if (_x_1134 === 11) {
         return true;
       } else {
         return false;
       }
     }
     case 12: {
-      if (_x_1081 === 12) {
+      if (_x_1134 === 12) {
         return true;
       } else {
         return false;
       }
     }
     case 13: {
-      if (_x_1081 === 13) {
+      if (_x_1134 === 13) {
         return true;
       } else {
         return false;
       }
     }
     case 14: {
-      if (_x_1081 === 14) {
+      if (_x_1134 === 14) {
         return true;
       } else {
         return false;
       }
     }
     case 15: {
-      if (_x_1081 === 15) {
+      if (_x_1134 === 15) {
         return true;
       } else {
         return false;
       }
     }
     case 16: {
-      if (_x_1081 === 16) {
+      if (_x_1134 === 16) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_1081 === 17) {
+      if (_x_1134 === 17) {
         return true;
       } else {
         return false;
@@ -7468,37 +7509,37 @@ function moonbitlang$core$builtin$$Eq$equal$43$(_x_1080, _x_1081) {
     }
   }
 }
-function moonbitlang$core$builtin$$Eq$equal$83$(_x_1060, _x_1061) {
-  if (_x_1060 === 0) {
-    if (_x_1061 === 0) {
+function moonbitlang$core$builtin$$Eq$equal$83$(_x_1113, _x_1114) {
+  if (_x_1113 === 0) {
+    if (_x_1114 === 0) {
       return true;
     } else {
       return false;
     }
   } else {
-    if (_x_1061 === 1) {
+    if (_x_1114 === 1) {
       return true;
     } else {
       return false;
     }
   }
 }
-function moonbitlang$core$builtin$$Show$output$49$(_x_1040, _x_1041) {
-  switch (_x_1040) {
+function moonbitlang$core$builtin$$Show$output$49$(_x_1093, _x_1094) {
+  switch (_x_1093) {
     case 0: {
-      _x_1041.method_0(_x_1041.self, "Fight");
+      _x_1094.method_0(_x_1094.self, "Fight");
       return;
     }
     case 1: {
-      _x_1041.method_0(_x_1041.self, "Bag");
+      _x_1094.method_0(_x_1094.self, "Bag");
       return;
     }
     case 2: {
-      _x_1041.method_0(_x_1041.self, "Pokemon");
+      _x_1094.method_0(_x_1094.self, "Pokemon");
       return;
     }
     default: {
-      _x_1041.method_0(_x_1041.self, "Run");
+      _x_1094.method_0(_x_1094.self, "Run");
       return;
     }
   }
@@ -7997,19 +8038,19 @@ function KrystalRay$pokemoon$$create_turn_display() {
   const turn_text_entity = Milky2018$selene$system$$Entity$new();
   const turn_number_entity = Milky2018$selene$system$$Entity$new();
   const weather_text_entity = Milky2018$selene$system$$Entity$new();
-  const text_width = ((KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$733.length + KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$734.length | 0) + 0) * 12 + 20;
+  const text_width = ((KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$786.length + KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$787.length | 0) + 0) * 12 + 20;
   const background_width = text_width > 100 ? text_width : 100;
   const background_sprite = Milky2018$selene$sprite$$Sprite$from_color_rect(Milky2018$selene$sprite$$ColorRect$new({ _0: background_width, _1: 70 }, "#000000"), 25, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, background_entity, background_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, background_entity, { _0: 50, _1: 50 });
-  const number_offset_x = 5 + (KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$733.length + 0) * 12;
-  const text_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$733, "#FFFFFF", "20px Arial"), 26, undefined);
+  const number_offset_x = 5 + (KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$786.length + 0) * 12;
+  const text_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_text$124$786, "#FFFFFF", "20px Arial"), 26, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, turn_text_entity, text_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, turn_text_entity, { _0: 55, _1: 65 });
-  const number_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$734, "#FFFFFF", "20px Arial"), 27, undefined);
+  const number_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_turn_number$124$787, "#FFFFFF", "20px Arial"), 27, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, turn_number_entity, number_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, turn_number_entity, { _0: 50 + number_offset_x, _1: 65 });
-  const weather_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_weather_text$124$735, "#87CEEB", "14px Arial"), 28, undefined);
+  const weather_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(KrystalRay$pokemoon$$create_turn_display$46$initial_weather_text$124$788, "#87CEEB", "14px Arial"), 28, undefined);
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, weather_text_entity, weather_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, weather_text_entity, { _0: 55, _1: 90 });
   moonbitlang$core$builtin$$println$27$(`📊 回合显示创建完成，背景宽度: ${String(background_width)}, 高度: ${String(70)}`);
@@ -8562,7 +8603,7 @@ function KrystalRay$pokemoon$$display_pokemon_info(pokemon) {
   } else {
     moonbitlang$core$builtin$$println$27$("属性2: 无");
   }
-  moonbitlang$core$builtin$$println$27$(`技能: ${moonbitlang$core$array$$Array$join$27$(pokemon.moves, { str: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1541, start: 0, end: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1541.length })}`);
+  moonbitlang$core$builtin$$println$27$(`技能: ${moonbitlang$core$array$$Array$join$27$(pokemon.moves, { str: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1594, start: 0, end: KrystalRay$pokemoon$$display_pokemon_info$46$42$bind$124$1594.length })}`);
   moonbitlang$core$builtin$$println$27$("---");
 }
 function KrystalRay$pokemoon$$display_all_pokemons(db) {
@@ -8778,11 +8819,90 @@ function KrystalRay$pokemoon$$get_current_player_pokemon_name() {
     return _pokemon.name;
   }
 }
+function KrystalRay$pokemoon$$wrap_text_for_text_box(text, max_width_px, max_lines) {
+  let current_width = 0;
+  let lines = 1;
+  let result = "";
+  let i = 0;
+  const total_chars = moonbitlang$core$string$$String$char_length$46$inner(text, 0, undefined);
+  while (true) {
+    if (i < total_chars) {
+      const ch_view = moonbitlang$core$string$$String$substring$46$inner(text, i, i + 1 | 0);
+      if (ch_view === "\n") {
+        if (lines >= max_lines) {
+          return `${result}…`;
+        }
+        result = `${result}\n`;
+        lines = lines + 1 | 0;
+        current_width = 0;
+        i = i + 1 | 0;
+        continue;
+      }
+      const code_opt = moonbitlang$core$string$$String$get(ch_view, 0);
+      let ch_width;
+      if (code_opt === undefined) {
+        ch_width = 10;
+      } else {
+        const _Some = code_opt;
+        const _code = _Some;
+        ch_width = _code >= 19968 && _code <= 40959 ? 20 : _code <= 127 ? 10 : 18;
+      }
+      if (current_width + ch_width > max_width_px) {
+        if (lines >= max_lines) {
+          return `${result}…`;
+        }
+        result = `${result}\n`;
+        lines = lines + 1 | 0;
+        current_width = 0;
+      }
+      result = `${result}${ch_view}`;
+      current_width = current_width + ch_width;
+      i = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return result;
+}
 function KrystalRay$pokemoon$$update_text_box(text) {
   const text_entity = KrystalRay$pokemoon$$battle_render_state.text_entity;
-  const text_sprite = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(text, "#FFFFFF", "18px Arial"), 12, undefined);
-  moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, text_entity, text_sprite);
+  const text_entity_line2 = KrystalRay$pokemoon$$battle_render_state.text_entity_line2;
+  const wrapped = KrystalRay$pokemoon$$wrap_text_for_text_box(text, 380, 2);
+  let line1 = "";
+  let line2 = "";
+  let i = 0;
+  const total_chars = moonbitlang$core$string$$String$char_length$46$inner(wrapped, 0, undefined);
+  let on_second_line = false;
+  while (true) {
+    if (i < total_chars) {
+      const ch = moonbitlang$core$string$$String$substring$46$inner(wrapped, i, i + 1 | 0);
+      if (ch === "\n") {
+        if (on_second_line) {
+          break;
+        } else {
+          on_second_line = true;
+          i = i + 1 | 0;
+          continue;
+        }
+      }
+      if (on_second_line) {
+        line2 = `${line2}${ch}`;
+      } else {
+        line1 = `${line1}${ch}`;
+      }
+      i = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const text_sprite_l1 = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(line1, "#FFFFFF", "18px Arial"), 12, undefined);
+  moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, text_entity, text_sprite_l1);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, text_entity, { _0: 30, _1: 485 });
+  const text_sprite_l2 = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner(line2, "#FFFFFF", "18px Arial"), 12, undefined);
+  moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, text_entity_line2, text_sprite_l2);
+  moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, text_entity_line2, { _0: 30, _1: 509 });
 }
 function KrystalRay$pokemoon$$start_new_turn() {
   const _bind$8 = KrystalRay$pokemoon$$battle_render_state.battle_state;
@@ -10071,6 +10191,10 @@ function KrystalRay$pokemoon$$create_text_box() {
   const text_entity = KrystalRay$pokemoon$$battle_render_state.text_entity;
   moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, text_entity, text_sprite);
   moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, text_entity, { _0: 30, _1: 485 });
+  const text_entity_line2 = KrystalRay$pokemoon$$battle_render_state.text_entity_line2;
+  const text_sprite_empty = Milky2018$selene$sprite$$Sprite$from_text(Milky2018$selene$sprite$$Text$new$46$inner("", "#FFFFFF", "18px Arial"), 12, undefined);
+  moonbitlang$core$builtin$$Map$set$15$(Milky2018$selene$sprite$$sprites, text_entity_line2, text_sprite_empty);
+  moonbitlang$core$builtin$$Map$set$3$(Milky2018$selene$position$$positions, text_entity_line2, { _0: 30, _1: 509 });
 }
 function KrystalRay$pokemoon$$add_ui_border() {
   const top_border = Milky2018$selene$system$$Entity$new();
