@@ -65,7 +65,10 @@ FFI提供了提供环境信息给JS端, 并从JS获取产生的动作的接口.
 成员名单：
 
 faaaa - 编程
+洛清贫 - 策划
 
-苏三 - 策划
+
+游戏介绍视频链接：【minihero-哔哩哔哩】 https://www.bilibili.com/video/BV1FWCtBXEVX/
+
 
 联系方式：ahafaaa@163.com
