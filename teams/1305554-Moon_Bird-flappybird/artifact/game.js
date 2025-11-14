@@ -976,7 +976,7 @@ class AudioManager {
         });
         
         audio.addEventListener('error', (e) => {
-            console.error('音频文件加载失败:', name, src);
+                console.error('音频文件加载失败:', name, src);
             this.sounds[name] = null;
             this.loadedCount++;
         });
@@ -1015,7 +1015,7 @@ class AudioManager {
                 availableAudio.currentTime = 0;
                 availableAudio.volume = this.volume * volume;
                 availableAudio.play().catch(e => {
-                    console.error('音频播放失败:', name, e);
+                        console.error('音频播放失败:', name, e);
                 });
             }
         }
@@ -1220,19 +1220,6 @@ async function loadFlappyBirdWasm() {
         // 是否处于模式选择界面（用于覆盖 over 状态导致的界面回切）
         let inModeSelection = false;
         
-// 生存模式相关变量
-let survivalMode = {
-    isActive: false,
-    currentStage: 'collection', // 'collection' 或 'boss'
-    collectionTime: 10, // 10秒收集阶段
-    elapsedTime: 0,
-    collectedPowerUps: [],
-    boss: null,
-    projectiles: [],
-    powerUpSystem: null,
-    playerCombat: null
-};
-        
         // 音效相关变量
         let lastScore = 0;
         let lastGameOver = false;
@@ -1243,14 +1230,12 @@ let survivalMode = {
         // 视觉反馈变量
         let screenShake = 0;
         let screenShakeIntensity = 0;
-        // Boss 视觉攻击效果队列（小鸟拾取道具时触发）
         // 统计：最大连击
         let maxCombo = parseInt(localStorage.getItem('flappyBirdMaxCombo') || '0');
         function updateMaxComboDisplay() {
             if (maxComboEl) maxComboEl.textContent = String(maxCombo);
         }
         updateMaxComboDisplay();
-        let bossAttackVisuals = [];
         
         
         
@@ -1259,46 +1244,18 @@ let survivalMode = {
         
         // 游戏模式选择函数
         window.selectGameMode = function(mode) {
-            // 生存模式(2)合并为挑战模式(4)
-            if (mode === 2) mode = 4;
             currentGameMode = mode; // 保存当前模式
             // 退出模式选择状态
             inModeSelection = false;
             
             if (typeof exports.set_game_mode === 'function') {
                 exports.set_game_mode(mode);
-                
-                // 特别检查挑战模式
-                if (mode === 4) { // Challenge模式
-                    //
-                }
             }
             
             // 延迟一点再开始游戏，确保模式设置生效
             setTimeout(() => {
                 if (typeof exports.game_start === 'function') {
                     exports.game_start();
-                    // 再次检查速度
-                    if (mode === 4) {
-                        //
-                    }
-                    // 挑战模式：检查Boss是否正确创建
-                    if (mode === 4) {
-                        setTimeout(() => {
-                            try {
-                                const gm = exports.get_game_mode ? exports.get_game_mode() : -1;
-                                const be = exports.get_boss_exists ? exports.get_boss_exists() : -1;
-                                const bx = exports.get_boss_x ? exports.get_boss_x() : -1;
-                                const by = exports.get_boss_y ? exports.get_boss_y() : -1;
-                                const bh = exports.get_boss_health ? exports.get_boss_health() : -1;
-                                if (be === 0) {
-                                    //
-                                }
-                            } catch (e) {
-                                console.error('Boss检查异常:', e);
-                            }
-                        }, 50);
-                    }
                 }
             }, 10);
         };
@@ -1398,7 +1355,7 @@ let survivalMode = {
                 }
             },
             KeyJ: () => {
-                // J键：玩家攻击（挑战模式）
+                // J键：玩家攻击
                 if (typeof exports.player_attack_export === 'function') {
                     exports.player_attack_export();
                     // 添加攻击震动效果
@@ -1569,7 +1526,7 @@ let survivalMode = {
                 // 绘制天空（加入细微亮度脉动，避免静态感）
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
+
                 // 轻微整体曝光变化（极小幅度），让过渡更自然
                 const exposure = 1 + Math.sin(animationTime * 0.0003) * 0.02;
                 ctx.save();
@@ -1669,10 +1626,6 @@ let survivalMode = {
             
             // 检查是否有隐形效果
             let isInvisible = false;
-            const gameMode = typeof exports.get_game_mode === 'function' ? exports.get_game_mode() : 0;
-            
-            // 在挑战模式下禁用隐形效果，让无敌状态使用经典模式的渲染方式
-            if (gameMode !== 4) { // 不是挑战模式
                 if (typeof exports.get_active_effects_count === 'function') {
                     const effectsCount = exports.get_active_effects_count();
                     for (let i = 0; i < effectsCount; i++) {
@@ -1680,7 +1633,6 @@ let survivalMode = {
                         if (effectType === 10) { // 隐形道具
                             isInvisible = true;
                             break;
-                        }
                     }
                 }
             }
@@ -2087,8 +2039,6 @@ let survivalMode = {
                     audioManager.play('item');
                     // 更精致的拾取效果
                     spawnPickupBurst(x + 5, y + 5, type);
-                    // 触发对Boss的视觉攻击效果
-                    triggerBossVisualAttack(type);
                     continue;
                 }
                 
@@ -2169,332 +2119,6 @@ let survivalMode = {
             }
         }
 
-        // 绘制生成模式道具
-function drawSurvivalItems() {
-    if (typeof exports.get_survival_items_count !== 'function') return;
-    const count = exports.get_survival_items_count();
-    
-    for (let i = 0; i < count; i++) {
-        const x = (typeof exports.get_survival_item_x === 'function') ? exports.get_survival_item_x(i) : 0;
-        const y = (typeof exports.get_survival_item_y === 'function') ? exports.get_survival_item_y(i) : 0;
-        const type = (typeof exports.get_survival_item_type === 'function') ? exports.get_survival_item_type(i) : 0;
-        // 兼容不同导出函数命名：is_survival_item_collected 或 get_survival_item_collected
-        let collected = 0;
-        if (typeof exports.is_survival_item_collected === 'function') {
-            collected = exports.is_survival_item_collected(i);
-        } else if (typeof exports.get_survival_item_collected === 'function') {
-            collected = exports.get_survival_item_collected(i);
-        }
-                
-                if (collected === 1) {
-                    // 检测生成模式道具收集并播放音效
-                    audioManager.play('item');
-                    // 更精致的拾取效果
-                    spawnPickupBurst(x, y, type);
-                    // 触发对Boss的视觉攻击效果
-                    triggerBossVisualAttack(type);
-                    continue;
-                }
-                
-                // 根据生成模式道具类型选择颜色和形状
-                let color, symbol;
-                switch(type) {
-                    case 0: // SpeedBoost - 速度提升
-                        color = '#FF6B6B';
-                        symbol = '⚡';
-                        break;
-                    case 1: // Shield - 护盾
-                        color = '#4ECDC4';
-                        symbol = '🛡';
-                        break;
-                    case 2: // AttackPower - 攻击力提升
-                        color = '#FFD93D';
-                        symbol = '⚔';
-                        break;
-                    case 3: // HealthBoost - 生命值提升
-                        color = '#6BCF7F';
-                        symbol = '❤';
-                        break;
-                    case 4: // ScoreMultiplier - 分数翻倍
-                        color = '#E74C3C';
-                        symbol = '💎';
-                        break;
-                    default:
-                        color = '#808080';
-                        symbol = '?';
-                }
-                
-                // 绘制生成模式道具背景（更大更显眼）
-                const gradient = ctx.createRadialGradient(x + 7, y + 7, 0, x + 7, y + 7, 10);
-                gradient.addColorStop(0, color);
-                gradient.addColorStop(1, adjustColor(color, -30));
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(x + 7, y + 7, 7, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // 绘制道具边框
-                ctx.strokeStyle = '#FFFFFF';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                // 绘制道具符号
-                ctx.fillStyle = '#FFFFFF';
-                ctx.font = '10px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText(symbol, x + 7, y + 10);
-                
-                // 添加发光效果
-                ctx.shadowColor = color;
-                ctx.shadowBlur = 5;
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 1;
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-            }
-        }
-
-        function getBossRenderPosition() {
-            const bxRaw = (typeof exports.get_boss_x === 'function') ? exports.get_boss_x() : 0;
-            const byRaw = (typeof exports.get_boss_y === 'function') ? exports.get_boss_y() : 0;
-            const defaultX = (typeof canvas !== 'undefined' && canvas) ? (canvas.width / 2 - 15) : 65;
-            const defaultY = 25; // 上方偏中
-            // MoonBit 端可能返回的是中心坐标；JS 绘制以左上角为锚点，需左移/上移半径
-            let x = bxRaw - 15;
-            let y = byRaw - 15;
-            const maxW = (typeof canvas !== 'undefined' && canvas) ? (canvas.width - 30) : 160 - 30;
-            const maxH = (typeof canvas !== 'undefined' && canvas) ? (canvas.height - 40) : 160 - 40;
-            if (!(x > 0 && x < maxW)) x = defaultX;
-            if (!(y > 0 && y < maxH)) y = defaultY;
-            return { x, y };
-        }
-
-        // 记录供覆盖层（血条/名称）绘制用的数据
-        let lastBossOverlay = null;
-
-        // 绘制Boss主体（不含血条/名称）
-        function drawBossCore() {
-            if (typeof exports.get_boss_exists !== 'function') return;
-            const bossExists = exports.get_boss_exists();
-            if (bossExists !== 1) return;
-
-            const bossType = (typeof exports.get_boss_type === 'function') ? exports.get_boss_type() : 0;
-            const pos = getBossRenderPosition();
-            const bossX = pos.x;
-            const bossY = pos.y;
-            const bossHealthRaw = (typeof exports.get_boss_health === 'function') ? exports.get_boss_health() : 0;
-            const bossMaxHealthRaw = (typeof exports.get_boss_max_health === 'function') ? exports.get_boss_max_health() : 1;
-            const bossHealth = Math.max(0, (bossHealthRaw | 0));
-            const bossMaxHealth = Math.max(1, (bossMaxHealthRaw | 0));
-            const bossPhase = (typeof exports.get_boss_phase === 'function') ? exports.get_boss_phase() : 0;
-
-            // 根据Boss类型选择颜色和样式
-            let bossColor, bossName;
-            switch(bossType) {
-                case 0: // Dragon - 火焰巨龙
-                    bossColor = '#E74C3C';
-                    bossName = '火焰巨龙';
-                    break;
-                case 1: // StormElemental - 风暴元素
-                    bossColor = '#3498DB';
-                    bossName = '风暴元素';
-                    break;
-                case 2: // EarthGolem - 岩石巨人
-                    bossColor = '#95A5A6';
-                    bossName = '岩石巨人';
-                    break;
-                default:
-                    bossColor = '#808080';
-                    bossName = '未知Boss';
-            }
-
-            // 绘制Boss主体
-            if (bossType === 2) {
-                // 岩石巨人（Q 版）：缩小并以 Boss 中心点居中渲染
-                const baseX = bossX;
-                const baseY = bossY;
-                const unit = 4; // 缩小单元尺寸，呈现 Q 版效果
-                // 形象在局部坐标中的包围盒（单位为 unit）：x ∈ [3, 10.8]，y ∈ [0, 11.5]
-                // 因此中心约为 (6.9u, 5.75u)，将其对齐到 (baseX+15, baseY+15)
-                const centerUx = 6.9;
-                const centerUy = 5.75;
-                ctx.save();
-                ctx.translate(baseX + 15 - centerUx * unit, baseY + 15 - centerUy * unit);
-                // 配色
-                const rockBase = '#8D8F93';
-                const rockShadow = '#6E7074';
-                const rockEdge = '#BDC3C7';
-                // 抖动/蓄力效果（二阶段略微发光）
-                if (bossPhase === 2) {
-                    ctx.shadowColor = '#C0C0C0';
-                    ctx.shadowBlur = 5;
-                }
-                // 头部
-                drawRockBlock(5 * unit, 0 * unit, 3 * unit, 3 * unit, rockBase, rockShadow, rockEdge);
-                // 眼睛
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(5 * unit + 3, 1 * unit + 3, 3, 3);
-                ctx.fillRect(7 * unit + 3, 1 * unit + 3, 3, 3);
-                ctx.fillStyle = '#2C3E50';
-                ctx.fillRect(5 * unit + 4, 1 * unit + 4, 1, 1);
-                ctx.fillRect(7 * unit + 4, 1 * unit + 4, 1, 1);
-                // 身体
-                drawRockBlock(4 * unit, 3 * unit, 5 * unit, 5 * unit, rockBase, rockShadow, rockEdge);
-                // 手臂
-                drawRockBlock(3 * unit, 3.5 * unit, 1.8 * unit, 3.8 * unit, rockBase, rockShadow, rockEdge);
-                drawRockBlock(9 * unit, 3.5 * unit, 1.8 * unit, 3.8 * unit, rockBase, rockShadow, rockEdge);
-                // 腿
-                drawRockBlock(4.3 * unit, 8 * unit, 1.9 * unit, 3.5 * unit, rockBase, rockShadow, rockEdge);
-                drawRockBlock(7 * unit, 8 * unit, 1.9 * unit, 3.5 * unit, rockBase, rockShadow, rockEdge);
-                // 裂纹线条
-                drawCracks(rockEdge, unit);
-                ctx.restore();
-            } else {
-                const gradient = ctx.createRadialGradient(bossX + 15, bossY + 15, 0, bossX + 15, bossY + 15, 20);
-                gradient.addColorStop(0, bossColor);
-                gradient.addColorStop(1, adjustColor(bossColor, -40));
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(bossX + 15, bossY + 15, 15, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // 绘制Boss边框
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // 记录覆盖层绘制需要的数据
-            const approxBossHeight = (bossType === 2) ? 46 : 30; // 岩石巨人更高一些
-            lastBossOverlay = {
-                bossX,
-                bossY,
-                bossColor,
-                bossName,
-                bossHealth,
-                bossMaxHealth,
-                bossType,
-                bossPhase,
-                approxBossHeight
-            };
-        }
-
-        // 绘制Boss覆盖层（血条/名称/发光描边等，置于管道之上）
-        function drawBossOverlay() {
-            if (!lastBossOverlay) return;
-            const canvasW = (typeof canvas !== 'undefined' && canvas) ? canvas.width : 160;
-            const canvasH = (typeof canvas !== 'undefined' && canvas) ? canvas.height : 160;
-            const healthBarWidth = 60;
-            const healthBarHeight = 8;
-            const {
-                bossX,
-                bossY,
-                bossColor,
-                bossName,
-                bossHealth,
-                bossMaxHealth,
-                bossType,
-                bossPhase,
-                approxBossHeight
-            } = lastBossOverlay;
-
-            // 健壮计算
-            const bh = Math.max(0, bossHealth | 0);
-            const bmh = Math.max(1, bossMaxHealth | 0);
-            let healthPercent = bh / bmh;
-            if (!isFinite(healthPercent) || healthPercent < 0) healthPercent = 0;
-            if (healthPercent > 1) healthPercent = 1;
-
-            // 根据空间决定血条在上方还是下方，避免遮挡Boss
-            const preferAboveY = bossY - 24; // 上方再多留一点空间
-            const preferBelowY = bossY + approxBossHeight + 6; // 下方多留
-            let hbY = preferAboveY;
-            // 如果上方空间不足，则放到下方
-            if (preferAboveY < 6) hbY = preferBelowY;
-            // 夹紧于画布
-            const hbX = bossX - (healthBarWidth - 30) / 2;
-            const clampedX = Math.max(0, Math.min(hbX, canvasW - healthBarWidth));
-            const clampedY = Math.max(0, Math.min(hbY, canvasH - healthBarHeight));
-
-            // 背景
-            ctx.fillStyle = '#333333';
-            ctx.fillRect(clampedX, clampedY, healthBarWidth, healthBarHeight);
-            // 填充
-            ctx.fillStyle = bossColor;
-            ctx.fillRect(clampedX, clampedY, healthBarWidth * healthPercent, healthBarHeight);
-            // 边框
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(clampedX, clampedY, healthBarWidth, healthBarHeight);
-
-            // 数值（居中到血条内部）
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '7px Arial';
-            ctx.textAlign = 'center';
-            const hpText = bh + '/' + bmh;
-            const centerY = clampedY + healthBarHeight / 2 + 2; // 微调垂直居中
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 1;
-            ctx.strokeText(hpText, bossX + healthBarWidth / 2, centerY);
-            ctx.fillText(hpText, bossX + healthBarWidth / 2, centerY);
-
-            // 名称放到与血条相反的一侧，避免重叠
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '8px Arial';
-            ctx.textAlign = 'center';
-            const nameAbove = (hbY >= bossY); // 如果血条在下方，则名称在上方，反之亦然
-            const nameY = nameAbove ? Math.max(8, bossY - 8) : Math.min(canvasH - 6, bossY + approxBossHeight + 2);
-            ctx.fillText(bossName, bossX + 15, nameY);
-
-            // 二阶段外发光描边（非岩石巨人用）
-            if (bossPhase === 2 && bossType !== 2) {
-                ctx.shadowColor = bossColor;
-                ctx.shadowBlur = 10;
-                ctx.strokeStyle = bossColor;
-                ctx.lineWidth = 3;
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-            }
-
-            // 使用一次后清理，避免过期数据
-            lastBossOverlay = null;
-        }
-
-        // 辅助：绘制岩石块（带高光与阴影）
-        function drawRockBlock(x, y, w, h, base, shadow, edge) {
-            ctx.fillStyle = base;
-            ctx.fillRect(x, y, w, h);
-            // 阴影
-            ctx.fillStyle = shadow;
-            ctx.fillRect(x, y + h - 2, w, 2);
-            ctx.fillRect(x + w - 2, y, 2, h);
-            // 高光边
-            ctx.fillStyle = edge;
-            ctx.fillRect(x, y, w, 1);
-            ctx.fillRect(x, y, 1, h);
-            // 倒角
-            ctx.fillRect(x + 1, y + 1, w - 2, 1);
-            ctx.fillRect(x + 1, y + 1, 1, h - 2);
-        }
-
-        // 辅助：绘制裂纹
-        function drawCracks(color, unit) {
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 0.8;
-            ctx.beginPath();
-            // 身体裂纹
-            ctx.moveTo(4 * unit + 3, 3 * unit + 2);
-            ctx.lineTo(5.1 * unit, 4.2 * unit);
-            ctx.lineTo(4.7 * unit, 5.6 * unit);
-            ctx.moveTo(7 * unit + 2, 3.1 * unit + 2);
-            ctx.lineTo(7.8 * unit, 4.8 * unit);
-            ctx.lineTo(6.9 * unit, 6.3 * unit);
-            // 头部裂纹
-            ctx.moveTo(5.3 * unit, 0.7 * unit);
-            ctx.lineTo(6 * unit, 1.8 * unit);
-            ctx.stroke();
-        }
-
         // 测试函数：手动创建投射物
         function testCreateProjectile() {
             // removed
@@ -2557,25 +2181,6 @@ function drawSurvivalItems() {
             }
             // 保留仅绘制投射物
         }
-
-        // 绘制挑战模式UI
-        function drawSurvivalUI() {
-            if (typeof exports.get_game_mode !== 'function' || typeof exports.get_boss_exists !== 'function') return;
-            const gameMode = typeof exports.get_game_mode === 'function' ? exports.get_game_mode() : currentGameMode;
-            const bossExists = typeof exports.get_boss_exists === 'function' ? exports.get_boss_exists() : 0;
-            if (!(gameMode === 4 || bossExists === 1)) return; // 仅在挑战模式或存在Boss时渲染
-            
-            // 绘制攻击冷却指示器
-            if (typeof exports.get_player_attack_cooldown === 'function') {
-                const cooldown = exports.get_player_attack_cooldown();
-                if (cooldown > 0) {
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                    ctx.font = '10px Arial';
-                    ctx.fillText(`攻击冷却: ${cooldown}`, 10, 10);
-                }
-            }
-        }
-
         function drawEffects() {
             if (typeof exports.get_active_effects_count !== 'function') return;
             const count = exports.get_active_effects_count();
@@ -3139,7 +2744,7 @@ function drawSurvivalItems() {
             ctx.lineWidth = Math.max(0.5, renderSize * 0.1);
             ctx.beginPath();
             ctx.arc(x, y, renderSize * 0.8, 0, Math.PI * 2);
-            ctx.stroke();
+                ctx.stroke();
         }
         
         // 重生光环渲染 - 简化为纯色圆形，减小渲染大小
@@ -3371,9 +2976,9 @@ function drawSurvivalItems() {
                         break;
                     }
                     default: {
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                        ctx.fill();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
                     }
                 }
             }
@@ -3533,85 +3138,25 @@ function drawSurvivalItems() {
         }
         
         function updateScreenShake() {
+            // 内部震动（来自本地事件，如gameover或攻击）
             if (screenShake > 0) {
                 screenShake--;
                 const shakeX = (Math.random() - 0.5) * screenShakeIntensity;
                 const shakeY = (Math.random() - 0.5) * screenShakeIntensity;
                 ctx.translate(shakeX, shakeY);
             }
-        }
-        
-        // 触发Boss视觉攻击效果（基于拾取的道具类型）
-        function triggerBossVisualAttack(itemType) {
-            if (typeof exports.get_boss_exists !== 'function' || exports.get_boss_exists() !== 1) return;
-            const pos = (typeof getBossRenderPosition === 'function') ? getBossRenderPosition() : { x: 65, y: 25 };
-            const bossX = pos.x;
-            const bossY = pos.y;
-            const birdX = (typeof exports.get_bird_x === 'function') ? exports.get_bird_x() : 45;
-            const birdY = (typeof exports.get_bird_y === 'function') ? exports.get_bird_y() : 80;
-            const color = getItemColor(itemType);
-            // 建立一条从鸟到Boss的能量束
-            bossAttackVisuals.push({
-                type: 'beam',
-                color: color,
-                startX: birdX,
-                startY: birdY,
-                endX: bossX + 15,
-                endY: bossY + 15,
-                life: 12, // 帧数
-                width: 2.5
-            });
-            // 在Boss端爆裂
-            bossAttackVisuals.push({
-                type: 'burst',
-                color: color,
-                x: bossX + 15,
-                y: bossY + 15,
-                radius: 3,
-                life: 14
-            });
-            // 轻微屏幕震动
-            addScreenShake(3);
-        }
-
-        // 绘制并更新视觉攻击效果
-        function drawBossVisualAttacks() {
-            if (!bossAttackVisuals || bossAttackVisuals.length === 0) return;
-            const next = [];
-            for (let v of bossAttackVisuals) {
-                if (v.type === 'beam') {
-                    const alpha = Math.max(0, v.life / 12);
-                    ctx.strokeStyle = v.color;
-                    ctx.globalAlpha = 0.4 + 0.6 * alpha;
-                    ctx.lineWidth = v.width * (0.7 + 0.3 * Math.random());
-                    ctx.beginPath();
-                    ctx.moveTo(v.startX, v.startY);
-                    // 稍微抖动的折线段，制造能量波动
-                    const midX = (v.startX + v.endX) / 2 + (Math.random() - 0.5) * 4;
-                    const midY = (v.startY + v.endY) / 2 + (Math.random() - 0.5) * 4;
-                    ctx.lineTo(midX, midY);
-                    ctx.lineTo(v.endX, v.endY);
-                    ctx.stroke();
-                    ctx.globalAlpha = 1;
-                    v.life--;
-                    if (v.life > 0) next.push(v);
-                } else if (v.type === 'burst') {
-                    const alpha = Math.max(0, v.life / 14);
-                    const radius = v.radius * (1 + (14 - v.life) * 0.6);
-                    ctx.strokeStyle = v.color;
-                    ctx.globalAlpha = 0.5 * alpha;
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.arc(v.x, v.y, radius, 0, Math.PI * 2);
-                    ctx.stroke();
-                    ctx.globalAlpha = 1;
-                    v.life--;
-                    if (v.life > 0) next.push(v);
+            // 来自引擎状态的轻微震动（碰撞但仍有生命）
+            try {
+                const ticks = (typeof exports.get_shake_ticks === 'function') ? exports.get_shake_ticks() : 0;
+                if (ticks > 0) {
+                    const mag = (typeof exports.get_shake_magnitude === 'function') ? exports.get_shake_magnitude() : 2;
+                    const fade = Math.max(0.2, Math.min(1, ticks / 12));
+                    const sx = (Math.random() - 0.5) * mag * fade;
+                    const sy = (Math.random() - 0.5) * mag * fade;
+                    ctx.translate(sx, sy);
                 }
-            }
-            bossAttackVisuals = next;
+            } catch (_) {}
         }
-        
         
 
         // 批量更新UI，减少DOM操作
@@ -3667,9 +3212,7 @@ function drawSurvivalItems() {
                 // 计算“有效模式”：
                 // - 如果WASM返回非0或用户选择本身为0，则以WASM为准
                 // - 否则以用户选择(currentGameMode)为准
-                // - Boss存在时强制显示挑战
                 const wasmMode = (typeof exports.get_game_mode === 'function') ? exports.get_game_mode() : undefined;
-                const bossExists = (typeof exports.get_boss_exists === 'function') ? exports.get_boss_exists() : 0;
                 const selectedMode = currentGameMode;
                 let effectiveMode;
                 if (typeof wasmMode === 'number') {
@@ -3677,31 +3220,23 @@ function drawSurvivalItems() {
                 } else {
                     effectiveMode = selectedMode;
                 }
-                if (bossExists === 1 && !(effectiveMode === 4 || effectiveMode === 6)) {
-                    effectiveMode = 4; // Boss存在时视为挑战模式
-                }
                 if (effectiveMode !== lastUIValues.gameMode) {
                     const modeName = (function(m) {
                         switch (m) {
                             case 0: return '经典';
-                            case 1: return '限时';
-                            case 2: return '挑战';
-                            case 3: return '完美';
-                            case 5: return '极速';
-                            case 4: return '挑战';
-                            case 6: return '挑战';
+                            case 1: return '经典（无道具）';
+                            case 2: return '完美';
+                            case 3: return '极速';
+                            case 4: return '困难';
+                            case 5: return '多人';
                             default: return '经典';
                         }
                     })(effectiveMode);
                     uiUpdateQueue.push({ element: currentModeEl, value: modeName });
                     lastUIValues.gameMode = effectiveMode;
-                    // 限时模式显示时间HUD，其它模式隐藏
+                    // 所有模式都不显示限时（模式1已改为无道具的经典模式，不再限时）
                     if (typeof timeItemEl !== 'undefined' && timeItemEl) {
-                        if (effectiveMode === 1) {
-                            if (timeItemEl.style.display !== '') timeItemEl.style.display = '';
-                        } else {
-                            if (timeItemEl.style.display !== 'none') timeItemEl.style.display = 'none';
-                        }
+                        if (timeItemEl.style.display !== 'none') timeItemEl.style.display = 'none';
                     }
                 }
             }
@@ -3718,22 +3253,10 @@ function drawSurvivalItems() {
             }
             
             if (livesEl) {
-                // 挑战/Boss 时显示血量，其他模式显示生命数
-                const bossExists = typeof exports.get_boss_exists === 'function' ? exports.get_boss_exists() : 0;
-
-                let displayValue;
-                if (bossExists === 1) {
-                    const currentHealth = typeof exports.get_player_current_health === 'function' ?
-                        exports.get_player_current_health() : 1;
-                    const maxHealth = typeof exports.get_player_max_health === 'function' ?
-                        exports.get_player_max_health() : 1;
-                    displayValue = `${currentHealth}/${maxHealth}`;
-                } else {
-                    const lives = typeof exports.get_player_lives === 'function' ?
+                    const lives = typeof exports.get_player_lives === 'function' ? 
                         exports.get_player_lives() : 1;
-                    displayValue = String(lives);
-                }
-
+                const displayValue = String(lives);
+                
                 if (displayValue !== lastUIValues.lives) {
                     uiUpdateQueue.push({ element: livesEl, value: displayValue });
                     lastUIValues.lives = displayValue;
@@ -3890,6 +3413,8 @@ function drawSurvivalItems() {
         const score = exports.get_score ? exports.get_score() : 0;
         const started = exports.is_game_started ? exports.is_game_started() : 0;
         const over = exports.is_game_over ? exports.is_game_over() : 0;
+        const countdownTicks = (typeof exports.get_start_countdown_ticks === 'function') ? exports.get_start_countdown_ticks() : 0;
+        const protectionTicks = (typeof exports.get_spawn_protection_ticks === 'function') ? exports.get_spawn_protection_ticks() : 0;
 
         // 检测分数变化并播放音效
         if (score > lastScore) {
@@ -3924,16 +3449,8 @@ function drawSurvivalItems() {
             
             // 绘制天气效果
             drawWeatherEffects();
-
-            // 若存在Boss，先绘制Boss主体于管道之前（Boss在管道后面）
-            try {
-                const bossExistsEarly = (typeof exports.get_boss_exists === 'function') ? exports.get_boss_exists() : 0;
-                if (bossExistsEarly === 1) {
-                    drawBossCore();
-                }
-            } catch (e) {}
-
-            // 绘制管道（覆盖于Boss主体之上）
+            
+            // 绘制管道
             drawPipes();
             
             // 绘制道具和效果
@@ -3942,25 +3459,13 @@ function drawSurvivalItems() {
             drawEffects();
             drawPhoenixEffects();
             
-        // 绘制挑战模式相关元素（放宽条件：模式为4或6，或存在Boss时强制渲染）
         const modeGetter = (typeof exports.get_game_mode === 'function') ? exports.get_game_mode : null;
         const gameModeVal = modeGetter ? modeGetter() : currentGameMode;
-        const bossExistsNow = (typeof exports.get_boss_exists === 'function') ? exports.get_boss_exists() : 0;
         
-        if (gameModeVal === 4 || gameModeVal === 6 || bossExistsNow === 1) {
-            drawSurvivalItems();
-            // 先绘制Boss主体（置于管道之下/同层），后续再绘制覆盖层
-            drawBossCore();
-            drawSurvivalUI();
-        }
-            
             
             // 绘制小鸟
             drawBird(bx, by);
-
-            // 绘制Boss覆盖层（血条/名称等，置于前景最上层）
-            drawBossOverlay();
-
+            
             // 冰冻视觉效果：在小鸟周围绘制半透明冰方块
             try {
                 if (typeof exports.has_freeze_effect_export === 'function' && exports.has_freeze_effect_export() === 1) {
@@ -4027,14 +3532,199 @@ function drawSurvivalItems() {
                 // 忽略视觉效果错误，避免影响主循环
             }
             
-            // 在挑战模式下，投射物在小鸟之后绘制
-            if (gameModeVal === 4 || gameModeVal === 6 || bossExistsNow === 1) {
-                drawProjectiles();
-            }
-            // 独立于投射物的拾取→Boss视觉攻击效果，每帧绘制
-            if (gameModeVal === 4 || gameModeVal === 6 || bossExistsNow === 1) {
-                drawBossVisualAttacks();
-            }
+            // 倒计时显示（居中大字）
+            try {
+                if (started === 1 && countdownTicks > 0) {
+                    const sec = Math.ceil(countdownTicks / 60);
+                    const label = sec > 0 ? String(sec) : 'GO';
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                    ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+                    ctx.lineWidth = 4;
+                    ctx.font = 'bold 36px system-ui, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.strokeText(label, 80, 60);
+                    ctx.fillText(label, 80, 60);
+                    ctx.restore();
+                }
+            } catch (e) {}
+            
+            // 开局护体：在小鸟周围画一个柔和护盾圈
+            try {
+                if (started === 1 && protectionTicks > 0) {
+                    const alpha = Math.min(0.6, 0.2 + protectionTicks / 100);
+                    ctx.save();
+                    ctx.strokeStyle = `rgba(173,216,230,${alpha.toFixed(2)})`;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(bx, by, 10, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            } catch (e) {}
+            
+            // 移除在鸟上方显示的效果小球与剩余条
+            
+            // 经典模式阈值冲刺视觉效果（速度线）
+            try {
+                const modeForDash = (typeof exports.get_game_mode === 'function') ? exports.get_game_mode() : 0;
+                if (modeForDash === 0) { // Classic
+                    const boostTicks = (typeof exports.get_classic_boost_ticks === 'function') ? exports.get_classic_boost_ticks() : 0;
+                    if (boostTicks > 0) {
+                        const intensity = Math.min(1, boostTicks / 60); // 前半程更强
+                        const lines = 6;
+                        ctx.save();
+                        ctx.strokeStyle = `rgba(64,224,208,${0.25 + 0.35 * intensity})`;
+                        for (let i = 0; i < lines; i++) {
+                            const len = 8 + i * 3;
+                            const offsetY = -10 + i * 4;
+                            ctx.lineWidth = 1 + (i % 2);
+                            ctx.beginPath();
+                            ctx.moveTo(bx - 14, by + offsetY);
+                            ctx.lineTo(bx - 14 - len, by + offsetY);
+                            ctx.stroke();
+                        }
+                        // 前方向高光线，强调“向前冲刺”
+                        ctx.strokeStyle = `rgba(255,255,255,${0.15 + 0.25 * intensity})`;
+                        for (let i = 0; i < 4; i++) {
+                            const len = 10 + i * 4;
+                            const offsetY = -6 + i * 4;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(bx + 10, by + offsetY);
+                            ctx.lineTo(bx + 10 + len, by + offsetY);
+                            ctx.stroke();
+                        }
+                        ctx.restore();
+                    }
+                }
+            } catch (e) {}
+            
+            // 动量槽或速度条（Rush: 动量；Classic: 顶部速度条 + 底部动量条）
+            try {
+                const mode = (typeof exports.get_game_mode === 'function') ? exports.get_game_mode() : 0;
+                if (mode === 3) {
+                    // Rush：单条动量条（青色）
+                    const meter = (typeof exports.get_rush_meter === 'function') ? exports.get_rush_meter() : 0;
+                    const threshold = (typeof exports.get_rush_threshold === 'function') ? exports.get_rush_threshold() : 200;
+                    const prog = Math.max(0, Math.min(1, meter / threshold));
+                    ctx.save();
+                    const w = 70, h = 8, x = 8, y = 8, r = 4;
+                    ctx.beginPath();
+                    ctx.moveTo(x + r, y);
+                    ctx.lineTo(x + w - r, y);
+                    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+                    ctx.lineTo(x + w, y + h - r);
+                    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                    ctx.lineTo(x + r, y + h);
+                    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+                    ctx.lineTo(x, y + r);
+                    ctx.quadraticCurveTo(x, y, x + r, y);
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+                    ctx.fill();
+                    ctx.save();
+                    ctx.clip();
+                    const fillW = Math.max(0, w * prog);
+                    const grad = ctx.createLinearGradient(x, y, x + fillW, y);
+                    grad.addColorStop(0, 'rgba(64,224,208,1)');
+                    grad.addColorStop(1, 'rgba(32,178,170,1)');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(x, y, fillW, h);
+                    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+                    ctx.fillRect(x, y, fillW, 2);
+                    ctx.restore();
+                    if (prog > 0) {
+                        ctx.shadowColor = 'rgba(64,224,208,0.6)';
+                        ctx.shadowBlur = 8;
+                        ctx.strokeStyle = 'rgba(64,224,208,0.6)';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(x + 0.5, y + 0.5, Math.max(0, fillW - 1), h - 1);
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                    ctx.lineWidth = 1;
+                    for (let i = 1; i < 5; i++) {
+                        const tx = x + (w * (i * 0.2));
+                        ctx.beginPath();
+                        ctx.moveTo(tx, y + 1);
+                        ctx.lineTo(tx, y + h - 1);
+                        ctx.stroke();
+                    }
+                    ctx.restore();
+                } else if (mode === 0) {
+                    // Classic：显示神龙充能条（仅神龙形态）
+                    const evolutionStage = (typeof exports.get_evolution_stage === 'function') ? exports.get_evolution_stage() : 0;
+                    if (evolutionStage === 4) {
+                        const charge = (typeof exports.get_dragon_charge === 'function') ? exports.get_dragon_charge() : 0;
+                        const threshold = (typeof exports.get_dragon_charge_threshold === 'function') ? exports.get_dragon_charge_threshold() : 1;
+                        const progress = threshold > 0 ? Math.max(0, Math.min(1, charge / threshold)) : 0;
+                        
+                        const w = 60;
+                        const h = 10;
+                        const x = 8;
+                        const yTop = 8;
+                        const r = 5;
+                        
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.moveTo(x + r, yTop);
+                        ctx.lineTo(x + w - r, yTop);
+                        ctx.quadraticCurveTo(x + w, yTop, x + w, yTop + r);
+                        ctx.lineTo(x + w, yTop + h - r);
+                        ctx.quadraticCurveTo(x + w, yTop + h, x + w - r, yTop + h);
+                        ctx.lineTo(x + r, yTop + h);
+                        ctx.quadraticCurveTo(x, yTop + h, x, yTop + h - r);
+                        ctx.lineTo(x, yTop + r);
+                        ctx.quadraticCurveTo(x, yTop, x + r, yTop);
+                        ctx.closePath();
+                        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+                        ctx.fill();
+                        ctx.strokeStyle = 'rgba(222,210,255,0.35)';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                        
+                        const fillW = Math.max(0, Math.min(w, w * progress));
+                        if (fillW > 0) {
+                            ctx.save();
+                            ctx.clip();
+                            const grad = ctx.createLinearGradient(x, yTop, x + fillW, yTop);
+                            grad.addColorStop(0, 'rgba(138,43,226,1)');
+                            grad.addColorStop(1, 'rgba(218,112,214,1)');
+                            ctx.fillStyle = grad;
+                            ctx.fillRect(x, yTop, fillW, h);
+                            ctx.fillStyle = 'rgba(255,255,255,0.28)';
+                            ctx.fillRect(x, yTop, fillW, 2);
+                            ctx.restore();
+                        }
+                        
+                        if (progress >= 1) {
+                            ctx.save();
+                            ctx.shadowColor = 'rgba(218,112,214,0.85)';
+                            ctx.shadowBlur = 15;
+                            ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+                            ctx.lineWidth = 1.5;
+                            ctx.strokeRect(x - 1, yTop - 1, w + 2, h + 2);
+                            ctx.restore();
+                        }
+                        
+                        ctx.restore();
+                        
+                        // 标签
+                        ctx.save();
+                        ctx.fillStyle = progress >= 1 ? '#FFE6FF' : '#E8E0FF';
+                        ctx.font = '9px Arial';
+                        ctx.textAlign = 'left';
+                        ctx.textBaseline = 'top';
+                        const label = progress >= 1 ? '龙威就绪' : '龙威充能';
+                        ctx.fillText(label, x, yTop + h + 6);
+                        ctx.restore();
+                    }
+                }
+            } catch (e) {}
+            
+            drawProjectiles();
             
             // 更新和绘制粒子与飘字
             updateParticles();
