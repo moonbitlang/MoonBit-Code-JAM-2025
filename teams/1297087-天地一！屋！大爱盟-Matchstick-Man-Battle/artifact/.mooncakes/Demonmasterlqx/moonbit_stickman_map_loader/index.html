@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+    jQuery.noConflict();
+    Object.extend = jQuery.extend;
+    </script>
+    <script src="lib/jquery.svg.min.js"></script>
+
+    <script type="text/javascript">
+    const min = Math.min;
+    </script>
+    
+    
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    <script src=".mooncakes\Demonmasterlqx\box2d_ffi\box2d.js"></script>
+    <script src=".mooncakes\Demonmasterlqx\MoonP5\p5.js"></script>
+    <!-- <script src="bundle.js"></script> -->
+</head>
+
+
+
+<body>
+    <div class="container">
+        <h1>上传 JSON 文件并显示为字符串</h1>
+
+        <label for="jsonFileInput">选择一个 JSON 文件:</label>
+        <input type="file" id="jsonFileInput" accept=".json">
+
+        <h2>文件内容 (JSON 字符串):</h2>
+        <pre id="fileContentDisplay">请选择一个 JSON 文件...</pre>
+    </div>
+    
+    <script src="./target/js/release/build/test_render/test_render.js"></script>
+
+    <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
+</body>
+
+</html>

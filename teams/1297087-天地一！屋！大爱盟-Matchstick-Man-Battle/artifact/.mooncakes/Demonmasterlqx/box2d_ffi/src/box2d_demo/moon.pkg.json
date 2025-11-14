@@ -1,0 +1,9 @@
+{
+  "import": [
+    {
+      "path": "Demonmasterlqx/box2d_ffi/box2d",
+      "alias": "box2d"
+    }
+  ],
+  "is-main": true
+}

@@ -1,0 +1,6 @@
+{
+    "is-main": true,
+    "import": [
+      "Demonmasterlqx/MoonP5/cmd/p5js_ffi"
+    ]
+}

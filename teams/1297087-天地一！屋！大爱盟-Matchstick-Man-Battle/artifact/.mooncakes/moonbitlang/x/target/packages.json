@@ -1,0 +1,1622 @@
+{
+  "source_dir": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x",
+  "name": "moonbitlang/x",
+  "packages": [
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark",
+      "root": "moonbitlang/x",
+      "rel": "benchmark",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\benchmark.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\types.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/benchmark/internal/benchmark_ffi",
+          "alias": "ffi",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\internal\\benchmark_ffi"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\benchmark\\benchmark.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\internal\\benchmark_ffi",
+      "root": "moonbitlang/x",
+      "rel": "benchmark/internal/benchmark_ffi",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\internal\\benchmark_ffi\\ffi_js.mbt": {
+          "backend": [
+            "Js"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\internal\\benchmark_ffi\\ffi_native.mbt": {
+          "backend": [
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\internal\\benchmark_ffi\\ffi_wasm.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\benchmark\\internal\\benchmark_ffi\\ffi_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\benchmark\\internal\\benchmark_ffi\\benchmark_ffi.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto",
+      "root": "moonbitlang/x",
+      "rel": "crypto",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\byte_source.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\chacha.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\deprecated.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\hmac.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\md5.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sha1.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sha224.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sha256.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sm3.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\traits.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\utils.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\chacha_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\hmac_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\md5_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sha1_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sha224_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sha256_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\sm3_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\crypto\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\crypto\\crypto.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding",
+      "root": "moonbitlang/x",
+      "rel": "encoding",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\decoding.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\encoding.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\types.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\decoding_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\encoding_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\encoding\\encoding.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark",
+      "root": "moonbitlang/x",
+      "rel": "encoding/internal/benchmark",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark\\lib.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/encoding",
+          "alias": "encoding",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\encoding\\internal\\benchmark\\benchmark.mi"
+    },
+    {
+      "is-main": true,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark\\decoding_batch",
+      "root": "moonbitlang/x",
+      "rel": "encoding/internal/benchmark/decoding_batch",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark\\decoding_batch\\main.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/encoding",
+          "alias": "encoding",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding"
+        },
+        {
+          "path": "moonbitlang/x/sys",
+          "alias": "sys",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys"
+        },
+        {
+          "path": "moonbitlang/x/encoding/internal/benchmark",
+          "alias": "bench",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\encoding\\internal\\benchmark\\decoding_batch\\decoding_batch.mi"
+    },
+    {
+      "is-main": true,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark\\decoding_streaming",
+      "root": "moonbitlang/x",
+      "rel": "encoding/internal/benchmark/decoding_streaming",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark\\decoding_streaming\\main.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/encoding",
+          "alias": "encoding",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding"
+        },
+        {
+          "path": "moonbitlang/x/sys",
+          "alias": "sys",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys"
+        },
+        {
+          "path": "moonbitlang/x/encoding/internal/benchmark",
+          "alias": "bench",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\encoding\\internal\\benchmark"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\encoding\\internal\\benchmark\\decoding_streaming\\decoding_streaming.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\fs",
+      "root": "moonbitlang/x",
+      "rel": "fs",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\fs\\fs.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\fs\\fs_js.mbt": {
+          "backend": [
+            "Js"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\fs\\fs_native.mbt": {
+          "backend": [
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\fs\\fs_wasm.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\fs\\blackbox_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/internal/ffi",
+          "alias": "ffi",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\fs\\fs.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi",
+      "root": "moonbitlang/x",
+      "rel": "internal/ffi",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi\\byte_array_wasm.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi\\dir_wasm.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi\\string_convert.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi\\string_wasm.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\internal\\ffi\\ffi.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5",
+      "root": "moonbitlang/x",
+      "rel": "json5",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\internal_types.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\lex_main.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\lex_misc.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\lex_number.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\lex_prop.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\lex_string.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\parse.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\types.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\unicode_gen.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\util.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\parse_error_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\parse_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\json5\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\json5\\json5.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\num",
+      "root": "moonbitlang/x",
+      "rel": "num",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\num\\num.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\num\\num.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\rational",
+      "root": "moonbitlang/x",
+      "rel": "rational",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\rational\\rational.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\rational\\types.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\rational\\rational_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\rational\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\rational\\rational.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\stack",
+      "root": "moonbitlang/x",
+      "rel": "stack",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\stack\\deprecated.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\stack\\stack.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\stack\\types.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\stack\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\stack\\stack.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys",
+      "root": "moonbitlang/x",
+      "rel": "sys",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\sys.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\sys_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/sys/internal/ffi",
+          "alias": "ffi",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\internal\\ffi"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\sys\\sys.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\internal\\ffi",
+      "root": "moonbitlang/x",
+      "rel": "sys/internal/ffi",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\internal\\ffi\\sys_js.mbt": {
+          "backend": [
+            "Js"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\internal\\ffi\\sys_native.mbt": {
+          "backend": [
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\sys\\internal\\ffi\\sys_wasm.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "moonbitlang/x/internal/ffi",
+          "alias": "common_ffi",
+          "fspath": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\internal\\ffi"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\sys\\internal\\ffi\\ffi.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time",
+      "root": "moonbitlang/x",
+      "rel": "time",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\duration.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\errors.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\period.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_date.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_date_time.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_time.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\util.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\weekday.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zone.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zoned_date_time.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zone_offset.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\duration_wbtest.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_date_time_wbtest.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_date_wbtest.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_time_wbtest.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zone_wbtest.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\duration_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\period_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_date_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_date_time_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\plain_time_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zoned_date_time_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zone_offset_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\zone_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\time\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\time\\time.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\uuid",
+      "root": "moonbitlang/x",
+      "rel": "uuid",
+      "files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\uuid\\ops.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\uuid\\uuid.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\uuid\\variant.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\uuid\\uuid_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "mbt-md-files": {
+        "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\uuid\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        }
+      },
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\Code\\MoonBit-Code-JAM-2025\\teams\\1297087-天地一！屋！大爱盟-Matchstick-Man-Battle\\artifact\\.mooncakes\\moonbitlang\\x\\target\\wasm-gc\\release\\check\\uuid\\uuid.mi"
+    }
+  ],
+  "deps": [],
+  "backend": "wasm-gc",
+  "opt_level": "release",
+  "source": null
+}

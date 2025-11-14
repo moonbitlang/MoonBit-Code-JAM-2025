@@ -1,0 +1,89 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "moonbitlang/x/crypto"
+
+import(
+  "moonbitlang/core/bytes"
+)
+
+// Values
+fn[D : ByteSource] bytes_to_hex_string(D) -> String
+
+#deprecated
+fn[Data : ByteSource] chacha12(FixedArray[UInt], UInt, Data, nonce? : UInt) -> FixedArray[Byte] raise
+
+#deprecated
+fn[Data : ByteSource] chacha20(FixedArray[UInt], UInt, Data, nonce? : UInt) -> FixedArray[Byte] raise
+
+#deprecated
+fn[Data : ByteSource] chacha8(FixedArray[UInt], UInt, Data, nonce? : UInt) -> FixedArray[Byte] raise
+
+fn[H : CryptoHasher] hmac(H, @bytes.View, @bytes.View) -> FixedArray[Byte]
+
+fn[Data : ByteSource] md5(Data) -> FixedArray[Byte]
+
+fn[Data : ByteSource] sha1(Data) -> FixedArray[Byte]
+
+fn[Data : ByteSource] sha224(Data) -> FixedArray[Byte]
+
+fn sha224_from_iter(Iter[Byte]) -> FixedArray[Byte]
+
+fn[Data : ByteSource] sha256(Data) -> FixedArray[Byte]
+
+fn sha256_from_iter(Iter[Byte]) -> FixedArray[Byte]
+
+fn[Data : ByteSource] sm3(Data) -> FixedArray[Byte]
+
+fn sm3_from_iter(Iter[Byte]) -> FixedArray[Byte]
+
+fn uints_to_hex_string(Iter[UInt]) -> String
+
+// Errors
+
+// Types and methods
+type ChaCha
+fn[K : ByteSource, N : ByteSource] ChaCha::chacha12(K, N, counter? : UInt) -> Self raise
+fn[K : ByteSource, N : ByteSource] ChaCha::chacha20(K, N, counter? : UInt) -> Self raise
+fn[K : ByteSource, N : ByteSource] ChaCha::chacha8(K, N, counter? : UInt) -> Self raise
+fn[D : ByteSource] ChaCha::transform(Self, D, FixedArray[Byte], offset? : Int) -> Unit
+
+type MD5
+fn MD5::finalize(Self) -> FixedArray[Byte]
+fn MD5::new() -> Self
+fn[Data : ByteSource] MD5::update(Self, Data) -> Unit
+impl CryptoHasher for MD5
+
+type SHA256
+fn SHA256::finalize(Self) -> FixedArray[Byte]
+fn SHA256::new(reg? : FixedArray[UInt]) -> Self
+fn[Data : ByteSource] SHA256::update(Self, Data) -> Unit
+fn SHA256::update_from_iter(Self, Iter[Byte]) -> Unit
+impl CryptoHasher for SHA256
+
+type SM3
+fn SM3::finalize(Self) -> FixedArray[Byte]
+fn SM3::new() -> Self
+fn[Data : ByteSource] SM3::update(Self, Data) -> Unit
+fn SM3::update_from_iter(Self, Iter[Byte]) -> Unit
+impl CryptoHasher for SM3
+
+// Type aliases
+pub typealias MD5 as MD5Context
+
+pub typealias SM3 as SM3Context
+
+pub typealias SHA256 as Sha256Context
+
+// Traits
+trait ByteSource
+impl ByteSource for FixedArray[Byte]
+impl ByteSource for Bytes
+impl ByteSource for @bytes.View
+
+pub(open) trait CryptoHasher {
+  size(Self) -> Int
+  block_size(Self) -> Int
+  reset(Self) -> Unit
+  update(Self, @bytes.View) -> Unit
+  finalize_into(Self, FixedArray[Byte], offset~ : Int) -> Unit
+}
+

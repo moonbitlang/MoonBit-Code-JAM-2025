@@ -1,0 +1,11 @@
+/// 3D暂时不实现
+/// https://p5js.org/reference/p5/beginGeometry/
+/// https://p5js.org/reference/p5/endGeometry/
+/// https://p5js.org/reference/p5/box/
+/// https://p5js.org/reference/p5/cone/
+/// https://p5js.org/reference/p5/cylinder/
+/// https://p5js.org/reference/p5/ellipsoid/
+/// https://p5js.org/reference/p5/plane/
+/// https://p5js.org/reference/p5/sphere/
+/// https://p5js.org/reference/p5/torus/
+/// https://p5js.org/reference/p5/freeGeometry/
