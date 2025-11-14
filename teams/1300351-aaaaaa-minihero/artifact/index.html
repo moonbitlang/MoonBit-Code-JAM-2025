@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Game</title>
+    <script> 
+        function mylogAiBoard(s) {
+            let p = document.createElement("pre")
+            p.innerText = s;
+            if (aiBoard.childElementCount > 0) {
+                aiBoard.insertBefore(p, aiBoard.children[0]);
+            } else {
+                aiBoard.appendChild(p);
+            }
+            if (aiBoard.childElementCount > 50) {
+                aiBoard.removeChild(aiBoard.childNodes[aiBoard.childElementCount - 1]);
+            }
+        
+        }
+        let llmresult = "[]"
+        let stime = Date.now()
+        let callcnt = 300
+        function observe_and_act(ostr, raw = false) {
+            try {
+                let ret = []
+                if (raw) {
+                    if (llmresult == null) {
+                        callcnt--;
+                        if (callcnt < 0) {
+                            callcnt = 300
+                            llmresult = "[]"
+                        } else {
+                            return []
+                        }
+                    }
+                    
+                    let back = llmresult
+                    llmresult = null
+                    let r = /```json\s*(.*)\s*```/g.exec(back)                        
+                    console.log("back", back, "r", r)
+                    try {
+                        if (r == null) {
+                            ret = JSON.parse(back)
+                        } else if (r.length > 1) {
+                            ret = JSON.parse(r[1])
+                        } else {
+                            ret = []
+                        }
+                    } catch(e) {
+                        console.log(e)
+                        ret = []
+                    }
+                    
+                    if (back != null) {
+                        console.log("post", ostr, "back", ret)
+                        
+                        stime = Date.now()
+                        fetch('http://localhost:8081/chat', {
+                            method: 'POST', // 或者 'PUT' 取决于你想要的操作
+                            headers: {
+                                'Content-Type': 'text/plain' // 设置Content-Type为text/plain
+                            },
+                            body: ostr // 直接传递字符串
+                        })
+                        .then(response => response.text()) // 如果服务器返回文本，可以使用.text()
+                        .then(data => {
+                            console.log("answer consume:", Date.now() - stime);
+                            llmresult = data;
+                            mylogAiBoard(data);
+                        })
+                        .catch(err => console.log(err))
+                    }
+                } else {
+                    let env = JSON.parse(ostr);
+                    //TODO RL dealing 
+                }
+                return ret;
+            } catch(e) {
+                console.log(e)
+            }  
+            return []
+            //return json describes the act
+        }
+    </script>
+    <script src="survivors.js" defer></script>
+</head>
+
+<body>
+    <div style="display: flex;">
+        <div style="width: 300px; max-height:600px;overflow-y:scroll;">
+            WASD移动,攻击和交互。交互人类会回血。
+
+            <br /> 可以攻击怪物和怪物的巢穴。
+
+            <br /> Q切换大世界和小区域, 大世界用颜色表示势力, 有四个国家, 无主地绿色, 以及象征魔物占领地黑色。
+
+            <br /> 小区域内也可以从地图边缘回到大世界, 小区域里水域不可建造和移动。
+
+            <br /> 你是拯救世界的勇者之一, 在你所在的附近会不断出现新的人物和魔物。
+
+            <br /> 消灭魔物和怪物巢穴会获得功绩。满1000点功绩进入自己国度的村镇会自动消耗并成为当地的领主, 获得经济建筑营利的税收。
+
+            <br /> 带领人类发展壮大, 消灭魔物吧。
+
+            <br /> 当然, 也可以尽可能多地刷金币! 
+
+            <br /> 这个世界在自然演化中。每隔几天会出现一个怪物巢穴, 怪物巢穴每天会生成不离开区域的魔物。
+
+            <br /> 世界上有若干国家。每个国家初始有若干城市。有许多种建筑，需要消耗经济值建造(点击建造按钮然后点击地图), 建筑处派驻空闲人口会产出经济值/食物等等, 而人物被派驻到建筑会获得相应的职业得到加成。可以创建英雄，英雄可以分配某个种类的士兵并叠加此单位的攻击力(比升级提升战斗力要快)。这些城市也会在其领主的决策下自动建造建筑，分配人口，招募英雄。城墙可以提升区域的防御值, 敌对的单位只有削减完区域的防御值才能从大地图进入城市。人物游荡时可能离开小区域前往大世界, 从而可能前往其他小区域, 荒野区域中, 游荡的人口数量超过5则可能建立新的城镇。
+
+            <br /> 国家之间会有小概率发生战争从而改变城市的归属。魔物/英雄/士兵/武装起来的普通职业者都会自动寻找并攻击城市内的敌对单位和建筑。最终大世界会持续地动态地变化填色(荒野的绿色, 魔物巢穴的黑色, 以及四个国家的四种颜色)。
+
+            <br /> 除此之外, 我们接入了大模型(这边网站上用不了, 需要部署对应的服务, 或者用我们的 win/mac/linux 客户端), ai可以扮演各个国家, 经济值建造各种经营性和人口建筑, 宣战和谈, 军事调拨。
+
+        </div>
+        <canvas id="canvas" style="display: block; margin: 0 auto;" height="32" width="32"></canvas>
+        <div style="width: 300px;" id="logBoard"></div>
+    </div>
+    <div id ="board"></div>
+    <div id ="aiBoard"></div>
+</body>
+
+</html>

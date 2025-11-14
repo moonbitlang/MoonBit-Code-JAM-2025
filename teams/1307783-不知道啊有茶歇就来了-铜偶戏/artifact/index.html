@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://pub-6f9181bda40946ea92b5e87fe84e27d4.r2.dev/ui/favicon.ico"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Copper Puppetry</title>
     <style>
@@ -121,7 +125,8 @@
       }
 
       @keyframes pulse {
-        0%, 100% {
+        0%,
+        100% {
           opacity: 1;
         }
         50% {
@@ -130,7 +135,9 @@
       }
 
       @keyframes bounce {
-        0%, 80%, 100% {
+        0%,
+        80%,
+        100% {
           transform: scale(0);
           opacity: 0.5;
         }
@@ -139,13 +146,185 @@
           opacity: 1;
         }
       }
+
+      /* Safari 提醒样式 */
+      #safari-warning {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+      }
+
+      .safari-warning-content {
+        background: #2a1a0f;
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        border: 2px solid #f59e0b;
+      }
+
+      .safari-warning-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .safari-warning-title {
+        color: #fff;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+
+      .safari-warning-text {
+        color: #e5e5e5;
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 30px;
+      }
+
+      .safari-warning-text strong {
+        color: #f59e0b;
+        font-weight: 600;
+      }
+
+      .safari-warning-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .safari-btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 160px;
+      }
+
+      .safari-btn-highlight {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        border: 2px solid rgba(102, 126, 234, 0.5);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .safari-btn-highlight::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.6s ease;
+      }
+
+      .safari-btn-highlight:hover::before {
+        left: 100%;
+      }
+
+      .safari-btn-highlight:hover {
+        background: linear-gradient(135deg, #7c8ef5 0%, #8a5bb8 100%);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+      }
+
+      .safari-btn-primary {
+        background: #f59e0b;
+        color: #2a1a0f;
+      }
+
+      .safari-btn-primary:hover {
+        background: #fbbf24;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+      }
+
+      .safari-btn-secondary {
+        background: transparent;
+        color: #e5e5e5;
+        border: 2px solid #666;
+      }
+
+      .safari-btn-secondary:hover {
+        background: #444;
+        border-color: #888;
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 600px) {
+        .safari-warning-content {
+          margin: 20px;
+          padding: 30px 20px;
+        }
+
+        .safari-warning-title {
+          font-size: 24px;
+        }
+
+        .safari-warning-text {
+          font-size: 16px;
+        }
+
+        .safari-warning-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .safari-btn {
+          width: 100%;
+          max-width: 280px;
+        }
+      }
     </style>
-    <script type="module" crossorigin src="./assets/index-PEr3VHTR.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/three-C2K7cSXS.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-CeCdllUL.css">
+    <script type="module" crossorigin src="./assets/index-D8SFig1x.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/three-DALeLLf3.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-DgaiZV0S.css">
   </head>
 
   <body>
+    <!-- Safari 提醒界面 -->
+    <div id="safari-warning" style="display: none">
+      <div class="safari-warning-content">
+        <div class="safari-warning-icon">⚠️</div>
+        <h2 class="safari-warning-title">性能优化提醒</h2>
+        <p class="safari-warning-text">
+          检测到您正在使用 Safari 浏览器。<br />
+          为了获得最佳游戏性能，我们推荐使用
+          <strong>Chrome</strong> 浏览器游玩。
+        </p>
+        <div class="safari-warning-buttons">
+          <button id="download-local" class="safari-btn safari-btn-highlight">
+            下载本地版（帧率更高）
+          </button>
+          <button id="download-chrome" class="safari-btn safari-btn-primary">
+            下载 Chrome
+          </button>
+          <button id="continue-safari" class="safari-btn safari-btn-secondary">
+            继续使用 Safari
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- 加载界面 -->
     <div id="loading-screen">
       <div class="loading-content">
@@ -153,7 +332,11 @@
         <p class="loading-subtitle">正在加载资源...</p>
         <div class="progress-container">
           <div class="progress-bar-bg">
-            <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+            <div
+              id="progress-bar"
+              class="progress-bar-fill"
+              style="width: 0%"
+            ></div>
           </div>
           <div id="progress-text" class="progress-text">0 / 0 (0%)</div>
         </div>
@@ -167,6 +350,5 @@
 
     <!-- Vue 应用挂载点 -->
     <div id="app"></div>
-
   </body>
 </html>
