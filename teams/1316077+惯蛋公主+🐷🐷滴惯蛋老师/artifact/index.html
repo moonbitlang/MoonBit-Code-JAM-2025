@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐷🐷的惯蛋老师</title>
+    <script src="moonbit/guandan_engine/cmd/main/target/js/release/build/main/main.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="overlay"></div>
+    <main class="app-container">
+      <section id="start-screen" class="panel visible start-panel">
+        <h1 class="title">🐷🐷滴惯蛋老师</h1>
+        <button id="start-btn" class="primary-btn" type="button">开始游戏</button>
+      </section>
+
+      <section id="quiz-screen" class="panel hidden" aria-hidden="true">
+        <h2 class="panel-title">游戏性格测试</h2>
+        <form id="quiz-form" novalidate>
+          <fieldset data-question="tempo" class="question-block">
+            <legend>你的打牌节奏？</legend>
+            <label class="option-card">
+              <input type="radio" name="tempo" value="A">
+              <span>A. 慢慢来，先看看别人怎么出</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="tempo" value="B">
+              <span>B. 逮到机会就主动控场</span>
+            </label>
+          </fieldset>
+
+          <fieldset data-question="sacrifice" class="question-block">
+            <legend>队友快走时，你选择？</legend>
+            <label class="option-card">
+              <input type="radio" name="sacrifice" value="A">
+              <span>A. 我送队友牌，让队友先走</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="sacrifice" value="B">
+              <span>B. 我先冲，能赢就行</span>
+            </label>
+          </fieldset>
+
+          <fieldset data-question="memory" class="question-block">
+            <legend>你的出牌方式？</legend>
+            <label class="option-card">
+              <input type="radio" name="memory" value="A">
+              <span>A. 会记记关键牌，灵活应牌出牌</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="memory" value="B">
+              <span>B. 不会，靠牌力按计划出牌</span>
+            </label>
+          </fieldset>
+
+          <p id="quiz-error" class="error hidden" role="alert">请回答全部问题后继续。</p>
+          <div class="actions">
+            <button id="quiz-confirm" class="primary-btn" type="button">进入牌桌</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="game-screen" class="panel hidden" aria-hidden="true">
+        <div id="assignment-stage" class="game-stage visible" aria-hidden="false">
+          <div class="player-persona-card">
+            <figure class="persona-figure">
+              <img id="player-avatar" class="hidden" alt="玩家性格画像">
+              <figcaption id="player-name">等待测试结果</figcaption>
+            </figure>
+            <div class="persona-detail">
+              <p class="persona-code" id="player-code"></p>
+              <p class="persona-desc" id="player-desc">完成上方三道测试题后，将生成你的惯蛋性格画像。</p>
+            </div>
+          </div>
+
+          <div class="selection-panel">
+            <h3 class="selection-title">为队友与两位对手选择性格</h3>
+            <p class="selection-hint">
+              根据不同性格，系统会匹配到对应的 Agent。你可以自由搭配，体验不同牌局氛围。
+            </p>
+            <div class="selection-list">
+              <div class="selection-block" data-role="ally">
+                <label class="selection-label" for="ally-select">队友</label>
+                <select id="ally-select" class="persona-select">
+                  <option value="" selected>请选择性格</option>
+                </select>
+                <figure class="selection-preview">
+                  <img id="ally-avatar" class="hidden" alt="队友性格画像">
+                  <figcaption id="ally-name">等待选择</figcaption>
+                </figure>
+              </div>
+              <div class="selection-block" data-role="opponent-left">
+                <label class="selection-label" for="opponent-left-select">上家对手</label>
+                <select id="opponent-left-select" class="persona-select">
+                  <option value="" selected>请选择性格</option>
+                </select>
+                <figure class="selection-preview">
+                  <img id="opponent-left-avatar" class="hidden" alt="上家对手性格画像">
+                  <figcaption id="opponent-left-name">等待选择</figcaption>
+                </figure>
+              </div>
+              <div class="selection-block" data-role="opponent-right">
+                <label class="selection-label" for="opponent-right-select">下家对手</label>
+                <select id="opponent-right-select" class="persona-select">
+                  <option value="" selected>请选择性格</option>
+                </select>
+                <figure class="selection-preview">
+                  <img id="opponent-right-avatar" class="hidden" alt="下家对手性格画像">
+                  <figcaption id="opponent-right-name">等待选择</figcaption>
+                </figure>
+              </div>
+            </div>
+            <button id="finalize-btn" class="primary-btn" type="button" disabled>进入牌桌</button>
+          </div>
+        </div>
+
+        <div id="table-stage" class="game-stage hidden" aria-hidden="true">
+          <div class="table-wrapper">
+            <div class="table-background">
+              <div class="table-surface">
+                <div id="trick-area" class="trick-area">
+                  <div id="trick-cards" class="trick-cards"></div>
+                </div>
+                <figure class="seat seat-player">
+                  <img id="table-player-avatar" class="hidden" alt="玩家形象">
+                  <figcaption>
+                    <span class="seat-role">自己</span>
+                    <span id="table-player-name" class="seat-name"></span>
+                  </figcaption>
+                  <div class="pass-tag" data-seat="player">不要</div>
+                </figure>
+                <figure class="seat seat-ally">
+                  <img id="table-ally-avatar" class="hidden" alt="队友形象">
+                  <figcaption>
+                    <span class="seat-role">队友</span>
+                    <span id="table-ally-name" class="seat-name"></span>
+                  </figcaption>
+                  <div class="pass-tag" data-seat="ally">不要</div>
+                </figure>
+                <figure class="seat seat-opponent-left">
+                  <img id="table-opponent-left-avatar" class="hidden" alt="上家对手形象">
+                  <figcaption>
+                    <span class="seat-role">上家</span>
+                    <span id="table-opponent-left-name" class="seat-name"></span>
+                  </figcaption>
+                  <div class="pass-tag" data-seat="opponentLeft">不要</div>
+                </figure>
+                <figure class="seat seat-opponent-right">
+                  <img id="table-opponent-right-avatar" class="hidden" alt="下家对手形象">
+                  <figcaption>
+                    <span class="seat-role">下家</span>
+                    <span id="table-opponent-right-name" class="seat-name"></span>
+                  </figcaption>
+                  <div class="pass-tag" data-seat="opponentRight">不要</div>
+                </figure>
+                <div id="player-hand" class="hand-row" aria-label="当前手牌"></div>
+                <button id="pass-btn" class="pass-btn" type="button">要不起</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
+

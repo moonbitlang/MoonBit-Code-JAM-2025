@@ -1,0 +1,14 @@
+{
+  "is-main": true,
+  "import": [
+    {
+      "path": "username/guandan_engine",
+      "alias": "lib"
+    }
+  ],
+  "link": {
+    "wasm": {
+      "exports": ["demo_hand", "suggest_play"]
+    }
+  }
+}
