@@ -1,0 +1,21 @@
+{
+  "is-main": true,
+  "import": [
+    {
+      "path": "Great-Love-League/Stick_Man_Battle/server",
+      "alias": "server"
+    },
+    {
+      "path": "Demonmasterlqx/box2d_ffi/box2d",
+      "alias": "box2d"
+    },
+    {
+      "path": "Demonmasterlqx/MoonP5/cmd/p5js_ffi",
+      "alias": "p5js"
+    },
+    {
+      "path": "Kaida-Amethyst/math",
+      "alias": "cmath"
+    }
+  ]
+}

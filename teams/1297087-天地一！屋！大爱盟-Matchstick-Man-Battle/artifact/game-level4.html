@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的游戏 - Level 4</title>
+
+    <script type="text/javascript">const min = Math.min;</script>
+
+    <!-- 保留旧项目的 jQuery（若其它脚本依赖） -->
+    <script type="text/javascript" src="./lib/jquery-1.4.2.min.js" ></script>
+    <script type="text/javascript">
+    jQuery.noConflict();
+    Object.extend = jQuery.extend;
+    </script>
+    <script src="lib/jquery.svg.min.js"></script>
+
+    <link rel="stylesheet" href="./shared-ui.css">
+    <script src="./assets/navigation.js"></script>
+    <!-- 不在 head 中加载 p5/box2d/game 脚本，统一在 body 底部加载 -->
+</head>
+
+<body>
+    <div class="top-controls">
+        <button id="back-to-menu">返回菜单</button>
+    </div>
+
+    <div id="game-layout">
+        <aside class="side-panel" id="left-panel">
+            <section>
+                <h3>🎵 音效控制</h3>
+                <div class="control-item">
+                    <label for="volume-slider">音量</label>
+                    <input type="range" id="volume-slider" min="0" max="100" value="50">
+                    <div class="volume-display" id="volume-display">50%</div>
+                </div>
+            </section>
+        </aside>
+
+        <div id="game-center">
+            <div id="hud" aria-live="polite">
+                <div id="player-0" class="player-panel pp-left" role="region" aria-label="Player 0">
+                    <div class="avatar" id="p0-avatar">👤</div>
+                    <div class="meta">
+                        <div class="name" id="p0-name">玩家 0</div>
+                        <div class="sub hp"><div class="bar"><div class="fill" id="p0-hp-fill" style="width:100%"></div></div><div class="value" id="p0-hp-text">100/100</div></div>
+                    </div>
+                    <div style="margin-left:auto; text-align:right; display:flex; flex-direction:column; gap:6px;">
+                        <div class="stat">弹药: <span id="p0-ammo">—</span></div>
+                        <div class="stat">分数: <span id="p0-score">—</span></div>
+                    </div>
+                </div>
+                <div id="player-1" class="player-panel pp-right" role="region" aria-label="Player 1">
+                    <div style="display:flex; flex-direction:column; gap:6px; text-align:left;">
+                        <div class="stat">分数: <span id="p1-score">—</span></div>
+                        <div class="stat">弹药: <span id="p1-ammo">—</span></div>
+                    </div>
+                    <div style="margin-left:12px; text-align:left;" class="meta">
+                        <div class="name" id="p1-name">玩家 1</div>
+                        <div class="sub hp"><div class="bar"><div class="fill" id="p1-hp-fill" style="width:100%"></div></div><div class="value" id="p1-hp-text">100/100</div></div>
+                    </div>
+                    <div class="avatar" id="p1-avatar">🤖</div>
+                </div>
+            </div>
+
+            <div id="stage-wrapper">
+                <canvas id="fx-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;display:block;"></canvas>
+                <div class="scanlines" aria-hidden="true" style="z-index:4;"></div>
+                <div id="fx-flash" aria-hidden="true" style="z-index:6;pointer-events:none;position:absolute;inset:0;opacity:0;transition:opacity 220ms ease;mix-blend-mode:screen;"></div>
+                <div id="game-container"><canvas id="canvas" style="display:block;" height="32" width="32"></canvas></div>
+            </div>
+        </div>
+
+        <aside class="side-panel" id="right-panel">
+            <section>
+                <h3>🏆 游戏统计</h3>
+                <div class="stat-item"><span class="stat-label">最高分</span><span class="stat-value" id="high-score">—</span></div>
+            </section>
+        </aside>
+    </div>
+
+    <!-- 先加载运行时依赖（CDN），再加载本地构建的游戏脚本 -->
+    <script src="\.mooncakes\Demonmasterlqx\MoonP5\p5.js"></script>
+
+    <!-- 使用本地 box2d.js（替代被阻止的 CDN 版本） -->
+    <script src="./box2d.js"></script>
+
+    <!-- 运行时检测（如果 Box2D 未定义，打印警告） -->
+    <script>
+        (function(){
+            function checkBox2D(){
+                // 本地 box2d.js 导出的是 b2* 符号（例如 b2World / b2Vec2 / b2Settings），而不是全局命名空间 `Box2D`。
+                // 因此用更可靠的检测来避免误报。
+                if (typeof b2World === 'undefined' && typeof b2Vec2 === 'undefined' && typeof b2Settings === 'undefined') {
+                    console.warn('Box2D 未检测到：本地 ./box2d.js 可能未正确加载，或导出符号不匹配。请检查文件路径、脚本加载顺序（p5 -> box2d -> game）或控制台中的脚本错误。');
+                }
+            }
+            if (document.readyState === 'complete') {
+                setTimeout(checkBox2D, 50);
+            } else {
+                window.addEventListener('load', function(){ setTimeout(checkBox2D, 50); });
+            }
+        })();
+    </script>
+
+    <!-- 游戏构建脚本（可能包含 p5 代码），确保在 p5 之后加载 -->
+    <script src="./target/js/release/build/game-level4/game-level4.js"></script>
+    <!-- 自动 hook 脚本：运行时为构建产物注入 getter/health-change 探测 -->
+    <script src="./auto_hooks/level2_runtime_hook.js"></script>
+    <script src="./shared-ui.js"></script>
+
+    <!-- 脚本：返回菜单按钮行为 + 把现有或新创建的 canvas 归位到 #game-container -->
+    <script>
+        document.getElementById('back-to-menu').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
+        // 在页面完全加载后把 canvas 元素移动到容器内，并根据 canvas 实际尺寸调整容器大小。
+        // 兼容场景：静态 <canvas id="canvas"> 或 p5 在外部脚本中创建的 canvas。
+        (function() {
+            var container = document.getElementById('game-container');
+            if (!container) return;
+
+            // 把 body 直接子节点的 canvas（若存在）移动进容器
+            function moveExistingCanvases() {
+                var canvases = Array.prototype.slice.call(document.querySelectorAll('body > canvas'));
+                canvases.forEach(function(c) {
+                    if (c.parentNode !== container) {
+                        container.appendChild(c);
+                    }
+                });
+            }
+
+            // 选择应作为主显示的 canvas：优先选择 p5 生成的（class 包含 p5Canvas），否则选择面积最大的
+            function pickPrimaryCanvas() {
+                var list = Array.prototype.slice.call(container.querySelectorAll('canvas'));
+                if (list.length === 0) return null;
+                var p5c = list.find(function(c){ return (c.classList && c.classList.contains('p5Canvas')); });
+                var primary = p5c || list.reduce(function(best, c){
+                    var br = c.getBoundingClientRect();
+                    var area = Math.floor((br.width||0) * (br.height||0));
+                    if (!best) return { c: c, area: area };
+                    return (area > best.area) ? { c: c, area: area } : best;
+                }, null);
+                var chosen = p5c || (primary && primary.c) || list[0];
+                // 隐藏其它非主 canvas（如静态占位用的 32x32 fallback）
+                list.forEach(function(c){ if (c !== chosen) { c.style.display = 'none'; } else { c.style.display = 'block'; } });
+                return chosen;
+            }
+
+            // 根据 canvas 的CSS尺寸调整容器尺寸（避免 DPR 造成的 1~几像素误差）
+            function fitContainerToCanvas(canvas) {
+                if (!canvas) return;
+                // 使用 getBoundingClientRect 获取CSS像素下的可见尺寸
+                var rect = canvas.getBoundingClientRect();
+                var w = Math.round(rect.width);
+                var h = Math.round(rect.height);
+                if (!w || !h) {
+                    // 回退方案：使用 clientWidth/Height
+                    w = Math.round(canvas.clientWidth || canvas.width || 0);
+                    h = Math.round(canvas.clientHeight || canvas.height || 0);
+                }
+                if (w > 0) container.style.width = w + 'px';
+                if (h > 0) container.style.height = h + 'px';
+            }
+
+            // Observe additions to the container: 当 p5 createCanvas 时，canvas 会被 parent 到 container
+            var mo = new MutationObserver(function(mutations) {
+                mutations.forEach(function(m) {
+                    if (m.type === 'childList' && m.addedNodes.length) {
+                        m.addedNodes.forEach(function(node) {
+                            if (node.nodeName === 'CANVAS') {
+                                // 选择主 canvas 并确保容器大小匹配
+                                var main = pickPrimaryCanvas() || node;
+                                // 若存在静态占位 canvas，隐藏它
+                                var fallback = container.querySelector('canvas#canvas');
+                                if (fallback && fallback !== main) fallback.style.display = 'none';
+                                fitContainerToCanvas(main);
+
+                                // 如果浏览器支持 ResizeObserver，监听 canvas 大小变化（例如 p.resizeCanvas）
+                                if (window.ResizeObserver) {
+                                    var ro = new ResizeObserver(function() {
+                                        var m = pickPrimaryCanvas() || main;
+                                        fitContainerToCanvas(m);
+                                    });
+                                    ro.observe(main);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            mo.observe(container, { childList: true, subtree: false });
+
+            // 也把页面上已存在的 canvas 移入并适配（例如静态 fallback）
+            if (document.readyState === 'complete') {
+                moveExistingCanvases();
+                var main = pickPrimaryCanvas();
+                if (main) fitContainerToCanvas(main);
+            } else {
+                window.addEventListener('load', function() {
+                    moveExistingCanvases();
+                    var main = pickPrimaryCanvas();
+                    if (main) fitContainerToCanvas(main);
+                });
+            }
+        })();
+    
+                // HUD 更新逻辑：定期从 window.__mmb_get_state() 读取（若存在）并更新显示
+                (function() {
+                    function safeText(id, v) { var el = document.getElementById(id); if (el) el.textContent = (v===null || v===undefined) ? '—' : v; }
+                    function safeIcon(id, icon) { var el = document.getElementById(id); if (el) el.textContent = icon || '👤'; }
+                    function safeFill(id, pct, textId) { var f = document.getElementById(id); if (f) f.style.width = (pct) + '%'; if (textId) { var t = document.getElementById(textId); if (t) t.textContent = pct + '/100'; } }
+
+                    function updateHUD() {
+                        try {
+                            var getter = window.__mmb_get_state;
+                            var state = undefined;
+                            if (typeof getter === 'function') state = getter();
+                            else if (window.__mmb_game) {
+                                // best-effort fallback
+                                var raw = window.__mmb_game;
+                                if (raw && raw.particle_list && raw.particle_list.length>0) {
+                                    state = { players: [] };
+                                    for (var i=0;i<raw.particle_list.length;i++) {
+                                        var p = raw.particle_list[i];
+                                        var ctrl = p && p.control ? p.control : { health:0 };
+                                        state.players.push({ index: p.index, health: ctrl.health, name: (p.name||null) });
+                                    }
+                                }
+                            }
+
+                            if (!state || !state.players) return;
+
+                            // update player 0
+                            var p0 = state.players[0] || { health:0, name:'P0', ammo:null, score:null, avatar:null };
+                            var hp0 = Math.max(0, Math.min(100, (p0.health===undefined||p0.health===null)?0:p0.health));
+                            safeFill('p0-hp-fill', hp0, 'p0-hp-text');
+                            safeText('p0-name', p0.name || ('P'+(p0.index===undefined?0:p0.index)));
+                            safeText('p0-ammo', (p0.ammo===null||p0.ammo===undefined)?'—':p0.ammo);
+                            safeText('p0-score', (p0.score===null||p0.score===undefined)?'—':p0.score);
+                            safeIcon('p0-avatar', '👤');
+
+                            // update player 1
+                            var p1 = state.players[1] || { health:0, name:'P1', ammo:null, score:null, avatar:null };
+                            var hp1 = Math.max(0, Math.min(100, (p1.health===undefined||p1.health===null)?0:p1.health));
+                            safeFill('p1-hp-fill', hp1, 'p1-hp-text');
+                            safeText('p1-name', p1.name || ('P'+(p1.index===undefined?1:p1.index)));
+                            safeText('p1-ammo', (p1.ammo===null||p1.ammo===undefined)?'—':p1.ammo);
+                            safeText('p1-score', (p1.score===null||p1.score===undefined)?'—':p1.score);
+                            safeIcon('p1-avatar', '🤖');
+
+                        } catch (e) {
+                            // ignore update errors
+                        }
+                    }
+
+                    // Poll at 10Hz for smooth but light updates
+                    setInterval(updateHUD, 100);
+                    setTimeout(updateHUD, 250);
+                })();
+
+                // FX: 粒子动画（轻量）
+                (function(){
+                    var canvas = document.getElementById('fx-canvas');
+                    if (!canvas) return;
+                    var container = document.getElementById('stage-wrapper');
+                    var ctx = canvas.getContext('2d');
+                    var dpi = window.devicePixelRatio || 1;
+                                var particles = [];
+                                // queue for external FX triggers (e.g., hits)
+                                if (!window.__mmb_fx_queue) window.__mmb_fx_queue = [];
+                                window.__mmb_trigger_hit = function(playerIndex, screenX, screenY, damage) {
+                                    try {
+                                        window.__mmb_fx_queue.push({ type: 'hit', player: playerIndex, x: screenX, y: screenY, damage: damage });
+                                    } catch (e) {}
+                                };
+                    var running = true;
+
+                    function resize() {
+                        var w = container.clientWidth;
+                        var h = container.clientHeight;
+                        canvas.style.width = w + 'px';
+                        canvas.style.height = h + 'px';
+                        canvas.width = Math.max(1, Math.floor(w * dpi));
+                        canvas.height = Math.max(1, Math.floor(h * dpi));
+                        ctx.setTransform(dpi,0,0,dpi,0,0);
+                    }
+
+                    function spawn(n) {
+                        for (var i=0;i<n;i++) {
+                            particles.push({
+                                x: Math.random()*container.clientWidth,
+                                y: Math.random()*container.clientHeight,
+                                vx: (Math.random()-0.5)*0.6,
+                                vy: (Math.random()-0.5)*0.6,
+                                r: 2 + Math.random()*6,
+                                life: 200 + Math.floor(Math.random()*400),
+                                alpha: 0.08 + Math.random()*0.18
+                            });
+                        }
+                    }
+
+                    function spawnBurst(x,y,count,color) {
+                        for (var i=0;i<count;i++) {
+                            var ang = Math.random()*Math.PI*2;
+                            var speed = 1 + Math.random()*3;
+                            particles.push({ x: x + (Math.random()-0.5)*6, y: y + (Math.random()-0.5)*6, vx: Math.cos(ang)*speed, vy: Math.sin(ang)*speed, r: 1+Math.random()*4, life: 40+Math.floor(Math.random()*60), alpha: 0.3, color: color });
+                        }
+                    }
+
+                        // 改为晃动整个舞台：根据强度（damage）控制像素偏移与时长
+                        function shakeStage(intensity, duration) {
+                            try {
+                                var el = document.getElementById('stage-wrapper');
+                                if (!el) return;
+                                var start = performance.now();
+                                var rafId = null;
+                                // 清除已有的 transform 保证叠加不会累积
+                                var prev = el.__shake_prev || '';
+                                el.__shake_prev = prev;
+
+                                function tick(now) {
+                                    var elapsed = now - start;
+                                    var t = elapsed / duration;
+                                    if (t >= 1) {
+                                        el.style.transform = '';
+                                        if (rafId) cancelAnimationFrame(rafId);
+                                        return;
+                                    }
+                                    // 随机抖动，随时间衰减
+                                    var damper = 1 - t;
+                                    var max = intensity * damper;
+                                    var x = (Math.random() * 2 - 1) * max;
+                                    var y = (Math.random() * 2 - 1) * max;
+                                    var rot = (Math.random() * 2 - 1) * (max * 0.06);
+                                    el.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) rotate(' + rot.toFixed(2) + 'deg)';
+                                    rafId = requestAnimationFrame(tick);
+                                }
+                                rafId = requestAnimationFrame(tick);
+                            } catch (e) { /* ignore */ }
+                        }
+
+                    function step() {
+                        if (!running) return;
+                        ctx.clearRect(0,0,canvas.width, canvas.height);
+                        ctx.globalCompositeOperation = 'lighter';
+                        for (var i=particles.length-1;i>=0;i--) {
+                            var p = particles[i];
+                            p.x += p.vx;
+                            p.y += p.vy;
+                            p.life--;
+                            p.alpha *= 0.9997;
+                            if (p.x < -20) p.x = container.clientWidth + 20;
+                            if (p.x > container.clientWidth + 20) p.x = -20;
+                            if (p.y < -20) p.y = container.clientHeight + 20;
+                            if (p.y > container.clientHeight + 20) p.y = -20;
+                            var grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*2);
+                            if (p.color) {
+                                grd.addColorStop(0, 'rgba('+p.color.r+','+p.color.g+','+p.color.b+','+ (p.alpha*0.9) +')');
+                                grd.addColorStop(1, 'rgba('+p.color.r+','+p.color.g+','+p.color.b+',0)');
+                            } else {
+                                grd.addColorStop(0, 'rgba(255,255,255,'+ (p.alpha*0.9) +')');
+                                grd.addColorStop(1, 'rgba(120,80,255,0)');
+                            }
+                            ctx.fillStyle = grd;
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                            ctx.fill();
+                            if (p.life <= 0) particles.splice(i,1);
+                        }
+                        // process FX queue
+                        if (window.__mmb_fx_queue && window.__mmb_fx_queue.length) {
+                            while (window.__mmb_fx_queue.length) {
+                                var q = window.__mmb_fx_queue.shift();
+                                if (q && q.type === 'hit') {
+                                    // q.x/q.y expected to be screen coordinates relative to game container
+                                    var sx = q.x, sy = q.y;
+                                    // clamp
+                                    if (typeof sx !== 'number' || typeof sy !== 'number') { sx = container.clientWidth/2; sy = container.clientHeight/2; }
+                                    // 改为触发整体晃动（基于伤害），并保留短暂闪白效果；移除原先的粒子爆发（因不明显）
+                                    var dmg = q.damage || 10;
+                                    // intensity: 像素偏移，duration: 毫秒
+                                    var intensity = Math.min(28, 4 + Math.floor(dmg * 0.6));
+                                    var duration = Math.min(700, 120 + Math.floor(dmg * 12));
+                                    try { shakeStage(intensity, duration); } catch(e) {}
+                                    // flash（更短更柔和）
+                                    try {
+                                        var flash = document.getElementById('fx-flash');
+                                        if (flash) {
+                                            flash.style.background = 'radial-gradient(circle at '+(sx/container.clientWidth*100).toFixed(1)+'% '+(sy/container.clientHeight*100).toFixed(1)+'%, rgba(255,220,200,0.28), rgba(255,60,140,0.06) 36%, rgba(0,0,0,0) 56%)';
+                                            flash.style.opacity = 0.72;
+                                            setTimeout(function(){ flash.style.opacity = 0; }, Math.min(240, Math.max(120, Math.floor(duration*0.28))));
+                                        }
+                                    } catch (e) {}
+                                }
+                            }
+                        }
+                        // keep density constant
+                        if (particles.length < 36) spawn(6);
+                        requestAnimationFrame(step);
+                    }
+
+                    window.addEventListener('resize', function(){ resize(); });
+                    // ensure initial layout ready
+                    setTimeout(function(){ resize(); spawn(36); requestAnimationFrame(step); }, 200);
+                })();
+
+                // 侧边面板控制逻辑
+                (function(){
+                    // 音量控制
+                    var volumeSlider = document.getElementById('volume-slider');
+                    var volumeDisplay = document.getElementById('volume-display');
+                    var muteToggle = document.getElementById('mute-toggle');
+                    
+                    if (volumeSlider && volumeDisplay) {
+                        volumeSlider.addEventListener('input', function(){
+                            volumeDisplay.textContent = this.value + '%';
+                            // TODO: 连接到实际音频控制
+                            if (window.__mmb_setVolume) window.__mmb_setVolume(this.value / 100);
+                        });
+                    }
+                    
+                    if (muteToggle) {
+                        muteToggle.addEventListener('change', function(){
+                            // TODO: 连接到实际静音控制
+                            if (window.__mmb_setMute) window.__mmb_setMute(this.checked);
+                        });
+                    }
+                    
+                    // 按钮事件
+                    var btnInstructions = document.getElementById('btn-instructions');
+                    if (btnInstructions) {
+                        btnInstructions.addEventListener('click', function(){
+                            alert('游戏说明：\\n- WASD 移动\\n- 鼠标瞄准\\n- 左键射击\\n- 击败对手获得分数！');
+                        });
+                    }
+                    
+                    var btnClear = document.getElementById('btn-clear');
+                    if (btnClear) {
+                        btnClear.addEventListener('click', function(){
+                            if (confirm('确定要清空所有游戏记录吗？')) {
+                                localStorage.removeItem('mmb-high-score');
+                                localStorage.removeItem('mmb-max-combo');
+                                localStorage.removeItem('mmb-total-games');
+                                localStorage.removeItem('mmb-wins');
+                                document.getElementById('high-score').textContent = '0';
+                                document.getElementById('max-combo').textContent = '0';
+                                document.getElementById('total-games').textContent = '0';
+                                document.getElementById('win-rate').textContent = '0%';
+                                alert('记录已清空！');
+                            }
+                        });
+                    }
+                    
+                    var btnClose = document.getElementById('btn-close');
+                    if (btnClose) {
+                        btnClose.addEventListener('click', function(){
+                            if (confirm('确定要退出游戏吗？')) {
+                                window.location.href = 'index.html';
+                            }
+                        });
+                    }
+                    
+                    // 加载保存的统计数据
+                    function loadStats() {
+                        var highScore = localStorage.getItem('mmb-high-score') || '9';
+                        var maxCombo = localStorage.getItem('mmb-max-combo') || '6';
+                        var totalGames = parseInt(localStorage.getItem('mmb-total-games') || '0');
+                        var wins = parseInt(localStorage.getItem('mmb-wins') || '0');
+                        var winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
+                        
+                        document.getElementById('high-score').textContent = highScore;
+                        document.getElementById('max-combo').textContent = maxCombo;
+                        document.getElementById('total-games').textContent = totalGames;
+                        document.getElementById('win-rate').textContent = winRate + '%';
+                    }
+                    
+                    // 游戏时长计时器
+                    var gameStartTime = Date.now();
+                    setInterval(function(){
+                        var elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+                        var minutes = Math.floor(elapsed / 60);
+                        var seconds = elapsed % 60;
+                        document.getElementById('game-time').textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                    }, 1000);
+                    
+                    loadStats();
+                })();
+    </script>
+</body>
+
+</html>
