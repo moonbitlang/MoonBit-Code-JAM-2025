@@ -1,0 +1,26 @@
+├─└─│
+
+server
+├─entity.mbt
+│ ├─Particle
+│ ├─Platform
+├─method.mbt
+│ ├─create_static_box		(create)
+│ ├─create_dynamic_box
+│ ├─create_joint
+│ ├─create_world
+│ ├─create_particle
+│ ├─create_platform
+│ ├─maintain_joint			(maintain)
+│ ├─maintain_position
+│ ├─maintain_rotation
+| ├─maintain_torso			?
+| ├─which_platform			(query)
+| ├─walk					(action)
+| ├─stand
+| ├─jump
+├─variable.mbt
+| ├─world
+| ├─particles
+| ├─platforms
+├─main.mbt
