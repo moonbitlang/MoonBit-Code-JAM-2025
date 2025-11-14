@@ -1,7 +1,7 @@
-# node_modules
-# dist
-# .mooncakes
-# .moonagent
-# target
-# .DS_Store
-# **/.DS_Store
+node_modules
+dist
+.mooncakes
+.moonagent
+target
+.DS_Store
+**/.DS_Store
