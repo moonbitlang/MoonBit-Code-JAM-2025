@@ -34,18 +34,23 @@ const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
 const AWARDS_PATH = path.join(ROOT, "awards.json");
 
 // Read awards data
-async function readAwards(): Promise<Record<string, Award>> {
+async function readAwards(): Promise<{
+  awardsMap: Record<string, Award>;
+  awardOrder: string[];
+}> {
   try {
     const awardsData = await fs.readFile(AWARDS_PATH, "utf8");
     const awards = JSON.parse(awardsData).awards as Award[];
     const awardsMap: Record<string, Award> = {};
+    const awardOrder: string[] = [];
     awards.forEach((award) => {
       awardsMap[award.gameId] = award;
+      awardOrder.push(award.gameId);
     });
-    return awardsMap;
+    return { awardsMap, awardOrder };
   } catch (error) {
     console.warn("Awards file not found or invalid, proceeding without awards");
-    return {};
+    return { awardsMap: {}, awardOrder: [] };
   }
 }
 
@@ -250,17 +255,26 @@ function buildArtifactRelativePath(teamId: string): string {
   return `${encodePathSegment(teamId)}/artifact/index.html`;
 }
 
-async function renderIndexHtml(games: GameMetaRaw[]): Promise<string> {
+async function renderIndexHtml(
+  games: GameMetaRaw[],
+  awardOrder: string[],
+): Promise<string> {
   const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
 
-  // Sort games: award winners first, then others
+  // Sort games: award winners first (in awards.json order), then others
   const sortedGames = [...games].sort((a, b) => {
     const aHasAward = !!a.award;
     const bHasAward = !!b.award;
 
     if (aHasAward && !bHasAward) return -1;
     if (!aHasAward && bHasAward) return 1;
-    return 0; // Keep original order for same type
+    if (aHasAward && bHasAward) {
+      // Both have awards, sort by their order in awards.json
+      const aIndex = awardOrder.indexOf(a.id);
+      const bIndex = awardOrder.indexOf(b.id);
+      return aIndex - bIndex;
+    }
+    return 0; // Keep original order for non-award games
   });
 
   const metadataJson = JSON.stringify(sortedGames, null, 2);
@@ -340,7 +354,7 @@ async function build() {
   await ensureDir(DIST_DIR);
 
   // Read awards data
-  const awardsMap = await readAwards();
+  const { awardsMap, awardOrder } = await readAwards();
 
   const teamEntries = await fs.readdir(TEAMS_DIR, { withFileTypes: true });
   const games: GameMetaRaw[] = [];
@@ -373,7 +387,7 @@ async function build() {
 
     games.push(gameData);
   }
-  const html = await renderIndexHtml(games);
+  const html = await renderIndexHtml(games, awardOrder);
   await fs.writeFile(path.join(DIST_DIR, "index.html"), html, "utf8");
   console.log(`Built ${games.length} games into dist/`);
 }
