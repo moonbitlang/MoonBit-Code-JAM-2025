@@ -13,6 +13,7 @@ interface GameMetaRaw {
   features: string; // raw markdown content
   teamInfo: string; // raw markdown content
   artifactPath: string; // relative (url-encoded) path to artifact/index.html
+  isFinalist?: boolean; // Whether this team is in the finals
   award?: {
     name: string;
     icon: string;
@@ -32,6 +33,7 @@ const TEAMS_DIR = path.join(ROOT, "teams");
 const DIST_DIR = path.join(ROOT, "dist");
 const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
 const AWARDS_PATH = path.join(ROOT, "awards.json");
+const FINAL_PATH = path.join(ROOT, "final.json");
 
 // Read awards data
 async function readAwards(): Promise<{
@@ -51,6 +53,29 @@ async function readAwards(): Promise<{
   } catch (error) {
     console.warn("Awards file not found or invalid, proceeding without awards");
     return { awardsMap: {}, awardOrder: [] };
+  }
+}
+
+// Read finalists data
+async function readFinalists(): Promise<{
+  finalistsSet: Set<string>;
+  finalistOrder: string[];
+}> {
+  try {
+    const finalistsData = await fs.readFile(FINAL_PATH, "utf8");
+    const finalists = JSON.parse(finalistsData) as string[];
+    return {
+      finalistsSet: new Set(finalists),
+      finalistOrder: finalists,
+    };
+  } catch (error) {
+    console.warn(
+      "Finalists file not found or invalid, proceeding without finalists",
+    );
+    return {
+      finalistsSet: new Set(),
+      finalistOrder: [],
+    };
   }
 }
 
@@ -258,23 +283,59 @@ function buildArtifactRelativePath(teamId: string): string {
 async function renderIndexHtml(
   games: GameMetaRaw[],
   awardOrder: string[],
+  finalistOrder: string[],
 ): Promise<string> {
   const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
 
-  // Sort games: award winners first (in awards.json order), then others
+  // Sort games with priority:
+  // 1. Both finalist AND award winner (by awards.json order)
+  // 2. Only finalist (by final.json order)
+  // 3. Only award winner (by awards.json order)
+  // 4. Others (keep original order)
   const sortedGames = [...games].sort((a, b) => {
+    const aIsFinalist = !!a.isFinalist;
+    const bIsFinalist = !!b.isFinalist;
     const aHasAward = !!a.award;
     const bHasAward = !!b.award;
 
-    if (aHasAward && !bHasAward) return -1;
-    if (!aHasAward && bHasAward) return 1;
-    if (aHasAward && bHasAward) {
-      // Both have awards, sort by their order in awards.json
+    const aIsBoth = aIsFinalist && aHasAward;
+    const bIsBoth = bIsFinalist && bHasAward;
+
+    // Both have finalist+award: sort by awards.json order
+    if (aIsBoth && bIsBoth) {
       const aIndex = awardOrder.indexOf(a.id);
       const bIndex = awardOrder.indexOf(b.id);
       return aIndex - bIndex;
     }
-    return 0; // Keep original order for non-award games
+
+    // One has both: that one comes first
+    if (aIsBoth && !bIsBoth) return -1;
+    if (!aIsBoth && bIsBoth) return 1;
+
+    // Both are finalists only: sort by final.json order
+    if (aIsFinalist && bIsFinalist && !aHasAward && !bHasAward) {
+      const aIndex = finalistOrder.indexOf(a.id);
+      const bIndex = finalistOrder.indexOf(b.id);
+      return aIndex - bIndex;
+    }
+
+    // One is finalist only: finalist comes first
+    if (aIsFinalist && !aHasAward && !(bIsFinalist && !bHasAward)) return -1;
+    if (bIsFinalist && !bHasAward && !(aIsFinalist && !aHasAward)) return 1;
+
+    // Both have awards only: sort by awards.json order
+    if (aHasAward && bHasAward && !aIsFinalist && !bIsFinalist) {
+      const aIndex = awardOrder.indexOf(a.id);
+      const bIndex = awardOrder.indexOf(b.id);
+      return aIndex - bIndex;
+    }
+
+    // One has award only: award winner comes first
+    if (aHasAward && !aIsFinalist && !(bHasAward && !bIsFinalist)) return -1;
+    if (bHasAward && !bIsFinalist && !(aHasAward && !aIsFinalist)) return 1;
+
+    // Neither has award or finalist: keep original order
+    return 0;
   });
 
   const metadataJson = JSON.stringify(sortedGames, null, 2);
@@ -300,6 +361,14 @@ async function renderIndexHtml(
            </div>`
         : "";
 
+      // Generate finalist badge if team is in finals
+      const finalistBadge = g.isFinalist
+        ? `<div class="award-badge finalist-badge" style="background: linear-gradient(135deg, #FFD700, #FFA500);">
+             <span class="award-icon">🏅</span>
+             <span class="award-text">决赛入围</span>
+           </div>`
+        : "";
+
       // Escape quotes for data attributes
       const escapeQuotes = (str: string) =>
         str.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -313,8 +382,10 @@ async function renderIndexHtml(
         data-features="${escapeQuotes(features)}"
         data-team-info="${escapeQuotes(teamInfo)}"
         data-artifact-path="${g.artifactPath}">
-      <div class="game-card ${g.award ? "award-winner" : ""}">
-        ${awardBadge}
+      <div class="game-card ${g.award ? "award-winner" : ""} ${
+        g.isFinalist ? "finalist" : ""
+      }">
+        ${finalistBadge}${awardBadge}
         <h3 class="game-title">${md.renderInline(g.title)}</h3>
         <div class="team-name">🏆 ${md.renderInline(g.teamName)}</div>
         <div class="section"><h4>游戏简介</h4>${intro}</div>
@@ -356,6 +427,9 @@ async function build() {
   // Read awards data
   const { awardsMap, awardOrder } = await readAwards();
 
+  // Read finalists data
+  const { finalistsSet, finalistOrder } = await readFinalists();
+
   const teamEntries = await fs.readdir(TEAMS_DIR, { withFileTypes: true });
   const games: GameMetaRaw[] = [];
   for (const entry of teamEntries) {
@@ -377,9 +451,12 @@ async function build() {
 
     // Check if this game has an award
     const award = awardsMap[dirName];
+    // Check if this team is a finalist
+    const isFinalist = finalistsSet.has(dirName);
     const gameData: GameMetaRaw = {
       ...baseData,
       artifactPath,
+      ...(isFinalist && { isFinalist: true }),
       ...(award && {
         award: { name: award.name, icon: award.icon, color: award.color },
       }),
@@ -387,7 +464,7 @@ async function build() {
 
     games.push(gameData);
   }
-  const html = await renderIndexHtml(games, awardOrder);
+  const html = await renderIndexHtml(games, awardOrder, finalistOrder);
   await fs.writeFile(path.join(DIST_DIR, "index.html"), html, "utf8");
   console.log(`Built ${games.length} games into dist/`);
 }
