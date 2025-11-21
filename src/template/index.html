@@ -17,12 +17,26 @@
         min-height: 100vh;
       }
       .container {
-        max-width: 1200px;
+        max-width: 1600px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 2rem 3rem;
+      }
+      /* 4:3 屏幕优化 (如 1600×1200, 1400×1050) */
+      @media (min-width: 1400px) and (max-width: 1920px) {
+        .container {
+          max-width: 92%;
+          padding: 2rem 2.5rem;
+        }
+      }
+      /* 标准 4:3 显示器优化 (1600×1200) */
+      @media (min-width: 1550px) and (max-width: 1650px) {
+        .container {
+          max-width: 95%;
+          padding: 2rem 2rem;
+        }
       }
       h1.title {
-        font-size: 3rem;
+        font-size: 3.5rem;
         color: #fff;
         text-align: center;
         margin: 0 0 1rem;
@@ -31,6 +45,17 @@
       .subtitle {
         text-align: center;
         color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+      }
+      /* 宽屏标题优化 */
+      @media (min-width: 1400px) {
+        h1.title {
+          font-size: 4rem;
+          margin-bottom: 1.5rem;
+        }
+        .subtitle {
+          font-size: 1.25rem;
+        }
       }
       .games-grid {
         position: relative;
@@ -40,15 +65,31 @@
       .game-card-container {
         display: block;
         position: absolute; /* JavaScript will set top/left positions */
-        width: calc((100% - 4rem) / 3); /* 3 columns with 2rem gaps */
+        width: calc(
+          (100% - 6rem) / 4
+        ); /* 4 columns with 2rem gaps for wide screens */
         transition: all 0.3s ease;
         cursor: pointer;
       }
-      @media (max-width: 1024px) {
+      /* 宽屏优化：1400px以上使用4列 */
+      @media (min-width: 1400px) {
+        .game-card-container {
+          width: calc((100% - 6rem) / 4); /* 4 columns */
+        }
+      }
+      /* 中等宽屏：1024-1399px使用3列 */
+      @media (min-width: 1024px) and (max-width: 1399px) {
+        .game-card-container {
+          width: calc((100% - 4rem) / 3); /* 3 columns */
+        }
+      }
+      /* 小屏幕：760-1023px使用2列 */
+      @media (min-width: 760px) and (max-width: 1023px) {
         .game-card-container {
           width: calc((100% - 2rem) / 2); /* 2 columns */
         }
       }
+      /* 移动端：760px以下使用1列 */
       @media (max-width: 760px) {
         .game-card-container {
           width: 100%; /* 1 column */
@@ -71,6 +112,13 @@
         gap: 0.9rem;
         transition: transform 0.35s ease, box-shadow 0.35s ease;
         height: fit-content; /* ensure card takes only needed space */
+      }
+      /* 宽屏卡片优化 */
+      @media (min-width: 1400px) {
+        .game-card {
+          padding: 1.5rem 1.75rem 2rem;
+          gap: 1rem;
+        }
       }
 
       /* Award winner card styling */
@@ -150,12 +198,22 @@
         font-size: 1.4rem;
         margin: 0;
         color: #2d3748;
+        line-height: 1.3;
       }
       .team-name {
         font-size: 0.85rem;
         font-weight: 500;
         color: #5a67d8;
         letter-spacing: 0.5px;
+      }
+      /* 宽屏文字优化 */
+      @media (min-width: 1400px) {
+        .game-title {
+          font-size: 1.5rem;
+        }
+        .team-name {
+          font-size: 0.9rem;
+        }
       }
       .section {
         background: #f7fafc;
@@ -180,6 +238,21 @@
       .section ul,
       .section ol {
         padding-left: 1rem;
+      }
+      /* 宽屏section优化 */
+      @media (min-width: 1400px) {
+        .section {
+          padding: 0.85rem 1.15rem;
+        }
+        .section h4 {
+          font-size: 0.85rem;
+        }
+        .section p,
+        .section ul,
+        .section ol {
+          font-size: 0.85rem;
+          line-height: 1.6;
+        }
       }
 
       /* Ensure all block elements in sections are properly spaced */
@@ -319,6 +392,14 @@
         cursor: pointer;
         transition: filter 0.3s ease, transform 0.3s ease;
       }
+      /* 宽屏按钮优化 */
+      @media (min-width: 1400px) {
+        .details-button,
+        .play-button {
+          padding: 0.75rem 1.25rem;
+          font-size: 0.95rem;
+        }
+      }
       .game-card-container:hover .details-button,
       .game-card-container:hover .play-button {
         filter: brightness(1.05);
@@ -327,21 +408,35 @@
         margin: 3rem auto 0;
         display: flex;
         flex-wrap: wrap;
-        gap: 1.5rem;
+        gap: 2rem;
         justify-content: center;
       }
       .stat {
-        min-width: 140px;
+        min-width: 160px;
         background: rgba(255, 255, 255, 0.16);
         backdrop-filter: blur(12px);
-        padding: 1rem 1.25rem;
+        padding: 1.25rem 1.75rem;
         border-radius: 14px;
         text-align: center;
         color: #fff;
       }
       .stat strong {
         display: block;
-        font-size: 1.6rem;
+        font-size: 2rem;
+      }
+      /* 宽屏统计区域优化 */
+      @media (min-width: 1400px) {
+        .stats {
+          gap: 3rem;
+          margin: 4rem auto 0;
+        }
+        .stat {
+          min-width: 200px;
+          padding: 1.5rem 2.25rem;
+        }
+        .stat strong {
+          font-size: 2.5rem;
+        }
       }
       /* footer removed */
       @media (max-width: 760px) {
@@ -377,12 +472,19 @@
         border-radius: 20px;
         max-width: 90vw;
         max-height: 90vh;
-        width: 800px;
+        width: 900px;
         display: flex;
         flex-direction: column;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         transform: scale(0.9);
         transition: transform 0.3s ease;
+      }
+      /* 宽屏模态框优化 */
+      @media (min-width: 1400px) {
+        .modal-container {
+          width: 1100px;
+          max-width: 80vw;
+        }
       }
 
       .modal-overlay.show .modal-container {
@@ -536,7 +638,15 @@
         }
 
         const gap = 32; // 2rem = 32px
-        const columns = window.innerWidth > 1024 ? 3 : 2;
+        // 根据屏幕宽度动态设置列数
+        let columns;
+        if (window.innerWidth >= 1400) {
+          columns = 4; // 宽屏4列
+        } else if (window.innerWidth >= 1024) {
+          columns = 3; // 中等宽屏3列
+        } else {
+          columns = 2; // 小屏2列
+        }
         const containerWidth = container.offsetWidth;
         const itemWidth = (containerWidth - gap * (columns - 1)) / columns;
 
