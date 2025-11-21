@@ -17,22 +17,19 @@
         min-height: 100vh;
       }
       .container {
-        max-width: 1600px;
+        width: 100%;
         margin: 0 auto;
         padding: 2rem 3rem;
       }
-      /* 4:3 屏幕优化 (如 1600×1200, 1400×1050) */
-      @media (min-width: 1400px) and (max-width: 1920px) {
+      /* 响应式内边距优化 */
+      @media (min-width: 1400px) {
         .container {
-          max-width: 92%;
           padding: 2rem 2.5rem;
         }
       }
-      /* 标准 4:3 显示器优化 (1600×1200) */
-      @media (min-width: 1550px) and (max-width: 1650px) {
+      @media (min-width: 1920px) {
         .container {
-          max-width: 95%;
-          padding: 2rem 2rem;
+          padding: 2rem 4rem;
         }
       }
       h1.title {
@@ -64,30 +61,9 @@
       }
       .game-card-container {
         display: block;
-        position: absolute; /* JavaScript will set top/left positions */
-        width: calc(
-          (100% - 6rem) / 4
-        ); /* 4 columns with 2rem gaps for wide screens */
+        position: absolute; /* JavaScript will set top/left positions and width */
         transition: all 0.3s ease;
         cursor: pointer;
-      }
-      /* 宽屏优化：1400px以上使用4列 */
-      @media (min-width: 1400px) {
-        .game-card-container {
-          width: calc((100% - 6rem) / 4); /* 4 columns */
-        }
-      }
-      /* 中等宽屏：1024-1399px使用3列 */
-      @media (min-width: 1024px) and (max-width: 1399px) {
-        .game-card-container {
-          width: calc((100% - 4rem) / 3); /* 3 columns */
-        }
-      }
-      /* 小屏幕：760-1023px使用2列 */
-      @media (min-width: 760px) and (max-width: 1023px) {
-        .game-card-container {
-          width: calc((100% - 2rem) / 2); /* 2 columns */
-        }
       }
       /* 移动端：760px以下使用1列 */
       @media (max-width: 760px) {
@@ -638,16 +614,18 @@
         }
 
         const gap = 32; // 2rem = 32px
-        // 根据屏幕宽度动态设置列数
-        let columns;
-        if (window.innerWidth >= 1400) {
-          columns = 4; // 宽屏4列
-        } else if (window.innerWidth >= 1024) {
-          columns = 3; // 中等宽屏3列
-        } else {
-          columns = 2; // 小屏2列
-        }
+        const minCardWidth = 360; // 卡片最小宽度（像素）- 从280增加到360
         const containerWidth = container.offsetWidth;
+
+        // 动态计算列数：根据容器宽度和最小卡片宽度
+        // 公式：containerWidth = columns * minCardWidth + (columns - 1) * gap
+        // 解得：columns = (containerWidth + gap) / (minCardWidth + gap)
+        const maxColumns = Math.floor(
+          (containerWidth + gap) / (minCardWidth + gap),
+        );
+        const columns = Math.max(1, maxColumns); // 至少1列
+
+        // 根据实际列数计算卡片宽度
         const itemWidth = (containerWidth - gap * (columns - 1)) / columns;
 
         // First pass: Set widths and reset positioning for accurate height measurement
