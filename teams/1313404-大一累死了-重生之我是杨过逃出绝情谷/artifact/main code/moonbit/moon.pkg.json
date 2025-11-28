@@ -1,0 +1,20 @@
+{
+  "import": [
+    "moonbitlang/wasm4",
+    "moonbitlang/core"
+  ],
+  "link": {
+    "wasm": {
+      "exports": [
+        "start",
+        "update"
+      ]
+    }
+  },
+  "files": [
+    "main.mbt",
+    "common.mbt",
+    "resources.mbt"
+  ]
+}
+
