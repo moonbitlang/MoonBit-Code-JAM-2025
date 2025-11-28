@@ -93,7 +93,7 @@ faaaa - 编程
 洛清贫 - 策划
 
 
-游戏介绍视频链接：【minihero-哔哩哔哩】 https://www.bilibili.com/video/BV1FWCtBXEVX/
+游戏介绍视频链接：【minihero-哔哩哔哩】 https://www.bilibili.com/video/BV1byCABwEei/
 
 
 联系方式：ahafaaa@163.com
