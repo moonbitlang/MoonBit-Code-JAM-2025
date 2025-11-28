@@ -56,3 +56,16 @@ MoonBit 语言优势展示：
 
 ---
 欢迎尝试、添加你最爱的生命游戏结构！
+
+## 构建指南
+
+[源码仓库](https://github.com/xingwangzhe/Game_of_Life)
+LICENSE:MIT
+
+构建方法:[package.json](https://github.com/xingwangzhe/Game_of_Life/blob/main/package.json)的“bundle”，利用bun cli进行完整的构建打包
+
+可选跨平台构建:手动运行仓库里的Tauri [action](https://github.com/xingwangzhe/Game_of_Life/actions)，或者根据action自己在本机安装Tauri cli及其相关依赖来进行**构建打包**
+
+**请不要在私有仓库反复跑action,这会极大地消耗免费额度，公开仓库的action一般不计费**
+
+
