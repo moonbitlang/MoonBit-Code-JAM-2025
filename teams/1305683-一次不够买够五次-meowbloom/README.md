@@ -69,3 +69,4 @@ plant tomato
 - 作品名称：meowbloom
 - 联系方式: 2980060097@qq.com
 - b站视频链接：【Meowbloom（云海下的花园）】 https://www.bilibili.com/video/BV1FuCMBaEed/?share_source=copy_web&vd_source=7b37e97cc5f4160f327cd6cf7393ee10
+- 仓库链接: https://github.com/Penguinsltp/meowbloom
