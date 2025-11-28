@@ -1,0 +1,41 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Asterless/MGPIC2025/main"
+
+import(
+  "Milky2018/selene/acceleration"
+  "Milky2018/selene/collision"
+  "Milky2018/selene/position"
+  "Milky2018/selene/sprite"
+  "Milky2018/selene/system"
+  "Milky2018/selene/velocity"
+)
+
+// Values
+let ptr_entity : @system.Entity
+
+// Errors
+
+// Types and methods
+type Cat
+impl Eq for Cat
+impl Hash for Cat
+
+type GameState
+
+type MoveState
+
+type SideEffect
+
+type StateMonad[S, W, A]
+
+type Trigger
+
+// Type aliases
+
+// Traits
+trait Monoid
+
+trait Prop
+
+trait SigNum
+
