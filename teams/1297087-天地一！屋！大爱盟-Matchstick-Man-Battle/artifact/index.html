@@ -39,11 +39,11 @@
             width: min(960px, calc(100% - 48px));
             box-shadow: 0 12px 40px rgba(0,0,0,0.25);
             display: flex;
+            flex-direction: column;
             gap: 24px;
-            align-items: center;
-            justify-content: space-between;
+            align-items: stretch;
+            justify-content: flex-start;
             backdrop-filter: blur(6px);
-            flex-wrap: wrap;
         }
 
         .level-list { display: flex; gap: 14px; flex-wrap: wrap; }
@@ -63,10 +63,66 @@
 
         .meta { color: rgba(255,255,255,0.9); font-size: 14px; }
 
-        @media (max-width: 640px) {
-            .home-card { padding: 18px; gap: 12px; }
-            .level-item { width: 100%; }
-            .level-list { width: 100%; justify-content: space-between; }
+        .controls-guide {
+            width: 100%;
+        }
+
+        .controls-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .player-controls {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .player-controls h2 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            color: rgba(255,255,255,0.95);
+        }
+
+        .player-controls ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .player-controls li {
+            font-size: 14px;
+            color: rgba(255,255,255,0.85);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-controls strong {
+            min-width: 100px;
+            color: rgba(255,255,255,0.95);
+        }
+
+        kbd {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #fff;
+            display: inline-block;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .controls-container { grid-template-columns: 1fr; }
         }
     </style>
     <script src="./box2d.js"></script>
@@ -98,6 +154,32 @@
             </div>
             <div class="level-item">
                 <button class="btn-level" id="start-level5">Level 5</button>
+            </div>
+        </div>
+
+        <div class="controls-guide">
+            <div class="controls-container">
+                <div class="player-controls">
+                    <h2>P0 玩家控制</h2>
+                    <ul>
+                        <li><strong>切换武器：</strong> <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></li>
+                        <li><strong>左右上移动：</strong> <kbd>A</kbd> <kbd>D</kbd> <kbd>W</kbd></li>
+                        <li><strong>快速下坠/瘫软：</strong> <kbd>S</kbd></li>
+                        <li><strong>射击：</strong> <kbd>Z</kbd></li>
+                        <li><strong>自动瞄准：</strong> <kbd>T</kbd> 切换状态</li>
+                    </ul>
+                </div>
+
+                <div class="player-controls">
+                    <h2>P1 玩家控制</h2>
+                    <ul>
+                        <li><strong>切换武器：</strong> <kbd>7</kbd> <kbd>8</kbd> <kbd>9</kbd> <kbd>0</kbd></li>
+                        <li><strong>左右上移动：</strong> <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd></li>
+                        <li><strong>快速下坠/瘫软：</strong> <kbd>↓</kbd></li>
+                        <li><strong>射击：</strong> <kbd>/</kbd> (斜杠键)</li>
+                        <li><strong>自动瞄准：</strong> <kbd>.</kbd> (句号键) 切换状态</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
