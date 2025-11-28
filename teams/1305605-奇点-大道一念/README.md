@@ -7,6 +7,7 @@
 《大道一念》是一款融合东方玄幻与修真元素的类幸存者游戏。玩家将扮演一位初入修真界的修士，在浩瀚的修真世界中探索、战斗、成长，不断与各种各样的敌人战斗，吸收敌人掉落的灵石，不断提升自己的实力，在不断的升级中获得多样的提升，最终达到大道归一的境界。
 
 **bilibili演示视频** https://www.bilibili.com/video/BV1oJ4tz4Eht
+**仓库** https://github.com/creatorofstars/DaoInOneThought
 
 **玩法目标**
 
@@ -119,3 +120,4 @@
 + **邮箱** creatorofstars@qq.com
 
 开心的来上一盘轻松爽快的类幸存者肉鸽吧！
+
