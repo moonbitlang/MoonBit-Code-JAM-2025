@@ -24,5 +24,6 @@
 - **成员**：Quaestiox
 - **联系方式**：3128476778@qq.com
 - **B站视频链接**: [2025Moonbit游戏赛道作品展示--Dungeon Knight](https://www.bilibili.com/video/BV1phy6B8Eyr/?share_source=copy_web&vd_source=996f66cf5513875c1bec76d3eb11ac52) 
+- **项目源码地址**: [dungeon_knight](https://github.com/Quaestiox/dungeon_knight) 
 
 美术资源均为网络下载免费可商用素材
