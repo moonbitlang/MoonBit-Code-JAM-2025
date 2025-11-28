@@ -36,7 +36,11 @@ Q切换大世界和小区域, 大世界用颜色表示势力, 有四个国家, �
 
 国家之间会有小概率发生战争从而改变城市的归属。魔物/英雄/士兵/武装起来的普通职业者都会自动寻找并攻击城市内的敌对单位和建筑。最终大世界会持续地动态地变化填色(荒野的绿色, 魔物巢穴的黑色, 以及四个国家的四种颜色)。
 
-除此之外, 我们接入了大模型(这边网站上用不了, 需要部署对应的服务, 或者用我们的 win/mac/linux 客户端), ai可以扮演各个国家, 经济值建造各种经营性和人口建筑, 宣战和谈, 军事调拨。
+除此之外, 我们接入了大模型, ai可以扮演各个国家, 经济值建造各种经营性和人口建筑, 宣战和谈, 军事调拨。
+
+任意静态网页端可以在请求参数后加一个 chat=moda 从而用上魔搭上的大模型.(为了方便, moonbit这边的静态网页我们默认会使用魔搭, 可以chat=任意非moda的值来取消)
+
+最新版我们会持续在 https://www.modelscope.cn/studios/ewbraent/mini111/summary 处更新
 
 
 
@@ -60,6 +64,25 @@ FFI提供了提供环境信息给JS端, 并从JS获取产生的动作的接口.
 使用了 CC0 的 MiniWorldSprites 的素材
 使用了 ThaleahFat.ttf 字体
 
+## 部署指南
+
+进入目录后  ./build.sh  来进行构建
+
+此时可以访问http://localhost:7999?chat=moda,  从而使用我们在魔搭上提供的llm api。大模型接入也可以使用Dockerfile来本地部署。 
+
+使用  `DASHSCOPE_API_KEY` 来作为模型的key, 暂限定deepseek。
+
+使用  `AI_BASE_URL` 作为请求大模型的地址, 当为`http://localhost:8000/v1` 的时候, 会下载并部署qwen3 到本地。
+
+也可以中断  build.sh 的执行。然后 uvicorn local-llm:app 启动本地qwen3大模型。然后进入electron 目录, 
+
+export AI_BASE_URL=http://localhost:8000/v1 然后node server.js 提供静态文件和中间层。然后访问localhost:7860 即可。
+
+此时的关系为 浏览器   <-> (静态文件, /chat请求)express <-> (llm访问) fastapi。
+
+可以调整server.js填入api key, 使用大模型提供的服务, 而不适用本地大模型(deepseek官方的api当然会比本地跑的qwen3-0.6b效果要好)。
+
+
 
 ## 团队信息
 团队名称： aaaaaa
@@ -70,7 +93,7 @@ faaaa - 编程
 洛清贫 - 策划
 
 
-游戏介绍视频链接：【minihero-哔哩哔哩】 https://www.bilibili.com/video/BV1byCABwEei/
+游戏介绍视频链接：【minihero-哔哩哔哩】 https://www.bilibili.com/video/BV1FWCtBXEVX/
 
 
 联系方式：ahafaaa@163.com

@@ -23,9 +23,16 @@
         }
         let aiApiHost = '/chat';
         {
+            aiApiHost = 'https://ewbraent-mini111.ms.show/chat';
+
+            //let params = getLocationParams();
+            //if ('chat' in params && params['chat'] == 'moda') {
+            //    aiApiHost = 'https://ewbraent-mini111.ms.show/chat'       
+            //}
+
             let params = getLocationParams();
-            if ('chat' in params && params['chat'] == 'moda') {
-                aiApiHost = 'https://ewbraent-mini111.ms.show/chat'       
+            if ('chat' in params && params['chat'] != 'moda') {
+                aiApiHost = '/chat'       
             }
         }
 
