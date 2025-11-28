@@ -80,6 +80,8 @@ cd ./MGPIC2025
 
 联系方式: [zhehao0827@163.com](zhehao0827@163.com)
 
+仓库：[https://github.com/Asterless/MGPIC2025]
+
 ## TODO 列表
 
 未来计划改进与扩展的功能：
