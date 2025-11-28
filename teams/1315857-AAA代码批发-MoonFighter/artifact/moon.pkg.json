@@ -1,0 +1,35 @@
+{
+  // "targets": {
+  //   "moonfighter.mbt" : ["wasm"]
+  // },
+  "executable": true,
+  "import": [
+    {
+      "path": "moonbitlang/wasm4",
+      "alias": "wasm4"
+    }
+  ],
+   "link": {
+        "wasm-gc": {
+            "exports": [
+                "start",
+                "upd:update"
+            ],
+            "import-memory": {
+                "module": "env",
+                "name": "memory"
+            }
+        },
+        "wasm": {
+            "exports": [
+                "start",
+                "upd:update"
+            ],
+            "import-memory": {
+                "module": "env",
+                "name": "memory"
+            },
+            "heap-start-address": 6560
+        }
+    }
+}
