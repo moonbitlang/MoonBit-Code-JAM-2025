@@ -23,6 +23,13 @@
 * **矩形包围盒碰撞检测**：实现精准的子弹与敌机命中判定。
 * **高效图形渲染**：基于 WASM-4 提供的图形 API 实现飞船与敌机的像素绘制。
 
+## 运行说明
+```
+moon build --target wasm
+npx wasm4 run target/wasm/release/build/moonfighter.wasm
+
+```
+
 ## 团队信息
 
 * 团队名称：AAA代码批发
@@ -30,6 +37,7 @@
 * 联系方式：13400156967@mail.dlut.edu.cn
 * 手机号：17803097808
 * B 站视频链接：[【1315857-MoonFighter】](https://www.bilibili.com/video/BV1mUW1zSEaD/?share_source=copy_web&vd_source=c7fef7072e74c1094140ebe346438c82)
+
 
 
 
