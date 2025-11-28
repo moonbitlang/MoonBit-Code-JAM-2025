@@ -92,7 +92,7 @@
                         console.log("post", ostr, "back", ret)
                         
                         stime = Date.now()
-                        fetch('/chat', {
+                        fetch(aiApiHost, {
                             method: 'POST', // 或者 'PUT' 取决于你想要的操作
                             headers: {
                                 'ChatUUID':chatUUID,
