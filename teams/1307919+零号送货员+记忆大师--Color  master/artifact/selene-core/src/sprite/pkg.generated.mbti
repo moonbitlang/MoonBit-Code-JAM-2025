@@ -1,0 +1,81 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/selene/sprite"
+
+import(
+  "Milky2018/selene/math"
+  "Milky2018/selene/system"
+)
+
+// Values
+fn frames_from_atlas(String, Int, width~ : Double, height~ : Double, offset? : @math.Vec2D, space_x? : Double) -> Array[AnimationFrame]
+
+fn is_animation_finished(@system.Entity) -> Bool
+
+fn play_animation(@system.Entity, Animation, from_start? : Bool, loop_? : Bool, rate? : Double, transform? : @math.Transform) -> Unit
+
+fn render_sprite_system(Double) -> Unit
+
+let sprites : Map[@system.Entity, Sprite]
+
+// Errors
+
+// Types and methods
+pub struct Animation {
+  frames : Array[AnimationFrame]
+  transform : @math.Transform
+  loop_ : Bool
+  fps : Double
+  id : Int
+}
+fn Animation::new(Array[AnimationFrame], loop_? : Bool, fps? : Double, transform? : @math.Transform) -> Self
+fn Animation::single_frame(String, @math.Vec2D, transform? : @math.Transform, offset? : @math.Vec2D) -> Self
+
+pub(all) struct AnimationFrame {
+  sprite_path : String
+  size : @math.Vec2D
+  offset : @math.Vec2D
+}
+
+pub(all) struct ColorRect {
+  size : @math.Vec2D
+  color : String
+}
+fn ColorRect::new(@math.Vec2D, String) -> Self
+
+pub(all) struct Picture {
+  size : @math.Vec2D
+  tile_path : String
+  transform : @math.Transform
+  repeat : @math.RepeatMode
+}
+fn Picture::new(@math.Vec2D, String, transform? : @math.Transform, repeat? : @math.RepeatMode) -> Self
+
+pub(all) struct Sprite {
+  sprite_type : SpriteType
+  zindex : Int
+  mut visible : Bool
+  offset : @math.Vec2D
+}
+fn Sprite::from_animation(Animation, Int, offset? : @math.Vec2D) -> Self
+fn Sprite::from_color_rect(ColorRect, Int, offset? : @math.Vec2D) -> Self
+fn Sprite::from_picture(Picture, Int, offset? : @math.Vec2D) -> Self
+fn Sprite::from_text(Text, Int, offset? : @math.Vec2D) -> Self
+
+pub enum SpriteType {
+  Picture(Picture)
+  Animation(Animation, mut frame~ : Double)
+  Text(Text)
+  ColorRect(ColorRect)
+}
+
+pub(all) struct Text {
+  mut content : String
+  mut color : String
+  mut font : String
+}
+fn Text::new(String, color? : String, font? : String) -> Self
+
+// Type aliases
+
+// Traits
+
