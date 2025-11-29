@@ -1,0 +1,869 @@
+{
+  "source_dir": "D:\\selene-main - c - pow\\selene-core",
+  "name": "Milky2018/selene",
+  "packages": [
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src",
+      "root": "Milky2018/selene",
+      "rel": "",
+      "files": {},
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\selene.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\audio",
+      "root": "Milky2018/selene",
+      "rel": "audio",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\audio\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\audio\\audio.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\backend",
+      "root": "Milky2018/selene",
+      "rel": "backend",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\backend\\default.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\inputs"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\backend\\backend.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\camera",
+      "root": "Milky2018/selene",
+      "rel": "camera",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\camera\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\camera\\camera.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\collision",
+      "root": "Milky2018/selene",
+      "rel": "collision",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\area.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\collider.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\debug.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\layer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\move.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\pickable.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\quadtree.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\collision\\shape.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/velocity",
+          "alias": "velocity",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\velocity"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/ui",
+          "alias": "ui",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\ui"
+        },
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\inputs"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\collision\\collision.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\inputs",
+      "root": "Milky2018/selene",
+      "rel": "inputs",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\inputs\\keycode.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\inputs\\mouse.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\inputs\\inputs.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\math",
+      "root": "Milky2018/selene",
+      "rel": "math",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\math\\angle.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\math\\rect.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\math\\repeat.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\math\\transform.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\math\\vector.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\math\\math.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\plugins",
+      "root": "Milky2018/selene",
+      "rel": "plugins",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\plugins\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/sprite",
+          "alias": "sprite",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\sprite"
+        },
+        {
+          "path": "Milky2018/selene/collision",
+          "alias": "collision",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\collision"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\inputs"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\plugins\\plugins.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\position",
+      "root": "Milky2018/selene",
+      "rel": "position",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\position\\position.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\position\\position.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\sprite",
+      "root": "Milky2018/selene",
+      "rel": "sprite",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\sprite\\animation.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\sprite\\picture.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\sprite\\rect.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\sprite\\text.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\sprite\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/ui",
+          "alias": "ui",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\ui"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\sprite\\sprite.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\system",
+      "root": "Milky2018/selene",
+      "rel": "system",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\app.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\defer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\entity.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\locked.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\schedule.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\timer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - pow\\selene-core\\src\\system\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\inputs"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\system\\system.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\tilemap",
+      "root": "Milky2018/selene",
+      "rel": "tilemap",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\tilemap\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\tilemap\\tilemap.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\ui",
+      "root": "Milky2018/selene",
+      "rel": "ui",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\ui\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\ui\\ui.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - pow\\selene-core\\src\\velocity",
+      "root": "Milky2018/selene",
+      "rel": "velocity",
+      "files": {
+        "D:\\selene-main - c - pow\\selene-core\\src\\velocity\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - pow\\selene-core\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - pow\\selene-core\\target\\js\\release\\check\\velocity\\velocity.mi"
+    }
+  ],
+  "deps": [],
+  "backend": "js",
+  "opt_level": "release",
+  "source": "src"
+}
