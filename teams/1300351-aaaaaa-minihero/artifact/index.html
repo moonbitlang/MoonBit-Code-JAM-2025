@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>My Game</title>
     <script> 
+
         function getLocationParams(href=null) {
             let params = {};
             let querys = href == null ? location.href.split("?") : href.split("?");
@@ -23,13 +24,21 @@
         }
         let aiApiHost = '/chat';
         {
+            aiApiHost = 'https://ewbraent-mini111.ms.show/chat';
+
+            //let params = getLocationParams();
+            //if ('chat' in params && params['chat'] == 'moda') {
+            //    aiApiHost = 'https://ewbraent-mini111.ms.show/chat'       
+            //}
+
             let params = getLocationParams();
-            if ('chat' in params && params['chat'] == 'moda') {
-                aiApiHost = 'https://ewbraent-mini111.ms.show/chat'       
+            if ('chat' in params && params['chat'] != 'moda') {
+                aiApiHost = '/chat'       
             }
         }
 
         const chatUUID = crypto.randomUUID();
+        document.cookie = "chatuuid=" + chatUUID;
         var keyObj = {btn:"", idx:0, x:0, y:0};
         function mylogAiBoard(s) {
             if (s.length == 0) return;
@@ -85,10 +94,10 @@
                         console.log("post", ostr, "back", ret)
                         
                         stime = Date.now()
-                        fetch('/chat', {
+                        fetch(aiApiHost + '?chatuuid='+chatUUID, {
                             method: 'POST', // 或者 'PUT' 取决于你想要的操作
                             headers: {
-                                'ChatUUID':chatUUID,
+                                //'ChatUUID':chatUUID,
                                 'Content-Type': 'text/plain' // 设置Content-Type为text/plain
                             },
                             body: ostr // 直接传递字符串
