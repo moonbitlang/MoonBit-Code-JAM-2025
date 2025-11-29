@@ -1,0 +1,2 @@
+{"$message_type":"diagnostic","level":"warning","loc":{"path":"C:\\Users\\35858\\Desktop\\moonbit\\jindoudou\\examples\\pixeladventure\\src\\main.mbt","start":{"line":25,"col":7},"end":{"line":25,"col":26}},"message":"Warning: Unused variable 'REAL_VIEWPORT_WIDTH'","error_code":2}
+{"$message_type":"diagnostic","level":"warning","loc":{"path":"C:\\Users\\35858\\Desktop\\moonbit\\jindoudou\\examples\\pixeladventure\\src\\main.mbt","start":{"line":28,"col":7},"end":{"line":28,"col":27}},"message":"Warning: Unused variable 'REAL_VIEWPORT_HEIGHT'","error_code":2}

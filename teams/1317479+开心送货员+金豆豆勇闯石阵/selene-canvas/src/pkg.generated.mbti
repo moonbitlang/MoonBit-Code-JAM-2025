@@ -1,0 +1,42 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Milky2018/selene-canvas"
+
+import(
+  "Milky2018/selene/system"
+  "Yoorkin/rabbit-tea/dom"
+  "moonbitlang/core/set"
+)
+
+// Values
+fn document_add_event_listener(String, (@dom.Event) -> Unit) -> Unit
+
+fn is_pointer_locked(@dom.HTMLCanvasElement) -> Bool
+
+fn request_pointer_lock(@dom.HTMLCanvasElement) -> Unit
+
+fn set_image_smoothing_enabled(@dom.CanvasRenderingContext2D, Bool) -> Unit
+
+fn set_viewport_height(@dom.HTMLCanvasElement, Double) -> Unit
+
+fn set_viewport_width(@dom.HTMLCanvasElement, Double) -> Unit
+
+fn time_now() -> Double
+
+// Errors
+
+// Types and methods
+type Audio
+fn Audio::new(String) -> Self
+fn Audio::pause(Self) -> Unit
+fn Audio::play(Self) -> Unit
+fn Audio::set_loop(Self, Bool) -> Unit
+fn Audio::set_volume(Self, Double) -> Unit
+
+type CanvasBackend
+fn CanvasBackend::new() -> Self
+impl @system.Backend for CanvasBackend
+
+// Type aliases
+
+// Traits
+
