@@ -1,0 +1,28 @@
+{
+    "link": {
+        "wasm-gc": {
+            "exports": [
+                "get_card_symbol",
+                "is_card_flipped",
+                "is_card_matched",
+                "set_flip_card_false",
+                "set_flip_card_true",
+                "game_active",
+                "set_game_active",
+                "get_card_index",
+                "set_card_index",
+                "get_rows",
+                "get_cols",
+                "get_card_width",
+                "get_card_height",
+                "get_padding",
+                "get_matched_count",
+                "get_total_pairs",
+                "check_match",
+                "reset_flipped",
+                "is_game_won",
+                "reset_game"
+            ]
+        }
+    }
+}
