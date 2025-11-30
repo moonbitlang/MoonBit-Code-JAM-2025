@@ -20,6 +20,7 @@ https://www.bilibili.com/video/BV1N5CtBfEQc/
 
 
 ### 从源码构建
-
+```shell
 moon build
 serve .
+```
