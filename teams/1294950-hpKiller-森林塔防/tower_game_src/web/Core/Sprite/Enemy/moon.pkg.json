@@ -1,0 +1,6 @@
+{
+  "import": [
+    "retfings/game/Core/Point",
+    "retfings/game/Core/EventSystem"
+  ]
+}

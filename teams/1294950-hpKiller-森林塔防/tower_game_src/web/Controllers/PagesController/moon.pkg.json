@@ -1,0 +1,12 @@
+{
+    "import": [
+      "retfings/game/Core/Sprite/HP",
+      "retfings/game/Core/Pages",
+      "retfings/game/Core/Point",
+      "retfings/game/Core",
+      "retfings/game/Core/Map",
+      // "retfings/game/Controllers/TopBarController",
+      "retfings/game/Controllers/MapController"
+      // "retfings/game/Core/Panels"
+    ]
+}

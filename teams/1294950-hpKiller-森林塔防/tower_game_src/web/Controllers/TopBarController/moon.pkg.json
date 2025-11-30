@@ -1,0 +1,9 @@
+{
+  "import": [
+    "retfings/game/Core/TopBar",
+    "retfings/game/Core/Point",
+    "retfings/game/Core/Panels",
+    "retfings/game/Core/EventSystem",
+    "retfings/game/Core/Map"
+  ]
+}

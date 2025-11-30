@@ -1,0 +1,12 @@
+{
+  "import": [
+    "retfings/game/Controllers/TopBarController",
+    "retfings/game/Core",
+    "retfings/game/Controllers/MapController",
+    "retfings/game/Controllers/EnemyController",
+    "retfings/game/Controllers/TowerController",
+    "retfings/game/Controllers/PagesController",
+    "retfings/game/Controllers/InputController",
+    "retfings/game/Controllers/NeutralElementController"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "import": [
+    "retfings/game/Renders/MapRender",
+    "retfings/game/Core",
+    "retfings/game/Renders/TowerRender",
+    "retfings/game/Renders/TopBarRender",
+    "retfings/game/Renders/EnemyRender",
+    "retfings/game/Renders/PanelsRender",
+    "retfings/game/Renders/HPRender",
+    "retfings/game/Renders/PagesRender",
+    "retfings/game/Renders/NeutralElementRender",
+    "retfings/game/Core/LocalStorage"
+  ]
+}

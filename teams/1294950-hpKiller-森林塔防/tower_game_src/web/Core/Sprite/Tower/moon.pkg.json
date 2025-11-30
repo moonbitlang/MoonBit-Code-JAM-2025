@@ -1,0 +1,6 @@
+{
+  "import": [
+    "retfings/game/Core/Sprite/Enemy",
+    "retfings/game/Core/Point"
+  ]
+}

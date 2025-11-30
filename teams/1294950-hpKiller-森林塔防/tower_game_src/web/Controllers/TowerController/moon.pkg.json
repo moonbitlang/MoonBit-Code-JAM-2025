@@ -1,0 +1,11 @@
+{
+    "import":[
+      "retfings/game/Core/Sprite/Tower",
+      "retfings/game/Core/Sprite/Enemy",
+      "retfings/game/Core/Sprite/NeutralElement",
+      "retfings/game/Core/Map",
+      "retfings/game/Core/Math",
+      "retfings/game/Core/Point",
+      "retfings/game/Core"
+    ]
+}

@@ -1,0 +1,8 @@
+{
+  "import": [
+    "retfings/game/Core",
+    "retfings/game/Core/Map",
+    "retfings/game/Core/Point"
+    // ,"retfings/game/Controllers/MapController"
+  ]
+}

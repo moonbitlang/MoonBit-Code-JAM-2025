@@ -1,0 +1,7 @@
+{
+    "import":[
+      "retfings/game/Core/Sprite/NeutralElement",
+      "retfings/game/Core/Map",
+      "retfings/game/Core/Point"
+    ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "game",
+  "version": "0.0.1",
+  "description": "A tower defense game built with Electron",
+  "main": "main.js",
+  "author": {
+    "name": "Tower Defense Game Developer",
+    "email": "developer@example.com"
+  },
+  "scripts": {
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build:mac": "electron-builder --mac",
+    "clean": "rd /s /q dist"
+  },
+  "build": {
+    "appId": "top.freeaitools.towerdefense",
+    "productName": "Tower Defense Game",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "tar.gz"
+      ],
+      "category": "Game"
+    },
+    "mac": {
+      "target": [
+        "zip"
+      ],
+      "category": "Game"
+    }
+  },
+  "devDependencies": {
+    "electron": "^38.1.2",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
+  }
+}

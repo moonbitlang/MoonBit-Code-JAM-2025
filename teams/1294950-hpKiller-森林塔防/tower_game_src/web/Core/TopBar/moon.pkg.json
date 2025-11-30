@@ -1,0 +1,6 @@
+{
+    "import": [
+        "retfings/game/Core",
+        "retfings/game/Core/Map"
+    ]
+}
