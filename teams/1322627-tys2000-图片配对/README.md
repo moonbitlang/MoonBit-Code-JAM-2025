@@ -21,3 +21,12 @@ Pair Matching 游戏
 团队id：1322627  
 成员名单: tys2000  
 联系方式: tiancong1930@outlook.com  
+
+## 构建
+
+```shell
+moon build --target wasm-gc
+python -m http.server
+```
+
+访问 localhost:8000
