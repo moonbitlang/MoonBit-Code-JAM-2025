@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>记忆大师--Color忆 master</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background: -webkit-linear-gradient(90deg, #181020, #362f56);
+            background: linear-gradient(90deg, #1e1627, #342d53);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .progress-container {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-text {
+            position: absolute;
+            margin-bottom: 210px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            width: 30%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin: 20px auto;
+            padding: 3px;
+        }
+
+        .progress {
+            background-color: #ab51e4;
+            height: 10px;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .top-text {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .wrap {
+            margin: 50px auto;
+            display: flex;
+            border-radius: 14px;
+        }
+
+        .leaderboard-container {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            width: 500px;
+            height: 400px;
+            margin-right: 20px;
+        }
+
+        .leaderboard {
+            padding: 10px;
+            width: 60%;
+        }
+
+        .leaderboard h2 {
+            margin-top: 0;
+        }
+
+        .leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .leaderboard li {
+            margin-bottom: 10px;
+        }
+
+        .separator {
+            background-color: #41376c;
+            width: 1px;
+        }
+
+        .other-content {
+            padding: 10px;
+            width: 40%;
+        }
+
+        .mark {
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            width: 500px;
+            height: auto;
+            margin-left: 20px;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .game-instructions {
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            width: 50%;
+            height: auto;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .button {
+            background-color: #4dd0e1;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 8px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .button:hover {
+            background-color: #2bbbad;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .separator {
+            background-color: #41376c;
+            width: 1px;
+            height: 400px;
+            margin: 0 20px;
+        }
+
+        .select-container {
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-container label {
+            margin-right: 10px;
+        }
+
+        .select-container select {
+            background-color: #4dd0e1;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .select-container select:hover {
+            background-color: #2bbbad;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .select-container select:focus {
+            outline: none;
+        }
+
+        #canvas {
+            border-radius: 14px;
+        }
+
+        .game-credits {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+            width: 95%;
+            height: 140px;
+            margin: 0 auto;
+        }
+
+        .game-credits p {
+            text-align: left;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-container {
+            display: flex;
+            position: absolute;
+            inset: 0;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 50px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .menu-container.show {
+            opacity: 1;
+        }
+
+        .menu-item {
+            width: 300px;
+            height: 450px;
+            perspective: 1000px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transform: translateZ(0);
+        }
+
+        .menu-item-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transform-origin: center center;
+        }
+
+        .menu-item:hover .menu-item-inner {
+            transform: rotateY(180deg);
+        }
+
+        .menu-item-front,
+        .menu-item-back {
+            position: absolute;
+            top: 0;
+            left: -10px;
+            width: 100%;
+            height: 100%;
+            border-radius: 14px;
+            backface-visibility: hidden;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            transform-origin: center center;
+        }
+
+        .menu-item-front {
+            background: #222;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .menu-item-front img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-bottom: 2px solid #444;
+        }
+
+        .menu-item-front p {
+            margin: 15px 0;
+            font-size: 1.2em;
+            color: #fff;
+        }
+
+        .menu-item-back {
+            background: linear-gradient(160deg, #1c1c1c, #2a2a2a, #1c1c1c);
+            border: 2px solid rgba(212, 175, 55, 0.7);
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            color: #f7e27a;
+            font-size: 1.05em;
+            letter-spacing: 1px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .start-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            /* background: url(assets/Background/lovegif_1760882992676.gif) no-repeat center center; */
+        }
+
+        .start-button-container {
+            text-align: center;
+        }
+
+        /* .title {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 100px;
+            font-weight: 700;
+            z-index: 10;
+        } */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                /* transform: translateY(-20px); */
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes colorChange {
+
+            0%,
+            100% {
+                color: #ffffff;
+            }
+
+            50% {
+                color: #ff6b6b;
+            }
+        }
+
+        .title {
+            position: absolute;
+            top: 165px;
+            left: 32%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 100px;
+            font-weight: 700;
+            z-index: 10;
+            animation: fadeIn 2s ease-out forwards, colorChange 3s infinite alternate;
+        }
+
+        .start-button {
+            padding: 10px 25px;
+            font-size: 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .start-button:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px);
+        }
+
+        .mode-image {
+            width: 250px;
+            height: 350px;
+            margin-left: 20px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .mode-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        /* 模式内容容器 */
+        .mode-content {
+            width: 300px;
+            height: 600px;
+            margin-left: 20px;
+            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            /* 关键：创建层叠上下文 */
+            z-index: 1000;
+            /* 关键：确保在最上层 */
+        }
+
+        /* 聊天容器 */
+        .chat-container {
+            width: 100%;
+            height: 40%;
+            gap: 15px;
+            margin-left: 20px;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 14px;
+            border: 2px solid #41376c;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .chat-header {
+            background: #41376c;
+            color: #f7e27a;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* 滚动条样式 */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #41376c;
+            border-radius: 3px;
+        }
+
+        .message {
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .user-message {
+            background: #ab51e4;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .ai-message {
+            background: #2a2a2a;
+            color: #f7e27a;
+            align-self: flex-start;
+            border: 1px solid #d4af37;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            gap: 10px;
+            border-top: 2px solid #41376c;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background: #1a1a1a;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            pointer-events: auto !important;
+            /* 强制启用交互 */
+            cursor: text !important;
+        }
+
+        .chat-input:focus {
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+        }
+
+        .chat-send-btn {
+            padding: 8px 20px;
+            background: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer !important;
+            font-weight: bold;
+            pointer-events: auto !important;
+        }
+
+        .chat-send-btn:hover {
+            background: #f7e27a;
+            transform: translateY(-2px);
+        }
+
+        .chat-send-btn:active {
+            transform: translateY(0);
+        }
+
+        .chat-send-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 8px rgba(214, 136, 20, 0.3),
+                    inset 0 0 15px rgba(212, 175, 55, 0.2);
+            }
+
+            100% {
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.6),
+                    inset 0 0 25px rgba(212, 175, 55, 0.4);
+            }
+        }
+
+        @font-face {
+            font-family: "ThaleahFat";
+            src: url("./ThaleahFat.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+</head>
+
+<body onload="showProgress()">
+    <div class="start-page" id="startPage">
+        <div class="start-button-container">
+            <div class="title">Color Master</div>
+            <button class="start-button" onclick="startLoading()"
+                style="display: block;margin-bottom: 15px;margin-top: 160px;">启动游戏</button>
+            <button class="start-button" onclick="changeBeads()"
+                style="display: block;margin-bottom: 15px;">切换主题</button>
+            <button class="start-button" style="display: block;margin-bottom: 15px;"><a href="https://b23.tv/DiKmGbk"
+                    target="_blank">操作说明</a> </button>
+            <button class="start-button" onclick="developmentAc()" style="display: block;">开发过程</button>
+        </div>
+    </div>
+    <div class="progress-container" id="progressContainer">
+        <div class="title-text">记忆大师</div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <p id="progressText">正在加载资源...</p>
+    </div>
+    <div class="menu-container" id="menuContainer">
+        <div class="menu-item" onclick="loadGameFiles()">
+            <div class="menu-item-inner">
+                <div class="menu-item-front">
+                    <img src="assets/Background/normal.png" alt="Start Game">
+                    <p>简单模式</p>
+                </div>
+                <div class="menu-item-back">
+                    <p>点击开始游戏→简单模式</p>
+                </div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="showInstructions()">
+            <div class="menu-item-inner">
+                <div class="menu-item-front">
+                    <img src="assets/Background/difficult.png" alt="Game Instructions">
+                    <p>困难模式</p>
+                </div>
+                <div class="menu-item-back">
+                    <p>点击开始游戏→困难模式</p>
+                </div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="showBackground()">
+            <div class="menu-item-inner">
+                <div class="menu-item-front">
+                    <img src="assets/Background/null.png" alt="Background">
+                    <p>地狱模式</p>
+                </div>
+                <div class="menu-item-back">
+                    <p>点击开始游戏→地狱模式</p>
+                </div>
+            </div>
+        </div>
+        <div class="menu-item" onclick="showDevelopment()">
+            <div class="menu-item-inner">
+                <div class="menu-item-front">
+                    <img src="assets/Background/modify.png" alt="Development">
+                    <p>古人模式</p>
+                </div>
+                <div class="menu-item-back">
+                    <p>点击开始游戏→古人模式</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <div class="top-text">记忆大师 正式服v2.0</div>
+        <div class="wrap">
+
+            <canvas id="canvas" style="display: block; margin: 0 auto;"></canvas>
+            <img id="loading-gif" src="assets/Background/lovegif2.gif"
+                style="display: none; margin: 0 auto; width: 360px;height: 360px;padding: 20px;border-radius: 14px;border: 4px solid #41376c;">
+
+            <div class="mode-content" id="modeContent" style="display: none;">
+                <div class="mode-image">
+                    <img src="assets/Background/shpeople.png" alt="古人模式展示">
+                </div>
+
+                <!-- 聊天界面 -->
+                <div class="chat-container">
+                    <div class="chat-header">与智者对话</div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <span class="message-sender">智者：</span>
+                            <span class="message-text">欢迎来到古人模式，年轻人。有何困惑欲询于老夫？</span>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="输入你的问题..." maxlength="100">
+                        <button class="chat-send-btn" id="sendBtn">发送</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            // let progress = 0;
+            // const progressInterval = setInterval(() => {
+            //     progress += 10;
+            //     if (progress >= 100) {
+            //         clearInterval(progressInterval);
+            //         document.getElementById('progress').style.width = '100%';
+            //         document.getElementById('progressText').textContent = '加载完成！';
+            //         setTimeout(() => {
+            //             document.getElementById('progressContainer').style.display = 'none';
+            //             document.getElementById('menuContainer').classList.add('show');
+            //         }, 500);
+            //     } else {
+            //         document.getElementById('progress').style.width = `${progress}%`;
+            //         document.getElementById('progressText').textContent = `正在加载资源... ${progress}%`;
+            //     }
+            // }, 500);
+            function showProgress() {
+                // 默认显示准备开始页面，隐藏进度条
+                document.getElementById('startPage').style.display = 'flex';
+                document.getElementById('progressContainer').style.display = 'none';
+
+                const menuItems = document.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+            }
+            function startLoading() {
+                // 隐藏准备开始页面
+                document.getElementById('startPage').style.display = 'none';
+                // 显示进度条容器
+                document.getElementById('progressContainer').style.display = 'flex';
+                const menuItems = document.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.style.display = 'none'; // 隐藏按钮
+                });
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        document.getElementById('progress').style.width = '100%';
+                        document.getElementById('progressText').textContent = '加载完成！';
+                        setTimeout(() => {
+                            document.getElementById('progressContainer').style.display = 'none';
+                            document.getElementById('menuContainer').classList.add('show');
+                        }, 300);
+                        const menuItems = document.querySelectorAll('.menu-item');
+                        menuItems.forEach(item => {
+                            item.style.display = 'block'; // 隐藏按钮
+                        });
+                    } else {
+                        document.getElementById('progress').style.width = `${progress}%`;
+                        document.getElementById('progressText').textContent = `正在加载资源... ${progress}%`;
+                    }
+                }, 500);
+            }
+
+            function startGame() {
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('menuContainer').classList.remove('show');
+                document.body.style.background = ''; // 重新应用背景样式
+                document.getElementById('canvas').style.display = 'block';
+                document.getElementById('loading-gif').style.display = 'none';
+                // 加载JS文件
+                const script = document.createElement('script');
+                script.src = "/target/js/release/build/pixeladventure.js";
+                script.defer = true;
+                document.body.appendChild(script);
+            }
+
+            function showInstructions() {
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('menuContainer').classList.remove('show');
+                // document.body.style.background = ''; // 重新应用背景样式
+                document.getElementById('canvas').style.display = 'block';
+                document.getElementById('loading-gif').style.display = 'none';
+
+                // 隐藏四个区域按钮
+                const menuItems = document.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.style.display = 'none'; // 隐藏按钮
+                });
+
+
+
+                // 动态加载 JavaScript 文件
+                const script = document.createElement('script');
+                script.src = "/target/js/release/build/pixeladventure.js";
+                script.defer = true;
+
+                // 监听加载完成事件
+                script.onload = () => {
+                    // 调用游戏的初始化函数
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                        nopublish$pixeladventure$$new_game_state.gameTwoStarted = true;
+                        toggleCanvas(); // 显示游戏画布
+                    } else {
+                        console.error("游戏初始化函数未定义");
+                    }
+                };
+
+                // 添加脚本到文档
+                document.body.appendChild(script);
+            }
+
+            function showBackground() {
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('menuContainer').classList.remove('show');
+                // document.body.style.background = ''; // 重新应用背景样式
+                document.getElementById('canvas').style.display = 'block';
+                document.getElementById('loading-gif').style.display = 'none';
+
+                // 隐藏四个区域按钮
+                const menuItems = document.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.style.display = 'none'; // 隐藏按钮
+                });
+
+
+
+                // 动态加载 JavaScript 文件
+                const script = document.createElement('script');
+                script.src = "/target/js/release/build/pixeladventure.js";
+                script.defer = true;
+
+                // 监听加载完成事件
+                script.onload = () => {
+                    // 调用游戏的初始化函数
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                        nopublish$pixeladventure$$new_game_state.gameThreeStarted = true;
+                        toggleCanvas(); // 显示游戏画布
+                    } else {
+                        console.error("游戏初始化函数未定义");
+                    }
+                };
+
+                // 添加脚本到文档
+                document.body.appendChild(script);
+            }
+            class DialogueSystem {
+                constructor() {
+                    this.chatMessages = document.getElementById('chatMessages');
+                    this.chatInput = document.getElementById('chatInput');
+                    this.sendBtn = document.getElementById('sendBtn');
+                    this.isResponding = false;
+
+                    this.initEventListeners();
+                }
+
+                initEventListeners() {
+                    this.sendBtn.addEventListener('click', () => this.sendMessage());
+                    this.chatInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            this.sendMessage();
+                        }
+                    });
+                }
+
+                sendMessage() {
+                    const message = this.chatInput.value.trim();
+                    if (!message || this.isResponding) return;
+
+                    this.addMessage(message, 'user');
+                    this.chatInput.value = '';
+                    this.isResponding = true;
+                    this.sendBtn.disabled = true;
+
+                    // 模拟AI回复（可替换为真实API调用）
+                    setTimeout(() => {
+                        const response = this.generateResponse(message);
+                        this.addMessage(response, 'ai');
+                        this.isResponding = false;
+                        this.sendBtn.disabled = false;
+                    }, 1000 + Math.random() * 1500);
+                }
+
+                addMessage(text, sender) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${sender}-message`;
+
+                    const senderName = sender === 'user' ? '你' : '智者';
+                    messageDiv.innerHTML = `
+                        <span class="message-sender">${senderName}：</span>
+                        <span class="message-text">${this.escapeHtml(text)}</span>
+                    `;
+
+                    this.chatMessages.appendChild(messageDiv);
+                    this.scrollToBottom();
+                }
+
+                generateResponse(userMessage) {
+                    // 简单的关键词回复逻辑（可扩展）
+                    const responses = {
+                        '你好': '幸会幸会，老夫已等候多时。',
+                        '你好': '幸会幸会，老夫已等候多时。',
+                        '游戏': '游戏之道，在于心定神闲，切记戒骄戒躁。',
+                        '颜色': '色即是空，空即是色。然颜色可助记忆，善用之妙无穷。',
+                        '记忆': '记忆力者，如练功需日日精进。多练自然成。',
+                        '难': '万事开头难，然坚持则易。可愿再试一次？',
+                        '谢谢': '不客气，小友若有疑问，随时相询。',
+                        '再见': '再会，愿你在游戏中有所收获。',
+                        '露染宫庭菊浅': '露染宫黄庭菊浅，你想找的是黄字吧？老夫记得这是谢逸的词句。',
+                        '庭菊浅': '可是"露染宫黄庭菊浅"？黄字不可少。',
+                        '露染宫': '后面可是"黄庭菊浅"？这句老夫熟。',
+                    };
+
+                    // 查找关键词匹配
+                    for (let key in responses) {
+                        if (userMessage.includes(key)) {
+                            return responses[key];
+                        }
+                    }
+
+                    // 默认回复
+                    const defaultResponses = [
+                        '此问题甚有趣，容老夫思量片刻...',
+                        '嗯...你的见解独到，不如再深入探讨？',
+                        '记忆之法，重在理解而非死记。你觉得呢？',
+                        '不错的问题，可愿分享你的思路？'
+                    ];
+
+                    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+                }
+
+                escapeHtml(text) {
+                    const div = document.createElement('div');
+                    div.textContent = text;
+                    return div.innerHTML;
+                }
+
+                scrollToBottom() {
+                    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                }
+            }
+            function showDevelopment() {
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('menuContainer').classList.remove('show');
+                // document.body.style.background = ''; // 重新应用背景样式
+                document.getElementById('canvas').style.display = 'block';
+                document.getElementById('loading-gif').style.display = 'none';
+
+                document.getElementById('modeContent').style.display = 'flex';
+                void modeContent.offsetWidth; // 触发重排
+
+                // 5. 初始化对话系统
+                setTimeout(() => {
+                    // 初始化对话系统（仅一次）
+                    if (!window.dialogueSystem) { // 使用全局变量
+                        window.dialogueSystem = new DialogueSystem();
+                    }
+
+                    // 聚焦输入框
+                    const input = document.getElementById('chatInput');
+                    if (input) {
+                        input.disabled = false;
+                        input.focus();
+                        console.log('输入框已激活'); // 调试用
+                    }
+                }, 500);
+
+                // 隐藏四个区域按钮
+                const menuItems = document.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.style.display = 'none'; // 隐藏按钮
+                });
+
+
+
+                // 动态加载 JavaScript 文件
+                const script = document.createElement('script');
+                script.src = "/target/js/release/build/pixeladventure.js";
+                script.defer = true;
+
+                // 监听加载完成事件
+                script.onload = () => {
+                    // 调用游戏的初始化函数
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                        nopublish$pixeladventure$$new_game_state.gameFourStarted = true;
+                        toggleCanvas(); // 显示游戏画布
+                    } else {
+                        console.error("游戏初始化函数未定义");
+                    }
+                };
+
+                // 添加脚本到文档
+                document.body.appendChild(script);
+            }
+
+            function developmentAc() {
+                alert("开发过程暂未发布")
+            }
+
+            function gameRemand() {
+                alert("游戏文档暂无发布")
+            }
+
+            let currentDifficulty = 'easy';
+
+            function resetGame() {
+                try {
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function' && currentDifficulty == 'easy') {
+                        nopublish$pixeladventure$$new_game_state.gameStarted = false;
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            function randomBackground() {
+                try {
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                        toggleCanvas();
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            function startToGame() {
+                try {
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                        // document.getElementById('loading-gif').style.display = 'none';
+                        const modeDescription = document.getElementById('current-mode');
+                        const modeDescriptionLevel = document.getElementById('highest-level');
+                        switch (currentDifficulty) {
+                            case 'easy':
+                                nopublish$pixeladventure$$new_game_state.gameStarted = true;
+                                toggleCanvas();
+                                modeDescriptionLevel.textContent = nopublish$pixeladventure$$new_game_state.level;
+                                modeDescription.textContent = '简单模式';
+                                console.log("简单模式");
+                                break;
+                            case 'medium':
+                                modeDescription.textContent = '中等模式';
+                                console.log("中等模式");
+                                break;
+                            case 'hard':
+                                modeDescription.textContent = '地狱模式';
+                                console.log("地狱模式");
+                                break;
+                            default:
+                                modeDescription.textContent = '简单模式';
+                                console.log("未知难度模式");
+                        }
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            function updateDifficulty() {
+                currentDifficulty = document.getElementById('difficulty').value;
+            }
+            function changeBeads() {
+                try {
+                    const colors = [
+                        "#f0f8ff8", // 浅绿色
+                        "#f8d7da", // 浅紫色
+                        "#c0ffee", // 浅蓝色
+                        "#fbd786", // 浅橙色
+                        "#edc9af", // 浅粉色
+                        "#c7f1ff", // 浅青色
+                        "#9b59b6", // 浅紫色
+                        "#ff00ff00", // 亮绿色
+                        "#ffff00ff00", // 亮黄色
+                        "#ff8000", // 亮红色
+                        "#00ffff00", // 亮黄色
+                        "#800080080", // 深紫色
+                        "#008080808", // 青绿色
+                    ];
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    requestAnimationFrame(() => {
+                        document.body.style.background = `-webkit-linear-gradient(90deg, ${colors[colorIndex]}, ${colors[(colorIndex + 1) % colors.length]})`;
+                        document.body.style.background = `linear-gradient(90deg, ${colors[colorIndex]}, ${colors[(colorIndex + 1) % colors.length]})`;
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            function toggleCanvas() {
+                const canvas = document.getElementById('canvas');
+                const loadingGif = document.getElementById('loading-gif');
+
+                if (nopublish$pixeladventure$$new_game_state.gameStarted || nopublish$pixeladventure$$new_game_state.gameTwoStarted || nopublish$pixeladventure$$new_game_state.gameThreeStarted || nopublish$pixeladventure$$new_game_state.gameFourStarted) {
+                    // 如果canvas应该显示，则隐藏动图并显示canvas
+                    // canvas.style.display = 'block';
+                    // loadingGif.style.display = 'none';
+                    document.getElementById('loading-gif').style.display = 'none';
+                    document.getElementById('canvas').style.display = 'block';
+                    nopublish$pixeladventure$$new_game_state.gameReStarted = true;
+                } else {
+                    // 如果canvas应该隐藏，则显示动图并隐藏canvas
+                    // canvas.style.display = 'none';
+                    // loadingGif.style.display = 'block';
+                    document.getElementById('loading-gif').style.display = 'block';
+                    document.getElementById('canvas').style.display = 'none';
+                }
+            }
+            function loadGameFiles() {
+                document.getElementById('content').style.display = 'block';
+                document.getElementById('menuContainer').classList.remove('show');
+                // document.body.style.background = ''; // 重新应用背景样式
+                document.getElementById('canvas').style.display = 'block';
+                document.getElementById('loading-gif').style.display = 'none';
+
+                // 隐藏四个区域按钮
+                const menuItems = document.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.style.display = 'none'; // 隐藏按钮
+                });
+
+
+
+                // 动态加载 JavaScript 文件
+                const script = document.createElement('script');
+                script.src = "/target/js/release/build/pixeladventure.js";
+                script.defer = true;
+
+                // 监听加载完成事件
+                script.onload = () => {
+                    // 调用游戏的初始化函数
+                    if (typeof nopublish$pixeladventure$$generate_map === 'function') {
+                        nopublish$pixeladventure$$new_game_state.gameStarted = true;
+                        toggleCanvas(); // 显示游戏画布
+                    } else {
+                        console.error("游戏初始化函数未定义");
+                    }
+                };
+
+                // 添加脚本到文档
+                document.body.appendChild(script);
+            }
+        </script>
+</body>
+
+</html>
