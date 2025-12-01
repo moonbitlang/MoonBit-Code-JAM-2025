@@ -1,0 +1,12 @@
+{
+  "name": "lib",
+  "link": {
+    "wasm-gc": {
+      "exports": [
+        "init_game","restart","next_level","toggle_phase","step",
+        "get_w","get_h","get_moves","get_phase","get_level","get_levels",
+        "get_tile","get_px","get_py","is_win"
+      ]
+    }
+  }
+}
