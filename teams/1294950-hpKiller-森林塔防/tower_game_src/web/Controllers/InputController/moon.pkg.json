@@ -1,0 +1,15 @@
+{
+    "import": [
+      "retfings/game/Core/platform",
+      "retfings/game/Core",
+      "retfings/game/Core/Point",
+      "retfings/game/Controllers/PanelsController",
+      "retfings/game/Controllers/TopBarController",
+      "retfings/game/Core/Pages",
+      "retfings/game/Controllers/PagesController",
+      "retfings/game/Core/Panels",
+      "retfings/game/Controllers/MapController",
+      "retfings/game/Core/Map",
+      "retfings/game/Controllers/NeutralElementController"
+    ]
+}

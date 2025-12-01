@@ -1,0 +1,15 @@
+{
+    // "is-main": true,
+    "import":[
+      "retfings/game/Core/Point",
+      "retfings/game/Core/Map",
+      "retfings/game/Core/TopBar",
+      "retfings/game/Core/Sprite/HP",
+      "retfings/game/Core/Sprite/Enemy",
+      "retfings/game/Core/Sprite/NeutralElement",
+      "retfings/game/Core/Panels",
+      "retfings/game/Core/Pages",
+      "retfings/game/Controllers/TopBarController",
+      "retfings/game/Controllers/NeutralElementController"
+    ]
+}

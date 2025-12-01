@@ -1,0 +1,9 @@
+{
+  "import": [
+    "retfings/game/Core",
+    // "retfings/game/Core/Sprite/HP",
+    // "retfings/game/Core/Sprite/Enemy",
+    "retfings/game/Core/Map",
+    // "retfings/game/Core/Panels"
+  ]
+}

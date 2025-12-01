@@ -1,0 +1,14 @@
+{
+  "import": [
+    "retfings/game/Core/Panels",
+    "retfings/game/Controllers/TopBarController",
+    "retfings/game/Controllers/MapController",
+    "retfings/game/Core/Map",
+    "retfings/game/Core/Point",
+    "retfings/game/Core",
+    "retfings/game/Core/Sprite/Tower",
+    "retfings/game/Renders/PanelsRender",
+    "retfings/game/Core/TopBar",
+    "retfings/game/Core/LocalStorage"
+  ]
+}

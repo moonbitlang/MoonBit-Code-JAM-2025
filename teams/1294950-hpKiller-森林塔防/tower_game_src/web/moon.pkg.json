@@ -1,0 +1,11 @@
+{
+    "is-main": true,
+    "import":[
+      "retfings/game/Core",
+      "retfings/game/Controllers",
+      "retfings/game/Controllers/TopBarController",
+      "retfings/game/Renders",
+      "retfings/game/Renders/TowerRender"
+      // "retfings/game/Core/Map"
+    ]
+}

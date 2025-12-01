@@ -1,0 +1,8 @@
+{
+    "import":[
+      "retfings/game/Core/Sprite/HP",
+      "retfings/game/Core/Map",
+      "retfings/game/Core",
+      "retfings/game/Core/Point"
+    ]
+}

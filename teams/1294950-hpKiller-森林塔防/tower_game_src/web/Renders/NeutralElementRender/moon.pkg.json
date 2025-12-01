@@ -1,0 +1,9 @@
+{
+    "import": [
+      "retfings/game/Core/Map",
+      "retfings/game/Core",
+      "retfings/game/Core/Sprite/NeutralElement",
+      "retfings/game/Core/Point",
+      "retfings/game/Renders/UIComposeRender"
+    ]
+}

@@ -1,0 +1,14 @@
+{
+  "import": [
+    "retfings/game/Core",
+    "retfings/game/Core/Sprite/Tower",
+    "retfings/game/Core/Point",
+    "retfings/game/Renders/UIComposeRender",
+    "retfings/game/Renders/TowerRender",
+    "retfings/game/Core/Panels",
+    "retfings/game/Core/Sprite/Enemy",
+    "retfings/game/Renders/EnemyRender",
+    "retfings/game/Core/Sprite/NeutralElement",
+    "retfings/game/Renders/NeutralElementRender"
+  ]
+}
