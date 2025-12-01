@@ -1,0 +1,3134 @@
+{
+  "source_dir": "D:\\selene-main - c - egg\\examples\\pixeladventure",
+  "name": "nopublish/pixeladventure",
+  "packages": [
+    {
+      "is-main": true,
+      "is-third-party": false,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\src",
+      "root": "nopublish/pixeladventure",
+      "rel": "",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\base.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\base_display.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\bird.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\collision.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\game.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\level.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\main.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\map.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\player.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\src\\ui.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/audio",
+          "alias": "audio",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\audio"
+        },
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/sprite",
+          "alias": "sprite",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite"
+        },
+        {
+          "path": "Milky2018/selene/velocity",
+          "alias": "velocity",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\velocity"
+        },
+        {
+          "path": "Milky2018/selene/plugins",
+          "alias": "plugins",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\plugins"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/collision",
+          "alias": "collision",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision"
+        },
+        {
+          "path": "Milky2018/selene/tilemap",
+          "alias": "tilemap",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\tilemap"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/ui",
+          "alias": "ui",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\ui"
+        },
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\pixeladventure.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src",
+      "root": "Milky2018/selene",
+      "rel": "",
+      "files": {},
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\selene.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\audio",
+      "root": "Milky2018/selene",
+      "rel": "audio",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\audio\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\audio\\audio.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\backend",
+      "root": "Milky2018/selene",
+      "rel": "backend",
+      "files": {},
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\backend\\backend.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\camera",
+      "root": "Milky2018/selene",
+      "rel": "camera",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\camera\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\camera\\camera.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision",
+      "root": "Milky2018/selene",
+      "rel": "collision",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\area.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\collider.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\debug.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\layer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\move.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\pickable.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\quadtree.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision\\shape.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/velocity",
+          "alias": "velocity",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\velocity"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/ui",
+          "alias": "ui",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\ui"
+        },
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\collision\\collision.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs",
+      "root": "Milky2018/selene",
+      "rel": "inputs",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs\\keycode.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs\\mouse.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\inputs\\inputs.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math",
+      "root": "Milky2018/selene",
+      "rel": "math",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math\\angle.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math\\rect.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math\\repeat.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math\\transform.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math\\vector.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\math\\math.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\plugins",
+      "root": "Milky2018/selene",
+      "rel": "plugins",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\plugins\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/sprite",
+          "alias": "sprite",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite"
+        },
+        {
+          "path": "Milky2018/selene/collision",
+          "alias": "collision",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\collision"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\plugins\\plugins.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\position",
+      "root": "Milky2018/selene",
+      "rel": "position",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\position\\position.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\position\\position.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite",
+      "root": "Milky2018/selene",
+      "rel": "sprite",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite\\animation.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite\\picture.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite\\rect.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite\\text.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\sprite\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/position",
+          "alias": "position",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\position"
+        },
+        {
+          "path": "Milky2018/selene/camera",
+          "alias": "camera",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\camera"
+        },
+        {
+          "path": "Milky2018/selene/ui",
+          "alias": "ui",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\ui"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\sprite\\sprite.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system",
+      "root": "Milky2018/selene",
+      "rel": "system",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\app.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\defer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\entity.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\locked.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\schedule.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\timer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs"
+        },
+        {
+          "path": "Milky2018/selene/backend",
+          "alias": "backend",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\backend"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\system\\system.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\tilemap",
+      "root": "Milky2018/selene",
+      "rel": "tilemap",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\tilemap\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\tilemap\\tilemap.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\ui",
+      "root": "Milky2018/selene",
+      "rel": "ui",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\ui\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\ui\\ui.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\velocity",
+      "root": "Milky2018/selene",
+      "rel": "velocity",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\velocity\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Milky2018/selene/system",
+          "alias": "system",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\system"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene\\velocity\\velocity.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src",
+      "root": "Milky2018/selene-canvas",
+      "rel": "",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\audio.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\canvas.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\draw.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\js.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\keycode.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\mouse.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene-canvas\\src\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        },
+        {
+          "path": "Milky2018/selene/math",
+          "alias": "math",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\math"
+        },
+        {
+          "path": "Milky2018/selene/inputs",
+          "alias": "inputs",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Milky2018\\selene\\src\\inputs"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Milky2018/selene-canvas\\selene-canvas.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\top.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/html",
+          "alias": "html",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/internal/vdom",
+          "alias": "vdom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/internal/browser",
+          "alias": "browser",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\browser"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/url",
+          "alias": "url",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/cmd",
+          "alias": "cmd",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\rabbit-tea.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\clipboard",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "clipboard",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\clipboard\\aliases.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\clipboard\\clipboard.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/cmd",
+          "alias": "cmd",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\clipboard\\clipboard.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "cmd",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd\\command.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/url",
+          "alias": "url",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\cmd\\cmd.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dialog",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "dialog",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dialog\\aliases.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dialog\\dialog.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/cmd",
+          "alias": "cmd",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\dialog\\dialog.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "dom",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\animation_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\before_unload_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\blob.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\blob_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\canvas_gradient.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\canvas_line_cap.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\canvas_line_join.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\canvas_pattern.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\canvas_rendering_context2d.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\clipboard.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\clipboard_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\close_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\composition_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\css_style_declaration.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\custom_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\data_transfer.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\Document.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\document_fragment.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\dom_exception.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\dom_high_res_time_stamp.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\dom_matrix_2d_init.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\dom_rect.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\drag_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\event_target.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\exception.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\focus_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\gpu_canvas_context.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_canvas_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_collection.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_dialog_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_image_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_input_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_media_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_select_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\html_video_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\image_bitmap.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\image_bitmap_rendering_context.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\image_data.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\image_data_settings.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\input_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\keyboard_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\mouse_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\navigator.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\node.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\node_list.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\offscreen_canvas.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\path2d.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\svg_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\svg_graphics_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\svg_image_element.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\text.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\uint8_clamped_array.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\ui_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\video_frame.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\webgl2_rendering_context.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\webgl_rendering_context.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\wheel_event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom\\window.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\dom\\dom.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "experimental/html",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\attributes.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\generated.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\html.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/internal/vdom",
+          "alias": "vdom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/variant",
+          "alias": "variant",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\variant"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/html",
+          "alias": "legacy_html",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\experimental\\html\\html.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\canvas",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "experimental/html/canvas",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\canvas\\canvas.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\canvas\\context2d.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/html",
+          "alias": "html",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\experimental\\html\\canvas\\canvas.mi"
+    },
+    {
+      "is-main": true,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\internal\\codegen",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "experimental/html/internal/codegen",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\internal\\codegen\\generator.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\experimental\\html\\internal\\codegen\\metainfo.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\experimental\\html\\internal\\codegen\\codegen.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "html",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html\\attributes.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html\\event.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html\\html.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/internal/vdom",
+          "alias": "vdom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/variant",
+          "alias": "variant",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\variant"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\html\\html.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html\\canvas",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "html/canvas",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html\\canvas\\canvas.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html\\canvas\\context2d.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/html",
+          "alias": "html",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\html\\canvas\\canvas.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\http",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "http",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\http\\http.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/cmd",
+          "alias": "cmd",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\http\\http.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\browser",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "internal/browser",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\browser\\command.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\browser\\sandbox.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/url",
+          "alias": "url",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/cmd",
+          "alias": "cmd",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\internal\\browser\\browser.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\ffi",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "internal/ffi",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\ffi\\utils.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\internal\\ffi\\ffi.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "internal/vdom",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom\\dom.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom\\show.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom\\test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/internal/browser",
+          "alias": "adapter",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\browser"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/url",
+          "alias": "url",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/variant",
+          "alias": "variant",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\variant"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\internal\\vdom\\vdom.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\nav",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "nav",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\nav\\aliases.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\nav\\navigation.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\nav\\scroll.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/cmd",
+          "alias": "cmd",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\cmd"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/url",
+          "alias": "url",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "rami3l/js-ffi/js",
+          "alias": "js",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\nav\\nav.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\svg",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "svg",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\svg\\svg.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [
+        {
+          "path": "Yoorkin/rabbit-tea/internal/vdom",
+          "alias": "vdom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\internal\\vdom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/variant",
+          "alias": "variant",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\variant"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/dom",
+          "alias": "dom",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\dom"
+        },
+        {
+          "path": "Yoorkin/rabbit-tea/html",
+          "alias": "html",
+          "fspath": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\html"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\svg\\svg.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "url",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url\\url.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\url\\url_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\url\\url.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\variant",
+      "root": "Yoorkin/rabbit-tea",
+      "rel": "variant",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\Yoorkin\\rabbit-tea\\src\\variant\\variant.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\Yoorkin/rabbit-tea\\variant\\variant.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js",
+      "root": "rami3l/js-ffi",
+      "rel": "js",
+      "files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\async.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\cast.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\error.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\null.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\object.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\optional.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\require.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\symbol.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\union.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\value.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\async_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\object_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "D:\\selene-main - c - egg\\examples\\pixeladventure\\.mooncakes\\rami3l\\js-ffi\\src\\js\\value_test.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "D:\\selene-main - c - egg\\examples\\pixeladventure\\target\\js\\release\\check\\.mooncakes\\rami3l/js-ffi\\js\\js.mi"
+    }
+  ],
+  "deps": [
+    "Milky2018/selene",
+    "Milky2018/selene-canvas"
+  ],
+  "backend": "js",
+  "opt_level": "release",
+  "source": "src"
+}
