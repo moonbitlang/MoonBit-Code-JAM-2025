@@ -1,0 +1,21 @@
+{
+    "link": {
+        "wasm-gc": {
+            "exports": [
+                "map00",
+                "map01",
+                "map02",
+                "map10",
+                "map11",
+                "map12",
+                "map20",
+                "map21",
+                "map22",
+                "rows",
+                "cols",
+                "toggle",
+                "is_win"
+            ]
+        }
+    }
+}
