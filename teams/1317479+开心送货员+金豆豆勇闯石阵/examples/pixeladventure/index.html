@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <title>金豆豆勇闯石阵</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #111;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      color: #f0f0f0;
+      perspective: 1200px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .loading-container {
+      text-align: center;
+    }
+
+    .progress-bar-container {
+      width: 300px;
+      height: 20px;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 15px auto;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #c737d4, #da7af7);
+      transition: width 0.4s;
+    }
+
+    .menu-container {
+      display: none;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .menu-container.show {
+      opacity: 1;
+    }
+
+    .menu-item {
+      width: 220px;
+      height: 320px;
+      perspective: 1000px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transform: translateZ(0);
+    }
+
+    .menu-item-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s ease-in-out;
+      transform-style: preserve-3d;
+      will-change: transform;
+      transform-origin: center center;
+    }
+
+    .menu-item:hover .menu-item-inner {
+      transform: rotateY(180deg);
+    }
+
+    .menu-item-front,
+    .menu-item-back {
+      position: absolute;
+      top: 0;
+      left: -11px;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      backface-visibility: hidden;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      transform-origin: center center;
+    }
+
+    .menu-item-front {
+      background: #222;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .menu-item-front img {
+      width: 100%;
+      height: 80%;
+      object-fit: cover;
+      border-bottom: 2px solid #444;
+    }
+
+    .menu-item-front p {
+      margin: 15px 0;
+      font-size: 1.2em;
+      color: #fff;
+    }
+
+    .menu-item-back {
+      background: linear-gradient(160deg, #1c1c1c, #2a2a2a, #1c1c1c);
+      border: 2px solid rgba(212, 175, 55, 0.7);
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      color: #f7e27a;
+      font-size: 1.05em;
+      letter-spacing: 1px;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.3),
+          inset 0 0 15px rgba(212, 175, 55, 0.2);
+      }
+
+      100% {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.6),
+          inset 0 0 25px rgba(212, 175, 55, 0.4);
+      }
+    }
+
+    .canvas-container {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="loading-container">
+    <h1>金豆豆勇闯石阵</h1>
+    <p>正在加载资源...</p>
+    <div class="progress-bar-container">
+      <div class="progress-bar"></div>
+    </div>
+    <p id="progress-text">0 / 100 (0%)</p>
+  </div>
+
+  <div class="menu-container">
+    <div class="menu-item" onclick="showCanvas()">
+      <div class="menu-item-inner">
+        <div class="menu-item-front">
+          <img src="assets/Background/game.jpg">
+          <p>开始游戏</p>
+        </div>
+        <div class="menu-item-back">
+          <p>点击开始冒险之旅！</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="menu-item-inner">
+        <div class="menu-item-front">
+          <img src="assets/Background/remand.png">
+          <p>游戏说明</p>
+        </div>
+        <div class="menu-item-back">
+          <p>点击查看游戏说明！</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="menu-item-inner">
+        <div class="menu-item-front">
+          <img src="assets/Background/make.png">
+          <p>制作背景</p>
+        </div>
+        <div class="menu-item-back">
+          <p>了解游戏制作的背景。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="menu-item-inner">
+        <div class="menu-item-front">
+          <img src="assets/Background/development.png">
+          <p>开发说明</p>
+        </div>
+        <div class="menu-item-back">
+          <p>快速上手moonbit游戏开发。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas-container">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script>
+    const progressBar = document.querySelector('.progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const loadingContainer = document.querySelector('.loading-container');
+    const menuContainer = document.querySelector('.menu-container');
+    const canvasContainer = document.querySelector('.canvas-container');
+    const canvas = document.getElementById('canvas');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (progress < 100) {
+        progress += 10;
+        progressBar.style.width = progress + '%';
+        progressText.textContent = `${progress} / 100 (${progress}%)`;
+      } else {
+        clearInterval(interval);
+        loadingContainer.classList.add('hidden');
+        menuContainer.style.display = 'flex';
+        setTimeout(() => menuContainer.classList.add('show'), 100);
+      }
+    }, 400);
+
+    function showCanvas() {
+      menuContainer.classList.remove('show');
+      setTimeout(() => {
+        menuContainer.style.display = 'none';
+      }, 500);
+
+      canvasContainer.style.display = 'block';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      requestAnimationFrame(() => {
+        loadGameScript();
+      });
+    }
+
+    function loadGameScript() {
+      if (document.getElementById('game-script')) return;
+      const script = document.createElement('script');
+      script.id = 'game-script';
+      script.src = "/target/js/release/build/pixeladventure.js";
+      script.onload = () => console.log('✅ 游戏脚本加载完成');
+      script.onerror = () => {
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#222';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = '24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('加载游戏失败，请检查脚本路径！', canvas.width / 2, canvas.height / 2);
+      };
+      document.body.appendChild(script);
+    }
+
+    window.addEventListener('resize', () => {
+      if (canvasContainer.style.display === 'block') {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+  </script>
+
+</body>
+
+</html>
