@@ -1,0 +1,160 @@
+{
+  "source_dir": "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter",
+  "name": "moonfighter",
+  "packages": [
+    {
+      "is-main": false,
+      "is-third-party": false,
+      "root-path": "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter",
+      "root": "moonfighter",
+      "rel": "",
+      "files": {
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\main.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\moonfighter.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\README.mbt.md": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "deps": [
+        {
+          "path": "moonbitlang/wasm4",
+          "alias": "wasm4",
+          "fspath": "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4"
+        }
+      ],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\target\\wasm-gc\\release\\check\\moonfighter.mi"
+    },
+    {
+      "is-main": false,
+      "is-third-party": true,
+      "root-path": "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4",
+      "root": "moonbitlang/wasm4",
+      "rel": "",
+      "files": {
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4\\ffi.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4\\ffi.wasm-gc.mbt": {
+          "backend": [
+            "WasmGC"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4\\ffi.wasm.mbt": {
+          "backend": [
+            "Wasm"
+          ],
+          "optlevel": [
+            "Release",
+            "Debug"
+          ]
+        },
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4\\function.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4\\memory.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        },
+        "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\.mooncakes\\moonbitlang\\wasm4\\utils.mbt": {
+          "backend": [
+            "Wasm",
+            "WasmGC",
+            "Js",
+            "Native",
+            "LLVM"
+          ],
+          "optlevel": [
+            "Debug",
+            "Release"
+          ]
+        }
+      },
+      "wbtest-files": {},
+      "test-files": {},
+      "mbt-md-files": {},
+      "deps": [],
+      "wbtest-deps": [],
+      "test-deps": [],
+      "artifact": "C:\\Users\\22016\\Documents\\moonbit-game\\moonfighter\\target\\wasm-gc\\release\\check\\.mooncakes\\moonbitlang/wasm4\\wasm4.mi"
+    }
+  ],
+  "deps": [
+    "moonbitlang/wasm4"
+  ],
+  "backend": "wasm-gc",
+  "opt_level": "release",
+  "source": null
+}
