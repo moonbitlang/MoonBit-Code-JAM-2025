@@ -13,12 +13,16 @@ interface GameMetaRaw {
   features: string; // raw markdown content
   teamInfo: string; // raw markdown content
   artifactPath: string; // relative (url-encoded) path to artifact/index.html
-  isFinalist?: boolean; // Whether this team is in the finals
   award?: {
     name: string;
     icon: string;
     color: string;
   };
+  monthlyAwards?: Array<{
+    name: string;
+    icon: string;
+    color: string;
+  }>;
 }
 
 interface Award {
@@ -35,8 +39,8 @@ const TEMPLATE_PATH = path.join(ROOT, "src", "template", "index.html");
 const AWARDS_PATH = path.join(ROOT, "awards.json");
 const FINAL_PATH = path.join(ROOT, "final.json");
 
-// Read awards data
-async function readAwards(): Promise<{
+// Read monthly awards data
+async function readMonthlyAwards(): Promise<{
   awardsMap: Record<string, Award>;
   awardOrder: string[];
 }> {
@@ -51,7 +55,9 @@ async function readAwards(): Promise<{
     });
     return { awardsMap, awardOrder };
   } catch (error) {
-    console.warn("Awards file not found or invalid, proceeding without awards");
+    console.warn(
+      "Awards file not found or invalid, proceeding without monthly awards",
+    );
     return { awardsMap: {}, awardOrder: [] };
   }
 }
@@ -60,13 +66,54 @@ async function readAwards(): Promise<{
 async function readFinalists(): Promise<{
   finalistsSet: Set<string>;
   finalistOrder: string[];
+  awardsMap: Record<string, { name: string; icon: string; color: string }>;
 }> {
   try {
     const finalistsData = await fs.readFile(FINAL_PATH, "utf8");
-    const finalists = JSON.parse(finalistsData) as string[];
+    const finalistsJson = JSON.parse(finalistsData) as Record<
+      string,
+      string | string[]
+    >;
+
+    // Define award order and properties
+    const awardDefinitions: Record<
+      string,
+      { icon: string; color: string; order: number }
+    > = {
+      一等奖: { icon: "🥇", color: "#FFD700", order: 1 },
+      二等奖: { icon: "🥈", color: "#C0C0C0", order: 2 },
+      三等奖: { icon: "🥉", color: "#CD7F32", order: 3 },
+      优异奖: { icon: "🏅", color: "#4ECDC4", order: 4 },
+    };
+
+    const finalistOrder: string[] = [];
+    const awardsMap: Record<
+      string,
+      { name: string; icon: string; color: string }
+    > = {};
+
+    // Process awards in order
+    for (const [awardName, awardDef] of Object.entries(awardDefinitions).sort(
+      (a, b) => a[1].order - b[1].order,
+    )) {
+      const winners = finalistsJson[awardName];
+      if (!winners) continue;
+
+      const winnerList = Array.isArray(winners) ? winners : [winners];
+      for (const winnerId of winnerList) {
+        finalistOrder.push(winnerId);
+        awardsMap[winnerId] = {
+          name: awardName,
+          icon: awardDef.icon,
+          color: awardDef.color,
+        };
+      }
+    }
+
     return {
-      finalistsSet: new Set(finalists),
-      finalistOrder: finalists,
+      finalistsSet: new Set(finalistOrder),
+      finalistOrder,
+      awardsMap,
     };
   } catch (error) {
     console.warn(
@@ -75,6 +122,7 @@ async function readFinalists(): Promise<{
     return {
       finalistsSet: new Set(),
       finalistOrder: [],
+      awardsMap: {},
     };
   }
 }
@@ -282,59 +330,29 @@ function buildArtifactRelativePath(teamId: string): string {
 
 async function renderIndexHtml(
   games: GameMetaRaw[],
-  awardOrder: string[],
   finalistOrder: string[],
 ): Promise<string> {
   const tpl = await fs.readFile(TEMPLATE_PATH, "utf8");
 
-  // Sort games with priority:
-  // 1. Both finalist AND award winner (by awards.json order)
-  // 2. Only finalist (by final.json order)
-  // 3. Only award winner (by awards.json order)
-  // 4. Others (keep original order)
+  // Sort games by award order from final.json
+  // Award winners come first (in order: 一等奖, 二等奖, 三等奖, 优异奖)
+  // Non-winners follow in original order
   const sortedGames = [...games].sort((a, b) => {
-    const aIsFinalist = !!a.isFinalist;
-    const bIsFinalist = !!b.isFinalist;
     const aHasAward = !!a.award;
     const bHasAward = !!b.award;
 
-    const aIsBoth = aIsFinalist && aHasAward;
-    const bIsBoth = bIsFinalist && bHasAward;
-
-    // Both have finalist+award: sort by awards.json order
-    if (aIsBoth && bIsBoth) {
-      const aIndex = awardOrder.indexOf(a.id);
-      const bIndex = awardOrder.indexOf(b.id);
-      return aIndex - bIndex;
-    }
-
-    // One has both: that one comes first
-    if (aIsBoth && !bIsBoth) return -1;
-    if (!aIsBoth && bIsBoth) return 1;
-
-    // Both are finalists only: sort by final.json order
-    if (aIsFinalist && bIsFinalist && !aHasAward && !bHasAward) {
+    // Both have awards: sort by final.json order
+    if (aHasAward && bHasAward) {
       const aIndex = finalistOrder.indexOf(a.id);
       const bIndex = finalistOrder.indexOf(b.id);
       return aIndex - bIndex;
     }
 
-    // One is finalist only: finalist comes first
-    if (aIsFinalist && !aHasAward && !(bIsFinalist && !bHasAward)) return -1;
-    if (bIsFinalist && !bHasAward && !(aIsFinalist && !aHasAward)) return 1;
+    // One has award: award winner comes first
+    if (aHasAward && !bHasAward) return -1;
+    if (!aHasAward && bHasAward) return 1;
 
-    // Both have awards only: sort by awards.json order
-    if (aHasAward && bHasAward && !aIsFinalist && !bIsFinalist) {
-      const aIndex = awardOrder.indexOf(a.id);
-      const bIndex = awardOrder.indexOf(b.id);
-      return aIndex - bIndex;
-    }
-
-    // One has award only: award winner comes first
-    if (aHasAward && !aIsFinalist && !(bHasAward && !bIsFinalist)) return -1;
-    if (bHasAward && !bIsFinalist && !(aHasAward && !aIsFinalist)) return 1;
-
-    // Neither has award or finalist: keep original order
+    // Neither has award: keep original order
     return 0;
   });
 
@@ -353,20 +371,27 @@ async function renderIndexHtml(
       const features = renderMarkdown(g.features);
       const teamInfo = renderMarkdown(g.teamInfo);
 
-      // Generate award badge if game has an award
-      const awardBadge = g.award
-        ? `<div class="award-badge" style="background: linear-gradient(135deg, ${g.award.color}, ${g.award.color}dd);">
+      // Generate final award badge if game has an award (positioned at top)
+      const finalAwardBadge = g.award
+        ? `<div class="award-badge" style="background: linear-gradient(135deg, ${g.award.color}, ${g.award.color}dd); top: -8px;">
              <span class="award-icon">${g.award.icon}</span>
              <span class="award-text">${g.award.name}</span>
            </div>`
         : "";
 
-      // Generate finalist badge if team is in finals
-      const finalistBadge = g.isFinalist
-        ? `<div class="award-badge finalist-badge" style="background: linear-gradient(135deg, #FFD700, #FFA500);">
-             <span class="award-icon">🏅</span>
-             <span class="award-text">决赛入围</span>
-           </div>`
+      // Generate monthly award badges (positioned below final award if exists)
+      const monthlyAwardBadges = g.monthlyAwards
+        ? g.monthlyAwards
+            .map((ma, idx) => {
+              // If there's a final award, start monthly badges 48px below it
+              // Otherwise start at -8px (top of card)
+              const topPosition = g.award ? 40 + idx * 48 : -8 + idx * 48;
+              return `<div class="award-badge monthly-badge" style="background: linear-gradient(135deg, ${ma.color}, ${ma.color}dd); top: ${topPosition}px;">
+               <span class="award-icon">${ma.icon}</span>
+               <span class="award-text">${ma.name}</span>
+             </div>`;
+            })
+            .join("")
         : "";
 
       // Escape quotes for data attributes
@@ -382,10 +407,8 @@ async function renderIndexHtml(
         data-features="${escapeQuotes(features)}"
         data-team-info="${escapeQuotes(teamInfo)}"
         data-artifact-path="${g.artifactPath}">
-      <div class="game-card ${g.award ? "award-winner" : ""} ${
-        g.isFinalist ? "finalist" : ""
-      }">
-        ${finalistBadge}${awardBadge}
+      <div class="game-card ${g.award ? "award-winner" : ""}">
+        ${finalAwardBadge}${monthlyAwardBadges}
         <h3 class="game-title">${md.renderInline(g.title)}</h3>
         <div class="team-name">🏆 ${md.renderInline(g.teamName)}</div>
         <div class="section"><h4>游戏简介</h4>${intro}</div>
@@ -424,11 +447,12 @@ async function build() {
   await rimraf(DIST_DIR);
   await ensureDir(DIST_DIR);
 
-  // Read awards data
-  const { awardsMap, awardOrder } = await readAwards();
+  // Read monthly awards data from awards.json
+  const { awardsMap: monthlyAwardsMap, awardOrder: monthlyAwardOrder } =
+    await readMonthlyAwards();
 
-  // Read finalists data
-  const { finalistsSet, finalistOrder } = await readFinalists();
+  // Read finalists and final awards data from final.json
+  const { finalistsSet, finalistOrder, awardsMap } = await readFinalists();
 
   const teamEntries = await fs.readdir(TEAMS_DIR, { withFileTypes: true });
   const games: GameMetaRaw[] = [];
@@ -449,22 +473,35 @@ async function build() {
     if (!copied) continue; // must have artifact
     const artifactPath = buildArtifactRelativePath(dirName);
 
-    // Check if this game has an award
-    const award = awardsMap[dirName];
-    // Check if this team is a finalist
-    const isFinalist = finalistsSet.has(dirName);
+    // Check if this game has a final award from final.json
+    const finalAward = awardsMap[dirName];
+    // Check if this game has monthly awards from awards.json
+    const monthlyAward = monthlyAwardsMap[dirName];
+
     const gameData: GameMetaRaw = {
       ...baseData,
       artifactPath,
-      ...(isFinalist && { isFinalist: true }),
-      ...(award && {
-        award: { name: award.name, icon: award.icon, color: award.color },
+      ...(finalAward && {
+        award: {
+          name: finalAward.name,
+          icon: finalAward.icon,
+          color: finalAward.color,
+        },
+      }),
+      ...(monthlyAward && {
+        monthlyAwards: [
+          {
+            name: monthlyAward.name,
+            icon: monthlyAward.icon,
+            color: monthlyAward.color,
+          },
+        ],
       }),
     };
 
     games.push(gameData);
   }
-  const html = await renderIndexHtml(games, awardOrder, finalistOrder);
+  const html = await renderIndexHtml(games, finalistOrder);
   await fs.writeFile(path.join(DIST_DIR, "index.html"), html, "utf8");
   console.log(`Built ${games.length} games into dist/`);
 }

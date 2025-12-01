@@ -133,18 +133,9 @@
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
       }
 
-      /* Finalist badge positioning - appears above the award badge */
-      .finalist-badge {
-        top: -8px;
-        right: -8px;
-        transform: rotate(3deg);
-      }
-
-      /* When both badges exist, adjust the award badge position below finalist badge */
-      .game-card .finalist-badge + .award-badge {
-        top: 38px; /* Position award badge below finalist badge (vertically aligned) */
-        right: -8px; /* Keep same horizontal position */
-        transform: rotate(3deg); /* Same rotation for parallel alignment */
+      /* Monthly badge positioning - stacked vertically */
+      .monthly-badge {
+        transform: rotate(5deg);
       }
 
       .game-card-container:hover .game-card {
