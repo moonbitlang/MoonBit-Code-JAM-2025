@@ -18,6 +18,8 @@ Calculus Singularity 是一款把**逻辑证明**抽象成**推箱子解谜**的
 - `info` 会显示 `Prop @ (x, y)` 格式的盒子位置与命题内容，帮助玩家理解当前状态
   - `⊢` 符号后面的表示未完成的目标命题 (红色表示放置了错的盒子，绿色表示正确，白色表示空位)
 - BiliBili 视频演示: [一个受形式逻辑启发的小游戏](https://www.bilibili.com/video/BV1wTCJBaEjB)
+- 源代码：[Calculus Singularity](https://github.com/CAIMEOX/calculus-singularity)
+  - 注：可 checkout 到 `ca07a58` 提交以确保代码与提交版本一致 （主分支正在持续更新）
 
 ## 技术特色
 
