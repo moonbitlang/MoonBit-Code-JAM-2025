@@ -1,0 +1,21 @@
+{
+  "is_main": true,
+  "import": [
+    "kunpeng_evolution/lib"
+  ],
+  "link": {
+    "wasm": {
+      "exports": [
+        "init_game",
+        "move_player_wasm",
+        "update_game_wasm",
+        "get_player_pos_wasm",
+        "get_player_info_wasm",
+        "get_ai_fish_info_wasm",
+        "get_ai_fish_details_wasm",
+        "get_game_status_wasm",
+        "get_invincible_time_wasm"
+      ]
+    }
+  }
+}
